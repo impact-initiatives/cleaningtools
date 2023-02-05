@@ -10,3 +10,6 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Imports: srvyr,stringr,openxlsx,readxl,purrr,tidyr,tidyverse,survey,weights,jtools,janitor
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
