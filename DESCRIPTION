@@ -1,13 +1,16 @@
 Package: cleaningtools
-Title: What the Package Does (One Line, Title Case)
+Title: cleaningtools package focuses on data cleaning
 Version: 0.0.0.9000
 Authors@R: c(
     person("Mehedi", "Khan", email= "mh.khan@reach-initiative.org", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-4276-4485")),
     person("Yann", "Say",  email= "yann.say@impact-initiatives.org",role = "aut",
            comment = c(ORCID = "xxxxxxxxxxxx")))
-Description: What the package does (one paragraph).
-License: MIT + file LICENSE
+Description: The cleaningtools package focuses on cleaning, and has three components: 
+    **Check**, which includes a set of functions that flag values, such as check_outliers and check_logical.
+    **Create**, which includes a set of functions to create different items for use in cleaning, such as the cleaning log from the checks, clean data, and enumerator performance.
+    **Review**, which includes a set of functions to review the cleaning, such as reviewing the cleaning.
+License: MIT
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
