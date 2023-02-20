@@ -4,9 +4,6 @@ library(tidyverse)
 
 
 
-
-
-
 # generate cleaning log ---------------------------------------------------
 
 testthat::test_that("generating cleaning log",{

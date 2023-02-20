@@ -5,7 +5,7 @@ Authors@R: c(
     person("Mehedi", "Khan", email= "mh.khan@reach-initiative.org", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-4276-4485")),
     person("Yann", "Say",  email= "yann.say@impact-initiatives.org",role = "aut",
-           comment = c(ORCID = "xxxxxxxxxxxx")))
+           comment = c(ORCID = "0000-0002-7390-4209")))
 Description: The cleaningtools package focuses on cleaning, and has three components: 
     **Check**, which includes a set of functions that flag values, such as check_outliers and check_logical.
     **Create**, which includes a set of functions to create different items for use in cleaning, such as the cleaning log from the checks, clean data, and enumerator performance.
