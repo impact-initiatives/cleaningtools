@@ -38,10 +38,11 @@ and its identify any changes bwtween them and finally provide the output
 as claning log format.
 
 ``` r
-
-cleaning_log <- create_cleaning_log(raw_data = raw_data,raw_data_uuid = "X_uuid",
-                                    clean_data = clean_data,clean_data_uuid = "X_uuid",
-                                    check_for_deletion_log = T,check_for_variable_name = T ))
+cleaning_log <- create_cleaning_log(
+  raw_data = raw_data, raw_data_uuid = "X_uuid",
+  clean_data = clean_data, clean_data_uuid = "X_uuid",
+  check_for_deletion_log = T, check_for_variable_name = T
+)
 ```
 
 #### Example:: Comparing cleaning log with clean data and raw data
@@ -53,12 +54,13 @@ user-provided cleaning log. Finally, flagged the discrepancies between
 them (if any).
 
 ``` r
-
-comapre_cl_with_datasets(raw_data = raw_data,raw_data_uuid = "X_uuid",
-                         clean_data = clean_data,clean_data_uuid = "X_uuid",
-                         cleaning_log = cleaning_log2,cleaning_log_uuid = "X_uuid",
-                         cleaning_log_question_name = "questions",
-                         cleaning_log_new_value =  "new_value",cleaning_log_old_value = "old_value",
-                         deletion_log = deletaion_log,deletion_log_uuid = "X_uuid",
-                         check_for_deletion_log =T,check_for_variable_name = T))
+compare_cl_with_datasets(
+  raw_data = raw_data, raw_data_uuid = "X_uuid",
+  clean_data = clean_data, clean_data_uuid = "X_uuid",
+  cleaning_log = cleaning_log2, cleaning_log_uuid = "X_uuid",
+  cleaning_log_question_name = "questions",
+  cleaning_log_new_value = "new_value", cleaning_log_old_value = "old_value",
+  deletion_log = deletaion_log, deletion_log_uuid = "X_uuid",
+  check_for_deletion_log = T, check_for_variable_name = T
+)
 ```
