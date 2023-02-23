@@ -1,5 +1,5 @@
 library(testthat)
-library(dplyr)
+library(tidyverse)
 
 #' FCS component checks
 #' @param dataset Data set
