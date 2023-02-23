@@ -10,8 +10,8 @@ testthat::test_that("generating cleaning log", {
     check_for_deletion_log = T, check_for_variable_name = T
   ))
 
-  deletaion_log <- cleaning_log |> dplyr::filter(change_type == "remove_survey")
-  cleaning_log2 <- cleaning_log |> dplyr::filter(change_type != "remove_survey")
+  deletaion_log <- cleaning_log |> filter(change_type == "remove_survey")
+  cleaning_log2 <- cleaning_log |> filter(change_type != "remove_survey")
 
   expect_no_error(compare_cl_with_datasets(raw_data = raw_data,raw_data_uuid = "X_uuid",
                                            clean_data = clean_data,clean_data_uuid = "X_uuid",
