@@ -13,7 +13,7 @@ testthat::test_that("generating cleaning log", {
   deletaion_log <- cleaning_log |> dplyr::filter(change_type == "remove_survey")
   cleaning_log2 <- cleaning_log |> dplyr::filter(change_type != "remove_survey")
 
-  expect_no_error(comapre_cl_with_datasets(raw_data = raw_data,raw_data_uuid = "X_uuid",
+  expect_no_error(compare_cl_with_datasets(raw_data = raw_data,raw_data_uuid = "X_uuid",
                                            clean_data = clean_data,clean_data_uuid = "X_uuid",
                                            cleaning_log = cleaning_log2,cleaning_log_uuid = "X_uuid",
                                            cleaning_log_question_name = "questions",
