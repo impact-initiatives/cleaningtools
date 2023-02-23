@@ -1,4 +1,3 @@
-
 ############################### data documentation #######################
 
 
@@ -18,7 +17,6 @@
 #' survey
 #' choices
 #' overall_analysis
-
 
 #' @name analysis_by_group
 #' @title Analysis by population group
@@ -80,6 +78,3 @@
 #' @rdname food_consumption_df
 #' @format NULL
 "food_consumption_df"
-
-
-

@@ -3,10 +3,12 @@ library(testthat)
 
 # generate cleaning log ---------------------------------------------------
 
-testthat::test_that("generating cleaning log",{
- expect_no_error(create_cleaning_log(raw_data = raw_data,raw_data_uuid = "X_uuid",
-                                       clean_data = clean_data,clean_data_uuid = "X_uuid",
-                                       check_for_deletion_log = T,check_for_variable_name = T ))
+testthat::test_that("generating cleaning log", {
+  expect_no_error(create_cleaning_log(
+    raw_data = raw_data, raw_data_uuid = "X_uuid",
+    clean_data = clean_data, clean_data_uuid = "X_uuid",
+    check_for_deletion_log = T, check_for_variable_name = T
+  ))
 
   deletaion_log <- cleaning_log |> dplyr::filter(change_type == "remove_survey")
   cleaning_log2 <- cleaning_log |> dplyr::filter(change_type != "remove_survey")
