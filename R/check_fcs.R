@@ -14,7 +14,6 @@ library(dplyr)
 #' @param sugar Variable name for- In the last 7 days, on how many days did your household eat sugar or sugary foods?
 #' @return dataset with potential issues
 #' @export
-#' @importFrom dplyr filter select mutate
 
 
 
