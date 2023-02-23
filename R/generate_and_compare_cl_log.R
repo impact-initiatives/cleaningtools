@@ -233,7 +233,8 @@ comapre_cl_with_datasets <- function(raw_data =  raw_data_hh,
   duplicate_entry_in_cleaning_log <- cleaning_log_short[cleaning_log_short$uniqe_row_id %in% duplicate_id_long_list, ]
  ## to check
    final_duplicated <-duplicate_entry_in_cleaning_log[!(duplicated(duplicate_entry_in_cleaning_log) |
-                                                         duplicated(duplicate_entry_in_cleaning_log, fromLast = TRUE)), ]
+                                                         duplicated(duplicate_entry_in_cleaning_log,
+                                                                    fromLast = TRUE)), ]
 
 
 
@@ -257,7 +258,7 @@ comapre_cl_with_datasets <- function(raw_data =  raw_data_hh,
 
   missing_in_cleaning_log[["value_check"]] <- cleaning_log_create_change_response %>% mutate(
     check_in_given_log = uniqe_row_id %in% cl_to_add$uniqe_row_id
-  ) %>% left_join(cl_to_add) %>% mutate(
+  ) %>% left_join(cl_to_add,multiple = "all") %>% mutate(
     new_value_check = case_when(
       is.na(df.new_value) & is.na(!!sym(cleaning_log_new_value)) ~ T ,
       (df.new_value == !!sym(cleaning_log_new_value)) ==T ~T,
