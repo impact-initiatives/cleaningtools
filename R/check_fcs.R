@@ -1,5 +1,4 @@
-library(testthat)
-library(tidyverse)
+library(dplyr)
 
 #' FCS component checks
 #' @param dataset Data set
@@ -13,6 +12,7 @@ library(tidyverse)
 #' @param oil Variable name for- In the last 7 days, on how many days did your household eat oil, fat, or butter?
 #' @param sugar Variable name for- In the last 7 days, on how many days did your household eat sugar or sugary foods?
 #' @return dataset with potential issues
+#' @import dplyr
 #' @export
 
 

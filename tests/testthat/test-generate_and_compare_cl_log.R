@@ -1,4 +1,4 @@
-library(tidyverse)
+library(dplyr)
 library(testthat)
 
 # generate cleaning log ---------------------------------------------------

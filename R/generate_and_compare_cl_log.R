@@ -7,6 +7,8 @@
 #' @param check_for_variable_name TRUE to flag the removed variables
 #' @return Cleaning log
 #' @export
+#' @import dplyr
+
 
 
 
