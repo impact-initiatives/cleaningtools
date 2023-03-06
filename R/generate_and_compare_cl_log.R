@@ -7,6 +7,8 @@
 #' @param check_for_variable_name TRUE to flag the removed variables
 #' @return Cleaning log
 #' @export
+#' @import dplyr
+
 
 
 
@@ -240,9 +242,12 @@ compare_cl_with_datasets <- function(raw_data = raw_data_hh,
 
 
   duplicate_entry_in_cleaning_log <- cleaning_log_short[cleaning_log_short$uniqe_row_id %in% duplicate_id_long_list, ]
+
   ## to check
-  final_duplicated <- duplicate_entry_in_cleaning_log[!(duplicated(duplicate_entry_in_cleaning_log) |
-    duplicated(duplicate_entry_in_cleaning_log, fromLast = TRUE)), ]
+   final_duplicated <-duplicate_entry_in_cleaning_log[!(duplicated(duplicate_entry_in_cleaning_log) |
+                                                         duplicated(duplicate_entry_in_cleaning_log,
+                                                                    fromLast = TRUE)), ]
+
 
 
 
@@ -259,37 +264,27 @@ compare_cl_with_datasets <- function(raw_data = raw_data_hh,
 
 
   ## check for change log
-  cleaning_log_create_change_response <- cleaning_log_create[!cleaning_log_create$df.change_type %in% c("variable_removed", "remove_survey"), ]
-  cleaning_log_create_change_response$uniqe_row_id <- tolower(paste0(
-    cleaning_log_create_change_response$df.uuid, "_",
-    cleaning_log_create_change_response$df.question_name
-  ))
-  cl_to_add <- cleaning_log[, c("uniqe_row_id", "new_value")]
+  cleaning_log_create_change_response <- cleaning_log_create[!cleaning_log_create$df.change_type %in% c("variable_removed" ,"remove_survey"),]
+  cleaning_log_create_change_response$uniqe_row_id <- tolower(paste0(cleaning_log_create_change_response$df.uuid,"_",
+                                                                     cleaning_log_create_change_response$df.question_name))
+  cl_to_add <- cleaning_log[,c("uniqe_row_id","new_value")]
 
 
 
-  missing_in_cleaning_log[["value_check"]] <- cleaning_log_create_change_response %>%
-    mutate(
-      check_in_given_log = uniqe_row_id %in% cl_to_add$uniqe_row_id
-    ) %>%
-    left_join(cl_to_add) %>%
-    mutate(
-      new_value_check = case_when(
-        is.na(df.new_value) & is.na(!!sym(cleaning_log_new_value)) ~ T,
-        (df.new_value == !!sym(cleaning_log_new_value)) == T ~ T,
-        T ~ F
-      )
-    ) %>%
-    mutate(
-      comment = case_when(
-        check_in_given_log == F ~ "Entry missing in cleaning log",
-        new_value_check == F ~ "New value in cleaning log and value in clean dataset not matching"
-      )
-    ) %>%
-    filter(!is.na(comment)) %>%
-    rename(
-      uuid = df.uuid
-    )
+  missing_in_cleaning_log[["value_check"]] <- cleaning_log_create_change_response %>% mutate(
+    check_in_given_log = uniqe_row_id %in% cl_to_add$uniqe_row_id
+  ) %>% left_join(cl_to_add,multiple = "all") %>% mutate(
+    new_value_check = case_when(
+      is.na(df.new_value) & is.na(!!sym(cleaning_log_new_value)) ~ T ,
+      (df.new_value == !!sym(cleaning_log_new_value)) ==T ~T,
+      T~F)
+  ) %>% mutate(
+    comment = case_when(check_in_given_log ==F ~ "Entry missing in cleaning log",
+                        new_value_check == F ~ "New value in cleaning log and value in clean dataset not matching")
+  ) %>% filter(!is.na(comment)) %>% rename(
+    uuid = df.uuid
+  )
+
 
   ###
 
