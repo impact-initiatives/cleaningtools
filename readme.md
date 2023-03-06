@@ -31,7 +31,44 @@ You can install the development version from
 devtools::install_github("impact-initiatives/cleaningtools")
 ```
 
-#### Example:: Creating cleaning log from raw data and clean data
+## Examples
+
+### Example:: Check for duplicates
+
+``` r
+library(cleaningtools)
+testdata <- data.frame(uuid = c(letters[1:4], "a", "b", "c"),
+                       col_a = runif(7),
+                       col_b = runif(7)) %>%
+ dplyr::rename(`_uuid` = uuid)
+testdata
+#>   _uuid      col_a     col_b
+#> 1     a 0.51180325 0.0261426
+#> 2     b 0.06155909 0.3344346
+#> 3     c 0.85009177 0.5312682
+#> 4     d 0.23079823 0.9663387
+#> 5     a 0.67914406 0.3713654
+#> 6     b 0.55266005 0.3072747
+#> 7     c 0.22372945 0.6293074
+check_duplicate(testdata)
+#> $checked_dataset
+#>   _uuid      col_a     col_b
+#> 1     a 0.51180325 0.0261426
+#> 2     b 0.06155909 0.3344346
+#> 3     c 0.85009177 0.5312682
+#> 4     d 0.23079823 0.9663387
+#> 5     a 0.67914406 0.3713654
+#> 6     b 0.55266005 0.3072747
+#> 7     c 0.22372945 0.6293074
+#> 
+#> $duplicate_log
+#>   uuid value variable           issue
+#> 1    a     a    _uuid duplicated uuid
+#> 2    b     b    _uuid duplicated uuid
+#> 3    c     c    _uuid duplicated uuid
+```
+
+### Example:: Creating cleaning log from raw data and clean data
 
 `create_cleaning_log` function takes raw data and clean data as inputs
 and its identify any changes bwtween them and finally provide the output
@@ -45,7 +82,7 @@ cleaning_log <- create_cleaning_log(
 )
 ```
 
-#### Example:: Comparing cleaning log with clean data and raw data
+### Example:: Comparing cleaning log with clean data and raw data
 
 `compare_cl_with_datasets` function takes raw data, clean data and
 cleaning log as inputs, and it first creates the cleaning log by
