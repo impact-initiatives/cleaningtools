@@ -21,10 +21,11 @@ Imports:
     magrittr,
     snakecase,
     tidyr,
+    stringr,
+    glue,
     rlang
 Remotes:
     mhkhan27/illuminate
-
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
