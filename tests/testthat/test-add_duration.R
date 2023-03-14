@@ -1,7 +1,3 @@
-library(usethis)
-library(dplyr)
-library(testthat)
-
 #test 1a: that there is a "start" variable in the dataset, else error
 test_that("start variable exists", {
   expect_error(add_duration(.dataset=clean_data, duration_var_name="duration", start = "ddd",
