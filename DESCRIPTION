@@ -16,9 +16,11 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Imports: 
     dplyr,
+    glue,
     magrittr,
-    tidyr,
-    rlang
+    rlang,
+    stringr,
+    tidyr
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
