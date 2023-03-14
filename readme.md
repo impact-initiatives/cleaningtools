@@ -64,3 +64,51 @@ compare_cl_with_datasets(
   check_for_deletion_log = T, check_for_variable_name = T
 )
 ```
+
+#### Example:: Check of PII
+
+`check_for_pii()` function takes raw data (input can be dataframe or
+list. However incase of list, you must specify the element name in
+`element_name` parameter!) and looks for potential PII in the dataset.
+By default, the function will look for following words but you can also
+add additional words to look by using `words_to_look`
+parameter.`c("telephone","contact","name","gps","neighbourhood","latitude","logitude","contact","nom","gps","voisinage")`.
+The function will give a list with two element. One will be the data and
+second one will be the list of potential PII
+
+- Using dataframe as input
+
+``` r
+output_from_data <- check_for_pii(df = raw_data,words_to_look = "date")
+output_from_data$potential_PII
+#> # A tibble: 7 × 3
+#>   X_uuid question                              issue        
+#>   <chr>  <chr>                                 <chr>        
+#> 1 all    date_assessment                       Potential PII
+#> 2 all    neighbourhood                         Potential PII
+#> 3 all    return_date                           Potential PII
+#> 4 all    water_supply_rest_neighbourhood       Potential PII
+#> 5 all    water_supply_other_neighbourhoods     Potential PII
+#> 6 all    water_supply_other_neighbourhoods_why Potential PII
+#> 7 all    consent_telephone_number              Potential PII
+```
+
+- Using list as input
+
+``` r
+
+### from list
+df_list <- list(raw_data=raw_data)
+output_from_list <- check_for_pii(df = df_list,element_name = "raw_data",words_to_look = "date")
+output_from_list$potential_PII
+#> # A tibble: 7 × 3
+#>   X_uuid question                              issue        
+#>   <chr>  <chr>                                 <chr>        
+#> 1 all    date_assessment                       Potential PII
+#> 2 all    neighbourhood                         Potential PII
+#> 3 all    return_date                           Potential PII
+#> 4 all    water_supply_rest_neighbourhood       Potential PII
+#> 5 all    water_supply_other_neighbourhoods     Potential PII
+#> 6 all    water_supply_other_neighbourhoods_why Potential PII
+#> 7 all    consent_telephone_number              Potential PII
+```
