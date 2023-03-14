@@ -29,7 +29,7 @@ add_duration <- function(.dataset, duration_var_name="duration",
     stop("There is already a variable called duration_var_name in your dataset, please input another duration_var_name")
 
   #the function only runs if start and end are in the KOBO format "date T hour"
-  if(all(grepl("T", .dataset[[start]]),na.rm = T) & all(grepl("T", .dataset[[end]]),na.rm = T))
+  if(all(grepl("T", .dataset[[start]]) | is.na(.dataset[[start]])) & all(grepl("T", .dataset[[end]]) | is.na(.dataset[[end]])))
     {
   #split the columns start and end
   .dataset <- .dataset %>%
