@@ -11,9 +11,11 @@ test_that("Check for PII", {
              "water_supply_other_neighbourhoods", "water_supply_other_neighbourhoods_why",
              "consent_telephone_number")
 
+  df33 <- data.frame(a = c(1,2))
   no_pii_data <- raw_data %>% select(-all_of(to_rm))
 
   df_list <- list(raw_data=raw_data,
+                  df33 = df33,
                   no_pii_data =  no_pii_data)
 
 
@@ -27,10 +29,9 @@ test_that("Check for PII", {
   output_fm_data_frame2 <- check_for_pii(raw_data)
 
 
-  output1$potential_PII$question %>% dput
 
   expected_outcome <-tibble(
-    X_uuid = rep("all",7),
+    uuid = rep("all",7),
     question = c("date_assessment", "neighbourhood", "return_date", "water_supply_rest_neighbourhood",
                  "water_supply_other_neighbourhoods", "water_supply_other_neighbourhoods_why",
                  "consent_telephone_number"),
@@ -39,16 +40,16 @@ test_that("Check for PII", {
   testthat::expect_identical(output1$potential_PII,expected_outcome)
 
 
-  testthat::expect_equal(nrow(output1$potential_PII),7)
+  # testthat::expect_equal(nrow(output1$potential_PII),7)
   testthat::expect_equal(nrow(output1$potential_PII),nrow(output_fm_data_frame1$potential_PII))
 
   testthat::expect_equal(nrow(output2$potential_PII),5)
   testthat::expect_equal(nrow(output2$potential_PII),nrow(output_fm_data_frame2$potential_PII))
 
-  testthat::expect_identical(names(output1$potential_PII),c("X_uuid","question","issue"))
-  testthat::expect_identical(names(output2$potential_PII),c("X_uuid","question","issue"))
+  testthat::expect_identical(names(output1$potential_PII),c("uuid","question","issue"))
+  testthat::expect_identical(names(output2$potential_PII),c("uuid","question","issue"))
 
-  testthat::expect_identical(names(output_fm_data_frame2$potential_PII),c("X_uuid","question","issue"))
+  testthat::expect_identical(names(output_fm_data_frame2$potential_PII),c("uuid","question","issue"))
 
 
   testthat::expect_equal(nrow(output3$potential_PII),0)
@@ -64,7 +65,7 @@ test_that("Check for PII", {
   expect_error(check_for_pii(raw_data,uuid = "uuid"),regexp = "uuid not found in the dataset")
 
 
-  expect_length(output1,2)
+  expect_length(output1,4)
   expect_length(output_fm_data_frame2,2)
   expect_identical(names(output_fm_data_frame2),c("df","potential_PII"))
 

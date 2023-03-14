@@ -19,7 +19,8 @@ Imports:
     tibble,
     illuminate,
     magrittr,
-    snakecase
+    snakecase,
+    rlang
 Remotes:
     mhkhan27/illuminate
 Suggests: 

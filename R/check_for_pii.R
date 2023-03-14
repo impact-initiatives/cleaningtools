@@ -11,23 +11,24 @@ library(dplyr)
 
 check_for_pii<- function(df,element_name =NULL,uuid ="X_uuid",words_to_look = NULL){
 
- if(is.data.frame(df) & !is.null(element_name)){warning("Input is a dataframe, ignoring element_name")}
+  dataframe <- df
 
+  if(is.data.frame(df) & !is.null(element_name)){warning("Input is a dataframe, ignoring element_name")}
 
- if(!is.data.frame(df) & is.list(df) ){
-   if(is.null(element_name)){stop("element_name is missing")}
-   if(!element_name %in% names(df)){stop("element_name not found")}
+  if(!is.data.frame(df) & is.list(df) ){
+    if(is.null(element_name)){stop("element_name is missing")}
+    if(!element_name %in% names(df)){stop("element_name not found")}
+  }
 
-   }
-
- if(!is.data.frame(df) & is.list(df)){df <- df[[element_name]]}
+  if(!is.data.frame(df) & is.list(df)){df <- df[[element_name]]}
 
 
   if(uuid %in% names(df)==FALSE){stop("uuid not found in the dataset")}
 
 
-  cols_to_look_for <- c("telephone","contact","name","gps","neighbourhood","latitude","logitude",
-                          "contact","nom","gps","voisinage")
+  cols_to_look_for <- c("telephone","contact","name","gps","neighbourhood","latitude","longitude","phone",
+                        "contact number", "geo location","geo",
+                        "contact","nom","gps","voisinage")
 
   cols_to_look_for <- c(words_to_look,cols_to_look_for) %>% to_snake_case()
   cols_to_look_for <-   paste0(cols_to_look_for,collapse = "|")
@@ -35,16 +36,25 @@ check_for_pii<- function(df,element_name =NULL,uuid ="X_uuid",words_to_look = NU
   select_multiple_to_ignore <- illuminate::auto_sm_parent_child(df)
   ignore <- c(select_multiple_to_ignore$sm_child, select_multiple_to_ignore$sm_parent) %>% unique()
 
-potential_PII <- tibble(
-  !!sym(uuid) := "all",
-  question = names(df)
-) %>% filter(!question %in% ignore) %>% mutate(
-  snkae_case_cols = to_snake_case(question)
-) %>% filter((grepl(cols_to_look_for,snkae_case_cols)) |(grepl(cols_to_look_for,question))) %>% mutate(
-  issue = "Potential PII"
-) %>% select(-snkae_case_cols)
+  potential_PII <- tibble(
+    uuid= "all",
+    question = names(df)
+  ) %>% dplyr::filter(!question %in% ignore) %>% mutate(
+    snkae_case_cols = snakecase::to_snake_case(question)
+  ) %>% filter((grepl(cols_to_look_for,snkae_case_cols)) |(grepl(cols_to_look_for,question))) %>% mutate(
+    issue = "Potential PII"
+  ) %>% select(-snkae_case_cols)
+  ## Append the list
+  if(is.data.frame(dataframe)){return(list(df = df,
+                                    potential_PII=potential_PII))}
 
-list(df = df,
-     potential_PII=potential_PII)
+  if(!is.data.frame(dataframe)){
+    list_Df <- list(potential_PII =potential_PII)
+    return(append(dataframe,list_Df))}
+
+
+
+
+
 
 }
