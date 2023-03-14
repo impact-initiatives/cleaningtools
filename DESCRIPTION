@@ -16,11 +16,16 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Imports: 
     dplyr,
-    glue,
+    tibble,
+    illuminate,
     magrittr,
-    rlang,
+    snakecase,
+    tidyr,
     stringr,
-    tidyr
+    glue,
+    rlang
+Remotes:
+    mhkhan27/illuminate
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
