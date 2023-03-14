@@ -37,7 +37,7 @@ add_duration <- function(.dataset, duration_var_name="duration",
     tidyr::separate(!!sym(end), c("end_date", "end_time"), "T", remove=F)
 
   #test 3: warning if there is not a start and end for each survey
-  if(sum(is.na(clean_data[[start]]))>0 | sum(is.na(clean_data[[end]]))>0){
+  if(sum(is.na(.dataset[[start]]))>0 | sum(is.na(.dataset[[end]]))>0){
      warning("There are some observations for which either start or end is missing. The duration will not be computed for these")
   }
 

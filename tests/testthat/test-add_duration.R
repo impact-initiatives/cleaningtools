@@ -22,8 +22,9 @@ test_that("variable duration does not exist", {
 
 #test 3: that there a start and an end time for each survey, if there isnt, throw a warning, counting the number of issues
 test_that("no missing values in start and end variables", {
-  clean_data[1,"X.U.FEFF.start"] <- NA
-  expect_warning(add_duration(.dataset=clean_data, duration_var_name="new_duration", start = "X.U.FEFF.start",
+  test_data <- clean_data
+  test_data[1,"X.U.FEFF.start"] <- NA
+  expect_warning(add_duration(.dataset=test_data, duration_var_name="new_duration", start = "X.U.FEFF.start",
                               end="end", uuid="X_uuid"),
                regexp ="There are some observations for which either start or end is missing. The duration will not be computed for these")
 
@@ -31,8 +32,9 @@ test_that("no missing values in start and end variables", {
 
 #test 4: the function does not run if the data is not in KOBO format
 test_that("function does not run if the data is not in KOBO format", {
-  clean_data[1,"X.U.FEFF.start"] <- "111111111"
-  expect_error(add_duration(.dataset=clean_data, duration_var_name="new_duration", start = "X.U.FEFF.start",
+  test_data <- clean_data
+  test_data[1,"X.U.FEFF.start"] <- "111111111"
+  expect_error(add_duration(.dataset=test_data, duration_var_name="new_duration", start = "X.U.FEFF.start",
                               end="end", uuid="X_uuid"),
                  regexp ="The dates are not in the correct format, the duration cannot be computed")
 
