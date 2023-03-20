@@ -11,6 +11,8 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+devtools::load_all()
+
 ```
 
 
@@ -39,8 +41,21 @@ You can install the development version from [GitHub](https://github.com/) with:
 devtools::install_github("impact-initiatives/cleaningtools")
 ```
 
+## Examples
 
-#### Example:: Creating cleaning log from raw data and clean data
+### Example:: Check for duplicates
+```{r}
+library(cleaningtools)
+testdata <- data.frame(uuid = c(letters[1:4], "a", "b", "c"),
+                       col_a = runif(7),
+                       col_b = runif(7)) %>%
+ dplyr::rename(`_uuid` = uuid)
+testdata
+check_duplicate(testdata)
+```
+
+
+### Example:: Creating cleaning log from raw data and clean data
 `create_cleaning_log` function takes raw data and clean data as inputs and its identify any changes bwtween them and finally provide the output as claning log format.
 ``` {r, eval=FALSE}
 cleaning_log <- create_cleaning_log(
@@ -50,7 +65,7 @@ cleaning_log <- create_cleaning_log(
 )
 ```
 
-#### Example:: Comparing cleaning log with clean data and raw data
+### Example:: Comparing cleaning log with clean data and raw data
 `compare_cl_with_datasets` function takes raw data, clean data and cleaning log as inputs, and it first creates the cleaning log by comparing raw data and clean data, then compares it with the user-provided cleaning log. Finally, flagged the discrepancies between them (if any). 
 ``` {r, eval=FALSE}
 compare_cl_with_datasets(
@@ -63,4 +78,28 @@ compare_cl_with_datasets(
   check_for_deletion_log = T, check_for_variable_name = T
 )
 ```
+
+#### Example:: Check of PII
+`check_for_pii()` function takes raw data (input can be dataframe or list. However incase of list, you must specify the element name in `element_name` parameter!) and looks for potential PII in the dataset. By default, the function will look for following words but you can also add additional words to look by using `words_to_look` parameter.`c("telephone","contact","name","gps","neighbourhood","latitude","logitude","contact","nom","gps","voisinage")`. 
+The function will give a list with two element. One will be the data and second one will be the list of potential PII
+
+* Using dataframe as input
+``` {r, eval=T}
+output_from_data <- check_for_pii(df = raw_data,words_to_look = "date")
+output_from_data$potential_PII
+```
+
+* Using list as input
+``` {r, eval=T}
+
+### from list
+df_list <- list(raw_data=raw_data)
+output_from_list <- check_for_pii(df = df_list,element_name = "raw_data",words_to_look = "date")
+output_from_list$potential_PII
+
+```
+
+                    
+
+                          
 
