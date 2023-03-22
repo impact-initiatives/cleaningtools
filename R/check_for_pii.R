@@ -45,12 +45,16 @@ check_for_pii<- function(df,element_name =NULL,uuid ="X_uuid",words_to_look = NU
     issue = "Potential PII"
   ) %>% select(-snkae_case_cols)
   ## Append the list
-  if(is.data.frame(dataframe)){return(list(df = df,
-                                    potential_PII=potential_PII))}
+  if(is.data.frame(dataframe)){
+    checked_dataset <- df
+    return(list(checked_dataset = checked_dataset,
+                potential_PII=potential_PII))}
 
   if(!is.data.frame(dataframe)){
     list_Df <- list(potential_PII =potential_PII)
-    return(append(dataframe,list_Df))}
+
+    return(append(dataframe,list_Df))
+    }
 
 
 

@@ -10,6 +10,7 @@
 #' @export
 #'
 #' @examples
+#'
 check_others_checks <- function(dataset,uuid,var_list) {
 
   if (!(uuid %in% names(dataset))) {
