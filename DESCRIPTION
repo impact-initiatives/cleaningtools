@@ -23,7 +23,10 @@ Imports:
     tidyr,
     stringr,
     glue,
-    rlang
+    rlang,
+    purrr,
+    stats,
+    utils
 Remotes:
     mhkhan27/illuminate
 Suggests: 
