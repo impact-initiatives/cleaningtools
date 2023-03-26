@@ -54,7 +54,6 @@ testdata
 check_duplicate(testdata)
 ```
 
-
 ### Example:: Creating cleaning log from raw data and clean data
 `create_cleaning_log` function takes raw data and clean data as inputs and its identify any changes bwtween them and finally provide the output as claning log format.
 ``` {r, eval=FALSE}
@@ -79,7 +78,7 @@ compare_cl_with_datasets(
 )
 ```
 
-#### Example:: Check of PII
+### Example:: Check of PII
 `check_for_pii()` function takes raw data (input can be dataframe or list. However incase of list, you must specify the element name in `element_name` parameter!) and looks for potential PII in the dataset. By default, the function will look for following words but you can also add additional words to look by using `words_to_look` parameter.`c("telephone","contact","name","gps","neighbourhood","latitude","logitude","contact","nom","gps","voisinage")`. 
 The function will give a list with two element. One will be the data and second one will be the list of potential PII
 
@@ -91,15 +90,93 @@ output_from_data$potential_PII
 
 * Using list as input
 ``` {r, eval=T}
-
 ### from list
 df_list <- list(raw_data=raw_data)
 output_from_list <- check_for_pii(df = df_list,element_name = "raw_data",words_to_look = "date")
 output_from_list$potential_PII
-
 ```
 
-                    
+### Example:: Check of duration from audits
+#### Reading the audits files
+It will read only the compressed file.
+```{r, eval = FALSE}
+my_audit_list <- create_audit_list(audit_zip_path = "audit_for_tests_100.zip")
+```
+
+#### Adding the duration to the dataset
+
+Once you have read your audit file from the zip, you will get a list of audit. 
+You can use this list to calculate and add the duration. You have 2 options with
+a start and end question or summing all the durations.
+```{r}
+list_audit <- list(uuid1 = data.frame(event = c("form start", rep("question", 5)),
+                                      node = c("", paste0("/xx/question", 1:5)),
+                                      start = c(1661415887295, 1661415887301,
+                                                1661415890819, 1661415892297,
+                                                1661415893529, 1661415894720),
+                                      end = c(NA, 1661415890790, 1661415892273,
+                                              1661415893506, 1661415894703,
+                                              1661415896452)),
+                   uuid2 = data.frame(event = c("form start", rep("question", 5)),
+                                      node = c("", paste0("/xx/question", 1:5)),
+                                      start = c(1661415887295, 1661415887301, 1661415890819, 1661415892297, 1661415893529, 1661415894720),
+                                      end = c(NA, 1661415890790, 1661415892273, 1661415893506, 1661415894703, 1661415896452)))
+some_dataset <- data.frame(X_uuid = c("uuid1", "uuid2"),
+                          question1 = c("a","b"),
+                          question2 = c("a","b"),
+                          question3 = c("a","b"),
+                          question4 = c("a","b"),
+                          question5 = c("a","b"))
+```
+
+If you want to sum all the duration.
+```{r}
+add_duration_from_audit(some_dataset, uuid_var = "X_uuid", audit_list = list_audit)
+```
+
+If you want to use calculate duration between 2 questions.
+```{r}
+add_duration_from_audit(some_dataset, uuid_var = "X_uuid", audit_list = list_audit,
+                         start_question = "question1",
+                         end_question = "question3",
+                         sum_all = F)
+```
+
+If you want to do both.
+```{r}
+add_duration_from_audit(some_dataset, uuid_var = "X_uuid", audit_list = list_audit,
+                         start_question = "question1",
+                         end_question = "question3",
+                         sum_all = T)
+```
+
+#### checking the duration of the dataset
+Once you have added the duration to the dataset, you can check if duration are 
+between the threshold you are looking for.
+``` {r, eval=T}
+testdata <- data.frame(
+  uuid = c(letters[1:7]),
+  duration_audit_start_end_ms = c(2475353, 375491, 2654267, 311585, 817270,
+                                  2789505, 8642007),
+  duration_audit_start_end_minutes = c(41, 6, 44, 5, 14, 46, 144)
+) %>%
+  dplyr::rename(`_uuid` = uuid)
+check_duration(testdata,
+               .col_to_check = "duration_audit_start_end_minutes")
+check_duration(
+  testdata,
+  .col_to_check = "duration_audit_start_end_ms",
+  lower_bound = 375490,
+  higher_bound = 8642000
+)
+testdata %>% check_duration(.col_to_check = "duration_audit_start_end_minutes") %>%
+  check_duration(
+    .col_to_check = "duration_audit_start_end_ms",
+    name_log = "duration_in_ms",
+    lower_bound = 375490,
+    higher_bound = 8642000
+  )
+```
 
                           
 
