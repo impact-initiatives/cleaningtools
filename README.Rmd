@@ -201,7 +201,7 @@ outliers$potential_outliers
 
 `create_clean_data()` function applies cleaning log to the raw data set and returns a clean data set. 
 
-``` {r, eval=F}
+``` {r, eval=T}
 cleaning_log_test <- data.frame(
   uuid = paste0("uuid",1:4),
   question= c("age","gender","pop_group","strata"),
