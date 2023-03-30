@@ -104,7 +104,6 @@ test_that("it returns the dataframe with only 1 added column", {
                ncol(data_test) + 1)
 })
 
-###checks that the denominator is equal to the number of variables.
 
 
 #check_percentage_missing

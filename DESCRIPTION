@@ -25,7 +25,10 @@ Imports:
     glue,
     rlang,
     openxlsx,
-    assertthat
+    assertthat,
+    purrr,
+    stats,
+    utils
 Remotes:
     mhkhan27/illuminate
 Suggests: 
