@@ -67,7 +67,7 @@ test_that("Check for PII", {
 
   expect_length(output1,4)
   expect_length(output_fm_data_frame2,2)
-  expect_identical(names(output_fm_data_frame2),c("df","potential_PII"))
+  expect_identical(names(output_fm_data_frame2),c("checked_dataset","potential_PII"))
 
 
 

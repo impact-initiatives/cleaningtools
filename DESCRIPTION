@@ -24,6 +24,8 @@ Imports:
     stringr,
     glue,
     rlang,
+    openxlsx,
+    assertthat,
     purrr,
     stats,
     utils
