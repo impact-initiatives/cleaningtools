@@ -42,24 +42,24 @@ testdata <- data.frame(uuid = c(letters[1:4], "a", "b", "c"),
                        col_b = runif(7)) %>%
  dplyr::rename(`_uuid` = uuid)
 testdata
-#>   _uuid      col_a     col_b
-#> 1     a 0.49956348 0.2932228
-#> 2     b 0.12765281 0.9875594
-#> 3     c 0.06852275 0.8942648
-#> 4     d 0.88912293 0.3461420
-#> 5     a 0.15453481 0.7851146
-#> 6     b 0.16081893 0.8781647
-#> 7     c 0.45479773 0.4316748
+#>   _uuid     col_a      col_b
+#> 1     a 0.3695482 0.16968000
+#> 2     b 0.5418004 0.50454174
+#> 3     c 0.1149003 0.16038236
+#> 4     d 0.3105059 0.04382956
+#> 5     a 0.9395381 0.40147253
+#> 6     b 0.7124887 0.98075769
+#> 7     c 0.6372067 0.02779949
 check_duplicate(testdata)
 #> $checked_dataset
-#>   _uuid      col_a     col_b
-#> 1     a 0.49956348 0.2932228
-#> 2     b 0.12765281 0.9875594
-#> 3     c 0.06852275 0.8942648
-#> 4     d 0.88912293 0.3461420
-#> 5     a 0.15453481 0.7851146
-#> 6     b 0.16081893 0.8781647
-#> 7     c 0.45479773 0.4316748
+#>   _uuid     col_a      col_b
+#> 1     a 0.3695482 0.16968000
+#> 2     b 0.5418004 0.50454174
+#> 3     c 0.1149003 0.16038236
+#> 4     d 0.3105059 0.04382956
+#> 5     a 0.9395381 0.40147253
+#> 6     b 0.7124887 0.98075769
+#> 7     c 0.6372067 0.02779949
 #> 
 #> $duplicate_log
 #>   uuid value variable           issue
@@ -347,7 +347,32 @@ df_outlier<- data.frame(
   yy = c(rep(100,99),10)
 )
 outliers <- check_outliers(df = df_outlier,uuid_col_name = "uuid")
+#> [1] "checking_one_value"
+#> [1] "checking_expense"
+#> [1] "checking_income"
+#> [1] "checking_yy"
 outliers$potential_outliers
+#> # A tibble: 18 × 4
+#>    uuid     issue                         question  old_value
+#>    <chr>    <chr>                         <chr>         <dbl>
+#>  1 uuid_91  outlier (normal distribution) one_value         1
+#>  2 uuid_92  outlier (normal distribution) one_value         0
+#>  3 uuid_93  outlier (normal distribution) one_value         0
+#>  4 uuid_94  outlier (normal distribution) one_value         0
+#>  5 uuid_95  outlier (normal distribution) one_value         0
+#>  6 uuid_96  outlier (normal distribution) one_value       100
+#>  7 uuid_97  outlier (normal distribution) one_value        99
+#>  8 uuid_98  outlier (normal distribution) one_value       100
+#>  9 uuid_99  outlier (normal distribution) one_value       100
+#> 10 uuid_100 outlier (normal distribution) one_value        99
+#> 11 uuid_99  outlier (normal distribution) expense        1020
+#> 12 uuid_100 outlier (normal distribution) expense        1050
+#> 13 uuid_97  outlier (log distribution)    expense         100
+#> 14 uuid_98  outlier (log distribution)    expense          80
+#> 15 uuid_1   outlier (log distribution)    income           60
+#> 16 uuid_2   outlier (log distribution)    income            0
+#> 17 uuid_3   outlier (log distribution)    income           80
+#> 18 uuid_100 outlier (normal distribution) yy               10
 ```
 
 #### Example:: Create clean data
