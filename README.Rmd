@@ -182,8 +182,8 @@ testdata %>% check_duration(.col_to_check = "duration_audit_start_end_minutes") 
 #### Example:: Check outliers
 `check_outliers()` takes raw data set and look for potential outlines. It can both data frame or list. However you must specify the element name (name of your data set in the given list) in `element_name` parameter!  
 
-``` {r, eval=T}
-
+``` {r, eval=F}
+set.seed(122)
 ### from list
 df_outlier<- data.frame(
   uuid = paste0("uuid_", 1:100),
@@ -201,7 +201,7 @@ outliers$potential_outliers
 
 `create_clean_data()` function applies cleaning log to the raw data set and returns a clean data set. 
 
-``` {r, eval=T}
+``` {r, eval=F}
 cleaning_log_test <- data.frame(
   uuid = paste0("uuid",1:4),
   question= c("age","gender","pop_group","strata"),
@@ -233,7 +233,9 @@ clean_dataset <- create_clean_data(df = test_data,df_uuid = "uuid",cl = cleaning
 
 `check_for_value()` function look for specified value in the given data set and return in a cleaning log format. The function can take a data frame or a list as input.
 
-``` {r, eval=T}
+``` {r, eval=F}
+set.seed(122)
+
 df <- data.frame(
     X_uuid = paste0("uuid_",1:100),
     age = c(sample(18:80,replace = T,size = 96),99,99,98,88),
