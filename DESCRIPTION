@@ -23,7 +23,9 @@ Imports:
     tidyr,
     stringr,
     glue,
-    rlang
+    rlang,
+    openxlsx,
+    assertthat
 Remotes:
     mhkhan27/illuminate
 Suggests: 
