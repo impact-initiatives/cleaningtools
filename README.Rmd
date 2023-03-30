@@ -233,7 +233,7 @@ clean_dataset <- create_clean_data(df = test_data,df_uuid = "uuid",cl = cleaning
 
 `check_for_value()` function look for specified value in the given data set and return in a cleaning log format. The function can take a data frame or a list as input.
 
-``` {r, eval=F}
+``` {r, eval=T}
 set.seed(122)
 
 df <- data.frame(
