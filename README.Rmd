@@ -182,7 +182,7 @@ testdata %>% check_duration(.col_to_check = "duration_audit_start_end_minutes") 
 #### Example:: Check outliers
 `check_outliers()` takes raw data set and look for potential outlines. It can both data frame or list. However you must specify the element name (name of your data set in the given list) in `element_name` parameter!  
 
-``` {r, eval=F}
+``` {r, eval=T}
 set.seed(122)
 ### from list
 df_outlier<- data.frame(
