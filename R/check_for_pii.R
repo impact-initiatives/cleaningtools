@@ -33,7 +33,7 @@ check_for_pii<- function(df,element_name =NULL,uuid ="X_uuid",words_to_look = NU
   cols_to_look_for <- c(words_to_look,cols_to_look_for) %>% to_snake_case()
   cols_to_look_for <-   paste0(cols_to_look_for,collapse = "|")
 
-  select_multiple_to_ignore <- illuminate::auto_sm_parent_child(df)
+  select_multiple_to_ignore <- auto_sm_parent_children(df)
   ignore <- c(select_multiple_to_ignore$sm_child, select_multiple_to_ignore$sm_parent) %>% unique()
 
   potential_PII <- tibble(
