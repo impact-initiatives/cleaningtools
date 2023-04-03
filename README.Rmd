@@ -266,7 +266,7 @@ test_data <- dplyr::tibble(
   reason.zy = c(0,1,1,1,0,0),
   reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_))
 
-recreate_parent_column(df = pre_clean_test,uuid = "uuid",sm_sep = ".")
+recreate_parent_column(df = test_data,uuid = "uuid",sm_sep = ".")
 
 ```
 
