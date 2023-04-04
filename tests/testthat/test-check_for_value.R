@@ -1,4 +1,4 @@
-test_that(values are correctly flagged", {
+test_that("values are correctly flagged", {
   ###################################################
 
 df <- data.frame(
