@@ -64,28 +64,6 @@ testthat::test_that("implement cleaning log",{
               clean_data_multiple[clean_data_multiple$X_uuid == "f949f8ee-6536-4627-a850-dc0b092ba379","air_coolers_nb"])
 
 
-
-### Wrong entry/ cross checking with compare_cl_with_dataset
-clean_data_multiple <- clean_data_multiple[1:576,] ## check if rem
-clean_data_multiple[clean_data_multiple$X_uuid == "fcc6b9e8-c72a-4228-8dc0-6e803114b6d6","water_tank_litres_nb"] <- 7
-clean_data_multiple[clean_data_multiple$X_uuid == "fcc6b9e8-c72a-4228-8dc0-6e803114b6d6","connection_fees_amount"] <- 8
-clean_data_multiple$enumerator_num[[2]] <- NA_real_
-
- compare_cl_with_datasets(raw_data = raw_data,raw_data_uuid = "X_uuid",clean_data = clean_data_multiple,
-                           clean_data_uuid = "X_uuid",cleaning_log = cleaning_log_1_log_only,
-                           cleaning_log_uuid = "X_uuid",
-                           cleaning_log_question_name = "questions",
-                           cleaning_log_new_value = "new_value",
-                           cleaning_log_old_value = "old_value",
-                           deletion_log = deletation_log,deletion_log_uuid = "X_uuid",
-                           check_for_variable_name = T,check_for_deletion_log = T
-                            )
-
-#################  # START check OUTPUT
-
-###############  # END check OUTPUT
-
-
   #### NA check
   cleaning_log_na <- cleaning_log
   cleaning_log_na$change_type[[1]] <- NA
@@ -95,7 +73,7 @@ clean_data_multiple$enumerator_num[[2]] <- NA_real_
                     cl_change_type_col = "change_type",
                     values_for_no_change =c("no_action",""),
                     cl_change_col =  "questions",cl_new_val = "new_value",
-                    cl_uuid = "X_uuid"))
+                    cl_uuid = "X_uuid"), "Missing values in change_type")
 
   expect_equal(nrow(check_cleaning_log(df = raw_data,df_uuid = "X_uuid",
                     cl = cleaning_log_na,
@@ -112,7 +90,7 @@ clean_data_multiple$enumerator_num[[2]] <- NA_real_
                                       cl = cleaning_log_wrong,
                                       cl_change_type_col = "change_type",
                                       cl_change_col =  "questions",cl_new_val = "new_value",
-                                      cl_uuid = "X_uuid"))
+                                      cl_uuid = "X_uuid"), "Make sure all names in cl_change_col values in the cleaning log are in dataset")
 
 
   expect_equal(nrow(check_cleaning_log(df = raw_data,df_uuid = "X_uuid",
@@ -143,7 +121,7 @@ clean_data_multiple$enumerator_num[[2]] <- NA_real_
                                       cl = cleaning_log,
                                       cl_change_type_col = "change_ype",
                                       cl_change_col =  "questions",cl_new_val = "new_value",
-                                      cl_uuid = "X_uuid"))
+                                      cl_uuid = "X_uuid"), "cl_change_type_col column not found in cleaning log")
 
 
 })
@@ -159,12 +137,12 @@ testthat::test_that("check cleaning log",{
   expect_error(check_cleaning_log(df = raw_data,df_uuid = "X_uuid",cl = cleaning_log,
                                   cl_change_type_col = "change_type",
                                   values_for_change_response = "change_esponse",cl_change_col = "questions",
-                                  cl_uuid = "X_uuid",cl_new_val = "new_value"))
+                                  cl_uuid = "X_uuid",cl_new_val = "new_value"), "Value in values_for_change_response not found")
 
   expect_error(check_cleaning_log(df = raw_data,df_uuid = "X_uuid",cl = cleaning_log,
                                   cl_change_type_col = "chage_type",
                                   values_for_change_response = "change_response",cl_change_col = "questions",
-                                  cl_uuid = "X_uuid",cl_new_val = "new_value"))
+                                  cl_uuid = "X_uuid",cl_new_val = "new_value"), "cl_change_type_col column not found in cleaning log")
 
 
 })
