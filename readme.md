@@ -42,24 +42,24 @@ testdata <- data.frame(uuid = c(letters[1:4], "a", "b", "c"),
                        col_b = runif(7)) %>%
  dplyr::rename(`_uuid` = uuid)
 testdata
-#>   _uuid     col_a      col_b
-#> 1     a 0.3695482 0.16968000
-#> 2     b 0.5418004 0.50454174
-#> 3     c 0.1149003 0.16038236
-#> 4     d 0.3105059 0.04382956
-#> 5     a 0.9395381 0.40147253
-#> 6     b 0.7124887 0.98075769
-#> 7     c 0.6372067 0.02779949
+#>   _uuid     col_a     col_b
+#> 1     a 0.4549701 0.6011051
+#> 2     b 0.3554492 0.8309532
+#> 3     c 0.4824082 0.2788883
+#> 4     d 0.3328418 0.5742443
+#> 5     a 0.7881422 0.9513359
+#> 6     b 0.2042830 0.8377018
+#> 7     c 0.2001396 0.5930543
 check_duplicate(testdata)
 #> $checked_dataset
-#>   _uuid     col_a      col_b
-#> 1     a 0.3695482 0.16968000
-#> 2     b 0.5418004 0.50454174
-#> 3     c 0.1149003 0.16038236
-#> 4     d 0.3105059 0.04382956
-#> 5     a 0.9395381 0.40147253
-#> 6     b 0.7124887 0.98075769
-#> 7     c 0.6372067 0.02779949
+#>   _uuid     col_a     col_b
+#> 1     a 0.4549701 0.6011051
+#> 2     b 0.3554492 0.8309532
+#> 3     c 0.4824082 0.2788883
+#> 4     d 0.3328418 0.5742443
+#> 5     a 0.7881422 0.9513359
+#> 6     b 0.2042830 0.8377018
+#> 7     c 0.2001396 0.5930543
 #> 
 #> $duplicate_log
 #>   uuid value variable           issue
@@ -404,7 +404,8 @@ clean_dataset <- create_clean_data(df = test_data,df_uuid = "uuid",cl = cleaning
                                    cl_change_col =  "question",
                                    cl_uuid = "uuid",
                                    cl_new_val = "new_value" )
-                          
+#> [1] "age"
+#> [1] "strata"
 ```
 
 #### Example:: Check for value
