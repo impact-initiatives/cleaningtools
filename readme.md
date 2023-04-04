@@ -42,24 +42,24 @@ testdata <- data.frame(uuid = c(letters[1:4], "a", "b", "c"),
                        col_b = runif(7)) %>%
  dplyr::rename(`_uuid` = uuid)
 testdata
-#>   _uuid     col_a     col_b
-#> 1     a 0.4549701 0.6011051
-#> 2     b 0.3554492 0.8309532
-#> 3     c 0.4824082 0.2788883
-#> 4     d 0.3328418 0.5742443
-#> 5     a 0.7881422 0.9513359
-#> 6     b 0.2042830 0.8377018
-#> 7     c 0.2001396 0.5930543
+#>   _uuid      col_a     col_b
+#> 1     a 0.47823343 0.7820833
+#> 2     b 0.44212985 0.6834170
+#> 3     c 0.51329180 0.4252172
+#> 4     d 0.07506301 0.4757214
+#> 5     a 0.86708049 0.7115588
+#> 6     b 0.39351279 0.1301717
+#> 7     c 0.24124837 0.4695363
 check_duplicate(testdata)
 #> $checked_dataset
-#>   _uuid     col_a     col_b
-#> 1     a 0.4549701 0.6011051
-#> 2     b 0.3554492 0.8309532
-#> 3     c 0.4824082 0.2788883
-#> 4     d 0.3328418 0.5742443
-#> 5     a 0.7881422 0.9513359
-#> 6     b 0.2042830 0.8377018
-#> 7     c 0.2001396 0.5930543
+#>   _uuid      col_a     col_b
+#> 1     a 0.47823343 0.7820833
+#> 2     b 0.44212985 0.6834170
+#> 3     c 0.51329180 0.4252172
+#> 4     d 0.07506301 0.4757214
+#> 5     a 0.86708049 0.7115588
+#> 6     b 0.39351279 0.1301717
+#> 7     c 0.24124837 0.4695363
 #> 
 #> $duplicate_log
 #>   uuid value variable           issue
@@ -425,4 +425,16 @@ df <- data.frame(
 output <- check_for_value(df = df,uuid_col_name = "X_uuid",element_name = "checked_dataset",values_to_look = c(99,98,88,888))
 
 output$flaged_value
+#> # A tibble: 9 × 3
+#>   uuid     question old_value
+#>   <chr>    <chr>    <chr>    
+#> 1 uuid_1   gender   99       
+#> 2 uuid_97  age      99       
+#> 3 uuid_97  gender   98       
+#> 4 uuid_98  age      99       
+#> 5 uuid_98  gender   98       
+#> 6 uuid_99  age      98       
+#> 7 uuid_99  gender   88       
+#> 8 uuid_100 age      88       
+#> 9 uuid_100 gender   888
 ```
