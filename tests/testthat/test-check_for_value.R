@@ -1,4 +1,4 @@
-test_that("multiplication works", {
+test_that(values are correctly flagged", {
   ###################################################
 
 df <- data.frame(
