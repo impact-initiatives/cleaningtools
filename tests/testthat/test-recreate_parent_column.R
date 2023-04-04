@@ -197,6 +197,217 @@ pre_clean_test <- dplyr::tibble(
                                       kobo_choices_sheet = choice_sheet))
 
 
+  ### check with several changes in one line
+  pre_clean_test <- dplyr::tibble(
+    uuid = paste0("uuid_",1:6),
+    gender = rep(c("male","female"),3),
+    reason = c("xx,yy","xx,zy",
+               "zy","xx,xz,zy",
+               NA_character_,"xz"),
+    reason.xx = c(0,1,0,1,1,0),
+    reason.yy = c(1,0,0,0,1,0),
+    reason.xz = c(0,0,0,1,1,1),
+    reason.zy = c(0,1,1,1,1,0),
+    reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_)
+
+  )
+  # expected result
+  expected_test <-  dplyr::tibble(
+    uuid = paste0("uuid_",1:6),
+    gender = rep(c("male","female"),3),
+    reason = c("yy","xx,zy",
+               "zy","xx,xz,zy",
+               "xx,yy,xz,zy","xz"),
+    reason.xx = c(0,1,0,1,1,0),
+    reason.yy = c(1,0,0,0,1,0),
+    reason.xz = c(0,0,0,1,1,1),
+    reason.zy = c(0,1,1,1,1,0),
+    reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_))
+
+  actual_output <- recreate_parent_column(df = pre_clean_test,uuid = "uuid",sm_sep = ".")
+  expect_equal(expected_test, actual_output)
+
+  ### check with adding one option (line3) and swapping options (line 6)
+  pre_clean_test <- dplyr::tibble(
+    uuid = paste0("uuid_",1:6),
+    gender = rep(c("male","female"),3),
+    reason = c("xx,yy","xx,zy",
+               "zy","xx,xz,zy",
+               NA_character_,"xz"),
+    reason.xx = c(0,1,0,1,1,0),
+    reason.yy = c(1,0,1,0,1,0),
+    reason.xz = c(0,0,0,1,1,0),
+    reason.zy = c(0,1,1,1,1,1),
+    reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_)
+
+  )
+  # expected result
+  expected_test <-  dplyr::tibble(
+    uuid = paste0("uuid_",1:6),
+    gender = rep(c("male","female"),3),
+    reason = c("yy","xx,zy",
+               "yy,zy","xx,xz,zy",
+               "xx,yy,xz,zy","zy"),
+    reason.xx = c(0,1,0,1,1,0),
+    reason.yy = c(1,0,1,0,1,0),
+    reason.xz = c(0,0,0,1,1,0),
+    reason.zy = c(0,1,1,1,1,1),
+    reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_))
+
+  actual_output <- recreate_parent_column(df = pre_clean_test,uuid = "uuid",sm_sep = ".")
+  expect_equal(expected_test, actual_output)
 })
 
+test_that("auto_detect_sm_parents detects correclty", {
 
+  ####### sm_sep = "." single "."
+  pre_clean_test <- dplyr::tibble(
+    uuid = paste0("uuid_",1:6),
+    gender = rep(c("male","female"),3),
+    reason = c("xx,yy","xx,zy",
+               "zy","xx,xz,zy",
+               NA_character_,"xz"),
+    reason.xx = c(0,1,0,1,0,0),
+    reason.yy = c(1,0,0,0,1,0),
+    reason.xz = c(0,0,0,1,0,1),
+    reason.zy = c(0,1,1,1,0,0),
+    reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_)
+
+  )
+
+  expect_equal(auto_detect_sm_parents(df = pre_clean_test), "reason")
+
+  ####### sm_sep = "." multiple "."
+  pre_clean_test <- dplyr::tibble(
+    uuid = paste0("uuid_",1:6),
+    gender = rep(c("male","female"),3),
+    reason = c("xx,yy","xx,zy",
+               "zy","xx,xz,zy",
+               NA_character_,"xz"),
+    reason.x.x. = c(0,1,0,1,0,0),
+    reason.yy = c(1,0,0,0,1,0),
+    reason.x.z = c(0,0,0,1,0,1),
+    reason.zy = c(0,1,1,1,0,0),
+    reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_)
+
+  )
+
+  expect_equal(auto_detect_sm_parents(df = pre_clean_test), "reason")
+
+  ####### check sm_sep = "/" mix with "."
+  pre_clean_test <- dplyr::tibble(
+    uuid = paste0("uuid_",1:6),
+    gender = rep(c("male","female"),3),
+    reason = c("x.x.,yy","x.x.,zy",
+               "zy","x.x.,x.z,zy",
+               NA_character_,"x.z"),
+    `reason/x.x.` = c(0,1,0,1,0,0),
+    `reason/yy` = c(1,0,0,0,1,0),
+    `reason/x.z` = c(0,0,0,1,0,1),
+    `reason/zy` = c(0,1,1,1,0,0),
+    reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_)
+
+  )
+
+  expect_equal(auto_detect_sm_parents(df = pre_clean_test, sm_sep = "/"), "reason")
+
+  ####### sm_sep = "/"with multiple "/"
+  pre_clean_test <- dplyr::tibble(
+    uuid = paste0("uuid_",1:6),
+    gender = rep(c("male","female"),3),
+    reason = c("x.x.,yy","x.x.,zy",
+               "zy","x.x.,x.z,zy",
+               NA_character_,"x.z"),
+    `reason/x.x/` = c(0,1,0,1,0,0),
+    `reason/yy` = c(1,0,0,0,1,0),
+    `reason/x.z` = c(0,0,0,1,0,1),
+    `reason/z/y` = c(0,1,1,1,0,0),
+    reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_)
+
+  )
+
+  expect_equal(auto_detect_sm_parents(df = pre_clean_test, sm_sep = "/"), "reason")
+})
+
+test_that("auto_sm_parent_children detects correclty", {
+
+  ####### sm_sep = "." single "."
+  pre_clean_test <- dplyr::tibble(
+    uuid = paste0("uuid_",1:6),
+    gender = rep(c("male","female"),3),
+    reason = c("xx,yy","xx,zy",
+               "zy","xx,xz,zy",
+               NA_character_,"xz"),
+    reason.xx = c(0,1,0,1,0,0),
+    reason.yy = c(1,0,0,0,1,0),
+    reason.xz = c(0,0,0,1,0,1),
+    reason.zy = c(0,1,1,1,0,0),
+    reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_)
+
+  )
+
+  expected_results <- data.frame(sm_parent = rep("reason", 4),
+                                 sm_child = c("reason.xx", "reason.yy", "reason.xz", "reason.zy"))
+
+  expect_equal(auto_sm_parent_children(df = pre_clean_test), expected_results, ignore_attr = TRUE)
+
+  ####### sm_sep = "." multiple "."
+  pre_clean_test <- dplyr::tibble(
+    uuid = paste0("uuid_",1:6),
+    gender = rep(c("male","female"),3),
+    reason = c("xx,yy","xx,zy",
+               "zy","xx,xz,zy",
+               NA_character_,"xz"),
+    reason.x.x. = c(0,1,0,1,0,0),
+    reason.yy = c(1,0,0,0,1,0),
+    reason.x.z = c(0,0,0,1,0,1),
+    reason.zy = c(0,1,1,1,0,0),
+    reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_)
+
+  )
+
+  expected_results <- data.frame(sm_parent = c("reason.x.x", "reason", "reason.x", "reason"),
+                                 sm_child = c("reason.x.x.", "reason.yy", "reason.x.z", "reason.zy"))
+
+  expect_equal(auto_sm_parent_children(df = pre_clean_test), expected_results, ignore_attr = TRUE)
+
+  ####### check sm_sep = "/" mix with "."
+  pre_clean_test <- dplyr::tibble(
+    uuid = paste0("uuid_",1:6),
+    gender = rep(c("male","female"),3),
+    reason = c("x.x.,yy","x.x.,zy",
+               "zy","x.x.,x.z,zy",
+               NA_character_,"x.z"),
+    `reason/x.x.` = c(0,1,0,1,0,0),
+    `reason/yy` = c(1,0,0,0,1,0),
+    `reason/x.z` = c(0,0,0,1,0,1),
+    `reason/zy` = c(0,1,1,1,0,0),
+    reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_)
+
+  )
+
+  expected_results <- data.frame(sm_parent = rep("reason", 4),
+                                 sm_child = c("reason/x.x.", "reason/yy", "reason/x.z", "reason/zy"))
+
+  expect_equal(auto_sm_parent_children(df = pre_clean_test, sm_sep = "/"), expected_results, ignore_attr = TRUE)
+
+  ####### sm_sep = "/"with multiple "/"
+  pre_clean_test <- dplyr::tibble(
+    uuid = paste0("uuid_",1:6),
+    gender = rep(c("male","female"),3),
+    reason = c("x.x.,yy","x.x.,zy",
+               "zy","x.x.,x.z,zy",
+               NA_character_,"x.z"),
+    `reason/x.x/` = c(0,1,0,1,0,0),
+    `reason/yy` = c(1,0,0,0,1,0),
+    `reason/x.z` = c(0,0,0,1,0,1),
+    `reason/z/y` = c(0,1,1,1,0,0),
+    reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_)
+
+  )
+
+  expected_results <- data.frame(sm_parent = c("reason/x.x", "reason", "reason", "reason/z"),
+                                 sm_child = c("reason/x.x/", "reason/yy", "reason/x.z", "reason/z/y"))
+
+  expect_equal(auto_sm_parent_children(df = pre_clean_test, sm_sep = "/"), expected_results, ignore_attr = TRUE)
+})
