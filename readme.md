@@ -42,24 +42,24 @@ testdata <- data.frame(uuid = c(letters[1:4], "a", "b", "c"),
                        col_b = runif(7)) %>%
  dplyr::rename(`_uuid` = uuid)
 testdata
-#>   _uuid      col_a     col_b
-#> 1     a 0.47823343 0.7820833
-#> 2     b 0.44212985 0.6834170
-#> 3     c 0.51329180 0.4252172
-#> 4     d 0.07506301 0.4757214
-#> 5     a 0.86708049 0.7115588
-#> 6     b 0.39351279 0.1301717
-#> 7     c 0.24124837 0.4695363
+#>   _uuid      col_a       col_b
+#> 1     a 0.04238928 0.682618927
+#> 2     b 0.81230911 0.867631266
+#> 3     c 0.08298288 0.908578243
+#> 4     d 0.04612839 0.552767755
+#> 5     a 0.61015225 0.394342654
+#> 6     b 0.37526852 0.141402894
+#> 7     c 0.16293634 0.002741954
 check_duplicate(testdata)
 #> $checked_dataset
-#>   _uuid      col_a     col_b
-#> 1     a 0.47823343 0.7820833
-#> 2     b 0.44212985 0.6834170
-#> 3     c 0.51329180 0.4252172
-#> 4     d 0.07506301 0.4757214
-#> 5     a 0.86708049 0.7115588
-#> 6     b 0.39351279 0.1301717
-#> 7     c 0.24124837 0.4695363
+#>   _uuid      col_a       col_b
+#> 1     a 0.04238928 0.682618927
+#> 2     b 0.81230911 0.867631266
+#> 3     c 0.08298288 0.908578243
+#> 4     d 0.04612839 0.552767755
+#> 5     a 0.61015225 0.394342654
+#> 6     b 0.37526852 0.141402894
+#> 7     c 0.16293634 0.002741954
 #> 
 #> $duplicate_log
 #>   uuid value variable           issue
@@ -437,4 +437,42 @@ output$flaged_value
 #> 7 uuid_99  gender   88       
 #> 8 uuid_100 age      88       
 #> 9 uuid_100 gender   888
+```
+
+#### Example:: Recreate parent column for choice multiple
+
+`recreate_parent_column()` recreates the concerted columns for select
+multiple questions
+
+``` r
+test_data <- dplyr::tibble(
+  uuid = paste0("uuid_",1:6),
+  gender = rep(c("male","female"),3),
+  reason = c("xx,yy","xx,zy",
+             "zy","xx,xz,zy",
+             NA_character_,"xz"),
+  reason.x.x. = c(0,1,0,1,0,0),
+  reason.yy = c(1,0,0,0,1,0),
+  reason.x.z = c(0,0,0,1,0,1),
+  reason.zy = c(0,1,1,1,0,0),
+  reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_))
+
+recreate_parent_column(df = test_data,uuid = "uuid",sm_sep = ".")
+#> Warning in recreate_parent_column(df = test_data, uuid = "uuid", sm_sep = "."):
+#> Column(s) names are renamed as multiple separators are found in dataset column
+#> names. Please see the above table with the new name.
+#> # A tibble: 2 × 2
+#>   old_name    new_name   
+#>   <chr>       <chr>      
+#> 1 reason.x.x. reason.x_x_
+#> 2 reason.x.z  reason.x_z
+#> # A tibble: 6 × 8
+#>   uuid   gender reason      reason.x_x_ reason.yy reason.x_z reason.zy reason_zy
+#>   <chr>  <chr>  <chr>             <dbl>     <dbl>      <dbl>     <dbl> <chr>    
+#> 1 uuid_1 male   yy                    0         1          0         0 <NA>     
+#> 2 uuid_2 female x_x_,zy               1         0          0         1 A        
+#> 3 uuid_3 male   zy                    0         0          0         1 B        
+#> 4 uuid_4 female x_x_,x_z,zy           1         0          1         1 C        
+#> 5 uuid_5 male   yy                    0         1          0         0 <NA>     
+#> 6 uuid_6 female x_z                   0         0          1         0 <NA>
 ```

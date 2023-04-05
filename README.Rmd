@@ -246,3 +246,27 @@ output <- check_for_value(df = df,uuid_col_name = "X_uuid",element_name = "check
 output$flaged_value
 
 ```
+
+
+
+#### Example:: Recreate parent column for choice multiple 
+
+`recreate_parent_column()` recreates the concerted columns for select multiple questions
+
+``` {r, eval=T}
+test_data <- dplyr::tibble(
+  uuid = paste0("uuid_",1:6),
+  gender = rep(c("male","female"),3),
+  reason = c("xx,yy","xx,zy",
+             "zy","xx,xz,zy",
+             NA_character_,"xz"),
+  reason.x.x. = c(0,1,0,1,0,0),
+  reason.yy = c(1,0,0,0,1,0),
+  reason.x.z = c(0,0,0,1,0,1),
+  reason.zy = c(0,1,1,1,0,0),
+  reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_))
+
+recreate_parent_column(df = test_data,uuid = "uuid",sm_sep = ".")
+
+```
+
