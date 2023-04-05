@@ -138,7 +138,7 @@ if(nrow(select_multiple) > 0){
       final_df <- pivot_long %>% tidyr::pivot_longer(cols = !uuid,names_to = "cols" ,values_to = "value") %>%
         filter(value == 1 | value == TRUE | value == "1" | value == "TRUE") %>% dplyr::group_by(!!sym(uuid)) %>%
         dplyr::summarise(
-          !!rlang::sym(concat_col):= paste0(cols,collapse = ",")
+          !!rlang::sym(concat_col):= paste0(cols,collapse = " ")
         )
 
       final_df[[concat_col]] <- final_df[[concat_col]] %>% stringr::str_replace_all(paste0(concat_col,"."),"")
