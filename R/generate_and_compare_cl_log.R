@@ -20,11 +20,11 @@ create_cleaning_log <- function(raw_data = raw_data,
                                 check_for_deletion_log = T,
                                 check_for_variable_name = T) {
   raw_data <- raw_data %>%
-    mutate_all(as.character) %>%
-    mutate_all(trimws)
+    dplyr::mutate_all(as.character) %>%
+    dplyr::mutate_all(trimws)
   clean_data <- clean_data %>%
-    mutate_all(as.character) %>%
-    mutate_all(trimws)
+    dplyr::mutate_all(as.character) %>%
+    dplyr::mutate_all(trimws)
 
   raw_data$uuid <- raw_data[[raw_data_uuid]]
   clean_data$uuid <- clean_data[[clean_data_uuid]]
@@ -103,7 +103,7 @@ create_cleaning_log <- function(raw_data = raw_data,
       names(check) <- c("uuid", "new_value", "old_value")
       check$question_name <- x
       check$change_type <- "change_response"
-      check$comment <- "change was made"
+      check$comment <- "An alteration was performed"
       return(check)
     }
     message(x)
@@ -151,7 +151,7 @@ create_cleaning_log <- function(raw_data = raw_data,
     message(x)
   }, clean_data = clean_data, raw_data = raw_data) %>% do.call(rbind, .)
 
-  return(do.call("bind_rows", log) %>% select(c(
+  return(do.call("bind_rows", log) %>% dplyr::select(c(
     "uuid", "question_name", "change_type", "new_value",
     "old_value", "comment"
   )))
@@ -167,44 +167,51 @@ create_cleaning_log <- function(raw_data = raw_data,
 #' @param clean_data_uuid Unique ID column name of clean dataset
 #' @param cleaning_log Cleaning log
 #' @param cleaning_log_uuid Unique ID column name of cleaning log
+#' @param cleaning_log_change_type_column Change type column of cleaning log
 #' @param cleaning_log_question_name Column name of cleaning log storing the dataset column name
 #' @param cleaning_log_new_value Cleaning log new value
 #' @param cleaning_log_old_value Cleaning log old value
 #' @param deletion_log deletion log
 #' @param deletion_log_uuid Unique ID column name of deletion log
 #' @param check_for_deletion_log TRUE to flag the removed survey
-#' @param check_for_variable_name TRUE to flag the removed variables
 #' @return Discrepancy in cleaning log
 #' @export
 
 
-compare_cl_with_datasets <- function(raw_data = raw_data_hh,
-                                     raw_data_uuid = "X_id",
-                                     clean_data = clean_data_hh,
-                                     clean_data_uuid = "X_id",
-                                     cleaning_log = cleaning_log_only,
-                                     cleaning_log_uuid = "id",
-                                     cleaning_log_question_name = "question.name",
-                                     cleaning_log_new_value = "new_value",
-                                     cleaning_log_old_value = "old_value",
-                                     deletion_log = deletion_log_hh,
-                                     deletion_log_uuid = "id",
-                                     check_for_variable_name = T,
-                                     check_for_deletion_log = T) {
+review_cleaning_log <- function(raw_data = raw_data_hh,
+                                raw_data_uuid = "X_id",
+                                clean_data = clean_data_hh,
+                                clean_data_uuid = "X_id",
+                                cleaning_log = cleaning_log_only,
+                                cleaning_log_uuid = "id",
+                                cleaning_log_change_type_column = "change_type",
+                                cleaning_log_question_name = "question.name",
+                                cleaning_log_new_value = "new_value",
+                                cleaning_log_old_value = "old_value",
+                                deletion_log = deletion_log_hh,
+                                deletion_log_uuid = "id",
+                                check_for_deletion_log = T) {
   # if(any(cl))
+
+  clean_data <- clean_data |> dplyr::mutate_all(as.character)
+  raw_data <- raw_data |> dplyr::mutate_all(as.character)
 
   ### unifying cleaning and deletation log
   cleaning_log <- cleaning_log %>%
-    mutate_all(as.character) %>%
-    mutate_all(trimws)
-  cleaning_log$uuid <- cleaning_log[[cleaning_log_uuid]]
+    dplyr::mutate_all(as.character) %>%
+    dplyr::mutate_all(trimws)
+  cleaning_log <- cleaning_log |> dplyr::rename(
+    uuid = !!rlang::sym(cleaning_log_uuid)
+  )
   cleaning_log$uniqe_row_id <- paste0(cleaning_log$uuid, "_", cleaning_log[[cleaning_log_question_name]])
   cleaning_log$uniqe_row_id <- cleaning_log$uniqe_row_id %>% tolower()
 
   deletion_log <- deletion_log %>%
-    mutate_all(as.character) %>%
-    mutate_all(trimws)
-  deletion_log$uuid <- deletion_log[[deletion_log_uuid]]
+    dplyr::mutate_all(as.character) %>%
+    dplyr::mutate_all(trimws)
+  deletion_log <- deletion_log |> dplyr::rename(
+    uuid = !!rlang::sym(deletion_log_uuid)
+  )
 
   ### generating cleaning log from clean and raw data
   cleaning_log_create <- create_cleaning_log(
@@ -212,97 +219,132 @@ compare_cl_with_datasets <- function(raw_data = raw_data_hh,
     raw_data_uuid = raw_data_uuid,
     clean_data = clean_data,
     clean_data_uuid = clean_data_uuid,
-    check_for_variable_name = check_for_variable_name
-  ) %>% select(-comment)
+    check_for_variable_name = F
+  ) %>% dplyr::select(-"comment")
   names(cleaning_log_create) <- paste0("df.", names(cleaning_log_create))
 
 
-  ## creating list to store mising valueables
+  ## creating list to store missing values
   missing_in_cleaning_log <- list()
 
-  ## checking if all the deleted survey is in deletation log
-  if (check_for_deletion_log == T) {
-    created_deletion_log <- cleaning_log_create[cleaning_log_create$df.change_type == "remove_survey", "df.uuid"] %>% unique()
-    missing_in_deletion_log <- created_deletion_log[!created_deletion_log %in% deletion_log$uuid]
+  #########################################################################################################
+  ##################### Starts changes not applied ########################################################
+  #########################################################################################################
+#
+clean_data_to_join <- clean_data |> tidyr::pivot_longer(cols = !dplyr::all_of(clean_data_uuid),names_to = "question",values_to = "df.new_value") |>
+    dplyr::mutate(uniqe_row_id = paste0(!!sym(clean_data_uuid), "_",question)) |> dplyr::select("uniqe_row_id","df.new_value")
+  clean_data_to_join$uniqe_row_id <-  clean_data_to_join$uniqe_row_id  |> tolower()
 
-    if (length(missing_in_deletion_log) != 0) {
-      missing_in_cleaning_log[["missing_in_deletion_log"]] <- data.frame(
-        uuid = missing_in_deletion_log,
-        df.change_type = "remove_survey",
-        comment = "This survye was removed but currently missing in cleaning log"
-      )
-    }
+
+  raw_data_to_join <- raw_data |> tidyr::pivot_longer(cols = !dplyr::all_of(raw_data_uuid),names_to = "question",
+                                                        values_to = "df.old_value") |>
+    dplyr::mutate(uniqe_row_id = paste0(!!rlang::sym(raw_data_uuid), "_",question)) |> dplyr::select("uniqe_row_id","df.old_value")
+  raw_data_to_join$uniqe_row_id <-  raw_data_to_join$uniqe_row_id  |> tolower()
+
+
+  missing_in_cleaning_log[["cleaning_log_no_applied"]] <- cleaning_log |> dplyr::left_join(clean_data_to_join,by = "uniqe_row_id") |>
+    dplyr::filter((!!sym(cleaning_log_new_value)!=df.new_value)==T) |> dplyr::mutate(
+      comment = "Changes were not applied"
+    )  |> dplyr::left_join(raw_data_to_join,by = "uniqe_row_id") |> dplyr::rename(
+      df.question_name = !!rlang::sym(cleaning_log_question_name),
+      # cl.old_value = !!rlang::sym(cleaning_log_old_value),
+      df.change_type = !!rlang::sym(cleaning_log_change_type_column),
+      # cl.new_value = !!rlang::sym(cleaning_log_new_value)
+    ) |> dplyr::select(-"uniqe_row_id")
+
+
+
+
+######################################################################################################
+#################### end:: changes not applied ########################################################
+######################################################################################################
+
+## checking if all the deleted survey is in deletion log
+if (check_for_deletion_log == T) {
+  created_deletion_log <- cleaning_log_create[cleaning_log_create$df.change_type == "remove_survey", "df.uuid"] %>% unique()
+  missing_in_deletion_log <- created_deletion_log[!created_deletion_log %in% deletion_log$uuid]
+
+  if (length(missing_in_deletion_log) != 0) {
+    missing_in_cleaning_log[["missing_in_deletion_log"]] <- data.frame(
+      uuid = missing_in_deletion_log,
+      df.change_type = "remove_survey",
+      comment = "This survye was removed but currently missing in cleaning log"
+    )
   }
+}
 
 
-  ## checking duplicate entry in cleaning log
-  cleaning_log_short <- cleaning_log[, c("uniqe_row_id", "new_value")]
-  cleaning_log_short <- apply(cleaning_log_short, MARGIN = c(1, 2), tolower) %>% as.data.frame() ### make everything to lower to compare the new_value
-  duplicate_id_long_list <- cleaning_log_short$uniqe_row_id[duplicated(cleaning_log_short$uniqe_row_id)]
+## checking duplicate entry in cleaning log
+cleaning_log_short <- cleaning_log[, c("uniqe_row_id", cleaning_log_new_value)]
+cleaning_log_short <- apply(cleaning_log_short, MARGIN = c(1, 2), tolower) %>% as.data.frame() ### make everything to lower to compare the new_value
+duplicate_id_long_list <- cleaning_log_short$uniqe_row_id[duplicated(cleaning_log_short$uniqe_row_id)]
 
 
-  duplicate_entry_in_cleaning_log <- cleaning_log_short[cleaning_log_short$uniqe_row_id %in% duplicate_id_long_list, ]
+duplicate_entry_in_cleaning_log <- cleaning_log_short[cleaning_log_short$uniqe_row_id %in% duplicate_id_long_list, ]
 
-  ## to check
-   final_duplicated <-duplicate_entry_in_cleaning_log[!(duplicated(duplicate_entry_in_cleaning_log) |
-                                                         duplicated(duplicate_entry_in_cleaning_log,
-                                                                    fromLast = TRUE)), ]
-
-
-
-
-  final_duplicate_df <- cleaning_log[cleaning_log$uniqe_row_id %in% final_duplicated$uniqe_row_id, ]
-  final_duplicate_df$comment <- "Duplicated entry with different value, please recheck and keep one"
-  final_duplicate_df$df.question_name <- final_duplicate_df[[cleaning_log_question_name]]
-
-  missing_in_cleaning_log[["duplicated_entry_with_different_value"]] <-
-    final_duplicate_df[, c(
-      "uuid", "df.question_name", cleaning_log_old_value, cleaning_log_new_value,
-      "comment"
-    )]
+## to check
+final_duplicated <-duplicate_entry_in_cleaning_log[!(duplicated(duplicate_entry_in_cleaning_log) |
+                                                       duplicated(duplicate_entry_in_cleaning_log,
+                                                                  fromLast = TRUE)), ]
 
 
 
-  ## check for change log
-  cleaning_log_create_change_response <- cleaning_log_create[!cleaning_log_create$df.change_type %in% c("variable_removed" ,"remove_survey"),]
-  cleaning_log_create_change_response$uniqe_row_id <- tolower(paste0(cleaning_log_create_change_response$df.uuid,"_",
-                                                                     cleaning_log_create_change_response$df.question_name))
-  cl_to_add <- cleaning_log[,c("uniqe_row_id","new_value")]
+
+final_duplicate_df <- cleaning_log[cleaning_log$uniqe_row_id %in% final_duplicated$uniqe_row_id, ]
+final_duplicate_df$comment <- "Duplicated entry with different value, please recheck and keep one"
+final_duplicate_df$df.question_name <- final_duplicate_df[[cleaning_log_question_name]]
+
+missing_in_cleaning_log[["duplicated_entry_with_different_value"]] <-
+  final_duplicate_df[, c(
+    "uuid", "df.question_name", cleaning_log_old_value, cleaning_log_new_value,
+    "comment"
+  )]
 
 
 
-  missing_in_cleaning_log[["value_check"]] <- cleaning_log_create_change_response %>% mutate(
-    check_in_given_log = uniqe_row_id %in% cl_to_add$uniqe_row_id
-  ) %>% left_join(cl_to_add,multiple = "all") %>% mutate(
-    new_value_check = case_when(
-      is.na(df.new_value) & is.na(!!sym(cleaning_log_new_value)) ~ T ,
-      (df.new_value == !!sym(cleaning_log_new_value)) ==T ~T,
-      T~F)
-  ) %>% mutate(
-    comment = case_when(check_in_given_log ==F ~ "Entry missing in cleaning log",
-                        new_value_check == F ~ "New value in cleaning log and value in clean dataset not matching")
-  ) %>% filter(!is.na(comment)) %>% rename(
+## check for change log
+cleaning_log_create_change_response <- cleaning_log_create[!cleaning_log_create$df.change_type %in% c("variable_removed" ,"remove_survey"),]
+cleaning_log_create_change_response$uniqe_row_id <- tolower(paste0(cleaning_log_create_change_response$df.uuid,"_",
+                                                                   cleaning_log_create_change_response$df.question_name))
+cl_to_add <- cleaning_log[,c("uniqe_row_id",cleaning_log_new_value)]
+
+
+
+missing_in_cleaning_log[["value_check"]] <- cleaning_log_create_change_response %>% dplyr::mutate(
+  check_in_given_log = uniqe_row_id %in% cl_to_add$uniqe_row_id
+) %>% dplyr::left_join(cl_to_add,multiple = "all",by = "uniqe_row_id") %>% dplyr::mutate(
+  new_value_check = dplyr::case_when(
+    is.na(df.new_value) & is.na(!!rlang::sym(cleaning_log_new_value)) ~ T ,
+    (df.new_value == !!rlang::sym(cleaning_log_new_value)) ==T ~T,
+    T~F)
+) %>% dplyr::mutate(
+  comment = dplyr::case_when(check_in_given_log ==F ~ "Entry missing in cleaning log",
+                      new_value_check == F ~ "New value in cleaning log and value in clean dataset not matching")
+) %>%
+  dplyr::filter(!is.na(comment)) %>%
+  dplyr::rename(
     uuid = df.uuid
   )
 
 
-  ###
+###
 
-  cleaning_log_issue <- do.call("bind_rows", missing_in_cleaning_log) %>%
-    select(
-      c(
-        uuid, df.question_name, "df.change_type", "df.new_value",
-        all_of(cleaning_log_new_value),
-        "df.old_value",
-        all_of(cleaning_log_old_value),
-        "comment"
-      )
-    ) %>%
-    rename(
-      cl.old_value = !!sym(cleaning_log_old_value),
-      cl.new_value = !!sym(cleaning_log_new_value)
+cleaning_log_issue <- do.call("bind_rows", missing_in_cleaning_log) %>%
+  dplyr::select(
+    c(
+      "uuid", "df.question_name", "df.change_type", "df.new_value",
+      dplyr::all_of(cleaning_log_new_value),
+      "df.old_value",
+      dplyr::all_of(cleaning_log_old_value),
+      "comment"
     )
+  ) %>%
+  dplyr::rename(
+    cl.old_value = !!sym(cleaning_log_old_value),
+    cl.new_value = !!sym(cleaning_log_new_value)
+  )
 
 
-  return(cleaning_log_issue)
+return(cleaning_log_issue)
 }
+

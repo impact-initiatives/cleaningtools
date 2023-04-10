@@ -12,6 +12,9 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 devtools::load_all()
+deletaion_log <- cleaning_log |> filter(change_type == "remove_survey")
+cleaning_log2 <- cleaning_log |> filter(change_type != "remove_survey")
+options(scipen = 999)
 
 ```
 
@@ -39,6 +42,7 @@ You can install the development version from [GitHub](https://github.com/) with:
 ``` {r, eval=FALSE}
 # install.packages("devtools")
 devtools::install_github("impact-initiatives/cleaningtools")
+
 ```
 
 ## Examples
@@ -55,19 +59,20 @@ check_duplicate(testdata)
 ```
 
 ### Example:: Creating cleaning log from raw data and clean data
-`create_cleaning_log` function takes raw data and clean data as inputs and its identify any changes bwtween them and finally provide the output as cleaning log format.
-``` {r, eval=FALSE}
+`create_cleaning_log` function takes raw data and clean data as inputs and its identify any changes between them and finally provide the output as cleaning log format.
+``` {r, eval=T, message=FALSE}
 cleaning_log <- create_cleaning_log(
   raw_data = raw_data, raw_data_uuid = "X_uuid",
   clean_data = clean_data, clean_data_uuid = "X_uuid",
   check_for_deletion_log = T, check_for_variable_name = T
 )
+cleaning_log
 ```
 
 ### Example:: Comparing cleaning log with clean data and raw data
-`compare_cl_with_datasets` function takes raw data, clean data and cleaning log as inputs, and it first creates the cleaning log by comparing raw data and clean data, then compares it with the user-provided cleaning log. Finally, flagged the discrepancies between them (if any). 
-``` {r, eval=FALSE}
-compare_cl_with_datasets(
+`review_cleaning_log` function takes raw data, clean data and cleaning log as inputs, and it first creates the cleaning log by comparing raw data and clean data, then compares it with the user-provided cleaning log. Finally, flagged the discrepancies between them (if any). 
+``` {r, eval=T, message=FALSE}
+compared_df <- review_cleaning_log(
   raw_data = raw_data, raw_data_uuid = "X_uuid",
   clean_data = clean_data, clean_data_uuid = "X_uuid",
   cleaning_log = cleaning_log2, cleaning_log_uuid = "X_uuid",
@@ -76,6 +81,8 @@ compare_cl_with_datasets(
   deletion_log = deletaion_log, deletion_log_uuid = "X_uuid",
   check_for_deletion_log = T, check_for_variable_name = T
 )
+
+compared_df
 ```
 
 

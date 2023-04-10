@@ -42,24 +42,24 @@ testdata <- data.frame(uuid = c(letters[1:4], "a", "b", "c"),
                        col_b = runif(7)) %>%
  dplyr::rename(`_uuid` = uuid)
 testdata
-#>   _uuid      col_a       col_b
-#> 1     a 0.04238928 0.682618927
-#> 2     b 0.81230911 0.867631266
-#> 3     c 0.08298288 0.908578243
-#> 4     d 0.04612839 0.552767755
-#> 5     a 0.61015225 0.394342654
-#> 6     b 0.37526852 0.141402894
-#> 7     c 0.16293634 0.002741954
+#>   _uuid      col_a     col_b
+#> 1     a 0.27819165 0.2852362
+#> 2     b 0.06454594 0.8333535
+#> 3     c 0.79903597 0.6902118
+#> 4     d 0.32640901 0.2214121
+#> 5     a 0.31871180 0.1616022
+#> 6     b 0.32005004 0.4463951
+#> 7     c 0.39403037 0.3763585
 check_duplicate(testdata)
 #> $checked_dataset
-#>   _uuid      col_a       col_b
-#> 1     a 0.04238928 0.682618927
-#> 2     b 0.81230911 0.867631266
-#> 3     c 0.08298288 0.908578243
-#> 4     d 0.04612839 0.552767755
-#> 5     a 0.61015225 0.394342654
-#> 6     b 0.37526852 0.141402894
-#> 7     c 0.16293634 0.002741954
+#>   _uuid      col_a     col_b
+#> 1     a 0.27819165 0.2852362
+#> 2     b 0.06454594 0.8333535
+#> 3     c 0.79903597 0.6902118
+#> 4     d 0.32640901 0.2214121
+#> 5     a 0.31871180 0.1616022
+#> 6     b 0.32005004 0.4463951
+#> 7     c 0.39403037 0.3763585
 #> 
 #> $duplicate_log
 #>   uuid value variable           issue
@@ -84,14 +84,13 @@ cleaning_log <- create_cleaning_log(
 
 ### Example:: Comparing cleaning log with clean data and raw data
 
-`compare_cl_with_datasets` function takes raw data, clean data and
-cleaning log as inputs, and it first creates the cleaning log by
-comparing raw data and clean data, then compares it with the
-user-provided cleaning log. Finally, flagged the discrepancies between
-them (if any).
+`review_cleaning_log` function takes raw data, clean data and cleaning
+log as inputs, and it first creates the cleaning log by comparing raw
+data and clean data, then compares it with the user-provided cleaning
+log. Finally, flagged the discrepancies between them (if any).
 
 ``` r
-compare_cl_with_datasets(
+compared_df <- review_cleaning_log(
   raw_data = raw_data, raw_data_uuid = "X_uuid",
   clean_data = clean_data, clean_data_uuid = "X_uuid",
   cleaning_log = cleaning_log2, cleaning_log_uuid = "X_uuid",
@@ -100,6 +99,26 @@ compare_cl_with_datasets(
   deletion_log = deletaion_log, deletion_log_uuid = "X_uuid",
   check_for_deletion_log = T, check_for_variable_name = T
 )
+
+compared_df
+#> # A tibble: 14 × 8
+#>    uuid   df.question_name df.change_type df.new_value cl.new_value df.old_value
+#>    <chr>  <chr>            <chr>          <chr>        <chr>        <chr>       
+#>  1 all    socio_eco_divis… variable_added <NA>         <NA>         <NA>        
+#>  2 all    water_sector     variable_added <NA>         <NA>         <NA>        
+#>  3 51324… water_sources.b… change_respon… TRUE         1            FALSE       
+#>  4 d5d26… water_sources.b… change_respon… TRUE         1            FALSE       
+#>  5 3b973… treat_drink_wat… change_respon… FALSE        0            TRUE        
+#>  6 728e4… treat_drink_wat… change_respon… FALSE        0            TRUE        
+#>  7 04e28… spend_tap        change_respon… FALSE        <NA>         0           
+#>  8 12387… spend_tap        change_respon… FALSE        <NA>         0           
+#>  9 40d8e… spend_tap        change_respon… FALSE        <NA>         0           
+#> 10 5a2d6… spend_tap        change_respon… FALSE        <NA>         0           
+#> 11 745ce… spend_tap        change_respon… FALSE        <NA>         0           
+#> 12 90e04… spend_tap        change_respon… FALSE        <NA>         0           
+#> 13 d0407… spend_tap        change_respon… FALSE        <NA>         0           
+#> 14 f28e9… spend_tap        change_respon… FALSE        <NA>         0           
+#> # ℹ 2 more variables: cl.old_value <chr>, comment <chr>
 ```
 
 ### Example:: Check of PII
@@ -470,9 +489,9 @@ recreate_parent_column(df = test_data,uuid = "uuid",sm_sep = ".")
 #>   uuid   gender reason      reason.x_x_ reason.yy reason.x_z reason.zy reason_zy
 #>   <chr>  <chr>  <chr>             <dbl>     <dbl>      <dbl>     <dbl> <chr>    
 #> 1 uuid_1 male   yy                    0         1          0         0 <NA>     
-#> 2 uuid_2 female x_x_,zy               1         0          0         1 A        
+#> 2 uuid_2 female x_x_ zy               1         0          0         1 A        
 #> 3 uuid_3 male   zy                    0         0          0         1 B        
-#> 4 uuid_4 female x_x_,x_z,zy           1         0          1         1 C        
+#> 4 uuid_4 female x_x_ x_z zy           1         0          1         1 C        
 #> 5 uuid_5 male   yy                    0         1          0         0 <NA>     
 #> 6 uuid_6 female x_z                   0         0          1         0 <NA>
 ```
