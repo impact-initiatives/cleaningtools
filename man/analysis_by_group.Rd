@@ -21,5 +21,6 @@ clean_data
 survey
 choices
 overall_analysis
+sample_frame
 }
 \keyword{datasets}

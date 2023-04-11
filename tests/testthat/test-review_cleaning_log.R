@@ -26,7 +26,7 @@ testthat::test_that("Checking with test data", {
     change_type = "remove_survey",
     comment = "No matching uuid in the cleaned dataset")
 
-  expected_cleaning_log <- test_deletion_log |> bind_rows(test_cleaning_log) |> as.data.frame()
+  expected_cleaning_log <- test_deletion_log |> dplyr::bind_rows(test_cleaning_log) |> as.data.frame()
 
   test_clean_data <- tibble::tibble(
     uuid = paste0("uuid",1:5),
@@ -105,7 +105,7 @@ testthat::test_that("Checking with test data", {
     change_type_col = "remove_survey",
     comment = "No matching uuid in the cleaned dataset")
 
-  expected_cleaning_log <- test_deletion_log |> bind_rows(test_cleaning_log) |> as.data.frame() |> dplyr::rename(
+  expected_cleaning_log <- test_deletion_log |> dplyr::bind_rows(test_cleaning_log) |> as.data.frame() |> dplyr::rename(
     uuid = `_uuid`,
     change_type = change_type_col,
     new_value =new.value
@@ -208,6 +208,51 @@ testthat::test_that("Checking with real data", {
                                            deletion_log_uuid = "X_uuid",
                                            check_for_deletion_log =T))
 
+
+  #### check deletion log
+
+  test_raw_data <- tibble::tibble(
+    uuid = paste0("uuid",1:6),
+    gender = rep(c("male","female"),3),
+    expenditure= c(200,300,240,44444,300,280),
+    to_remove = NA_character_
+  )
+
+  test_cleaning_log <- tibble::tibble(
+    uuid = c("uuid1","uuid3"),
+    question_name = c("gender","expenditure"),
+    change_type = c("change_response","blank_response"),
+    old_value = c("male","240"),
+    new_value = c("female",NA_character_),
+    comment = c("An alteration was performed","changed to NA")
+  )
+
+  test_deletion_log <- tibble::tibble(
+    uuid = c("uuid6","uuid2"),
+    change_type = c("remove_survey","remove_survey"),
+    comment = c("No matching uuid in the cleaned dataset","c"))
+
+  expected_cleaning_log <- test_deletion_log |> dplyr::bind_rows(test_cleaning_log) |> as.data.frame()
+
+  test_clean_data <- tibble::tibble(
+    uuid = paste0("uuid",1:5),
+    gender = c("female","female","male","female","male"),
+    expenditure= c(200,300,NA_real_,44444,300)
+  )
+
+  output <- review_cleaning_log(raw_data = test_raw_data,raw_data_uuid = "uuid",
+                      clean_data = test_clean_data,
+                      clean_data_uuid = "uuid",
+                      cleaning_log = test_cleaning_log,
+                      cleaning_log_uuid = "uuid",
+                      cleaning_log_change_type_column = "change_type",
+                      cleaning_log_question_name = "question_name",
+                      cleaning_log_new_value = "new_value",
+                      cleaning_log_old_value = "old_value",
+                      deletion_log = test_deletion_log,
+                      deletion_log_uuid = "uuid",
+                      check_for_deletion_log =T)
+  testthat::expect_equal(output$comment, "This survey should be deleted from the clean dataset but it was not deleted")
 
 })
 

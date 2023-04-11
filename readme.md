@@ -40,26 +40,26 @@ library(cleaningtools)
 testdata <- data.frame(uuid = c(letters[1:4], "a", "b", "c"),
                        col_a = runif(7),
                        col_b = runif(7)) %>%
- dplyr::rename(`_uuid` = uuid)
+  dplyr::rename(`_uuid` = uuid)
 testdata
-#>   _uuid      col_a     col_b
-#> 1     a 0.27819165 0.2852362
-#> 2     b 0.06454594 0.8333535
-#> 3     c 0.79903597 0.6902118
-#> 4     d 0.32640901 0.2214121
-#> 5     a 0.31871180 0.1616022
-#> 6     b 0.32005004 0.4463951
-#> 7     c 0.39403037 0.3763585
+#>   _uuid     col_a      col_b
+#> 1     a 0.2448551 0.06277515
+#> 2     b 0.4218389 0.01055617
+#> 3     c 0.9942577 0.87375758
+#> 4     d 0.8562951 0.61441531
+#> 5     a 0.1793255 0.07630995
+#> 6     b 0.2303949 0.16110527
+#> 7     c 0.6642791 0.78342329
 check_duplicate(testdata)
 #> $checked_dataset
-#>   _uuid      col_a     col_b
-#> 1     a 0.27819165 0.2852362
-#> 2     b 0.06454594 0.8333535
-#> 3     c 0.79903597 0.6902118
-#> 4     d 0.32640901 0.2214121
-#> 5     a 0.31871180 0.1616022
-#> 6     b 0.32005004 0.4463951
-#> 7     c 0.39403037 0.3763585
+#>   _uuid     col_a      col_b
+#> 1     a 0.2448551 0.06277515
+#> 2     b 0.4218389 0.01055617
+#> 3     c 0.9942577 0.87375758
+#> 4     d 0.8562951 0.61441531
+#> 5     a 0.1793255 0.07630995
+#> 6     b 0.2303949 0.16110527
+#> 7     c 0.6642791 0.78342329
 #> 
 #> $duplicate_log
 #>   uuid value variable           issue
@@ -71,7 +71,7 @@ check_duplicate(testdata)
 ### Example:: Creating cleaning log from raw data and clean data
 
 `create_cleaning_log` function takes raw data and clean data as inputs
-and its identify any changes bwtween them and finally provide the output
+and its identify any changes between them and finally provide the output
 as cleaning log format.
 
 ``` r
@@ -80,6 +80,343 @@ cleaning_log <- create_cleaning_log(
   clean_data = clean_data, clean_data_uuid = "X_uuid",
   check_for_deletion_log = T, check_for_variable_name = T
 )
+cleaning_log
+#>                                        uuid
+#> ...1   dcf2753a-6ea2-40f5-b493-3527931ef96c
+#> ...2   8790ce5c-1c35-41a2-b3c0-538f937d5397
+#> ...3   bb818e04-9c40-408e-919f-6b40ff1fdbb3
+#> ...4   28b90cbb-2cf0-41c5-9ee1-1c719c0d4c02
+#> ...5   7f2a0c6a-529b-481f-963f-a96dca2ec034
+#> ...6   b4f92064-12ea-4970-b0f5-fd309de1dda3
+#> ...7   f5ce0576-bfe5-4d1b-a247-26d31c7e7a86
+#> ...8   6c9e9356-5810-43d2-bf5c-a2044ecef219
+#> ...9   0b74b52d-d221-4b81-a5e6-9f9db48b1f86
+#> ...10  67e7482b-a543-40f5-856d-29d5b1c60f9a
+#> ...11  a8d89047-792f-4d95-9adf-25e2e42ff66d
+#> ...12  a52c231b-20c5-4520-bf73-d86410b0f26c
+#> ...13  987dbeee-d809-4a62-b2ed-15a1673f4f18
+#> ...14  8c7568cb-0815-4b9a-a19e-89b3db792441
+#> ...15  248f7774-319a-4368-91d2-a1f8dec9972d
+#> ...16  2777683b-aa86-40b7-8da1-77dcc2e4d553
+#> ...17  f1175d29-ce1f-43a7-b3d1-ee26cd1b8cdb
+#> ...18  3438f313-24e6-46fc-9597-cec440a737ce
+#> ...19  e9f8b44c-c507-45a1-8d76-66d886437b8f
+#> ...20  d7714f1e-0ed2-46ea-a94d-54a6c6423e39
+#> ...21  2498556b-4165-4a85-a7d9-c6ce75032747
+#> ...22  d75a0458-16bc-4b0c-af7a-5b22ab73dfb7
+#> ...23  50be30c5-86b8-4fd1-bd59-be31d8bd128c
+#> ...24  31742119-37a2-4a4c-a688-15efa7914aff
+#> ...25  683e97a1-a6df-4442-b1ba-effe04612b86
+#> ...26  3fbf82e7-8009-44b7-bb09-eabd9e38b18c
+#> ...27  a25896b2-49e6-4187-972a-519101968647
+#> ...28  994a60b8-e640-425c-9774-160651d7af04
+#> ...29  d9ff616f-b3ac-4eae-88dc-601946260d82
+#> ...30  c3a52fa9-63f5-4d02-b2b0-6eebbef944a7
+#> ...31  17bad766-fc25-49fe-a041-c6503e05941d
+#> ...32  308b7de7-7f09-4578-8373-8c81f74480f4
+#> ...33  bd2a7c9f-4eed-4943-b39a-659d5c1d9a31
+#> ...34  7f7a6714-a334-4079-bfe4-e590667f4aee
+#> ...35  1a80239e-a815-4fcd-8549-294fb190c27f
+#> ...36  bcd16469-8f6e-4d88-94c9-6fd700e352fa
+#> ...37  bdcca634-6e9d-434a-bac0-5d17540848e8
+#> ...38  6cb6e1dc-3d68-4d49-9d4a-29e3cb992f37
+#> ...39  dd3a9983-0bcd-4fcd-933b-6c2dea5ea0ca
+#> ...40  90e8ef05-9604-471e-8c1a-94fa5592cc46
+#> ...41  f0fd8ae4-a149-45a7-9cfa-d51e30e7a55c
+#> ...42  9dac8c9e-a5a5-435d-b28c-82d5f43b2f7f
+#> ...43  a37512fa-f4ea-4c6c-a873-851f69df6c93
+#> ...44  1b473a2c-71bd-4bcc-8040-621dde1475dc
+#> ...45  f45d4ca7-adce-416d-b096-04ab6ff79d12
+#> ...46  2b148a6e-90fc-496b-9d03-061377df2290
+#> ...47  5205540c-6019-4137-9c18-fb597d5af35c
+#> ...48  1f97f421-40a5-4c4d-9ec5-569d58718c5f
+#> ...49  c928be0f-0f0e-4a56-8603-501f533f2fc6
+#> ...50  bb7cb050-5b65-43c9-b7bb-2de4f56ecdda
+#> ...51  cc73c878-71e9-44b1-9156-49c33d86731b
+#> ...52  5c80617f-88b4-441d-8990-cdb3c33559e0
+#> ...53  2b49e747-84e8-429a-95a0-8d25f6448aa0
+#> ...54  c1c69337-eb3e-4427-a578-26f94bf3aeaf
+#> ...55                                   all
+#> ...56                                   all
+#> 7      0349b616-aeb9-49e4-a3dc-e8e7ca9ac9cf
+#> 10     03f9bc62-8a14-49eb-8b24-02992fc4dc31
+#> 38     0d4fafd8-9243-4a05-be2a-2100c2e60185
+#> 42     101e7fa9-eacd-40a8-bab0-4630488b8e1d
+#> 43     11067dc4-45b5-4b35-8d43-5dec9f7276c5
+#> 52     1475ab22-557c-4c93-ba46-68427f29375a
+#> 78     1fcf8417-5cd9-4c65-9090-83e828881939
+#> 84     222d5a7f-1962-4516-9127-6f5c2e574f96
+#> 114    34cba4d1-371e-425b-a189-cb1cb3519ade
+#> 216    5f5b64bc-c53b-40fb-98cd-a615205b5954
+#> 250    6c7176cc-dfcf-495e-bc45-90c9e1be5b85
+#> 260    6fb6b60c-70cf-4940-8f3d-603cf7d7c6c2
+#> 269    7309b048-b6d5-4250-bf12-c7648dee943e
+#> 287    7c71081a-1ba9-43fd-8ba7-eb46c43dc79f
+#> 300    81ae2bfd-6c29-4846-b171-9512ec8eda41
+#> 302    842b1321-7ab5-4494-b98b-29ae93fc654e
+#> 309    87d64595-1a2f-4cd2-99b3-723134f45ff6
+#> 349    9ea03a5e-aad9-46b3-99bc-7c0786d1abce
+#> 355    a11f3cee-428d-4cbd-8c9b-41fd9a5d2697
+#> 380    ab5f789b-a3a4-4ee6-a781-53b3366bbd62
+#> 402    b427827c-949b-4524-a802-7432285b5ced
+#> 410    b67bf5ec-a2b3-4c34-8bb3-25410ee92082
+#> 433    c50e380e-64a4-4cee-84f2-daaebdbb78db
+#> 436    c746e682-cb56-4604-95df-b200a98d3a8e
+#> 446    c9b3a3df-4775-4ba3-bc1c-1b8237f714c4
+#> 458    cfb721ab-e7b5-4b01-ac3a-c536c5fe8517
+#> 471    d4142ede-2082-4091-accc-0989c34d6516
+#> 495    dc499548-3308-4207-ac8f-3a14fc92baf0
+#> 519    eb3b9935-fa0b-4d54-8058-3b629f1421ad
+#> 569    fcc6b9e8-c72a-4228-8dc0-6e803114b6d6
+#> 4581   cfb721ab-e7b5-4b01-ac3a-c536c5fe8517
+#> 135    3dbe6df8-c2d7-449d-8082-c2b92738ce4d
+#> 185    51324001-970c-4fb5-bacf-de696e1b7eaa
+#> 477    d5d26992-388b-4c71-a461-18a63cac8738
+#> 130    3b9732e2-a0d7-4dc3-962d-12efcd2ded15
+#> 268    728e4de0-7356-4bb5-9db4-9479b3ffe098
+#> 1301   3b9732e2-a0d7-4dc3-962d-12efcd2ded15
+#> 2681   728e4de0-7356-4bb5-9db4-9479b3ffe098
+#> 14     04e28a1d-fc2a-4384-b889-e56c498bc485
+#> 45     1238747b-6616-4c8e-9a1f-571c2927d66d
+#> 145    40d8ee6f-8e47-497a-9005-fde107b209b8
+#> 205    5a2d6c59-3675-4da0-8af5-eeeda3142981
+#> 275    745ce148-192b-42bf-9dc1-63d6860fed81
+#> 324    90e04250-0e94-42a2-8a3d-676df3dd7edb
+#> 462    d04074f2-cbbe-48be-9837-ccf3dc8e186e
+#> 542    f28e9f8d-f9a4-4039-9ddf-2491518d2af3
+#> 5691   fcc6b9e8-c72a-4228-8dc0-6e803114b6d6
+#> 238    686846a0-5733-420f-99d5-b690233045d6
+#> 351    9eeec67f-6bf7-4948-900e-2101b6346fc1
+#> 139    3ef4cdde-bdce-4378-8e12-b7488ff68180
+#> 470    d3a9b6cb-fb33-46f0-b140-308331a1fa7e
+#> 4      03183d24-0275-43fe-8976-d076f29de590
+#> ...109 407984dd-075f-49b9-b808-2772fc5399ec
+#> ...110 489b4d13-7eaf-4732-af22-28d6cfd77466
+#> ...111 d752c413-dce7-48aa-a2b2-3de90c1bb218
+#>                                question_name     change_type   new_value
+#> ...1                                    <NA>   remove_survey        <NA>
+#> ...2                                    <NA>   remove_survey        <NA>
+#> ...3                                    <NA>   remove_survey        <NA>
+#> ...4                                    <NA>   remove_survey        <NA>
+#> ...5                                    <NA>   remove_survey        <NA>
+#> ...6                                    <NA>   remove_survey        <NA>
+#> ...7                                    <NA>   remove_survey        <NA>
+#> ...8                                    <NA>   remove_survey        <NA>
+#> ...9                                    <NA>   remove_survey        <NA>
+#> ...10                                   <NA>   remove_survey        <NA>
+#> ...11                                   <NA>   remove_survey        <NA>
+#> ...12                                   <NA>   remove_survey        <NA>
+#> ...13                                   <NA>   remove_survey        <NA>
+#> ...14                                   <NA>   remove_survey        <NA>
+#> ...15                                   <NA>   remove_survey        <NA>
+#> ...16                                   <NA>   remove_survey        <NA>
+#> ...17                                   <NA>   remove_survey        <NA>
+#> ...18                                   <NA>   remove_survey        <NA>
+#> ...19                                   <NA>   remove_survey        <NA>
+#> ...20                                   <NA>   remove_survey        <NA>
+#> ...21                                   <NA>   remove_survey        <NA>
+#> ...22                                   <NA>   remove_survey        <NA>
+#> ...23                                   <NA>   remove_survey        <NA>
+#> ...24                                   <NA>   remove_survey        <NA>
+#> ...25                                   <NA>   remove_survey        <NA>
+#> ...26                                   <NA>   remove_survey        <NA>
+#> ...27                                   <NA>   remove_survey        <NA>
+#> ...28                                   <NA>   remove_survey        <NA>
+#> ...29                                   <NA>   remove_survey        <NA>
+#> ...30                                   <NA>   remove_survey        <NA>
+#> ...31                                   <NA>   remove_survey        <NA>
+#> ...32                                   <NA>   remove_survey        <NA>
+#> ...33                                   <NA>   remove_survey        <NA>
+#> ...34                                   <NA>   remove_survey        <NA>
+#> ...35                                   <NA>   remove_survey        <NA>
+#> ...36                                   <NA>   remove_survey        <NA>
+#> ...37                                   <NA>   remove_survey        <NA>
+#> ...38                                   <NA>   remove_survey        <NA>
+#> ...39                                   <NA>   remove_survey        <NA>
+#> ...40                                   <NA>   remove_survey        <NA>
+#> ...41                                   <NA>   remove_survey        <NA>
+#> ...42                                   <NA>   remove_survey        <NA>
+#> ...43                                   <NA>   remove_survey        <NA>
+#> ...44                                   <NA>   remove_survey        <NA>
+#> ...45                                   <NA>   remove_survey        <NA>
+#> ...46                                   <NA>   remove_survey        <NA>
+#> ...47                                   <NA>   remove_survey        <NA>
+#> ...48                                   <NA>   remove_survey        <NA>
+#> ...49                                   <NA>   remove_survey        <NA>
+#> ...50                                   <NA>   remove_survey        <NA>
+#> ...51                                   <NA>   remove_survey        <NA>
+#> ...52                                   <NA>   remove_survey        <NA>
+#> ...53                                   <NA>   remove_survey        <NA>
+#> ...54                                   <NA>   remove_survey        <NA>
+#> ...55                     socio_eco_division  variable_added        <NA>
+#> ...56                           water_sector  variable_added        <NA>
+#> 7                                return_date change_response  2017-01-01
+#> 10                               return_date change_response  2018-07-01
+#> 38                               return_date change_response  2018-03-01
+#> 42                               return_date change_response  2017-01-01
+#> 43                               return_date change_response  2018-03-01
+#> 52                               return_date change_response  2018-03-01
+#> 78                               return_date change_response  2019-01-20
+#> 84                               return_date change_response  2019-07-15
+#> 114                              return_date change_response  2018-03-01
+#> 216                              return_date change_response  2018-04-19
+#> 250                              return_date change_response  2019-05-01
+#> 260                              return_date change_response  2017-12-10
+#> 269                              return_date change_response  2018-08-01
+#> 287                              return_date change_response  2018-07-12
+#> 300                              return_date change_response  2018-04-06
+#> 302                              return_date change_response  2018-01-26
+#> 309                              return_date change_response  2021-03-01
+#> 349                              return_date change_response  2018-01-01
+#> 355                              return_date change_response  2018-10-01
+#> 380                              return_date change_response  2018-01-01
+#> 402                              return_date change_response  2017-12-21
+#> 410                              return_date change_response  2018-10-18
+#> 433                              return_date change_response  2018-11-11
+#> 436                              return_date change_response  2018-02-17
+#> 446                              return_date change_response  2018-06-09
+#> 458                              return_date change_response  2018-02-01
+#> 471                              return_date change_response  2018-01-01
+#> 495                              return_date change_response  2020-03-01
+#> 519                              return_date change_response  2018-02-27
+#> 569                              return_date change_response  2018-02-01
+#> 4581                          num_hh_hosting change_response           7
+#> 135                             tot_expenses change_response      350000
+#> 185                   water_sources.borehole change_response        TRUE
+#> 477                   water_sources.borehole change_response        TRUE
+#> 130                        treat_drink_water change_response never_treat
+#> 268                        treat_drink_water change_response never_treat
+#> 1301   treat_drink_water_how.expose_sunlight change_response       FALSE
+#> 2681            treat_drink_water_how.filter change_response       FALSE
+#> 14                                 spend_tap change_response       FALSE
+#> 45                                 spend_tap change_response       FALSE
+#> 145                                spend_tap change_response       FALSE
+#> 205                                spend_tap change_response       FALSE
+#> 275                                spend_tap change_response       FALSE
+#> 324                                spend_tap change_response       FALSE
+#> 462                                spend_tap change_response       FALSE
+#> 542                                spend_tap change_response       FALSE
+#> 5691                    water_tank_litres_nb change_response        7000
+#> 238                             number_pumps change_response           1
+#> 351                           air_coolers_nb change_response           2
+#> 139                   connection_fees_amount change_response       45000
+#> 470                   connection_fees_amount change_response       50000
+#> 4                   pay_water_charges_amount change_response       10000
+#> ...109                           return_date  blank_response        <NA>
+#> ...110                           return_date  blank_response        <NA>
+#> ...111                           return_date  blank_response        <NA>
+#>           old_value                                 comment
+#> ...1           <NA> No matching uuid in the cleaned dataset
+#> ...2           <NA> No matching uuid in the cleaned dataset
+#> ...3           <NA> No matching uuid in the cleaned dataset
+#> ...4           <NA> No matching uuid in the cleaned dataset
+#> ...5           <NA> No matching uuid in the cleaned dataset
+#> ...6           <NA> No matching uuid in the cleaned dataset
+#> ...7           <NA> No matching uuid in the cleaned dataset
+#> ...8           <NA> No matching uuid in the cleaned dataset
+#> ...9           <NA> No matching uuid in the cleaned dataset
+#> ...10          <NA> No matching uuid in the cleaned dataset
+#> ...11          <NA> No matching uuid in the cleaned dataset
+#> ...12          <NA> No matching uuid in the cleaned dataset
+#> ...13          <NA> No matching uuid in the cleaned dataset
+#> ...14          <NA> No matching uuid in the cleaned dataset
+#> ...15          <NA> No matching uuid in the cleaned dataset
+#> ...16          <NA> No matching uuid in the cleaned dataset
+#> ...17          <NA> No matching uuid in the cleaned dataset
+#> ...18          <NA> No matching uuid in the cleaned dataset
+#> ...19          <NA> No matching uuid in the cleaned dataset
+#> ...20          <NA> No matching uuid in the cleaned dataset
+#> ...21          <NA> No matching uuid in the cleaned dataset
+#> ...22          <NA> No matching uuid in the cleaned dataset
+#> ...23          <NA> No matching uuid in the cleaned dataset
+#> ...24          <NA> No matching uuid in the cleaned dataset
+#> ...25          <NA> No matching uuid in the cleaned dataset
+#> ...26          <NA> No matching uuid in the cleaned dataset
+#> ...27          <NA> No matching uuid in the cleaned dataset
+#> ...28          <NA> No matching uuid in the cleaned dataset
+#> ...29          <NA> No matching uuid in the cleaned dataset
+#> ...30          <NA> No matching uuid in the cleaned dataset
+#> ...31          <NA> No matching uuid in the cleaned dataset
+#> ...32          <NA> No matching uuid in the cleaned dataset
+#> ...33          <NA> No matching uuid in the cleaned dataset
+#> ...34          <NA> No matching uuid in the cleaned dataset
+#> ...35          <NA> No matching uuid in the cleaned dataset
+#> ...36          <NA> No matching uuid in the cleaned dataset
+#> ...37          <NA> No matching uuid in the cleaned dataset
+#> ...38          <NA> No matching uuid in the cleaned dataset
+#> ...39          <NA> No matching uuid in the cleaned dataset
+#> ...40          <NA> No matching uuid in the cleaned dataset
+#> ...41          <NA> No matching uuid in the cleaned dataset
+#> ...42          <NA> No matching uuid in the cleaned dataset
+#> ...43          <NA> No matching uuid in the cleaned dataset
+#> ...44          <NA> No matching uuid in the cleaned dataset
+#> ...45          <NA> No matching uuid in the cleaned dataset
+#> ...46          <NA> No matching uuid in the cleaned dataset
+#> ...47          <NA> No matching uuid in the cleaned dataset
+#> ...48          <NA> No matching uuid in the cleaned dataset
+#> ...49          <NA> No matching uuid in the cleaned dataset
+#> ...50          <NA> No matching uuid in the cleaned dataset
+#> ...51          <NA> No matching uuid in the cleaned dataset
+#> ...52          <NA> No matching uuid in the cleaned dataset
+#> ...53          <NA> No matching uuid in the cleaned dataset
+#> ...54          <NA> No matching uuid in the cleaned dataset
+#> ...55          <NA>     variable added to the clean dataset
+#> ...56          <NA>     variable added to the clean dataset
+#> 7        2021-07-10             An alteration was performed
+#> 10       2021-07-14             An alteration was performed
+#> 38       2021-07-11             An alteration was performed
+#> 42       2021-07-09             An alteration was performed
+#> 43       2021-07-14             An alteration was performed
+#> 52       2021-07-08             An alteration was performed
+#> 78       2021-07-13             An alteration was performed
+#> 84       2021-07-14             An alteration was performed
+#> 114      2021-07-13             An alteration was performed
+#> 216      2021-07-07             An alteration was performed
+#> 250      2021-07-06             An alteration was performed
+#> 260      2021-07-08             An alteration was performed
+#> 269      2021-07-12             An alteration was performed
+#> 287      2021-07-07             An alteration was performed
+#> 300      2021-07-07             An alteration was performed
+#> 302      2021-07-06             An alteration was performed
+#> 309      2021-07-12             An alteration was performed
+#> 349      2021-07-14             An alteration was performed
+#> 355      2021-07-11             An alteration was performed
+#> 380      2021-07-11             An alteration was performed
+#> 402      2021-07-14             An alteration was performed
+#> 410      2021-07-06             An alteration was performed
+#> 433      2021-07-08             An alteration was performed
+#> 436      2021-07-07             An alteration was performed
+#> 446      2021-07-06             An alteration was performed
+#> 458      2021-07-09             An alteration was performed
+#> 471      2021-07-06             An alteration was performed
+#> 495      2021-07-14             An alteration was performed
+#> 519      2021-07-08             An alteration was performed
+#> 569      2021-07-06             An alteration was performed
+#> 4581             10             An alteration was performed
+#> 135           35000             An alteration was performed
+#> 185           FALSE             An alteration was performed
+#> 477           FALSE             An alteration was performed
+#> 130    always_treat             An alteration was performed
+#> 268    always_treat             An alteration was performed
+#> 1301           TRUE             An alteration was performed
+#> 2681           TRUE             An alteration was performed
+#> 14                0             An alteration was performed
+#> 45                0             An alteration was performed
+#> 145               0             An alteration was performed
+#> 205               0             An alteration was performed
+#> 275               0             An alteration was performed
+#> 324               0             An alteration was performed
+#> 462               0             An alteration was performed
+#> 542               0             An alteration was performed
+#> 5691          70000             An alteration was performed
+#> 238               7             An alteration was performed
+#> 351              18             An alteration was performed
+#> 139              45             An alteration was performed
+#> 470              50             An alteration was performed
+#> 4                10             An alteration was performed
+#> ...109   2021-07-08                           changed to NA
+#> ...110   2021-07-13                           changed to NA
+#> ...111   2021-07-13                           changed to NA
 ```
 
 ### Example:: Comparing cleaning log with clean data and raw data
@@ -97,27 +434,29 @@ compared_df <- review_cleaning_log(
   cleaning_log_question_name = "questions",
   cleaning_log_new_value = "new_value", cleaning_log_old_value = "old_value",
   deletion_log = deletaion_log, deletion_log_uuid = "X_uuid",
-  check_for_deletion_log = T, check_for_variable_name = T
+  check_for_deletion_log = T
 )
 
 compared_df
-#> # A tibble: 14 × 8
+#> # A tibble: 16 × 8
 #>    uuid   df.question_name df.change_type df.new_value cl.new_value df.old_value
 #>    <chr>  <chr>            <chr>          <chr>        <chr>        <chr>       
-#>  1 all    socio_eco_divis… variable_added <NA>         <NA>         <NA>        
-#>  2 all    water_sector     variable_added <NA>         <NA>         <NA>        
-#>  3 51324… water_sources.b… change_respon… TRUE         1            FALSE       
-#>  4 d5d26… water_sources.b… change_respon… TRUE         1            FALSE       
-#>  5 3b973… treat_drink_wat… change_respon… FALSE        0            TRUE        
-#>  6 728e4… treat_drink_wat… change_respon… FALSE        0            TRUE        
-#>  7 04e28… spend_tap        change_respon… FALSE        <NA>         0           
-#>  8 12387… spend_tap        change_respon… FALSE        <NA>         0           
-#>  9 40d8e… spend_tap        change_respon… FALSE        <NA>         0           
-#> 10 5a2d6… spend_tap        change_respon… FALSE        <NA>         0           
-#> 11 745ce… spend_tap        change_respon… FALSE        <NA>         0           
-#> 12 90e04… spend_tap        change_respon… FALSE        <NA>         0           
-#> 13 d0407… spend_tap        change_respon… FALSE        <NA>         0           
-#> 14 f28e9… spend_tap        change_respon… FALSE        <NA>         0           
+#>  1 51324… water_sources.b… change_respon… TRUE         1            FALSE       
+#>  2 d5d26… water_sources.b… change_respon… TRUE         1            FALSE       
+#>  3 728e4… treat_drink_wat… change_respon… FALSE        0            TRUE        
+#>  4 3b973… treat_drink_wat… change_respon… FALSE        0            TRUE        
+#>  5 51324… water_sources.b… change_respon… TRUE         1            FALSE       
+#>  6 d5d26… water_sources.b… change_respon… TRUE         1            FALSE       
+#>  7 3b973… treat_drink_wat… change_respon… FALSE        0            TRUE        
+#>  8 728e4… treat_drink_wat… change_respon… FALSE        0            TRUE        
+#>  9 04e28… spend_tap        change_respon… FALSE        <NA>         0           
+#> 10 12387… spend_tap        change_respon… FALSE        <NA>         0           
+#> 11 40d8e… spend_tap        change_respon… FALSE        <NA>         0           
+#> 12 5a2d6… spend_tap        change_respon… FALSE        <NA>         0           
+#> 13 745ce… spend_tap        change_respon… FALSE        <NA>         0           
+#> 14 90e04… spend_tap        change_respon… FALSE        <NA>         0           
+#> 15 d0407… spend_tap        change_respon… FALSE        <NA>         0           
+#> 16 f28e9… spend_tap        change_respon… FALSE        <NA>         0           
 #> # ℹ 2 more variables: cl.old_value <chr>, comment <chr>
 ```
 
@@ -199,11 +538,11 @@ list_audit <- list(uuid1 = data.frame(event = c("form start", rep("question", 5)
                                       start = c(1661415887295, 1661415887301, 1661415890819, 1661415892297, 1661415893529, 1661415894720),
                                       end = c(NA, 1661415890790, 1661415892273, 1661415893506, 1661415894703, 1661415896452)))
 some_dataset <- data.frame(X_uuid = c("uuid1", "uuid2"),
-                          question1 = c("a","b"),
-                          question2 = c("a","b"),
-                          question3 = c("a","b"),
-                          question4 = c("a","b"),
-                          question5 = c("a","b"))
+                           question1 = c("a","b"),
+                           question2 = c("a","b"),
+                           question3 = c("a","b"),
+                           question4 = c("a","b"),
+                           question5 = c("a","b"))
 ```
 
 If you want to sum all the duration.
@@ -222,9 +561,9 @@ If you want to use calculate duration between 2 questions.
 
 ``` r
 add_duration_from_audit(some_dataset, uuid_var = "X_uuid", audit_list = list_audit,
-                         start_question = "question1",
-                         end_question = "question3",
-                         sum_all = F)
+                        start_question = "question1",
+                        end_question = "question3",
+                        sum_all = F)
 #>   X_uuid question1 question2 question3 question4 question5
 #> 1  uuid1         a         a         a         a         a
 #> 2  uuid2         b         b         b         b         b
@@ -237,9 +576,9 @@ If you want to do both.
 
 ``` r
 add_duration_from_audit(some_dataset, uuid_var = "X_uuid", audit_list = list_audit,
-                         start_question = "question1",
-                         end_question = "question3",
-                         sum_all = T)
+                        start_question = "question1",
+                        end_question = "question3",
+                        sum_all = T)
 #>   X_uuid question1 question2 question3 question4 question5
 #> 1  uuid1         a         a         a         a         a
 #> 2  uuid2         b         b         b         b         b
@@ -437,9 +776,9 @@ frame or a list as input.
 set.seed(122)
 
 df <- data.frame(
-    X_uuid = paste0("uuid_",1:100),
-    age = c(sample(18:80,replace = T,size = 96),99,99,98,88),
-    gender = c("99",sample(c("male","female"),replace = T,size = 95),"98","98","88","888"))
+  X_uuid = paste0("uuid_",1:100),
+  age = c(sample(18:80,replace = T,size = 96),99,99,98,88),
+  gender = c("99",sample(c("male","female"),replace = T,size = 95),"98","98","88","888"))
 
 output <- check_for_value(df = df,uuid_col_name = "X_uuid",element_name = "checked_dataset",values_to_look = c(99,98,88,888))
 

@@ -53,7 +53,7 @@ library(cleaningtools)
 testdata <- data.frame(uuid = c(letters[1:4], "a", "b", "c"),
                        col_a = runif(7),
                        col_b = runif(7)) %>%
- dplyr::rename(`_uuid` = uuid)
+  dplyr::rename(`_uuid` = uuid)
 testdata
 check_duplicate(testdata)
 ```
@@ -79,7 +79,7 @@ compared_df <- review_cleaning_log(
   cleaning_log_question_name = "questions",
   cleaning_log_new_value = "new_value", cleaning_log_old_value = "old_value",
   deletion_log = deletaion_log, deletion_log_uuid = "X_uuid",
-  check_for_deletion_log = T, check_for_variable_name = T
+  check_for_deletion_log = T
 )
 
 compared_df
@@ -130,11 +130,11 @@ list_audit <- list(uuid1 = data.frame(event = c("form start", rep("question", 5)
                                       start = c(1661415887295, 1661415887301, 1661415890819, 1661415892297, 1661415893529, 1661415894720),
                                       end = c(NA, 1661415890790, 1661415892273, 1661415893506, 1661415894703, 1661415896452)))
 some_dataset <- data.frame(X_uuid = c("uuid1", "uuid2"),
-                          question1 = c("a","b"),
-                          question2 = c("a","b"),
-                          question3 = c("a","b"),
-                          question4 = c("a","b"),
-                          question5 = c("a","b"))
+                           question1 = c("a","b"),
+                           question2 = c("a","b"),
+                           question3 = c("a","b"),
+                           question4 = c("a","b"),
+                           question5 = c("a","b"))
 ```
 
 If you want to sum all the duration.
@@ -145,17 +145,17 @@ add_duration_from_audit(some_dataset, uuid_var = "X_uuid", audit_list = list_aud
 If you want to use calculate duration between 2 questions.
 ```{r}
 add_duration_from_audit(some_dataset, uuid_var = "X_uuid", audit_list = list_audit,
-                         start_question = "question1",
-                         end_question = "question3",
-                         sum_all = F)
+                        start_question = "question1",
+                        end_question = "question3",
+                        sum_all = F)
 ```
 
 If you want to do both.
 ```{r}
 add_duration_from_audit(some_dataset, uuid_var = "X_uuid", audit_list = list_audit,
-                         start_question = "question1",
-                         end_question = "question3",
-                         sum_all = T)
+                        start_question = "question1",
+                        end_question = "question3",
+                        sum_all = T)
 ```
 
 #### checking the duration of the dataset
@@ -232,7 +232,7 @@ clean_dataset <- create_clean_data(df = test_data,df_uuid = "uuid",cl = cleaning
                                    cl_change_col =  "question",
                                    cl_uuid = "uuid",
                                    cl_new_val = "new_value" )
-                          
+
 
 ```
 
@@ -244,9 +244,9 @@ clean_dataset <- create_clean_data(df = test_data,df_uuid = "uuid",cl = cleaning
 set.seed(122)
 
 df <- data.frame(
-    X_uuid = paste0("uuid_",1:100),
-    age = c(sample(18:80,replace = T,size = 96),99,99,98,88),
-    gender = c("99",sample(c("male","female"),replace = T,size = 95),"98","98","88","888"))
+  X_uuid = paste0("uuid_",1:100),
+  age = c(sample(18:80,replace = T,size = 96),99,99,98,88),
+  gender = c("99",sample(c("male","female"),replace = T,size = 95),"98","98","88","888"))
 
 output <- check_for_value(df = df,uuid_col_name = "X_uuid",element_name = "checked_dataset",values_to_look = c(99,98,88,888))
 
