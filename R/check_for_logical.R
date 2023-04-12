@@ -1,12 +1,14 @@
 #' Check for a logical test
 #'
-#' @param a dataset to be check as a dataframe or a list with the
+#' @param .dataset a dataset to be check as a dataframe or a list with the
 #' dataframe stored as "checked_dataset"
 #' @param uuid_var string variable with the name of uuid column
-#' @param variables_to_add string vector optional, if to add some information to the log (today, vilagge)
+#' @param variables_to_add string vector optional, if to add some information to the log
+#' (today, vilagge)
 #' @param check_id name of the check to perform
 #' @param check_to_perform test to perform as R code (in text format)
-#' @param variables_to_clean variables to be put in the log. if not provided, it will try to detect variables
+#' @param variables_to_clean variables to be put in the log. if not provided, it will try to detect
+#' variables
 #' @param description description of the check performed
 #'
 #' @return return a list with the dataset checked stored as checked_dataset, it will have all
@@ -22,18 +24,18 @@
 #'                         number_children_05 = c(rep(c(0,1),4),5,6))
 #'
 #' check_for_logical(test_data,
-#'                   uuid_var = "uuid",
-#'                   check_id = "my_test",
-#'                   check_to_perform = "distance_to_market == \"less_30\" & access_to_market == \"no\"",
-#'                   variables_to_clean = "distance_to_market, access_to_market",
-#'                   description = "distance to market less than 30 and no access")
+#'            uuid_var = "uuid",
+#'            check_id = "my_test",
+#'            check_to_perform = "distance_to_market == \"less_30\" & access_to_market == \"no\"",
+#'            variables_to_clean = "distance_to_market, access_to_market",
+#'            description = "distance to market less than 30 and no access")
 #'
 #' check_for_logical(test_data,
-#'                   uuid_var = "uuid",
-#'                   variables_to_add = c("today", "location"),
-#'                   check_to_perform = "distance_to_market == \"less_30\" & access_to_market == \"no\"",
-#'                   variables_to_clean = "distance_to_market, access_to_market",
-#'                   description = "distance to market less than 30 and no access")
+#'             uuid_var = "uuid",
+#'             variables_to_add = c("today", "location"),
+#'             check_to_perform = "distance_to_market == \"less_30\" & access_to_market == \"no\"",
+#'             variables_to_clean = "distance_to_market, access_to_market",
+#'             description = "distance to market less than 30 and no access")
 check_for_logical <- function(.dataset,
                               uuid_var = "_uuid",
                               variables_to_add = NULL,
@@ -110,7 +112,7 @@ check_for_logical <- function(.dataset,
 #'
 #' This is a wrapper around check_for_logical to allow several checks to be performed.
 #'
-#' @param a dataset to be check as a dataframe or a list with the
+#' @param .dataset dataset to be check as a dataframe or a list with the
 #' dataframe stored as "checked_dataset"
 #' @param uuid_var string variable with the name of uuid column
 #' @param variables_to_add string vector optional, if to add some information to the log (today, vilagge)

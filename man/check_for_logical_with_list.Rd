@@ -17,6 +17,9 @@ check_for_logical_with_list(
 )
 }
 \arguments{
+\item{.dataset}{dataset to be check as a dataframe or a list with the
+dataframe stored as "checked_dataset"}
+
 \item{uuid_var}{string variable with the name of uuid column}
 
 \item{variables_to_add}{string vector optional, if to add some information to the log (today, vilagge)}
@@ -32,9 +35,6 @@ check_for_logical_with_list(
 \item{description_column}{the column name with the description}
 
 \item{bind_checks}{default is TRUE, to bind the checks into 1 log.}
-
-\item{a}{dataset to be check as a dataframe or a list with the
-dataframe stored as "checked_dataset"}
 }
 \value{
 return a list with the dataset checked stored as checked_dataset, it will have all
