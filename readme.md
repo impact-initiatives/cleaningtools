@@ -42,24 +42,24 @@ testdata <- data.frame(uuid = c(letters[1:4], "a", "b", "c"),
                        col_b = runif(7)) %>%
   dplyr::rename(`_uuid` = uuid)
 testdata
-#>   _uuid     col_a      col_b
-#> 1     a 0.2448551 0.06277515
-#> 2     b 0.4218389 0.01055617
-#> 3     c 0.9942577 0.87375758
-#> 4     d 0.8562951 0.61441531
-#> 5     a 0.1793255 0.07630995
-#> 6     b 0.2303949 0.16110527
-#> 7     c 0.6642791 0.78342329
+#>   _uuid     col_a     col_b
+#> 1     a 0.7746894 0.5918279
+#> 2     b 0.6634490 0.3465015
+#> 3     c 0.6412181 0.8778429
+#> 4     d 0.1997036 0.0337068
+#> 5     a 0.7781121 0.2484940
+#> 6     b 0.4689926 0.4048280
+#> 7     c 0.9152493 0.9236777
 check_duplicate(testdata)
 #> $checked_dataset
-#>   _uuid     col_a      col_b
-#> 1     a 0.2448551 0.06277515
-#> 2     b 0.4218389 0.01055617
-#> 3     c 0.9942577 0.87375758
-#> 4     d 0.8562951 0.61441531
-#> 5     a 0.1793255 0.07630995
-#> 6     b 0.2303949 0.16110527
-#> 7     c 0.6642791 0.78342329
+#>   _uuid     col_a     col_b
+#> 1     a 0.7746894 0.5918279
+#> 2     b 0.6634490 0.3465015
+#> 3     c 0.6412181 0.8778429
+#> 4     d 0.1997036 0.0337068
+#> 5     a 0.7781121 0.2484940
+#> 6     b 0.4689926 0.4048280
+#> 7     c 0.9152493 0.9236777
 #> 
 #> $duplicate_log
 #>   uuid value variable           issue
@@ -833,4 +833,27 @@ recreate_parent_column(df = test_data,uuid = "uuid",sm_sep = ".")
 #> 4 uuid_4 female x_x_ x_z zy           1         0          1         1 C        
 #> 5 uuid_5 male   yy                    0         1          0         0 <NA>     
 #> 6 uuid_6 female x_z                   0         0          1         0 <NA>
+```
+
+#### Example:: Recreate parent column for choice multiple
+
+`review_sample_frame_with_dataset()` compares the sample frame with
+dataset and provide the overview of completed and remaining surveys.
+
+``` r
+review_output<- review_sample_frame_with_dataset(sample_frame = cleaningtools::sample_frame ,
+                                                 sample_frame_strata_col = "Neighbourhood",
+                                                 sample_frame_target_survey_col ="Total.no.of.HH",
+                                                 clean_data = cleaningtools::clean_data,
+                                                 clean_data_strata_column = "neighbourhood",
+                                                 consent_column = "consent_remote",
+                                                 value_for_consent_yes = "yes")
+review_output |> head()
+#>   Managed.by Governorate Neighbourhood Total.no.of.HH Collected Remaining
+#> 1   Talafar       Ninewa    al_askary1             22        22         0
+#> 2   Talafar       Ninewa    al_askary2             19        19         0
+#> 3   Talafar       Ninewa    al_askary3              5         5         0
+#> 4   Talafar       Ninewa    al_askary4              6         6         0
+#> 5   Talafar       Ninewa   al_jazeera1             12        12         0
+#> 6   Talafar       Ninewa   al_jazeera2             15        15         0
 ```
