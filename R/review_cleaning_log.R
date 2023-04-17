@@ -300,10 +300,13 @@ review_cleaning_log <- function(raw_data = raw_data_hh,
 
   }
 
+  if(nrow(cleaning_log)>0){
   ## removing no action
   cleaning_log_no_action <- cleaning_log |>
-    dplyr::filter(!!rlang::sym(cleaning_log_change_type_column) %in% cleanning_log_no_action_value )
+    dplyr::filter(!!rlang::sym(cleaning_log_change_type_column) %in% cleanning_log_no_action_value )}
 
+  if(nrow(cleaning_log)>0){
+  if(nrow(cleaning_log_no_action)>0){
   ## log for no action check
   missing_in_cleaning_log[["no_action_issue"]] <- cleaning_log_no_action |> dplyr::filter(
     !(!!rlang::sym(cleaning_log_new_value)) == (!!rlang::sym(cleaning_log_old_value)) |
@@ -315,13 +318,13 @@ review_cleaning_log <- function(raw_data = raw_data_hh,
     df.change_type = !!rlang::sym(cleaning_log_change_type_column),
     df.question_name = !!rlang::sym(cleaning_log_question_name),
   )
+}
 
+}
 
-
-
-
+if(nrow(cleaning_log)>0){
   cleaning_log <- cleaning_log |>
-    dplyr::filter(!(!!rlang::sym(cleaning_log_change_type_column)) %in% cleanning_log_no_action_value )
+    dplyr::filter(!(!!rlang::sym(cleaning_log_change_type_column)) %in% cleanning_log_no_action_value )}
 
 
 
@@ -378,6 +381,9 @@ review_cleaning_log <- function(raw_data = raw_data_hh,
 
   ## checking if all the deleted survey is in deletion log
   if (check_for_deletion_log == T) {
+
+    if(nrow(cleaning_log_create)>0){
+
     created_deletion_log <- cleaning_log_create[cleaning_log_create$df.change_type == "remove_survey", "df.uuid"] %>% unique()
     missing_in_deletion_log <- created_deletion_log[!created_deletion_log %in% deletion_log$uuid]
 
@@ -388,7 +394,7 @@ review_cleaning_log <- function(raw_data = raw_data_hh,
         comment = "This survey was removed but currently missing in cleaning log"
       )
     }
-
+    }
     ### check if all the uuid in deletion log are removed or not
 
     deletion_log_uuid_only <- deletion_log[[deletion_log_uuid]] %>% unique()
@@ -417,23 +423,23 @@ review_cleaning_log <- function(raw_data = raw_data_hh,
 
   }
 
-  ### check if added_survey was actually added in the cleaning log
-
-  added_survey_df <- cleaning_log |> dplyr::filter(!!rlang::sym(cleaning_log_change_type_column) == cleaning_log_added_survey)
+  ### check if added_survey was actually added in the dataset
+if(nrow(cleaning_log)>0){
+  added_survey_df <- cleaning_log |> dplyr::filter(!!rlang::sym(cleaning_log_change_type_column) %in% cleaning_log_added_survey)
   added_survey_df_uuid <- added_survey_df$uuid
 
 
-
+if(length(added_survey_df_uuid) >0){
   missing_in_cleaning_log[["not_added_in_the_cl"]] <- data.frame(
     uuid = added_survey_df_uuid[!added_survey_df_uuid %in% clean_data[[clean_data_uuid]]]
   ) |> dplyr::mutate(
-    comment = "This survey should be added in the dataset but its missing now",
+    comment = "This survey should be added in the clean dataset but its missing now",
     df.change_type = "added_survey",
     df.new_value = NA_character_,
     df.question_name = NA_character_
   )
-
-
+}
+}
 
 
 

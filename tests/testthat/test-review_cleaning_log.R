@@ -232,7 +232,7 @@ testthat::test_that("create cleaning log with no deletion survey", {
                                                                                                                                              "changed to NA", "changed to NA")), class = "data.frame", row.names = c("...1",
                                                                                                                                                                                                                      "...2", "2", "21", "4", "41", "3", "31"))
 
-  #not working
+
   actual <- create_cleaning_log(me_raw_data,
                                 "uuid",
                                 me_clean_data,
@@ -264,6 +264,68 @@ testthat::test_that("create cleaning log with no deletion survey", {
                                    "uuid",check_for_deletion_log = T)
 
   testthat::expect_equal(actual_v2,expected_v2 )
+
+
+
+
+  ##
+  #11: deletion: in deleted log, not in clean data
+
+  test_raw_data <- tibble::tibble(
+    uuid = paste0("uuid",1:6),
+    gender = rep(c("male","female"),3),
+    expenditure= c(200,300,240,44444,300,280),
+    to_remove = NA_character_
+  )
+
+  test_clean_data <- tibble::tibble(
+    uuid = paste0("uuid",1:6),
+    gender = rep(c("male","female"),3),
+    expenditure= c(200,300,240,44444,300,280),
+    to_remove = NA_character_
+  )
+
+  test_cleaning_log <- tibble::tibble(
+    uuid = character(),
+    question_name = character(),
+    change_type = character(),
+    old_value = character(),
+    new_value = character(),
+    comment = character()
+  )
+
+  test_deletion_log <- tibble::tibble(
+    uuid = c("uuid6","uuid2"),
+    change_type = c("remove_survey","remove_survey"),
+    comment = c("No matching uuid in the cleaned dataset","c"))
+
+  output <- review_cleaning_log(raw_data = test_raw_data,
+                                raw_data_uuid = "uuid",
+                                clean_data = test_raw_data,
+                                clean_data_uuid = "uuid",
+                                cleaning_log = test_cleaning_log,
+                                cleaning_log_uuid = "uuid",
+                                cleaning_log_change_type_column = "change_type",
+                                cleaning_log_question_name = "question_name",
+                                cleaning_log_new_value = "new_value",
+                                cleaning_log_old_value = "old_value",
+                                deletion_log = test_deletion_log,
+                                deletion_log_uuid = "uuid",
+                                check_for_deletion_log =T)
+
+  expected <- structure(list(uuid = c("uuid6", "uuid2"),
+                             df.question_name = c(NA_character_,  NA_character_),
+                             df.change_type = c("remove_survey", "remove_survey"),
+                             df.new_value = c(NA_character_, NA_character_),
+                             cl.new_value = c(NA_character_, NA_character_),
+                             df.old_value = c(NA_character_, NA_character_),
+                             cl.old_value = c(NA_character_, NA_character_),
+                             comment = c("This survey should be deleted from the clean dataset but it was not deleted",
+                                         "This survey should be deleted from the clean dataset but it was not deleted"
+                             )), row.names = c(NA, -2L), class = c("tbl_df", "tbl", "data.frame"
+                             ))
+
+  testthat::expect_equal(expected ,output)
 
 
 })
@@ -374,7 +436,7 @@ testthat::test_that("Test related to deletion and added surveys", {
                              df.change_type = "added_survey", df.new_value = NA_character_,
                              cl.new_value = NA_character_, df.old_value = NA_character_,
                              cl.old_value = NA_character_,
-                             comment = "This survey should be added in the dataset but its missing now"), row.names = c(NA,
+                             comment = "This survey should be added in the clean dataset but its missing now"), row.names = c(NA,
                                                                                                                         -1L), class = "data.frame")
 
   testthat::expect_equal(actual,expected)
@@ -761,7 +823,7 @@ testthat::test_that("Test no change", {
                              df.old_value = c(NA_character_,  NA_character_, NA_character_),
                              cl.old_value = c("male", NA, "44444"),
                              comment = c("No action with different value in new value column.",
-                                           "No action with different value in new value column.",
+                                         "No action with different value in new value column.",
                                          "No action with different value in new value column.")),
                         row.names = c(NA, -3L), class = c("tbl_df", "tbl", "data.frame"))
 
