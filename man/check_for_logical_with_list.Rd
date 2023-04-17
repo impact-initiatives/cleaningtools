@@ -11,7 +11,7 @@ check_for_logical_with_list(
   list_of_check,
   check_id_column,
   check_to_perform_column,
-  variables_to_clean_column,
+  variables_to_clean_column = NULL,
   description_column,
   bind_checks = TRUE
 )

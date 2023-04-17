@@ -89,8 +89,11 @@ test_that("Works with list of tests", {
     ) %>%
       mutate(check_binding = paste(check_id, "~/~", uuid))
   )
-  unbinded_expected_results <- list(logical_xx = logical_xx,
-                                    logical_yy = logical_yy)
+  unbinded_expected_results <- list(checked_dataset = test_data %>%
+                                      mutate(logical_xx = c(rep(FALSE, 4), TRUE, rep(FALSE, 5)),
+                                             logical_yy = c(rep(FALSE, 8), rep(TRUE, 2))),
+                                    logical_xx = logical_xx$logical_xx,
+                                    logical_yy = logical_yy$logical_yy)
 
   expect_equal(check_for_logical_with_list(test_data,
                                            uuid_var = "uuid",
@@ -195,8 +198,12 @@ test_that("Inputs as list returns correct results", {
     ) %>%
       mutate(check_binding = paste(check_id, "~/~", uuid))
   )
-  unbinded_expected_results <- list(logical_xx = logical_xx,
-                                    logical_yy = logical_yy)
+  unbinded_expected_results <- list(checked_dataset = test_data %>%
+                                      mutate(logical_xx = c(rep(FALSE, 4), TRUE, rep(FALSE, 5)),
+                                             logical_yy = c(rep(FALSE, 8), rep(TRUE, 2))),
+                                    other_log = data.frame(xx = "other"),
+                                    logical_xx = logical_xx$logical_xx,
+                                    logical_yy = logical_yy$logical_yy)
 
   expect_equal(check_for_logical_with_list(test_list,
                                            uuid_var = "uuid",
@@ -323,5 +330,71 @@ test_that("if check_id names already exists, throws an error", {
                                  variables_to_clean = "distance_to_market, access_to_market",
                                  description = "distance to market less than 30 and no access"),
                "distance_to_market is in the names of the dataset, please change check id name.")
+})
+
+test_that("when variables_to_clean is empty or null, check_with_list with still work", {
+  test_data <- data.frame(uuid = c(1:10) %>% as.character(),
+                          today = rep("2023-01-01", 10),
+                          LOGICAL = c(T,T,F,T,F,F,F,F,T,T),
+                          location = rep(c("villageA", "villageB"),5),
+                          distance_to_market = c(rep("less_30", 5), rep("more_30",5)),
+                          access_to_market = c(rep("yes",4), rep("no",6)),
+                          number_children_05 = c(rep(c(0,1),4),5,6))
+
+  a <- structure(list(logic = "distance_to_market==\"less_30\" & access_to_market == \"no\"",
+                      des = "iuiui", var = "",check = "aa"), row.names = 2L, class = "data.frame")
+
+  expect_warning(check_for_logical_with_list(.dataset = test_data,
+                                             list_of_check = a,
+                                             variables_to_add =NULL,
+                                             uuid_var = "uuid",
+                                             check_id_column  =  "check",
+                                             check_to_perform_column  = "logic",
+                                             variables_to_clean_column = "var",
+                                             description_column  = "des"),
+                 "variables_to_clean not shared, results may not be accurate")
+
+  expected_results <- list(checked_dataset = test_data %>%
+                             dplyr::mutate(aa = c(rep(FALSE, 4), TRUE, rep(FALSE, 5))),
+                           logical_all = tibble(uuid = c("5", "5"),
+                                                question = c("distance_to_market", "access_to_market"),
+                                                old_value = c("less_30", "no"),
+                                                issue = c("iuiui", "iuiui"),
+                                                check_id = "aa",
+                                                check_binding = "aa ~/~ 5"))
+  results_1 <- check_for_logical_with_list(.dataset = test_data,
+                                           list_of_check = a,
+                                           variables_to_add =NULL,
+                                           uuid_var = "uuid",
+                                           check_id_column  =  "check",
+                                           check_to_perform_column  = "logic",
+                                           variables_to_clean_column = "var",
+                                           description_column  = "des") %>%
+    suppressWarnings()
+
+
+  results_2 <-   check_for_logical_with_list(.dataset = test_data,
+                                             list_of_check = a,
+                                             variables_to_add =NULL,
+                                             uuid_var = "uuid",
+                                             check_id_column  =  "check",
+                                             check_to_perform_column  = "logic",
+                                             variables_to_clean_column = NULL,
+                                             description_column  = "des")  %>%
+    suppressWarnings()
+
+  results_3 <-   check_for_logical_with_list(.dataset = test_data,
+                                             list_of_check = a,
+                                             variables_to_add =NULL,
+                                             uuid_var = "uuid",
+                                             check_id_column  =  "check",
+                                             check_to_perform_column  = "logic",
+                                             variables_to_clean_column = NULL,
+                                             description_column  = "des")  %>%
+    suppressWarnings()
+
+  expect_equal(expected_results,results_1)
+  expect_equal(expected_results,results_2)
+  expect_equal(expected_results,results_3)
 })
 

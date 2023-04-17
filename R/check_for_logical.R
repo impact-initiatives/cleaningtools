@@ -60,7 +60,7 @@ check_for_logical <- function(.dataset,
     stop(msg)
   }
 
-  if (is.null(variables_to_clean) | all(is.na(variables_to_clean)) | all(variables_to_clean == "")) {
+  if (any(is.null(variables_to_clean), is.na(variables_to_clean), variables_to_clean == "")) {
     msg <-  "variables_to_clean not shared, results may not be accurate"
     warning(msg)
     tentative_var <- detect_variable(check_to_perform)
@@ -71,7 +71,7 @@ check_for_logical <- function(.dataset,
     variables_across_by <- variables_across_by[variables_across_by != ""]
   }
 
-  if (!is.null(variables_to_clean)) {
+  if (!any(is.null(variables_to_clean), is.na(variables_to_clean), variables_to_clean == "")) {
     variables_across_by <- c(variables_to_clean, variables_to_add) %>%
       stringr::str_split(",", simplify = T) %>%
       stringr::str_trim() %>%
@@ -82,11 +82,14 @@ check_for_logical <- function(.dataset,
   .dataset[["checked_dataset"]] <- .dataset[["checked_dataset"]] %>%
         mutate(!!sym(check_id) := eval(parse(text = check_to_perform)))
 
+  trimmed_dataset <- .dataset[["checked_dataset"]] %>%
+    dplyr::filter(!!sym(check_id)) %>%
+    dplyr::mutate(uuid := !!rlang::sym(uuid_var)) %>%
+    dplyr::select(dplyr::all_of(c("uuid", variables_across_by)))
+
   if(exists("tentative_var")) {
     if(length(tentative_var) == 0) {
-      .dataset[[check_id]] <- .dataset[["checked_dataset"]] |>
-        dplyr::filter(!!sym(check_id)) |>
-        dplyr::select(uuid := !!rlang::sym(uuid_var), dplyr::all_of(variables_across_by)) %>%
+      .dataset[[check_id]] <-  trimmed_dataset %>%
         dplyr::mutate(dplyr::across(.cols = dplyr::everything(), .fns = as.character),
                       question = "unable to identify",
                       old_value = "please check this uuid for this check",
@@ -97,9 +100,7 @@ check_for_logical <- function(.dataset,
     }
   }
 
-  .dataset[[check_id]] <- .dataset[["checked_dataset"]] |>
-    dplyr::filter(!!sym(check_id)) |>
-    dplyr::select(uuid := !!rlang::sym(uuid_var), dplyr::all_of(variables_across_by)) %>%
+  .dataset[[check_id]] <- trimmed_dataset %>%
     tidyr::pivot_longer(cols= -c("uuid", variables_to_add), names_to = "question", values_to = "old_value") %>%
     dplyr::mutate(dplyr::across(.cols = dplyr::everything(), .fns = as.character),
                   issue = description,
@@ -156,9 +157,9 @@ check_for_logical_with_list <- function(.dataset,
                                         list_of_check,
                                         check_id_column,
                                         check_to_perform_column,
-                                        variables_to_clean_column,
+                                        variables_to_clean_column = NULL,
                                         description_column,
-                                         bind_checks = TRUE) {
+                                        bind_checks = TRUE) {
 
   if(any(duplicated(list_of_check[[check_id_column]]))) {
     msg <- glue::glue("The column ", check_id_column, " from the checklist contains duplicated.")
@@ -175,6 +176,11 @@ check_for_logical_with_list <- function(.dataset,
   #to be used to reduce
   initial_names <- names(.dataset[["checked_dataset"]])
 
+  if (any(is.null(variables_to_clean_column), is.na(variables_to_clean_column), variables_to_clean_column == "")) {
+    list_of_check[["variables_to_clean_column"]] <- NA_character_
+    variables_to_clean_column <- "variables_to_clean_column"
+  }
+
   #split the check in a list and map check_for_logical
   log_of_logical_checks <- list_of_check %>%
     dplyr::group_by(!!sym(check_id_column)) %>%
@@ -188,16 +194,20 @@ check_for_logical_with_list <- function(.dataset,
                                   description = .[[description_column]])) %>%
     purrr::set_names(list_of_check[[check_id_column]])
 
-  if(bind_checks == FALSE) {
-    return(log_of_logical_checks)
-  }
 
   .dataset[["checked_dataset"]] <- log_of_logical_checks %>%
     purrr::map(function(xx) xx[["checked_dataset"]]) %>%
     purrr::reduce(dplyr::left_join, by = initial_names)
-  .dataset[["logical_all"]] <- log_of_logical_checks %>%
+
+  log_from_check <- log_of_logical_checks %>%
     purrr::map(~purrr::keep(., names(.) %in% list_of_check[[check_id_column]])) %>%
-    purrr::map(dplyr::bind_rows) %>% purrr::reduce(dplyr::bind_rows)
+    purrr::map(dplyr::bind_rows)
+
+  if(bind_checks == FALSE) {
+    .dataset <- append(.dataset, log_from_check)
+  } else {
+    .dataset[["logical_all"]] <- log_from_check %>% purrr::reduce(dplyr::bind_rows)
+  }
 
   return(.dataset)
 }
