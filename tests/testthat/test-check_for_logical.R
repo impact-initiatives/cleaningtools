@@ -64,36 +64,28 @@ test_that("Works with list of tests", {
                            variables_to_clean = c("distance_to_market, access_to_market",
                                                   "number_children_05"))
 
-  logical_xx <- list(
-    checked_dataset = test_data %>%
-      mutate(logical_xx = c(rep(FALSE, 4), TRUE, rep(FALSE, 5))),
-    logical_xx = dplyr::tibble(
-      uuid = rep("5", 2),
-      question = c("distance_to_market", "access_to_market"),
-      old_value = c("less_30", "no"),
-      issue = rep("distance to market less than 30 and no access", 2),
-      check_id = rep("logical_xx", 2)
-    ) %>%
-      mutate(check_binding = paste(check_id, "~/~", uuid))
-  )
+  logical_xx <- dplyr::tibble(uuid = rep("5", 2),
+                              question = c("distance_to_market", "access_to_market"),
+                              old_value = c("less_30", "no"),
+                              issue = rep("distance to market less than 30 and no access", 2),
+                              check_id = rep("logical_xx", 2)
+  ) %>%
+    mutate(check_binding = paste(check_id, "~/~", uuid))
 
-  logical_yy <- list(
-    checked_dataset = test_data %>%
-      mutate(logical_yy = c(rep(FALSE, 8), rep(TRUE, 2))),
-    logical_yy = dplyr::tibble(
-      uuid = c("9", "10"),
-      question = rep("number_children_05", 2),
-      old_value = c("5", "6"),
-      issue = rep("number of children under 5 seems high", 2),
-      check_id = rep("logical_yy", 2)
-    ) %>%
-      mutate(check_binding = paste(check_id, "~/~", uuid))
-  )
+
+  logical_yy <- dplyr::tibble(uuid = c("9", "10"),
+                              question = rep("number_children_05", 2),
+                              old_value = c("5", "6"),
+                              issue = rep("number of children under 5 seems high", 2),
+                              check_id = rep("logical_yy", 2)
+  ) %>%
+    mutate(check_binding = paste(check_id, "~/~", uuid))
+
   unbinded_expected_results <- list(checked_dataset = test_data %>%
                                       mutate(logical_xx = c(rep(FALSE, 4), TRUE, rep(FALSE, 5)),
                                              logical_yy = c(rep(FALSE, 8), rep(TRUE, 2))),
-                                    logical_xx = logical_xx$logical_xx,
-                                    logical_yy = logical_yy$logical_yy)
+                                    logical_xx = logical_xx,
+                                    logical_yy = logical_yy)
 
   expect_equal(check_for_logical_with_list(test_data,
                                            uuid_var = "uuid",
@@ -109,8 +101,8 @@ test_that("Works with list of tests", {
   binded_expected_results <- list(checked_dataset = test_data %>%
                                     mutate(logical_xx = c(rep(FALSE, 4), TRUE, rep(FALSE, 5)),
                                            logical_yy = c(rep(FALSE, 8), rep(TRUE, 2))),
-                                  logical_all = rbind(logical_xx$logical_xx,
-                                                      logical_yy$logical_yy)
+                                  logical_all = rbind(logical_xx,
+                                                      logical_yy)
                                   )
 
   expect_equal(check_for_logical_with_list(test_data,
@@ -126,10 +118,10 @@ test_that("Works with list of tests", {
   binded_expected_results2 <- list(checked_dataset = test_data %>%
                                      mutate(logical_xx = c(rep(FALSE, 4), TRUE, rep(FALSE, 5)),
                                             logical_yy = c(rep(FALSE, 8), rep(TRUE, 2))),
-                                   logical_all = rbind(logical_xx$logical_xx %>%
+                                   logical_all = rbind(logical_xx %>%
                                                          dplyr::mutate(location = rep("villageA",2),
                                                                        .after = uuid),
-                                                       logical_yy$logical_yy%>%
+                                                       logical_yy%>%
                                                          dplyr::mutate(location = c("villageA",
                                                                                     "villageB"),
                                                                        .after = uuid))
