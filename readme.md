@@ -60,6 +60,7 @@ check_duplicate(testdata)
 #> 5     a 0.1793255 0.07630995
 #> 6     b 0.2303949 0.16110527
 #> 7     c 0.6642791 0.78342329
+
 #> 
 #> $duplicate_log
 #>   uuid value variable           issue
@@ -833,4 +834,116 @@ recreate_parent_column(df = test_data,uuid = "uuid",sm_sep = ".")
 #> 4 uuid_4 female x_x_ x_z zy           1         0          1         1 C        
 #> 5 uuid_5 male   yy                    0         1          0         0 <NA>     
 #> 6 uuid_6 female x_z                   0         0          1         0 <NA>
+```
+
+#### Example:: Logical checks
+
+``` r
+test_data <- data.frame(uuid = c(1:10) %>% as.character(),
+                        today = rep("2023-01-01", 10),
+                        location = rep(c("villageA", "villageB"),5),
+                        distance_to_market = c(rep("less_30", 5), rep("more_30",5)),
+                        access_to_market = c(rep("yes",4), rep("no",6)),
+                        number_children_05 = c(rep(c(0,1),4),5,6))
+check_for_logical(test_data,
+                  uuid_var = "uuid",
+                  check_to_perform = "distance_to_market == \"less_30\" & access_to_market == \"no\"",
+                   variables_to_clean = "distance_to_market, access_to_market",
+                   description = "distance to market less than 30 and no access")
+#> $checked_dataset
+#>    uuid      today location distance_to_market access_to_market
+#> 1     1 2023-01-01 villageA            less_30              yes
+#> 2     2 2023-01-01 villageB            less_30              yes
+#> 3     3 2023-01-01 villageA            less_30              yes
+#> 4     4 2023-01-01 villageB            less_30              yes
+#> 5     5 2023-01-01 villageA            less_30               no
+#> 6     6 2023-01-01 villageB            more_30               no
+#> 7     7 2023-01-01 villageA            more_30               no
+#> 8     8 2023-01-01 villageB            more_30               no
+#> 9     9 2023-01-01 villageA            more_30               no
+#> 10   10 2023-01-01 villageB            more_30               no
+#>    number_children_05 logical_xx
+#> 1                   0      FALSE
+#> 2                   1      FALSE
+#> 3                   0      FALSE
+#> 4                   1      FALSE
+#> 5                   0       TRUE
+#> 6                   1      FALSE
+#> 7                   0      FALSE
+#> 8                   1      FALSE
+#> 9                   5      FALSE
+#> 10                  6      FALSE
+#> 
+#> $logical_xx
+#> # A tibble: 2 × 6
+#>   uuid  question           old_value issue                check_id check_binding
+#>   <chr> <chr>              <chr>     <chr>                <chr>    <chr>        
+#> 1 5     distance_to_market less_30   distance to market … logical… logical_xx ~…
+#> 2 5     access_to_market   no        distance to market … logical… logical_xx ~…
+```
+
+``` r
+test_data <- data.frame(uuid = c(1:10) %>% as.character(),
+                       distance_to_market = rep(c("less_30","more_30"),5),
+                       access_to_market = c(rep("yes",4), rep("no",6)),
+                       number_children_05 = c(rep(c(0,1),4),5,6),
+                       number_children_618 = c(rep(c(0,1),4),5,6))
+check_list <- data.frame(name = c("logical_xx", "logical_yy", "logical_zz"),
+                         check = c("distance_to_market == \"less_30\" & access_to_market == \"no\"",
+                                   "number_children_05 > 3",
+                                   "rowSums(across(starts_with(\"number\")), na.rm = T) > 9"),
+                         description = c("distance to market less than 30 and no access",
+                                         "number of children under 5 seems high",
+                                         "number of children very high"),
+                         variables_to_clean = c("distance_to_market, access_to_market",
+                                                "number_children_05",
+                                                ""))
+check_for_logical_with_list(test_data,
+                            uuid_var = "uuid",
+                            list_of_check = check_list,
+                            check_id_column = "name",
+                            check_to_perform_column = "check",
+                            variables_to_clean_column = "variables_to_clean",
+                            description_column = "description")
+#> Warning in check_for_logical(.dataset = .dataset, uuid_var = uuid_var,
+#> variables_to_add = variables_to_add, : variables_to_clean not shared, results
+#> may not be accurate
+#> $checked_dataset
+#>    uuid distance_to_market access_to_market number_children_05
+#> 1     1            less_30              yes                  0
+#> 2     2            more_30              yes                  1
+#> 3     3            less_30              yes                  0
+#> 4     4            more_30              yes                  1
+#> 5     5            less_30               no                  0
+#> 6     6            more_30               no                  1
+#> 7     7            less_30               no                  0
+#> 8     8            more_30               no                  1
+#> 9     9            less_30               no                  5
+#> 10   10            more_30               no                  6
+#>    number_children_618 logical_xx logical_yy logical_zz
+#> 1                    0      FALSE      FALSE      FALSE
+#> 2                    1      FALSE      FALSE      FALSE
+#> 3                    0      FALSE      FALSE      FALSE
+#> 4                    1      FALSE      FALSE      FALSE
+#> 5                    0       TRUE      FALSE      FALSE
+#> 6                    1      FALSE      FALSE      FALSE
+#> 7                    0       TRUE      FALSE      FALSE
+#> 8                    1      FALSE      FALSE      FALSE
+#> 9                    5       TRUE       TRUE       TRUE
+#> 10                   6      FALSE       TRUE       TRUE
+#> 
+#> $logical_all
+#> # A tibble: 10 × 6
+#>    uuid  question           old_value               issue check_id check_binding
+#>    <chr> <chr>              <chr>                   <chr> <chr>    <chr>        
+#>  1 5     distance_to_market less_30                 dist… logical… logical_xx ~…
+#>  2 5     access_to_market   no                      dist… logical… logical_xx ~…
+#>  3 7     distance_to_market less_30                 dist… logical… logical_xx ~…
+#>  4 7     access_to_market   no                      dist… logical… logical_xx ~…
+#>  5 9     distance_to_market less_30                 dist… logical… logical_xx ~…
+#>  6 9     access_to_market   no                      dist… logical… logical_xx ~…
+#>  7 9     number_children_05 5                       numb… logical… logical_yy ~…
+#>  8 10    number_children_05 6                       numb… logical… logical_yy ~…
+#>  9 9     unable to identify please check this uuid… numb… logical… logical_zz ~…
+#> 10 10    unable to identify please check this uuid… numb… logical… logical_zz ~…
 ```
