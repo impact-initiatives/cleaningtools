@@ -277,6 +277,21 @@ recreate_parent_column(df = test_data,uuid = "uuid",sm_sep = ".")
 
 ```
 
+
+#### Example:: Recreate parent column for choice multiple 
+
+`review_sample_frame_with_dataset()` compares the sample frame with dataset and provide the overview of completed and remaining surveys.
+``` {r, eval=T,warning =F}
+review_output<- review_sample_frame_with_dataset(sample_frame = cleaningtools::sample_frame ,
+                                                 sample_frame_strata_col = "Neighbourhood",
+                                                 sample_frame_target_survey_col ="Total.no.of.HH",
+                                                 clean_data = cleaningtools::clean_data,
+                                                 clean_data_strata_column = "neighbourhood",
+                                                 consent_column = "consent_remote",
+                                                 value_for_consent_yes = "yes")
+review_output |> head()
+```
+
 #### Example:: Logical checks
 ```{r}
 test_data <- data.frame(uuid = c(1:10) %>% as.character(),
@@ -316,4 +331,3 @@ check_for_logical_with_list(test_data,
                             variables_to_clean_column = "variables_to_clean",
                             description_column = "description")
 ```
-
