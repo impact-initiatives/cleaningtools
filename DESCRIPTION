@@ -28,7 +28,8 @@ Imports:
     assertthat,
     purrr,
     stats,
-    utils
+    utils,
+    stringi
 Remotes:
     mhkhan27/illuminate
 Suggests: 

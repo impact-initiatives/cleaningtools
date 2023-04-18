@@ -10,6 +10,7 @@ create_cleaning_log(
   clean_data = clean_data,
   clean_data_uuid = "X_id",
   check_for_deletion_log = T,
+  cols_not_to_check = NULL,
   check_for_variable_name = T
 )
 }
@@ -23,6 +24,8 @@ create_cleaning_log(
 \item{clean_data_uuid}{Unique ID column name of clean dataset}
 
 \item{check_for_deletion_log}{TRUE to flag the removed survey}
+
+\item{cols_not_to_check}{List of columns those are not to be checked}
 
 \item{check_for_variable_name}{TRUE to flag the removed variables}
 }

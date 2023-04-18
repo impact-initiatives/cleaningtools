@@ -2,7 +2,7 @@
 % Please edit documentation in R/review_cleaning_log.R
 \name{review_cleaning_log}
 \alias{review_cleaning_log}
-\title{Compare cleaning logs}
+\title{Review cleaning logs}
 \usage{
 review_cleaning_log(
   raw_data = raw_data_hh,
@@ -12,11 +12,13 @@ review_cleaning_log(
   cleaning_log = cleaning_log_only,
   cleaning_log_uuid = "id",
   cleaning_log_change_type_column = "change_type",
-  cleaning_log_question_name = "question.name",
+  cleaning_log_question_name = "question",
   cleaning_log_new_value = "new_value",
   cleaning_log_old_value = "old_value",
-  deletion_log = deletion_log_hh,
-  deletion_log_uuid = "id",
+  cleaning_log_added_survey = "added_survey",
+  cleanning_log_no_action_value = c("no_action", "no_change"),
+  deletion_log = NULL,
+  deletion_log_uuid = NULL,
   check_for_deletion_log = T
 )
 }
@@ -41,6 +43,10 @@ review_cleaning_log(
 
 \item{cleaning_log_old_value}{Cleaning log old value}
 
+\item{cleaning_log_added_survey}{Value for change type column which defines for new surveys}
+
+\item{cleanning_log_no_action_value}{Value for change type column which defines for no action needed}
+
 \item{deletion_log}{deletion log}
 
 \item{deletion_log_uuid}{Unique ID column name of deletion log}
@@ -51,7 +57,7 @@ review_cleaning_log(
 Discrepancy in cleaning log
 }
 \description{
-Compare cleaning logs
+Review cleaning logs
 }
 \examples{
 \dontrun{

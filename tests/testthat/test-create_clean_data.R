@@ -41,10 +41,27 @@ testthat::test_that("implement cleaning log",{
                            cleaning_log_question_name = "questions",
                            cleaning_log_new_value = "new_value",
                            cleaning_log_old_value = "old_value",
-                           deletion_log = deletation_log,deletion_log_uuid = "X_uuid",
+                           deletion_log = deletation_log,
+                           deletion_log_uuid = "X_uuid",
                            check_for_deletion_log = T
-  )),0)
+  ) |> dplyr::filter(df.change_type != "no_action")),3)
 
+ #####
+#
+# a <-  review_cleaning_log(raw_data = cleaningtools::raw_data,raw_data_uuid = "X_uuid",
+#                      clean_data = clean_data_multiple,
+#                      clean_data_uuid = "X_uuid",cleaning_log = cleaning_log_1_log_only,
+#                      cleaning_log_uuid = "X_uuid",
+#                      cleaning_log_question_name = "questions",
+#                      cleaning_log_new_value = "new_value",
+#                      cleaning_log_old_value = "old_value",
+#                      deletion_log = deletation_log,
+#                      deletion_log_uuid = "X_uuid",
+#                      check_for_deletion_log = T
+#  )|> dplyr::filter(df.change_type != "no_action")
+
+
+#####
 
  ## check change response
  # change_response
