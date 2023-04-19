@@ -12,6 +12,9 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 devtools::load_all()
+deletaion_log <- cleaning_log |> filter(change_type == "remove_survey")
+cleaning_log2 <- cleaning_log |> filter(change_type != "remove_survey")
+options(scipen = 999)
 
 ```
 
@@ -39,6 +42,7 @@ You can install the development version from [GitHub](https://github.com/) with:
 ``` {r, eval=FALSE}
 # install.packages("devtools")
 devtools::install_github("impact-initiatives/cleaningtools")
+
 ```
 
 ## Examples
@@ -49,33 +53,36 @@ library(cleaningtools)
 testdata <- data.frame(uuid = c(letters[1:4], "a", "b", "c"),
                        col_a = runif(7),
                        col_b = runif(7)) %>%
- dplyr::rename(`_uuid` = uuid)
+  dplyr::rename(`_uuid` = uuid)
 testdata
 check_duplicate(testdata)
 ```
 
 ### Example:: Creating cleaning log from raw data and clean data
-`create_cleaning_log` function takes raw data and clean data as inputs and its identify any changes bwtween them and finally provide the output as cleaning log format.
-``` {r, eval=FALSE}
+`create_cleaning_log` function takes raw data and clean data as inputs and its identify any changes between them and finally provide the output as cleaning log format.
+``` {r, eval=T, message=FALSE}
 cleaning_log <- create_cleaning_log(
   raw_data = raw_data, raw_data_uuid = "X_uuid",
   clean_data = clean_data, clean_data_uuid = "X_uuid",
   check_for_deletion_log = T, check_for_variable_name = T
 )
+cleaning_log
 ```
 
 ### Example:: Comparing cleaning log with clean data and raw data
-`compare_cl_with_datasets` function takes raw data, clean data and cleaning log as inputs, and it first creates the cleaning log by comparing raw data and clean data, then compares it with the user-provided cleaning log. Finally, flagged the discrepancies between them (if any). 
-``` {r, eval=FALSE}
-compare_cl_with_datasets(
+`review_cleaning_log` function takes raw data, clean data and cleaning log as inputs, and it first creates the cleaning log by comparing raw data and clean data, then compares it with the user-provided cleaning log. Finally, flagged the discrepancies between them (if any). 
+``` {r, eval=T, message=FALSE}
+compared_df <- review_cleaning_log(
   raw_data = raw_data, raw_data_uuid = "X_uuid",
   clean_data = clean_data, clean_data_uuid = "X_uuid",
   cleaning_log = cleaning_log2, cleaning_log_uuid = "X_uuid",
   cleaning_log_question_name = "questions",
   cleaning_log_new_value = "new_value", cleaning_log_old_value = "old_value",
   deletion_log = deletaion_log, deletion_log_uuid = "X_uuid",
-  check_for_deletion_log = T, check_for_variable_name = T
+  check_for_deletion_log = T
 )
+
+compared_df
 ```
 
 
@@ -123,11 +130,11 @@ list_audit <- list(uuid1 = data.frame(event = c("form start", rep("question", 5)
                                       start = c(1661415887295, 1661415887301, 1661415890819, 1661415892297, 1661415893529, 1661415894720),
                                       end = c(NA, 1661415890790, 1661415892273, 1661415893506, 1661415894703, 1661415896452)))
 some_dataset <- data.frame(X_uuid = c("uuid1", "uuid2"),
-                          question1 = c("a","b"),
-                          question2 = c("a","b"),
-                          question3 = c("a","b"),
-                          question4 = c("a","b"),
-                          question5 = c("a","b"))
+                           question1 = c("a","b"),
+                           question2 = c("a","b"),
+                           question3 = c("a","b"),
+                           question4 = c("a","b"),
+                           question5 = c("a","b"))
 ```
 
 If you want to sum all the duration.
@@ -138,17 +145,17 @@ add_duration_from_audit(some_dataset, uuid_var = "X_uuid", audit_list = list_aud
 If you want to use calculate duration between 2 questions.
 ```{r}
 add_duration_from_audit(some_dataset, uuid_var = "X_uuid", audit_list = list_audit,
-                         start_question = "question1",
-                         end_question = "question3",
-                         sum_all = F)
+                        start_question = "question1",
+                        end_question = "question3",
+                        sum_all = F)
 ```
 
 If you want to do both.
 ```{r}
 add_duration_from_audit(some_dataset, uuid_var = "X_uuid", audit_list = list_audit,
-                         start_question = "question1",
-                         end_question = "question3",
-                         sum_all = T)
+                        start_question = "question1",
+                        end_question = "question3",
+                        sum_all = T)
 ```
 
 #### checking the duration of the dataset
@@ -225,7 +232,7 @@ clean_dataset <- create_clean_data(df = test_data,df_uuid = "uuid",cl = cleaning
                                    cl_change_col =  "question",
                                    cl_uuid = "uuid",
                                    cl_new_val = "new_value" )
-                          
+
 
 ```
 
@@ -237,9 +244,9 @@ clean_dataset <- create_clean_data(df = test_data,df_uuid = "uuid",cl = cleaning
 set.seed(122)
 
 df <- data.frame(
-    X_uuid = paste0("uuid_",1:100),
-    age = c(sample(18:80,replace = T,size = 96),99,99,98,88),
-    gender = c("99",sample(c("male","female"),replace = T,size = 95),"98","98","88","888"))
+  X_uuid = paste0("uuid_",1:100),
+  age = c(sample(18:80,replace = T,size = 96),99,99,98,88),
+  gender = c("99",sample(c("male","female"),replace = T,size = 95),"98","98","88","888"))
 
 output <- check_for_value(df = df,uuid_col_name = "X_uuid",element_name = "checked_dataset",values_to_look = c(99,98,88,888))
 
@@ -270,3 +277,57 @@ recreate_parent_column(df = test_data,uuid = "uuid",sm_sep = ".")
 
 ```
 
+
+#### Example:: Recreate parent column for choice multiple 
+
+`review_sample_frame_with_dataset()` compares the sample frame with dataset and provide the overview of completed and remaining surveys.
+``` {r, eval=T,warning =F}
+review_output<- review_sample_frame_with_dataset(sample_frame = cleaningtools::sample_frame ,
+                                                 sample_frame_strata_col = "Neighbourhood",
+                                                 sample_frame_target_survey_col ="Total.no.of.HH",
+                                                 clean_data = cleaningtools::clean_data,
+                                                 clean_data_strata_column = "neighbourhood",
+                                                 consent_column = "consent_remote",
+                                                 value_for_consent_yes = "yes")
+review_output |> head()
+```
+
+#### Example:: Logical checks
+```{r}
+test_data <- data.frame(uuid = c(1:10) %>% as.character(),
+                        today = rep("2023-01-01", 10),
+                        location = rep(c("villageA", "villageB"),5),
+                        distance_to_market = c(rep("less_30", 5), rep("more_30",5)),
+                        access_to_market = c(rep("yes",4), rep("no",6)),
+                        number_children_05 = c(rep(c(0,1),4),5,6))
+check_for_logical(test_data,
+                  uuid_var = "uuid",
+                  check_to_perform = "distance_to_market == \"less_30\" & access_to_market == \"no\"",
+                   variables_to_clean = "distance_to_market, access_to_market",
+                   description = "distance to market less than 30 and no access")
+```
+
+```{r}
+test_data <- data.frame(uuid = c(1:10) %>% as.character(),
+                       distance_to_market = rep(c("less_30","more_30"),5),
+                       access_to_market = c(rep("yes",4), rep("no",6)),
+                       number_children_05 = c(rep(c(0,1),4),5,6),
+                       number_children_618 = c(rep(c(0,1),4),5,6))
+check_list <- data.frame(name = c("logical_xx", "logical_yy", "logical_zz"),
+                         check = c("distance_to_market == \"less_30\" & access_to_market == \"no\"",
+                                   "number_children_05 > 3",
+                                   "rowSums(across(starts_with(\"number\")), na.rm = T) > 9"),
+                         description = c("distance to market less than 30 and no access",
+                                         "number of children under 5 seems high",
+                                         "number of children very high"),
+                         variables_to_clean = c("distance_to_market, access_to_market",
+                                                "number_children_05",
+                                                ""))
+check_for_logical_with_list(test_data,
+                            uuid_var = "uuid",
+                            list_of_check = check_list,
+                            check_id_column = "name",
+                            check_to_perform_column = "check",
+                            variables_to_clean_column = "variables_to_clean",
+                            description_column = "description")
+```

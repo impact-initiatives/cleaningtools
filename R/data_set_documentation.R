@@ -17,6 +17,7 @@
 #' survey
 #' choices
 #' overall_analysis
+#' sample_frame
 
 #' @name analysis_by_group
 #' @title Analysis by population group
@@ -78,3 +79,11 @@
 #' @rdname food_consumption_df
 #' @format NULL
 "food_consumption_df"
+
+
+#' @name sample_frame
+#' @title Sample frame
+#' @rdname sample_frame
+#' @format NULL
+"sample_frame"
+
