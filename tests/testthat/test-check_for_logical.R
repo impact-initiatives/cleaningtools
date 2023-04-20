@@ -64,6 +64,7 @@ test_that("Works with list of tests", {
                            variables_to_clean = c("distance_to_market, access_to_market",
                                                   "number_children_05"))
 
+
   logical_xx <- dplyr::tibble(uuid = rep("5", 2),
                               question = c("distance_to_market", "access_to_market"),
                               old_value = c("less_30", "no"),
