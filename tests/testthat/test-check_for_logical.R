@@ -391,3 +391,31 @@ test_that("when variables_to_clean is empty or null, check_with_list with still 
   expect_equal(expected_results,results_3)
 })
 
+test_that("id as number is converted to character", {
+  test_data <- data.frame(uuid = c(1:10) %>% as.character(),
+                          today = rep("2023-01-01", 10),
+                          location = rep(c("villageA", "villageB"),5),
+                          distance_to_market = c(rep("less_30", 5), rep("more_30",5)),
+                          access_to_market = c(rep("yes",4), rep("no",6)),
+                          number_children_05 = c(rep(c(0,1),4),5,6))
+
+  check_list <- data.frame(name = c(1, 2),
+                           check = c("distance_to_market == \"less_30\" & access_to_market == \"no\"",
+                                     "number_children_05 > 3"),
+                           description = c("distance to market less than 30 and no access",
+                                           "number of children under 5 seems high"),
+                           variables_to_clean = c("distance_to_market, access_to_market",
+                                                  "number_children_05"))
+
+  expect_no_error(check_for_logical_with_list(test_data,
+                                              uuid_var = "uuid",
+                                              list_of_check = check_list,
+                                              check_id_column = "name",
+                                              check_to_perform_column = "check",
+                                              variables_to_clean_column = "variables_to_clean",
+                                              description_column = "description",
+                                              bind_checks = FALSE))
+
+
+})
+
