@@ -9,8 +9,8 @@ test_that("3 duplicates, return 3 duplicates", {
     checked_dataset = testdata,
     duplicate_log = data.frame(
       uuid = c("a", "b", "c"),
-      value = c("a", "b", "c"),
-      variable = rep("_uuid", 3),
+      old_value = c("a", "b", "c"),
+      question = rep("_uuid", 3),
       issue = rep("duplicated uuid", 3)
     )
   )
@@ -29,8 +29,8 @@ test_that("no duplicates, return no duplicates", {
     checked_dataset = testdata,
     duplicate_log = data.frame(
       uuid = character(),
-      value = character(),
-      variable = character(),
+      old_value = character(),
+      question = character(),
       issue = character()
     )
   )
@@ -47,8 +47,8 @@ test_that("3 duplicates, return 3 duplicates - names different than _uuid", {
     checked_dataset = testdata,
     duplicate_log = data.frame(
       uuid = c("a", "b", "c"),
-      value = c("a", "b", "c"),
-      variable = rep("X_uuid", 3),
+      old_value = c("a", "b", "c"),
+      question = rep("X_uuid", 3),
       issue = rep("duplicated uuid", 3)
     )
   )
@@ -66,8 +66,8 @@ test_that("no duplicates, return no duplicates - names different than _uuid", {
     checked_dataset = testdata,
     duplicate_log = data.frame(
       uuid = character(),
-      value = character(),
-      variable = character(),
+      old_value = character(),
+      question = character(),
       issue = character()
     )
   )
@@ -87,8 +87,8 @@ test_that("3 duplicates, return 3 duplicates - names different than _uuid but _u
     checked_dataset = testdata,
     duplicate_log = data.frame(
       uuid = c("a", "b", "c"),
-      value = c("a", "b", "c"),
-      variable = rep("id", 3),
+      old_value = c("a", "b", "c"),
+      question = rep("id", 3),
       issue = rep("duplicated uuid", 3)
     )
   )
@@ -108,8 +108,8 @@ test_that("no duplicates in the id name, return no duplicates - names different 
     checked_dataset = testdata,
     duplicate_log = data.frame(
       uuid = character(),
-      value = character(),
-      variable = character(),
+      old_value = character(),
+      question = character(),
       issue = character()
     )
   )
@@ -128,8 +128,8 @@ test_that("Adds to the list if there is already a check.", {
       dplyr::rename(`_uuid` = uuid),
     outlier_log = data.frame(
       uuid = NULL,
-      value = NULL,
-      variable = NULL,
+      old_value = NULL,
+      question = NULL,
       issue = NULL
     )
   )
@@ -138,14 +138,14 @@ test_that("Adds to the list if there is already a check.", {
     checked_dataset = test_list$checked_dataset,
     outlier_log = data.frame(
       uuid = NULL,
-      value = NULL,
-      variable = NULL,
+      old_value = NULL,
+      question = NULL,
       issue = NULL
     ),
     duplicate_log = data.frame(
       uuid = c("a", "b", "c"),
-      value = c("a", "b", "c"),
-      variable = rep("_uuid", 3),
+      old_value = c("a", "b", "c"),
+      question = rep("_uuid", 3),
       issue = rep("duplicated uuid", 3)
     )
   )
@@ -161,8 +161,8 @@ test_that("Check that the list has an object called checked_dataset", {
     ),
     outlier_log = data.frame(
       uuid = NULL,
-      value = NULL,
-      variable = NULL,
+      old_value = NULL,
+      question = NULL,
       issue = NULL
     )
   )

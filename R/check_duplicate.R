@@ -37,8 +37,8 @@ check_duplicate <- function(.dataset, .col_to_check = "_uuid") {
     dplyr::filter(duplicate_check) %>%
     dplyr::select(all_of(.col_to_check)) %>%
     dplyr::mutate(
-      value = !!rlang::sym(.col_to_check),
-      variable = .col_to_check,
+      old_value = !!rlang::sym(.col_to_check),
+      question = .col_to_check,
       issue = "duplicated uuid"
     ) %>%
     dplyr::rename(uuid = !!rlang::sym(.col_to_check))

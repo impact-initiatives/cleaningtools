@@ -342,10 +342,10 @@ check_duration <- function(.dataset,
     dplyr::filter(duration_check) %>%
     dplyr::select(all_of(c(uuid_var, .col_to_check))) %>%
     dplyr::mutate(
-      variable = .col_to_check,
+      question = .col_to_check,
       issue = "Duration is lower or higher than the thresholds"
     ) %>%
-    dplyr::rename(value = !!rlang::sym(.col_to_check),
+    dplyr::rename(old_value = !!rlang::sym(.col_to_check),
                   uuid = !!rlang::sym(uuid_var))
 
   .dataset[[name_log]] <- log
