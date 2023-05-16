@@ -158,7 +158,7 @@ create_duration_from_audit_sum_all <- function(audit_file) {
 #' @param end_question character vector use for the ending question (optional)
 #' @param sum_all TRUE or FALSE if to add the time with sum all duration
 #'
-#' @return
+#' @return return the dataset with durations column added
 #' @export
 #'
 #' @examples

@@ -4,13 +4,23 @@
 \alias{check_duplicate}
 \title{Checks for duplicated uuid}
 \usage{
-check_duplicate(.dataset, .col_to_check = "_uuid")
+check_duplicate(
+  .dataset,
+  uuid_col_name = "_uuid",
+  .col_to_check = NULL,
+  log_name = "duplicate_log"
+)
 }
 \arguments{
 \item{.dataset}{a dataset to be check as a dataframe or a list with the
 dataframe stored as "checked_dataset"}
 
-\item{.col_to_check}{string character with the name of the uuid column}
+\item{uuid_col_name}{string character for the uuid, default is "_uuid"}
+
+\item{.col_to_check}{string character with the name of the columns to check. If NULL (default),
+it will check for the uuid_col_name}
+
+\item{log_name}{name of the log of flagged value}
 }
 \value{
 return a list with the dataset checked stored as checked_dataset and
@@ -28,5 +38,15 @@ col_b = runif(7)
   dplyr::rename(`_uuid` = uuid)
 
 check_duplicate(testdata)
+
+testdata2 <- data.frame(
+              uuid = letters[c(1:7)],
+              village = paste("village", c(1:3,1:3,4)),
+              ki_identifier = paste0("xx_", c(1:5,3,4))) \%>\%
+              dplyr::rename(`_uuid` = uuid)
+
+check_duplicate(testdata2, .col_to_check = "village")
+
+check_duplicate(testdata2, .col_to_check = c("village", "ki_identifier"), uuid = "_uuid")
 
 }
