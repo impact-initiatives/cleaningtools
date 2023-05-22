@@ -255,3 +255,22 @@ test_that("If 2 values are passed with an error in names, there should be an err
   testthat::expect_error(check_duplicate(testdata, .col_to_check = c("village", "ki"), uuid = "_uuid"),
                          "Cannot find village ~/~ ki in the names of the dataset")
 })
+
+test_that("If 2 variables are from different types (e.g. int and text), it will work", {
+  testdata <- data.frame(
+    id = c(letters[1:4], "a", "b", "c"),
+    col_a = c(1,2,3,4,1,2,3),
+    col_b = runif(7),
+    uuid = LETTERS[1:7])
+
+  expected_results <- list(checked_dataset = testdata,
+                           duplicate_log = tibble(uuid = c("E", "E", "F", "F", "G", "G"),
+                                                   question = rep(c("id", "col_a"),3),
+                                                   old_value = c("a", "1", "b", "2", "c", "3"),
+                                                   issue = rep("duplicated id ~/~ col_a", 6)))
+  testthat::expect_equal(check_duplicate(testdata,
+                                         uuid_col_name = "uuid",
+                                         .col_to_check = c("id", "col_a")),
+                         expected_results)
+
+})

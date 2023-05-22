@@ -62,10 +62,11 @@ check_duplicate <- function(.dataset,
   }
 
   duplicate_log <- .dataset[["checked_dataset"]] %>%
+    dplyr::mutate(dplyr::across(.cols = dplyr::everything(), .fns = as.character)) %>%
     tidyr::unite(unique_combination, .col_to_check, remove = F) %>%
     dplyr::mutate(duplicate_check = duplicated(unique_combination)) %>%
     dplyr::filter(duplicate_check) %>%
-    dplyr::select(all_of(c(uuid_col_name, .col_to_check)))
+    dplyr::select(dplyr::all_of(c(uuid_col_name, .col_to_check)))
 
   if (check_only_uuid) {
     duplicate_log <- duplicate_log %>%
