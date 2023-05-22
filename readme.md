@@ -43,32 +43,76 @@ testdata <- data.frame(uuid = c(letters[1:4], "a", "b", "c"),
   dplyr::rename(`_uuid` = uuid)
 testdata
 #>   _uuid     col_a     col_b
-#> 1     a 0.7746894 0.5918279
-#> 2     b 0.6634490 0.3465015
-#> 3     c 0.6412181 0.8778429
-#> 4     d 0.1997036 0.0337068
-#> 5     a 0.7781121 0.2484940
-#> 6     b 0.4689926 0.4048280
-#> 7     c 0.9152493 0.9236777
+#> 1     a 0.1404859 0.1195845
+#> 2     b 0.8148428 0.4891062
+#> 3     c 0.8135898 0.4397823
+#> 4     d 0.3403768 0.2267128
+#> 5     a 0.8096986 0.3841612
+#> 6     b 0.2356780 0.5779422
+#> 7     c 0.9435896 0.5115062
 check_duplicate(testdata)
 #> $checked_dataset
-
-#>   _uuid     col_a      col_b
-#> 1     a 0.2448551 0.06277515
-#> 2     b 0.4218389 0.01055617
-#> 3     c 0.9942577 0.87375758
-#> 4     d 0.8562951 0.61441531
-#> 5     a 0.1793255 0.07630995
-#> 6     b 0.2303949 0.16110527
-#> 7     c 0.6642791 0.78342329
-
-
+#>   _uuid     col_a     col_b
+#> 1     a 0.1404859 0.1195845
+#> 2     b 0.8148428 0.4891062
+#> 3     c 0.8135898 0.4397823
+#> 4     d 0.3403768 0.2267128
+#> 5     a 0.8096986 0.3841612
+#> 6     b 0.2356780 0.5779422
+#> 7     c 0.9435896 0.5115062
 #> 
 #> $duplicate_log
-#>   uuid value variable           issue
-#> 1    a     a    _uuid duplicated uuid
-#> 2    b     b    _uuid duplicated uuid
-#> 3    c     c    _uuid duplicated uuid
+#>   uuid old_value question            issue
+#> 1    a         a    _uuid duplicated _uuid
+#> 2    b         b    _uuid duplicated _uuid
+#> 3    c         c    _uuid duplicated _uuid
+```
+
+Or you can check duplicate for a specific variable or combination of
+variables.
+
+``` r
+testdata2 <- data.frame(
+  uuid = letters[c(1:7)],
+  village = paste("village", c(1:3,1:3,4)),
+  ki_identifier = paste0("xx_", c(1:5,3,4))
+  ) %>%
+  dplyr::rename(`_uuid` = uuid)
+check_duplicate(testdata2, .col_to_check = "village")
+#> $checked_dataset
+#>   _uuid   village ki_identifier
+#> 1     a village 1          xx_1
+#> 2     b village 2          xx_2
+#> 3     c village 3          xx_3
+#> 4     d village 1          xx_4
+#> 5     e village 2          xx_5
+#> 6     f village 3          xx_3
+#> 7     g village 4          xx_4
+#> 
+#> $duplicate_log
+#> # A tibble: 3 × 4
+#>   uuid  question old_value issue             
+#>   <chr> <chr>    <chr>     <glue>            
+#> 1 d     village  village 1 duplicated village
+#> 2 e     village  village 2 duplicated village
+#> 3 f     village  village 3 duplicated village
+check_duplicate(testdata2, .col_to_check = c("village", "ki_identifier"), uuid = "_uuid")
+#> $checked_dataset
+#>   _uuid   village ki_identifier
+#> 1     a village 1          xx_1
+#> 2     b village 2          xx_2
+#> 3     c village 3          xx_3
+#> 4     d village 1          xx_4
+#> 5     e village 2          xx_5
+#> 6     f village 3          xx_3
+#> 7     g village 4          xx_4
+#> 
+#> $duplicate_log
+#> # A tibble: 2 × 4
+#>   uuid  question      old_value issue                               
+#>   <chr> <chr>         <chr>     <glue>                              
+#> 1 f     village       village 3 duplicated village ~/~ ki_identifier
+#> 2 f     ki_identifier xx_3      duplicated village ~/~ ki_identifier
 ```
 
 ### Example:: Creating cleaning log from raw data and clean data
@@ -441,25 +485,20 @@ compared_df <- review_cleaning_log(
 )
 
 compared_df
-#> # A tibble: 16 × 8
+#> # A tibble: 635 × 8
 #>    uuid   df.question_name df.change_type df.new_value cl.new_value df.old_value
 #>    <chr>  <chr>            <chr>          <chr>        <chr>        <chr>       
-#>  1 51324… water_sources.b… change_respon… TRUE         1            FALSE       
-#>  2 d5d26… water_sources.b… change_respon… TRUE         1            FALSE       
-#>  3 728e4… treat_drink_wat… change_respon… FALSE        0            TRUE        
-#>  4 3b973… treat_drink_wat… change_respon… FALSE        0            TRUE        
-#>  5 51324… water_sources.b… change_respon… TRUE         1            FALSE       
-#>  6 d5d26… water_sources.b… change_respon… TRUE         1            FALSE       
-#>  7 3b973… treat_drink_wat… change_respon… FALSE        0            TRUE        
-#>  8 728e4… treat_drink_wat… change_respon… FALSE        0            TRUE        
-#>  9 04e28… spend_tap        change_respon… FALSE        <NA>         0           
-#> 10 12387… spend_tap        change_respon… FALSE        <NA>         0           
-#> 11 40d8e… spend_tap        change_respon… FALSE        <NA>         0           
-#> 12 5a2d6… spend_tap        change_respon… FALSE        <NA>         0           
-#> 13 745ce… spend_tap        change_respon… FALSE        <NA>         0           
-#> 14 90e04… spend_tap        change_respon… FALSE        <NA>         0           
-#> 15 d0407… spend_tap        change_respon… FALSE        <NA>         0           
-#> 16 f28e9… spend_tap        change_respon… FALSE        <NA>         0           
+#>  1 1a802… air_coolers_nb   change_respon… <NA>         4            <NA>        
+#>  2 a3751… air_coolers_nb   change_respon… <NA>         2            <NA>        
+#>  3 bdcca… air_coolers_nb   no_action      <NA>         <NA>         <NA>        
+#>  4 dd3a9… connection_fees… no_action      <NA>         <NA>         <NA>        
+#>  5 9dac8… connection_fees… no_action      <NA>         <NA>         <NA>        
+#>  6 2b148… days_available_… no_action      <NA>         <NA>         <NA>        
+#>  7 bd2a7… hours_available… no_action      <NA>         <NA>         <NA>        
+#>  8 6cb6e… inc_employment_… no_action      <NA>         <NA>         <NA>        
+#>  9 52055… level_service_w… no_action      <NA>         <NA>         <NA>        
+#> 10 7f7a6… pay_water_charg… no_action      <NA>         <NA>         <NA>        
+#> # ℹ 625 more rows
 #> # ℹ 2 more variables: cl.old_value <chr>, comment <chr>
 ```
 
@@ -619,11 +658,11 @@ check_duration(testdata,
 #> 7     g                     8642007                              144
 #> 
 #> $duration_log
-#>   uuid value                         variable
-#> 1    b     6 duration_audit_start_end_minutes
-#> 2    d     5 duration_audit_start_end_minutes
-#> 3    e    14 duration_audit_start_end_minutes
-#> 4    g   144 duration_audit_start_end_minutes
+#>   uuid old_value                         question
+#> 1    b         6 duration_audit_start_end_minutes
+#> 2    d         5 duration_audit_start_end_minutes
+#> 3    e        14 duration_audit_start_end_minutes
+#> 4    g       144 duration_audit_start_end_minutes
 #>                                             issue
 #> 1 Duration is lower or higher than the thresholds
 #> 2 Duration is lower or higher than the thresholds
@@ -646,9 +685,9 @@ check_duration(
 #> 7     g                     8642007                              144
 #> 
 #> $duration_log
-#>   uuid   value                    variable
-#> 1    d  311585 duration_audit_start_end_ms
-#> 2    g 8642007 duration_audit_start_end_ms
+#>   uuid old_value                    question
+#> 1    d    311585 duration_audit_start_end_ms
+#> 2    g   8642007 duration_audit_start_end_ms
 #>                                             issue
 #> 1 Duration is lower or higher than the thresholds
 #> 2 Duration is lower or higher than the thresholds
@@ -670,11 +709,11 @@ testdata %>% check_duration(.col_to_check = "duration_audit_start_end_minutes") 
 #> 7     g                     8642007                              144
 #> 
 #> $duration_log
-#>   uuid value                         variable
-#> 1    b     6 duration_audit_start_end_minutes
-#> 2    d     5 duration_audit_start_end_minutes
-#> 3    e    14 duration_audit_start_end_minutes
-#> 4    g   144 duration_audit_start_end_minutes
+#>   uuid old_value                         question
+#> 1    b         6 duration_audit_start_end_minutes
+#> 2    d         5 duration_audit_start_end_minutes
+#> 3    e        14 duration_audit_start_end_minutes
+#> 4    g       144 duration_audit_start_end_minutes
 #>                                             issue
 #> 1 Duration is lower or higher than the thresholds
 #> 2 Duration is lower or higher than the thresholds
@@ -682,9 +721,9 @@ testdata %>% check_duration(.col_to_check = "duration_audit_start_end_minutes") 
 #> 4 Duration is lower or higher than the thresholds
 #> 
 #> $duration_in_ms
-#>   uuid   value                    variable
-#> 1    d  311585 duration_audit_start_end_ms
-#> 2    g 8642007 duration_audit_start_end_ms
+#>   uuid old_value                    question
+#> 1    d    311585 duration_audit_start_end_ms
+#> 2    g   8642007 duration_audit_start_end_ms
 #>                                             issue
 #> 1 Duration is lower or higher than the thresholds
 #> 2 Duration is lower or higher than the thresholds
@@ -838,8 +877,7 @@ recreate_parent_column(df = test_data,uuid = "uuid",sm_sep = ".")
 #> 6 uuid_6 female x_z                   0         0          1         0 <NA>
 ```
 
-
-#### Example:: Review sample frame with dataset
+#### Example:: Recreate parent column for choice multiple
 
 `review_sample_frame_with_dataset()` compares the sample frame with
 dataset and provide the overview of completed and remaining surveys.
@@ -860,6 +898,7 @@ review_output |> head()
 #> 4   Talafar       Ninewa    al_askary4              6         6         0
 #> 5   Talafar       Ninewa   al_jazeera1             12        12         0
 #> 6   Talafar       Ninewa   al_jazeera2             15        15         0
+```
 
 #### Example:: Logical checks
 

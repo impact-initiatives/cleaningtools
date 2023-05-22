@@ -225,8 +225,8 @@ test_that("4 outside of boundaries, return 4 flagged", {
     checked_dataset = testdata,
     duration_log = data.frame(
       uuid = c("b", "d", "e", "g"),
-      value = c(6, 5, 14, 144),
-      variable = rep("duration_audit_start_end_minutes", 4),
+      old_value = c(6, 5, 14, 144),
+      question = rep("duration_audit_start_end_minutes", 4),
       issue = rep("Duration is lower or higher than the thresholds", 4)
     )
   )
@@ -246,8 +246,8 @@ test_that("no outside of boundaries, no flagged", {
     checked_dataset = testdata,
     duration_log = data.frame(
       uuid = character(),
-      value = double(),
-      variable = character(),
+      old_value = double(),
+      question = character(),
       issue = character()
     )
   )
@@ -269,8 +269,8 @@ test_that("no outside of boundaries, no flagged - names different than _uuid", {
     checked_dataset = testdata,
     duration_log = data.frame(
       uuid = character(),
-      value = double(),
-      variable = character(),
+      old_value = double(),
+      question = character(),
       issue = character()
     )
   )
@@ -293,8 +293,8 @@ test_that("4 outside of boundaries, return 4 flagged - names different than _uui
     checked_dataset = testdata,
     duration_log = data.frame(
       uuid = c("b", "d", "e", "g"),
-      value = c(6, 5, 14, 144),
-      variable = rep("duration_audit_start_end_minutes", 4),
+      old_value = c(6, 5, 14, 144),
+      question = rep("duration_audit_start_end_minutes", 4),
       issue = rep("Duration is lower or higher than the thresholds", 4)
     )
   )
@@ -315,8 +315,8 @@ test_that("Adds to the list if there is already a check.", {
       dplyr::rename(`_uuid` = uuid),
     outlier_log = data.frame(
       uuid = NULL,
-      value = NULL,
-      variable = NULL,
+      old_value = NULL,
+      question = NULL,
       issue = NULL
     )
   )
@@ -325,14 +325,14 @@ test_that("Adds to the list if there is already a check.", {
     checked_dataset = test_list$checked_dataset,
     outlier_log = data.frame(
       uuid = NULL,
-      value = NULL,
-      variable = NULL,
+      old_value = NULL,
+      question = NULL,
       issue = NULL
     ),
     duration_log = data.frame(
       uuid = c("b", "d", "e", "g"),
-      value = c(6, 5, 14, 144),
-      variable = rep("duration_audit_start_end_minutes", 4),
+      old_value = c(6, 5, 14, 144),
+      question = rep("duration_audit_start_end_minutes", 4),
       issue = rep("Duration is lower or higher than the thresholds", 4)
       )
   )
@@ -350,8 +350,8 @@ test_that("Check that the list has an object called checked_dataset", {
     ),
     outlier_log = data.frame(
       uuid = NULL,
-      value = NULL,
-      variable = NULL,
+      old_value = NULL,
+      question = NULL,
       issue = NULL
     )
   )
