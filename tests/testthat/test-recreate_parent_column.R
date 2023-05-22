@@ -35,7 +35,7 @@ pre_clean_test <- dplyr::tibble(
   testthat::expect_no_warning(recreate_parent_column(df = pre_clean_test,uuid = "uuid",sm_sep = "."))
   actual_result <- recreate_parent_column(df = pre_clean_test,uuid = "uuid",sm_sep = ".")
 
-  testthat::expect_equal(actual_result,expected_test)
+  testthat::expect_equal(actual_result$data_with_fix_concat,expected_test)
 
 
   ####### sm_sep = "." multiple "."
@@ -69,7 +69,7 @@ pre_clean_test <- dplyr::tibble(
 
   actual_result <- recreate_parent_column(df = pre_clean_test,uuid = "uuid",sm_sep = ".")
 
-  testthat::expect_equal(actual_result,expected_test)
+  testthat::expect_equal(actual_result$data_with_fix_concat,expected_test)
   testthat::expect_warning(recreate_parent_column(df = pre_clean_test,uuid = "uuid",sm_sep = "."))
 
 
@@ -105,7 +105,7 @@ pre_clean_test <- dplyr::tibble(
 
   actual_result <- recreate_parent_column(df = pre_clean_test,uuid = "uuid",sm_sep = "/")
 
-  testthat::expect_equal(actual_result,expected_test)
+  testthat::expect_equal(actual_result$data_with_fix_concat,expected_test)
 
 
 
@@ -142,7 +142,7 @@ pre_clean_test <- dplyr::tibble(
   testthat::expect_warning(recreate_parent_column(df = pre_clean_test,uuid = "uuid",sm_sep = "/"))
   actual_result <- recreate_parent_column(df = pre_clean_test,uuid = "uuid",sm_sep = "/")
 
-  testthat::expect_equal(actual_result,expected_test)
+  testthat::expect_equal(actual_result$data_with_fix_concat,expected_test)
 
 
 
@@ -187,7 +187,7 @@ pre_clean_test <- dplyr::tibble(
                                           kobo_survey_sheet = survey_sheet,
                                           kobo_choices_sheet = choice_sheet)
 
-  testthat::expect_equal(expected_result,actual_result)
+  testthat::expect_equal(expected_result,actual_result$data_with_fix_concat)
 
   ### check error message
   choice_sheet <- dplyr::tibble(list_name =c("xxx","xxx","xxx","xxx"),
@@ -225,7 +225,7 @@ pre_clean_test <- dplyr::tibble(
     reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_))
 
   actual_output <- recreate_parent_column(df = pre_clean_test,uuid = "uuid",sm_sep = ".")
-  expect_equal(expected_test, actual_output)
+  expect_equal(expected_test, actual_output$data_with_fix_concat)
 
   ### check with adding one option (line3) and swapping options (line 6)
   pre_clean_test <- dplyr::tibble(
@@ -255,7 +255,7 @@ pre_clean_test <- dplyr::tibble(
     reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_))
 
   actual_output <- recreate_parent_column(df = pre_clean_test,uuid = "uuid",sm_sep = ".")
-  expect_equal(expected_test, actual_output)
+  expect_equal(expected_test, actual_output$data_with_fix_concat)
 })
 
 test_that("auto_detect_sm_parents detects correclty", {
@@ -411,3 +411,62 @@ test_that("auto_sm_parent_children detects correclty", {
 
   expect_equal(auto_sm_parent_children(df = pre_clean_test, sm_sep = "/"), expected_results, ignore_attr = TRUE)
 })
+
+
+
+##### no change
+
+test_that("recreate other columns/with no change", {
+
+  test_data <-  dplyr::tibble(
+    uuid = paste0("uuid_",1:6),
+    gender = rep(c("male","female"),3),
+    reason = c("yy","x.x. zy",
+               "zy","x.x. x.z zy",
+               "yy","x.z"),
+    `reason/x.x.` = c(0,1,0,1,0,0),
+    `reason/yy` = c(1,0,0,0,1,0),
+    `reason/x.z` = c(0,0,0,1,0,1),
+    `reason/zy` = c(0,1,1,1,0,0),
+    reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_))
+
+
+  actual_result <- recreate_parent_column(df = test_data,uuid = "uuid",sm_sep = "/")
+
+  expected <- structure(list(), class = c("tbl_df", "tbl", "data.frame"), row.names = integer(0), names = character(0))
+
+  ## check if its list
+  testthat::expect_equal(length(actual_result),2)
+  testthat::expect_equal(actual_result$change_log,expected)
+  testthat::expect_equal(actual_result$data_with_fix_concat,test_data)
+
+})
+
+
+
+##### no choice multiple
+
+test_that("recreate other columns/with no choice multiple", {
+
+  test_data <-  dplyr::tibble(
+    uuid = paste0("uuid_",1:6),
+    gender = rep(c("male","female"),3),
+    reason1 = c(0,1,0,1,0,0),
+    reason2 = c(1,0,0,0,1,0),
+    reason3 = c(0,0,0,1,0,1),
+    reaso3 = c(0,1,1,1,0,0),
+    reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_))
+
+
+  actual_result <- recreate_parent_column(df = test_data,uuid = "uuid",sm_sep = "/")
+
+  expected <- structure(list(), class = c("tbl_df", "tbl", "data.frame"), row.names = integer(0), names = character(0))
+
+  ## check if its list
+  testthat::expect_equal(length(actual_result),2)
+  testthat::expect_equal(actual_result$change_log,"No choice multiple questions/Nothing has changed")
+  testthat::expect_equal(actual_result$data_with_fix_concat,test_data)
+
+})
+
+
