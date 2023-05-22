@@ -80,7 +80,7 @@ check_for_logical <- function(.dataset,
   }
 
   .dataset[["checked_dataset"]] <- .dataset[["checked_dataset"]] %>%
-        mutate(!!sym(check_id) := eval(parse(text = check_to_perform)))
+        mutate(!!sym(as.character(check_id)) := eval(parse(text = check_to_perform)))
 
   trimmed_dataset <- .dataset[["checked_dataset"]] %>%
     dplyr::filter(!!sym(check_id)) %>%
@@ -101,9 +101,9 @@ check_for_logical <- function(.dataset,
   }
 
   .dataset[[check_id]] <- trimmed_dataset %>%
+    dplyr::mutate(dplyr::across(.cols = dplyr::everything(), .fns = as.character)) %>%
     tidyr::pivot_longer(cols= -c("uuid", variables_to_add), names_to = "question", values_to = "old_value") %>%
-    dplyr::mutate(dplyr::across(.cols = dplyr::everything(), .fns = as.character),
-                  issue = description,
+    dplyr::mutate(issue = description,
                   check_id = check_id,
                   check_binding = paste(check_id, uuid, sep = " ~/~ "))
   return(.dataset)
@@ -183,6 +183,7 @@ check_for_logical_with_list <- function(.dataset,
 
   #split the check in a list and map check_for_logical
   log_of_logical_checks <- list_of_check %>%
+    dplyr::mutate(!!sym(check_id_column) := as.character(!!sym(check_id_column))) %>%
     dplyr::group_by(!!sym(check_id_column)) %>%
     dplyr::group_split() %>%
     purrr::map(~check_for_logical(.dataset = .dataset,
