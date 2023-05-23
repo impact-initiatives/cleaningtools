@@ -1,13 +1,13 @@
 
+
 #' Check if the input passed to the check_others function is correct
 #'
 #' @param dataset dataset
 #' @param uuid uuid column
 #' @param var_list list of questions to generate the logs for
+#'
 #' @return nothing
 #' @export
-#'
-#' @examples
 #'
 
 check_others_checks <- function(dataset,uuid,var_list) {
@@ -43,12 +43,15 @@ check_others_checks <- function(dataset,uuid,var_list) {
 #' @export
 #'
 #' @examples
-
-
+#' check_others(dataset = cleaningtools::cleaningtools_clean_data,
+#' uuid = "X_uuid",
+#' var_list = names(cleaningtools::cleaningtools_clean_data |>
+#' dplyr::select(ends_with("_other")) |>
+#' dplyr::select(-contains("."))))
 check_others <- function(dataset,
                          uuid = "uuid",
                          var_list = NULL
-                         ) {
+) {
 
 
   input_is_list = F
@@ -69,8 +72,8 @@ check_others <- function(dataset,
 
   other_log <- dataset %>%
     dplyr::select(uuid := !!rlang::sym(uuid), dplyr::all_of(var_list)) %>%
-    tidyr::pivot_longer(cols= -c("uuid"), names_to = "variable") %>%
-    dplyr::filter(!is.na(value) & value != "") %>% dplyr::mutate(
+    tidyr::pivot_longer(cols= -c("uuid"), names_to = "question", values_to = "old_value") %>%
+    dplyr::filter(!is.na(old_value) & old_value != "") %>% dplyr::mutate(
       issue = "recode other"
     )
 
@@ -84,9 +87,3 @@ check_others <- function(dataset,
 
 
 }
-
-
-
-
-
-
