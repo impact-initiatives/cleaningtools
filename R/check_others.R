@@ -9,8 +9,7 @@
 #' @return nothing
 #' @export
 #'
-#' @examples
-#'
+
 check_others_checks <- function(dataset,uuid,var_list) {
 
   if (!(uuid %in% names(dataset))) {
@@ -50,6 +49,7 @@ check_others_checks <- function(dataset,uuid,var_list) {
 #' dplyr::select(ends_with("_other")) |>
 #' dplyr::select(-contains("."))))
 #'
+
 check_others <- function(dataset,
                          uuid = "uuid",
                          var_list = NULL
@@ -74,8 +74,8 @@ check_others <- function(dataset,
 
   other_log <- dataset %>%
     dplyr::select(uuid := !!rlang::sym(uuid), dplyr::all_of(var_list)) %>%
-    tidyr::pivot_longer(cols= -c("uuid"), names_to = "variable") %>%
-    dplyr::filter(!is.na(value) & value != "") %>% dplyr::mutate(
+    tidyr::pivot_longer(cols= -c("uuid"), names_to = "question", values_to = "old_value") %>%
+    dplyr::filter(!is.na(old_value) & old_value != "") %>% dplyr::mutate(
       issue = "recode other"
     )
 

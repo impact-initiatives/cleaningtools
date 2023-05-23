@@ -158,7 +158,7 @@ create_duration_from_audit_sum_all <- function(audit_file) {
 #' @param end_question character vector use for the ending question (optional)
 #' @param sum_all TRUE or FALSE if to add the time with sum all duration
 #'
-#' @return
+#' @return return the dataset with durations column added
 #' @export
 #'
 #' @examples
@@ -342,10 +342,10 @@ check_duration <- function(.dataset,
     dplyr::filter(duration_check) %>%
     dplyr::select(all_of(c(uuid_var, .col_to_check))) %>%
     dplyr::mutate(
-      variable = .col_to_check,
+      question = .col_to_check,
       issue = "Duration is lower or higher than the thresholds"
     ) %>%
-    dplyr::rename(value = !!rlang::sym(.col_to_check),
+    dplyr::rename(old_value = !!rlang::sym(.col_to_check),
                   uuid = !!rlang::sym(uuid_var))
 
   .dataset[[name_log]] <- log

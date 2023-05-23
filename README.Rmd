@@ -58,6 +58,18 @@ testdata
 check_duplicate(testdata)
 ```
 
+Or you can check duplicate for a specific variable or combination of variables.
+```{r}
+testdata2 <- data.frame(
+  uuid = letters[c(1:7)],
+  village = paste("village", c(1:3,1:3,4)),
+  ki_identifier = paste0("xx_", c(1:5,3,4))
+  ) %>%
+  dplyr::rename(`_uuid` = uuid)
+check_duplicate(testdata2, .col_to_check = "village")
+check_duplicate(testdata2, .col_to_check = c("village", "ki_identifier"), uuid = "_uuid")
+```
+
 ### Example:: Creating cleaning log from raw data and clean data
 `create_cleaning_log` function takes raw data and clean data as inputs and its identify any changes between them and finally provide the output as cleaning log format.
 ``` {r, eval=T, message=FALSE}
