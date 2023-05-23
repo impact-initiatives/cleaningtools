@@ -1,5 +1,3 @@
-library(dplyr)
-
 #' Checks for potential PII
 #' @param df Data set
 #' @param uuid  Column name defining the uuid
@@ -39,11 +37,11 @@ check_for_pii<- function(df,element_name =NULL,uuid ="X_uuid",words_to_look = NU
   potential_PII <- tibble(
     uuid= "all",
     question = names(df)
-  ) %>% dplyr::filter(!question %in% ignore) %>% mutate(
+  ) %>% dplyr::filter(!question %in% ignore) %>% dplyr::mutate(
     snkae_case_cols = snakecase::to_snake_case(question)
-  ) %>% filter((grepl(cols_to_look_for,snkae_case_cols)) |(grepl(cols_to_look_for,question))) %>% mutate(
+  ) %>% dplyr::filter((grepl(cols_to_look_for,snkae_case_cols)) |(grepl(cols_to_look_for,question))) %>% dplyr::mutate(
     issue = "Potential PII"
-  ) %>% select(-snkae_case_cols)
+  ) %>% dplyr::select(-snkae_case_cols)
   ## Append the list
   if(is.data.frame(dataframe)){
     checked_dataset <- df

@@ -1,20 +1,20 @@
 #test 1a: that there is a "start" variable in the dataset, else error
 test_that("start variable exists", {
-  expect_error(add_duration(.dataset=clean_data, duration_var_name="duration", start = "ddd",
+  expect_error(add_duration(.dataset=cleaningtools_clean_data, duration_var_name="duration", start = "ddd",
                             end="end", uuid="X_uuid"),
                regexp ="data needs to have a column start for this function work")
 
 })
 #test 1b: that there is a  "end" variable in the dataset, else error
 test_that("end variable exists", {
-  expect_error(add_duration(.dataset=clean_data, duration_var_name="duration", start = "X.U.FEFF.start",
+  expect_error(add_duration(.dataset=cleaningtools_clean_data, duration_var_name="duration", start = "X.U.FEFF.start",
                             end="end_xx", uuid="X_uuid"),
                regexp ="data needs to have a column end for this function work")
 
 })
 #test 2: that the duration_var_name column does not exist already
 test_that("variable duration does not exist", {
-  expect_error(add_duration(.dataset=clean_data, duration_var_name="X_status", start = "X.U.FEFF.start",
+  expect_error(add_duration(.dataset=cleaningtools_clean_data, duration_var_name="X_status", start = "X.U.FEFF.start",
                             end="end", uuid="X_uuid"),
                regexp ="There is already a variable called duration_var_name in your dataset, please input another duration_var_name")
 
@@ -22,7 +22,7 @@ test_that("variable duration does not exist", {
 
 #test 3: that there a start and an end time for each survey, if there isnt, throw a warning, counting the number of issues
 test_that("no missing values in start and end variables", {
-  test_data <- clean_data
+  test_data <- cleaningtools_clean_data
   test_data[1,"X.U.FEFF.start"] <- NA
   expect_warning(add_duration(.dataset=test_data, duration_var_name="new_duration", start = "X.U.FEFF.start",
                               end="end", uuid="X_uuid"),
@@ -32,7 +32,7 @@ test_that("no missing values in start and end variables", {
 
 #test 4: the function does not run if the data is not in KOBO format
 test_that("function does not run if the data is not in KOBO format", {
-  test_data <- clean_data
+  test_data <- cleaningtools_clean_data
   test_data[1,"X.U.FEFF.start"] <- "111111111"
   expect_error(add_duration(.dataset=test_data, duration_var_name="new_duration", start = "X.U.FEFF.start",
                               end="end", uuid="X_uuid"),
@@ -72,8 +72,8 @@ test_that("duration is correct", {
   #function
   actual_output <- add_duration(.dataset=test_data, duration_var_name="duration", start = "X.U.FEFF.start",
                                   end="end", uuid="X_uuid") %>%
-    select("X.U.FEFF.start","end",  "start_date","start_time", "end_date", "duration") %>%
-    mutate( start_time = as.character(start_time))
+    dplyr::select("X.U.FEFF.start","end",  "start_date","start_time", "end_date", "duration") %>%
+    dplyr::mutate( start_time = as.character(start_time))
 
   #test
   expect_equal(actual_output ,
@@ -103,8 +103,8 @@ test_that("duration is correct", {
   #function
   actual_output <- add_duration(.dataset=test_data, duration_var_name="duration", start = "X.U.FEFF.start",
                                 end="end", uuid="X_uuid") %>%
-    select("X.U.FEFF.start","end",  "start_date","start_time", "end_date", "duration") %>%
-    mutate( start_time = as.character(start_time))
+    dplyr::select("X.U.FEFF.start","end",  "start_date","start_time", "end_date", "duration") %>%
+    dplyr::mutate( start_time = as.character(start_time))
 
   #test
   expect_equal(actual_output ,

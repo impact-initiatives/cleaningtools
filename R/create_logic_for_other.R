@@ -9,9 +9,9 @@
 #' @return A dataframe will all logic.
 #' @export
 #' @examples
-#' create_logic_for_other(kobo_survey = cleaningtools::survey,
+#' create_logic_for_other(kobo_survey = cleaningtools::cleaningtools_survey,
 #'                        sm_sep = ".",
-#'                        data = cleaningtools::clean_data,
+#'                        data = cleaningtools::cleaningtools_clean_data,
 #'                        compare_with_dataset = TRUE)
 #'
 
@@ -28,11 +28,11 @@ create_logic_for_other <- function(kobo_survey,
   list_of_logic<- list()
 
 
-  survey_join <- survey |> dplyr::select(c("type","name")) |>
+  survey_join <- kobo_survey |> dplyr::select(c("type","name")) |>
     dplyr::filter(grepl("select_one|select_multiple", type))
 
 
-  kobo_tool_tidy <- survey |> dplyr::filter(type == "text") |>
+  kobo_tool_tidy <- kobo_survey |> dplyr::filter(type == "text") |>
     dplyr::filter(lengths(regmatches(relevant, gregexpr("\\$", relevant)))==1) |>
     dplyr::select(name,relevant) |> dplyr::mutate(
       parent = gsub(".*\\{(.+)\\}.*", "\\1", relevant),

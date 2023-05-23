@@ -11,10 +11,10 @@
 #' @export
 #'
 #' @examples
-#' review_sample_frame_with_dataset(sample_frame = cleaningtools::sample_frame ,
+#' review_sample_frame_with_dataset(sample_frame = cleaningtools::cleaningtools_sample_frame ,
 #' sample_frame_strata_col = "Neighbourhood",
 #' sample_frame_target_survey_col ="Total.no.of.HH",
-#' clean_data = cleaningtools::clean_data,
+#' clean_data = cleaningtools::cleaningtools_clean_data,
 #' clean_data_strata_column = "neighbourhood",
 #' consent_column = "consent_remote",
 #' value_for_consent_yes = "yes")

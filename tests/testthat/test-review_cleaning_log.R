@@ -183,16 +183,16 @@ testthat::test_that("Checking with test data", {
 
 testthat::test_that("Checking with real data", {
   expect_no_error(create_cleaning_log(
-    raw_data = cleaningtools::raw_data, raw_data_uuid = "X_uuid",
-    clean_data = cleaningtools::clean_data, clean_data_uuid = "X_uuid",
+    raw_data = cleaningtools::cleaningtools_raw_data, raw_data_uuid = "X_uuid",
+    clean_data = cleaningtools::cleaningtools_clean_data, clean_data_uuid = "X_uuid",
     check_for_deletion_log = T, check_for_variable_name = T
   ))
 
-  deletaion_log <- cleaningtools::cleaning_log |> dplyr::filter(change_type == "remove_survey")
-  cleaning_log2 <- cleaningtools::cleaning_log |> dplyr::filter(change_type != "remove_survey")
+  deletaion_log <- cleaningtools::cleaningtools_cleaning_log |> dplyr::filter(change_type == "remove_survey")
+  cleaning_log2 <- cleaningtools::cleaningtools_cleaning_log |> dplyr::filter(change_type != "remove_survey")
 
-  expect_no_error(review_cleaning_log(raw_data = cleaningtools::raw_data,raw_data_uuid = "X_uuid",
-                                      clean_data = cleaningtools::clean_data,clean_data_uuid = "X_uuid",
+  expect_no_error(review_cleaning_log(raw_data = cleaningtools::cleaningtools_raw_data,raw_data_uuid = "X_uuid",
+                                      clean_data = cleaningtools::cleaningtools_clean_data,clean_data_uuid = "X_uuid",
                                       cleaning_log = cleaning_log2,cleaning_log_uuid = "X_uuid",
                                       cleaning_log_question_name = "questions",
                                       cleaning_log_new_value =  "new_value",

@@ -27,9 +27,9 @@ A dataframe will all logic.
 Check for value(s) in the dataset
 }
 \examples{
-create_logic_for_other(kobo_survey = cleaningtools::survey,
+create_logic_for_other(kobo_survey = cleaningtools::cleaningtools_survey,
                        sm_sep = ".",
-                       data = cleaningtools::clean_data,
+                       data = cleaningtools::cleaningtools_clean_data,
                        compare_with_dataset = TRUE)
 
 }

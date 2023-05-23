@@ -1,16 +1,16 @@
 test_that("create logic for other", {
   expect_equal(2 * 2, 4)
 
- logic_df <- create_logic_for_other(kobo_survey = cleaningtools::survey,
+ logic_df <- create_logic_for_other(kobo_survey = cleaningtools::cleaningtools_survey,
                          sm_sep = ".",
-                         data = cleaningtools::clean_data,
+                         data = cleaningtools::cleaningtools_clean_data,
                          compare_with_dataset = T)
 
-  testthat::expect_warning(create_logic_for_other(kobo_survey = cleaningtools::survey,
+  testthat::expect_warning(create_logic_for_other(kobo_survey = cleaningtools::cleaningtools_survey,
                                       sm_sep = ".",
-                                      data = cleaningtools::clean_data,
+                                      data = cleaningtools::cleaningtools_clean_data,
                                       compare_with_dataset = T))
-  testthat::expect_error(create_logic_for_other(kobo_survey = cleaningtools::survey,
+  testthat::expect_error(create_logic_for_other(kobo_survey = cleaningtools::cleaningtools_survey,
                                                   sm_sep = ".",
                                                   compare_with_dataset = T))
 
@@ -62,14 +62,14 @@ test_that("create logic for other", {
 })
 
 test_that("check with compare with data is FALSE", {
-  logic_df <- create_logic_for_other(kobo_survey = cleaningtools::survey,
+  logic_df <- create_logic_for_other(kobo_survey = cleaningtools::cleaningtools_survey,
                                      sm_sep = ".")
   testthat::expect_false("Other/choice is not select in parent column but text/_other column not found in the dataset" %in% logic_df$description)
 
 })
 
 test_that("check sm_spe", {
-  logic_df <- create_logic_for_other(kobo_survey = cleaningtools::survey,
+  logic_df <- create_logic_for_other(kobo_survey = cleaningtools::cleaningtools_survey,
                                      sm_sep = "/")
   testthat::expect_false("Other/choice is not select in parent column but text/_other column not found in the dataset" %in% logic_df$description)
 
@@ -111,9 +111,9 @@ test_that("check sm_spe", {
 
 
 test_that("expect equal", {
-  logic_df <- create_logic_for_other(kobo_survey = cleaningtools::survey,
+  logic_df <- create_logic_for_other(kobo_survey = cleaningtools::cleaningtools_survey,
                                      sm_sep = ".",
-                                     data = cleaningtools::clean_data,
+                                     data = cleaningtools::cleaningtools_clean_data,
                                      compare_with_dataset = T)
 
   unique_df <- logic_df[!duplicated(logic_df$description),]

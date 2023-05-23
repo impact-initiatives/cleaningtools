@@ -5,7 +5,7 @@ library(testthat)
 
 testthat::test_that("Check_fcs",{
 
-  check <- evaluate_promise(check_fcs(dataset = food_consumption_df,
+  check <- evaluate_promise(check_fcs(dataset = cleaningtools_food_consumption_df,
                                       uuid = "X_uuid",
                                       cereals = "cereals_grains_roots_tubers",
                                       pulses = "beans_legumes_pulses_nuts",
@@ -18,7 +18,7 @@ testthat::test_that("Check_fcs",{
 
 
 
-  df_issue_removed <- food_consumption_df %>% filter(!X_uuid %in% check$result$X_uuid) ### getting rid of potential issue
+  df_issue_removed <- cleaningtools_food_consumption_df %>% filter(!X_uuid %in% check$result$X_uuid) ### getting rid of potential issue
 
   res_check <- evaluate_promise(check_fcs(dataset = df_issue_removed,
                                           uuid = "X_uuid",
