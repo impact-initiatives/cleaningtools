@@ -25,4 +25,5 @@ uuid = "X_uuid",
 var_list = names(cleaningtools::cleaningtools_clean_data |>
 dplyr::select(ends_with("_other")) |>
 dplyr::select(-contains("."))))
+
 }
