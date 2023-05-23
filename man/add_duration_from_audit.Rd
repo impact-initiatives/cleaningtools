@@ -30,6 +30,9 @@ each interview as name of the dataframe.}
 
 \item{sum_all}{TRUE or FALSE if to add the time with sum all duration}
 }
+\value{
+return the dataset with durations column added
+}
 \description{
 Wrapper around create_duration_from_audit_with_start_end and
 create_duration_from_audit_sum_all to add the duration to the dataset.

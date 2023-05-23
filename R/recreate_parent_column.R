@@ -162,6 +162,12 @@ if(nrow(select_multiple) > 0){
                                       clean_data = data_with_fix_concat,
                                       clean_data_uuid = uuid
                                         )
+    if("comment" %in% names(change_log)) {
+      change_log <- change_log %>%
+        dplyr::mutate(comment = gsub("An alteration was performed",
+                                     "Parent column changed to match children columns",
+                                     comment))
+    }
 
     return(list(data_with_fix_concat = data_with_fix_concat,
                 change_log =change_log))
