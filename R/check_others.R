@@ -43,6 +43,8 @@ check_others_checks <- function(dataset,uuid,var_list) {
 #' @export
 #'
 #' @examples
+
+
 check_others <- function(dataset,
                          uuid = "uuid",
                          var_list = NULL
