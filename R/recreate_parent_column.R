@@ -74,6 +74,8 @@ recreate_parent_column <- function(df,
                                    kobo_choices_sheet =NULL,
                                    sm_sep= "."){
 
+checked_data <- df
+
 initial_order <- names(df)
 
 if(is.null(kobo_survey_sheet)){
@@ -155,11 +157,25 @@ if(nrow(select_multiple) > 0){
     if(is.null(kobo_survey_sheet)){data_with_fix_concat <- data_with_fix_concat %>% dplyr::select(dplyr::all_of(cols_order))}
     if(!is.null(kobo_survey_sheet)){data_with_fix_concat <- data_with_fix_concat %>% dplyr::select(dplyr::all_of(initial_order))}
 
-    return(data_with_fix_concat)
+    change_log <- create_cleaning_log(raw_data = checked_data,
+                                      raw_data_uuid = uuid,
+                                      clean_data = data_with_fix_concat,
+                                      clean_data_uuid = uuid
+                                        )
+    if("comment" %in% names(change_log)) {
+      change_log <- change_log %>%
+        dplyr::mutate(comment = gsub("An alteration was performed",
+                                     "Parent column changed to match children columns",
+                                     comment))
+    }
+
+    return(list(data_with_fix_concat = data_with_fix_concat,
+                change_log =change_log))
   }
 
   if(nrow(select_multiple)== 0){
-    return(df)
+    return(list(data_with_fix_concat= checked_data,
+           change_log = "No choice multiple questions/Nothing has changed"))
   }
 
 }
