@@ -1,16 +1,15 @@
 
-
 #' Check if the input passed to the check_others function is correct
 #'
 #' @param dataset dataset
 #' @param uuid uuid column
 #' @param var_list list of questions to generate the logs for
-#'
 #' @return nothing
 #' @export
 #'
 #' @examples
 #'
+
 check_others_checks <- function(dataset,uuid,var_list) {
 
   if (!(uuid %in% names(dataset))) {
