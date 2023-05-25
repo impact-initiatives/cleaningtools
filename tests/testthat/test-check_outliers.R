@@ -5,16 +5,16 @@ test_that("Outliers check", {
 
   ### test cols to add
 
-  outliers1 <- check_outliers(df = raw_data,uuid_col_name = "X_uuid",columns_to_remove = "enumerator_num",strongness_factor = 1.5)
-  outliers2 <- check_outliers(raw_data,uuid_col_name = "X_uuid",strongness_factor = 1.5)
+  outliers1 <- check_outliers(df = cleaningtools_raw_data,uuid_col_name = "X_uuid",columns_to_remove = "enumerator_num",strongness_factor = 1.5)
+  outliers2 <- check_outliers(cleaningtools_raw_data,uuid_col_name = "X_uuid",strongness_factor = 1.5)
 
   expect_false("enumerator_num" %in% outliers1$potential_outliers$question)
   expect_true("uuid" %in% names(outliers1$potential_outliers))
   expect_true("enumerator_num" %in% outliers2$potential_outliers$question)
 
   ## test with null in unique number
-  outliers3 <- check_outliers(raw_data,uuid_col_name = "X_uuid",minimum_unique_value_of_variable = 10)
-  outliers4 <- check_outliers(raw_data,uuid_col_name = "X_uuid",minimum_unique_value_of_variable = NULL)
+  outliers3 <- check_outliers(cleaningtools_raw_data,uuid_col_name = "X_uuid",minimum_unique_value_of_variable = 10)
+  outliers4 <- check_outliers(cleaningtools_raw_data,uuid_col_name = "X_uuid",minimum_unique_value_of_variable = NULL)
 
   expect_false("air_coolers_nb" %in% outliers3$potential_outliers$question)
   expect_true("air_coolers_nb" %in% outliers4$potential_outliers$question)

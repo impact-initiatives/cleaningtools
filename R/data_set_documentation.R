@@ -10,80 +10,80 @@
 #'
 #' @format NULL
 #' @examples
-#' analysis_by_group
-#' raw_data
-#' cleaning_log
-#' clean_data
-#' survey
-#' choices
-#' overall_analysis
-#' sample_frame
+#' cleaningtools_analysis_by_group
+#' cleaningtools_raw_data
+#' cleaningtools_cleaning_log
+#' cleaningtools_clean_data
+#' cleaningtools_survey
+#' cleaningtools_choices
+#' cleaningtools_overall_analysis
+#' cleaningtools_sample_frame
 
-#' @name analysis_by_group
+#' @name cleaningtools_analysis_by_group
 #' @title Analysis by population group
-#' @rdname analysis_by_group
+#' @rdname cleaningtools_analysis_by_group
 #' @format NULL
-"analysis_by_group"
+"cleaningtools_analysis_by_group"
 
 #' @title Raw data
-#' @name raw_data
-#' @rdname raw_data
+#' @name cleaningtools_raw_data
+#' @rdname cleaningtools_raw_data
 #' @format NULL
-"raw_data"
+"cleaningtools_raw_data"
 
 
 
 #' @title Cleaning log
-#' @name cleaning_log
-#' @rdname cleaning_log
+#' @name cleaningtools_cleaning_log
+#' @rdname cleaningtools_cleaning_log
 #' @format NULL
-"cleaning_log"
+"cleaningtools_cleaning_log"
 
 
 
 
 #' @title Clean data
-#' @name clean_data
-#' @rdname clean_data
+#' @name cleaningtools_clean_data
+#' @rdname cleaningtools_clean_data
 #' @format NULL
-"clean_data"
+"cleaningtools_clean_data"
 
 
 
 
 #' @title Survey tab of kobo tool
-#' @name survey
-#' @rdname survey
+#' @name cleaningtools_survey
+#' @rdname cleaningtools_survey
 #' @format NULL
-"survey"
+"cleaningtools_survey"
 
 
 
 #' @title Choices tab of kobo tool
-#' @name choices
-#' @rdname choices
+#' @name cleaningtools_choices
+#' @rdname cleaningtools_choices
 #' @format NULL
-"choices"
+"cleaningtools_choices"
 
 
 
 
 #' @title Nation/all population level analysis.
-#' @name overall_analysis
-#' @rdname overall_analysis
+#' @name cleaningtools_overall_analysis
+#' @rdname cleaningtools_overall_analysis
 #' @format NULL
-"overall_analysis"
+"cleaningtools_overall_analysis"
 
 #' @title Dataset with food consumption, household hunger Score component
-#' @name food_consumption_df
-#' @rdname food_consumption_df
+#' @name cleaningtools_food_consumption_df
+#' @rdname cleaningtools_food_consumption_df
 #' @format NULL
-"food_consumption_df"
+"cleaningtools_food_consumption_df"
 
 
-#' @name sample_frame
+#' @name cleaningtools_sample_frame
 #' @title Sample frame
-#' @rdname sample_frame
+#' @rdname cleaningtools_sample_frame
 #' @format NULL
-"sample_frame"
+"cleaningtools_sample_frame"
 
