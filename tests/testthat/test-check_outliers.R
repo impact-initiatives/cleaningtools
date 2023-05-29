@@ -1,5 +1,6 @@
 library(dplyr)
 library(tidyr)
+library(testthat)
 
 test_that("Outliers check", {
 
@@ -90,3 +91,25 @@ test_that("outlier_check returns correct results", {
 
 
 
+test_that("Outliers check with kobo", {
+
+
+  expect_warning(check_outliers(df = cleaningtools_raw_data,uuid_col_name  = "X_uuid",kobo_survey = cleaningtools_survey,
+                                kobo_choices = NULL,strongness_factor = 3))
+  expect_warning(check_outliers(df = cleaningtools_raw_data,uuid_col_name  = "X_uuid",kobo_survey = NULL,
+                                kobo_choices = cleaningtools_choices,strongness_factor = 3))
+  expect_no_warning(check_outliers(df = cleaningtools_raw_data,uuid_col_name  = "X_uuid",kobo_survey = NULL,
+                                kobo_choices = NULL,strongness_factor = 3))
+
+
+  a <- cleaningtools_raw_data |> mutate_if(is.logical,as.integer)
+  outliers_xx <- check_outliers(df = a,uuid_col_name  = "X_uuid",kobo_survey = cleaningtools_survey,
+                                kobo_choices = cleaningtools_choices,strongness_factor = 3,
+                                remove_choice_multiple = F)
+  outliers_yy <- check_outliers(df = a,uuid_col_name  = "X_uuid",strongness_factor = 3,
+                                remove_choice_multiple = T)
+
+  testthat::expect_true("primary_livelihood.support" %in% outliers_xx$potential_outliers$question)
+  testthat::expect_false("primary_livelihood.support" %in% outliers_yy$potential_outliers$question)
+
+  })

@@ -2,12 +2,15 @@
 #' check outliers over the dataset
 #'
 #' @param df data frame or a list
-#' @param kobo_tool_location kobo tool path. Default is null
-#' @param uuid_col_name uuid
+#' @param kobo_survey Kobo survey sheet. Default is NULL.
+#' @param kobo_choices Kobo choices sheet. Default is NULL
+#' @param uuid_col_name UUID. Default is uuid
 #' @param element_name name of the dataset in list
-#' @param columns_to_add Variables those must be included in the output
-#' @param strongness_factor Strongness factor define how strong your outliers will be. The default is 1.5.
+#' @param cols_to_add_cleaning_log Variables those must be included in the output
+#' @param strongness_factor Strongness factor define how strong your outliers will be. The default is 3.
 #' @param columns_to_remove Variables those must not consider for outlier checks even though they are numeric
+#' @param remove_choice_multiple TRUE (default) will remove choice multiple questions from the output.
+#' @param sm_sep Separator for choice multiple questions. The default is "."
 #' @param minimum_unique_value_of_variable Default is NULL, mean this parameter won't be considered. For example 10 means for any variable where number of unique value is less than 10, then the variable won't be considered for outlier checking.
 #' @return Outliers
 #' @export
@@ -23,15 +26,21 @@
 #' check_outliers(df = df_outlier,uuid_col_name = "uuid")
 
 
-check_outliers <- function(df,kobo_tool_location=NULL,
-                           uuid_col_name,
+check_outliers <- function(df,
+                           uuid_col_name = "uuid",
                            element_name = "checked_dataset",
-                              columns_to_add = NULL,
-                              strongness_factor = 3,
-                              minimum_unique_value_of_variable =NULL,
-                              columns_to_remove= NULL){
+                           kobo_survey= NULL,
+                           kobo_choices = NULL,
+                           cols_to_add_cleaning_log = NULL,
+                           strongness_factor = 3,
+                           minimum_unique_value_of_variable =NULL,
+                           remove_choice_multiple = TRUE,
+                           sm_sep = ".",
+                           columns_to_remove= NULL){
 
   if(!is.list(df)){stop("Input must be a dataframe or list.")}
+  if(is.null(kobo_survey) & !is.null(kobo_choices)){warning("Ignoring perameter `kobo_choices` as `kobo_survey` is not provided.")}
+  if(is.null(kobo_choices) & !is.null(kobo_survey)){warning("Ignoring perameter `kobo_survey` as `kobo_choices` is not provided.")}
 
   ######### checking input
   dataframe <- df
@@ -48,13 +57,25 @@ check_outliers <- function(df,kobo_tool_location=NULL,
   #######################
 
 
-  df <- type.convert(df, as.is = TRUE,na.string= c(""," ")) |> rename(
+  df <- type.convert(df, as.is = TRUE,na.string= c(""," ")) |> dplyr::rename(
     uuid = !!rlang::sym(uuid_col_name)
   )
 
-  columns_to_add <- c(columns_to_add,"uuid") |> unique()
+  cols_to_add_cleaning_log <- c(cols_to_add_cleaning_log,"uuid") |> unique()
 
-  cols_to_remove<- columns_to_remove[!columns_to_remove %in% columns_to_add]
+
+
+  if(remove_choice_multiple == T ){
+    all_select_multiple_parent <- auto_sm_parent_children(df,sm_sep = sm_sep)
+    all_select_multiple_cols <-all_select_multiple_parent$sm_child
+  }
+
+  if(remove_choice_multiple == T ){columns_to_remove <- c(columns_to_remove,all_select_multiple_cols)}
+
+  cols_to_remove<- columns_to_remove[!columns_to_remove %in% cols_to_add_cleaning_log]
+
+
+
 
   if(!is.null(cols_to_remove)){
     df <- df %>% dplyr::select(-dplyr::all_of(cols_to_remove))
@@ -62,15 +83,13 @@ check_outliers <- function(df,kobo_tool_location=NULL,
 
 
 
-  if(!is.null(kobo_tool_location)) {
+  if(!is.null(kobo_survey) & !is.null(kobo_choices)) {
 
-    survey_sheet <- openxlsx::read.xlsx(kobo_tool_location,sheet = "survey")
-    choice_sheet <- openxlsx::read.xlsx(kobo_tool_location,sheet = "choices")
-    survey_sheet$name <- survey_sheet$name %>% stringr::str_replace_all("-",".")
+    kobo_survey$name <- kobo_survey$name %>% stringr::str_replace_all("-",".")
 
 
-    interger_column_in_kobo <- (survey_sheet %>% dplyr::filter(type == "integer") %>%
-                                  filter( !grepl('enumerator|_instance_', name)))$name
+    interger_column_in_kobo <- (kobo_survey %>% dplyr::filter(type == "integer") %>%
+                                  dplyr::filter( !grepl('enumerator|_instance_|index', name)))$name
 
     cols_name_exist_in_loop_kobo <- interger_column_in_kobo[interger_column_in_kobo %in% names(df)]
 
@@ -79,9 +98,9 @@ check_outliers <- function(df,kobo_tool_location=NULL,
   cols_name_exist_in_loop_numeric <- df %>% dplyr::select_if(is.numeric) %>% dplyr::select(-starts_with("X"))%>% names()
   cols_name_exist_in_loop_int <- df %>% dplyr::select_if(is.integer) %>% dplyr::select(-starts_with("X"))%>% names()
 
-  if(!is.null(kobo_tool_location)) {
+  if(!is.null(kobo_survey) & !is.null(kobo_choices)) {
     cols_name_exist_in_loop <- c(cols_name_exist_in_loop_kobo,
-                                 cols_name_exist_in_loop_numeric,
+                                 cols_name_exist_in_loop_numeric, ## added in case of new recoded variables
                                  cols_name_exist_in_loop_int) %>% unique()
 
   }
@@ -89,7 +108,7 @@ check_outliers <- function(df,kobo_tool_location=NULL,
 
 
 
-  if(is.null(kobo_tool_location)) {
+  if(is.null(kobo_survey) | is.null(kobo_choices)) {
     cols_name_exist_in_loop <- c(cols_name_exist_in_loop_numeric,
                                  cols_name_exist_in_loop_int) %>% unique()
 
@@ -123,9 +142,9 @@ check_outliers <- function(df,kobo_tool_location=NULL,
 
 
 
-    outlier_checks[[x]]  <-  df %>% mutate(
+    outlier_checks[[x]]  <-  df %>% dplyr::mutate(
       issue = dplyr::case_when(df[[x]] %in% outliers_value ~"outlier (normal distribution)"),
-    ) %>% dplyr::filter(issue == "outlier (normal distribution)") %>% dplyr::select(all_of(columns_to_add),issue,all_of(x)) %>%
+    ) %>% dplyr::filter(issue == "outlier (normal distribution)") %>% dplyr::select(all_of(cols_to_add_cleaning_log),issue,all_of(x)) %>%
       tidyr::pivot_longer(cols = paste0(x),names_to ="question",values_to= "old_value")
 
 
@@ -155,15 +174,15 @@ check_outliers <- function(df,kobo_tool_location=NULL,
 
     outlier_checks[[paste0("log_",x)]] <-  df %>% dplyr::mutate(
       issue = dplyr::case_when(df[["log"]] %in%  outliers_value_log ~ "outlier (log distribution)"),
-    ) %>% dplyr::filter(issue == "outlier (log distribution)") %>% dplyr::select(all_of(columns_to_add),issue,all_of(x)) %>%
+    ) %>% dplyr::filter(issue == "outlier (log distribution)") %>% dplyr::select(all_of(cols_to_add_cleaning_log),issue,all_of(x)) %>%
       tidyr::pivot_longer(cols = paste0(x),names_to ="question",values_to= "old_value")
 
 
   }
 
-  outliers_cl <- do.call("bind_rows",outlier_checks)
+  outliers_cl <- do.call(rbind,outlier_checks)
 
-  outliers_cl <- outliers_cl %>% dplyr::distinct(!!!syms(columns_to_add),question,old_value,.keep_all = T)
+  outliers_cl <- outliers_cl %>% dplyr::distinct(!!!rlang::syms(cols_to_add_cleaning_log),question,old_value,.keep_all = T)
 
 
   potential_outliers <- outliers_cl %>% dplyr::filter(!question %in% columns_to_remove)

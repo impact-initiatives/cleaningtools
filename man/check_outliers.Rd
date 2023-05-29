@@ -6,29 +6,38 @@
 \usage{
 check_outliers(
   df,
-  kobo_tool_location = NULL,
-  uuid_col_name,
+  uuid_col_name = "uuid",
   element_name = "checked_dataset",
-  columns_to_add = NULL,
+  kobo_survey = NULL,
+  kobo_choices = NULL,
+  cols_to_add_cleaning_log = NULL,
   strongness_factor = 3,
   minimum_unique_value_of_variable = NULL,
+  remove_choice_multiple = TRUE,
+  sm_sep = ".",
   columns_to_remove = NULL
 )
 }
 \arguments{
 \item{df}{data frame or a list}
 
-\item{kobo_tool_location}{kobo tool path. Default is null}
-
-\item{uuid_col_name}{uuid}
+\item{uuid_col_name}{UUID. Default is uuid}
 
 \item{element_name}{name of the dataset in list}
 
-\item{columns_to_add}{Variables those must be included in the output}
+\item{kobo_survey}{Kobo survey sheet. Default is NULL.}
 
-\item{strongness_factor}{Strongness factor define how strong your outliers will be. The default is 1.5.}
+\item{kobo_choices}{Kobo choices sheet. Default is NULL}
+
+\item{cols_to_add_cleaning_log}{Variables those must be included in the output}
+
+\item{strongness_factor}{Strongness factor define how strong your outliers will be. The default is 3.}
 
 \item{minimum_unique_value_of_variable}{Default is NULL, mean this parameter won't be considered. For example 10 means for any variable where number of unique value is less than 10, then the variable won't be considered for outlier checking.}
+
+\item{remove_choice_multiple}{TRUE (default) will remove choice multiple questions from the output.}
+
+\item{sm_sep}{Separator for choice multiple questions. The default is "."}
 
 \item{columns_to_remove}{Variables those must not consider for outlier checks even though they are numeric}
 }
