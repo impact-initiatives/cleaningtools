@@ -46,6 +46,7 @@ kobo_survey <- data.frame(
            "select_multiple choice4"),
   name = c("uuid", "col_1", "col_2", "col_3", "col_4")
 )
-data_test \%>\% add_percentage_missing(kobo_survey = kobo_survey)
+data_test \%>\% add_percentage_missing(kobo_survey = kobo_survey,
+type_to_include = c("integer","select_one","select_multiple"))
 data_test \%>\% add_percentage_missing()
 }
