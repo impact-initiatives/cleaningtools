@@ -17,7 +17,7 @@ create_cleaning_logbook(
 
 \item{cleaning_log}{Cleaning Log}
 
-\item{uuid}{}
+\item{uuid}{uuid column name both in raw_data and cleaning_log}
 
 \item{col_enum}{Enumerator column name in both raw_data and cleaning_log. Must be the same and by default NA}
 
@@ -38,6 +38,7 @@ Create data_exstract, logbook, deletion_log tables and add them to the cleaning 
 create_enumerator_performance(
 raw_data = cleaningtools::cleaningtools_raw_data,
 cleaning_log = cleaningtools::cleaningtools_cleaning_log,
+uuid = "X_uuid",
 col_enum = "enumerator_num",
 filename = "new_cleaning_logbook_draft.xlsx"
 )}

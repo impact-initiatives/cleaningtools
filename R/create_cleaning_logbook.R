@@ -6,7 +6,7 @@
 #' @param cleaning_log Cleaning Log
 #' @param col_enum Enumerator column name in both raw_data and cleaning_log. Must be the same and by default NA
 #' @param filename URL link for the location of the updated cleaning logbook
-#' @param uuid
+#' @param uuid uuid column name both in raw_data and cleaning_log
 #'
 #' @return Return a list of 3 tables:
 #'         - "template_data_extract"
@@ -19,6 +19,7 @@
 #' create_enumerator_performance(
 #' raw_data = cleaningtools::cleaningtools_raw_data,
 #' cleaning_log = cleaningtools::cleaningtools_cleaning_log,
+#' uuid = "X_uuid",
 #' col_enum = "enumerator_num",
 #' filename = "new_cleaning_logbook_draft.xlsx"
 #' )}
