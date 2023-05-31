@@ -81,7 +81,7 @@ create_cleaning_logbook <- function(raw_data,
                      "template_deletion_log" = template_deletion_log)
 
   ## Writing tables to cleaning_logbook
-  wb <- openxlsx::loadWorkbook("extdata/Research_cycle_data_cleaning_logbook_template_v4_202331_AA.xlsx")
+  wb <- openxlsx::loadWorkbook(system.file("extdata","Research_cycle_data_cleaning_logbook_template_v4_202331_AA.xlsx",package = "cleaningtools"))
 
   openxlsx::writeData(wb = wb,
                       x = named_table[["template_data_extract"]],
