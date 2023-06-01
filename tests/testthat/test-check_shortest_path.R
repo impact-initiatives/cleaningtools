@@ -30,14 +30,14 @@ test_that("Test that if kobo is not in a correct format it will throw an error",
 test_that("test that if the new names exists, it will stop", {
   test_data <- data.frame(uuid = c(1:3),
                           percentage_missing = c(.8,.8,.9))  %>% dplyr::rename(`_uuid` = uuid)
-  expect_error(add_percentage_missing(test_data),
+  testthat::expect_error(add_percentage_missing(test_data),
                "There is already a column called percentage_missing")
 })
 
 test_that("test that if the new names exists, it will stop", {
   test_data <- data.frame(uuid = c(1:3),
                           perc_missing = c(.8,.8,.9))  %>% dplyr::rename(`_uuid` = uuid)
-  expect_error(add_percentage_missing(test_data, col_name = "perc_missing"),
+  testthat::expect_error(add_percentage_missing(test_data, col_name = "perc_missing"),
                "There is already a column called perc_missing")
 
 })
@@ -64,8 +64,13 @@ test_that("test that the columns are added with the correct values with a kobo",
                                  col_4.health = c(1,NA,0),
                                  col_4.school = c(1,NA,0),
                                  percentage_missing = c(.25, .75,0))
-  expect_equal(add_percentage_missing(data_test, kobo_survey = kobo_survey),
+  testthat::expect_equal(add_percentage_missing(data_test, kobo_survey = kobo_survey,
+                                                type_to_include = c("integer","select_one","select_multiple")),
                expected_results)
+
+  testthat::expect_error(add_percentage_missing(data_test, kobo_survey = kobo_survey,
+                                                type_to_include = c("select_one","integger")))
+  testthat::expect_no_error(add_percentage_missing(data_test))
 })
 test_that("test that the columns are added with the correct values without a kobo", {
   data_test <- data.frame(uuid = c(1:3),

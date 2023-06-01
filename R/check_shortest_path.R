@@ -28,7 +28,8 @@
 #'            "select_multiple choice4"),
 #'   name = c("uuid", "col_1", "col_2", "col_3", "col_4")
 #' )
-#' data_test %>% add_percentage_missing(kobo_survey = kobo_survey)
+#' data_test %>% add_percentage_missing(kobo_survey = kobo_survey,
+#' type_to_include = c("integer","select_one","select_multiple"))
 #' data_test %>% add_percentage_missing()
 add_percentage_missing <-
   function(.dataset,
@@ -39,6 +40,17 @@ add_percentage_missing <-
       if (!all(c("type", "name") %in% names(kobo_survey))) {
         stop("Cannot identify type and/or name columns in kobo")
       }
+
+      type_only <- kobo_survey$type  |> stringr::word(1) |> unique()
+
+      not_found <- type_to_include[!type_to_include %in% type_only]
+        if(length(not_found)>0){
+        msg <- not_found |> glue::glue_collapse(sep = ", ") %>%
+          glue::glue("Following type: ",., " cannot be found in the kobo tool")
+        stop(msg)
+      }
+
+
     }
 
     if (col_name %in% names(.dataset)) {
