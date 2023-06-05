@@ -84,7 +84,7 @@ create_cleaning_log <- function(raw_data = raw_data,
     }
 
 
-    ## varaible added
+    ## variable added
 
     added_variable_name <- names(clean_data)[!names(clean_data) %in% names(raw_data)]
 

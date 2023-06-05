@@ -46,8 +46,9 @@ create_logic_for_other <- function(kobo_survey,
   if(compare_with_dataset ==T){
 
     if(!all(unique(kobo_tool_tidy$parent) %in% names(data))){
-      print(unique(kobo_tool_tidy$parent)[!unique(kobo_tool_tidy$parent)%in% names(data)])
-      warning("The above parent name were not found in the dataset.The function is ignoring them.")
+      msg <- unique(kobo_tool_tidy$parent)[!unique(kobo_tool_tidy$parent)%in% names(data)] |>
+        glue::glue_collapse(", ") %>% glue::glue("The following parent names: ", .," were not found in the dataset. The function is ignoring them.")
+      warning(msg)
     }
     kobo_tool_tidy <- kobo_tool_tidy |> dplyr::filter(parent %in% names(data))
 
@@ -60,15 +61,18 @@ create_logic_for_other <- function(kobo_survey,
         logic = dplyr::case_when(type == "select_one" ~
                                    paste0(parent, " == \"",other_choice,"\""),
                                  T~ paste0("(",parent,sm_sep,other_choice , " == TRUE | ",
-                                             parent,sm_sep,other_choice , " == 1 ) & !is.na(",parent,sm_sep,other_choice,")")
-      )) |> dplyr::mutate(
-        description = "Other/choice is not select in parent column but text/_other column not found in the dataset",
-        variables_to_clean_column =  dplyr::case_when(type == "select_one" ~ paste0(parent,",",name),
-                                                      T~ paste0(parent,sm_sep,other_choice,",",name))
+                                           parent,sm_sep,other_choice , " == 1 ) & !is.na(",parent,sm_sep,other_choice,")")
+        )) |> dplyr::mutate(
+          description = dplyr::case_when(type == "select_one" ~ paste0(parent ," is selected but " ,  name ," is not found in the dataset"),
+                                         T~ paste0(parent,sm_sep,other_choice ," is selected but " ,  name ," is not found in the dataset")),
 
-        ) |> dplyr::distinct()
+          variables_to_clean_column =  dplyr::case_when(type == "select_one" ~ paste0(parent), #",",name),
+                                                        T~ paste0(parent,sm_sep,other_choice)#,",",name))
 
-  }
+          ),
+          associate_column_not_found = name) |> dplyr::distinct()
+
+    }
 
     kobo_tool_tidy <- kobo_tool_tidy |> dplyr::filter(name %in% names(data))
     ## parent must not_contain other
@@ -91,7 +95,7 @@ create_logic_for_other <- function(kobo_survey,
                      "\"",kobo_select_one$other_choice,
                      "\"", ")")
     )  |> dplyr::mutate(
-      description = "Text column has value but the parent column is not corresponding with the relevancy",
+      description = paste0(name, " has value but the ",parent," column is not ",other_choice,"(Not matching with kobo relevancy.)"),
       variables_to_clean_column = paste0(parent,",",name)) |> dplyr::distinct()
 
 
@@ -101,7 +105,7 @@ create_logic_for_other <- function(kobo_survey,
     list_of_logic[["select_one_is_na"]]  <- kobo_select_one |> dplyr::mutate(
       logic = paste0("is.na(",kobo_select_one$name,") & (", kobo_select_one$parent, "==","\"",kobo_select_one$other_choice,"\"",")")
     )  |> dplyr::mutate(
-      description = "Text column is NA but the parent column is seleted as other/relevent choice",
+      description = paste0(name, " is NA but the ",parent, " column is seleted as other/relevent choice(",other_choice,")" ),
       variables_to_clean_column = paste0(parent,",",name)) |> dplyr::distinct()
 
   }
@@ -117,7 +121,7 @@ create_logic_for_other <- function(kobo_survey,
       logic = paste0("!is.na(",name,") & (", parent,sm_sep,other_choice, "==0 |",
                      parent,sm_sep,other_choice, "==FALSE | is.na(",parent,sm_sep,other_choice,"))"))|>
       dplyr::mutate(
-        description = "Text column is NOT NA but the binary column is selected as FALSE/0/NA",
+        description = paste0(name, " is NOT NA but the binary column ( ", parent,sm_sep,other_choice ,") is selected as FALSE/0/NA"),
         variables_to_clean_column = paste0(name,",",parent,sm_sep,other_choice)) |> dplyr::distinct()
 
 
@@ -126,13 +130,19 @@ create_logic_for_other <- function(kobo_survey,
       logic = paste0("is.na(",name,") & (", parent,sm_sep,other_choice, "==1 |",
                      parent,sm_sep,other_choice, "== TRUE)" ))|>
       dplyr::mutate(
-        description = "Text column is NA but the binary column is selected as TRUE/1",
+        description = paste0(name, " is NA but the binary column (", parent,sm_sep,other_choice ,")is selected as TRUE/1"),
         variables_to_clean_column = paste0(name,",",parent,sm_sep,other_choice)) |> dplyr::distinct()
   }
 
   all_logic <- do.call("my_bind_row",list_of_logic)
 
-  all_logic |> dplyr::mutate(id = paste("id-",cur_group_rows())) |> dplyr::select(id,logic,description,variables_to_clean_column)
+  # if (compare_with_dataset == TRUE) {all_logic <- all_logic |> dplyr::mutate(id = paste("id-",dplyr::cur_group_rows())) |>
+  #     dplyr::select(id,logic,description,variables_to_clean_column,associate_column_not_found)}
+
+  # if (compare_with_dataset == FALSE) {all_logic <-
+
+    all_logic |> dplyr::mutate(id = paste("id-",dplyr::cur_group_rows())) |> dplyr::select(id,logic,description,variables_to_clean_column)
+  #}
 
 }
 
