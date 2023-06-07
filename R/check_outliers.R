@@ -1,4 +1,3 @@
-#'
 #' check outliers over the dataset
 #'
 #' @param df data frame or a list
