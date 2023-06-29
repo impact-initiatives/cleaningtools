@@ -50,8 +50,9 @@ check_soft_duplicates <- function(dataset,
 
   # 3) remove columns that are naturally different in each survey:
   # - columns of type = "start", "end", etc.
-  # - columns starting with "_"
+  # - columns starting with "X_"
   # - option columns for the select multiple -> keeping only the concatenation column
+  # - columns starting with special characters
   types_to_remove <- c("start", "end", "today", "deviceid", "date", "geopoint", "audit",
                        "note", "calculate","begin_group","end_group")
   sm_parents<-auto_detect_sm_parents(data, sm_seperator)
@@ -60,7 +61,8 @@ check_soft_duplicates <- function(dataset,
     colnames()
   cols_to_keep <- data.frame(column=colnames(data)) %>%
     dplyr::left_join(select(kobo_survey, name, type), by=c("column"="name"))%>%
-    dplyr::filter((!(type %in% types_to_remove) & !stringr::str_starts(column, "_") & !(column %in% sm_columns)))
+    dplyr::filter((!(type %in% types_to_remove) & !stringr::str_starts(column, "X_") &
+                     !(stringr::str_starts(column, "[[:punct:]]")) & !(column %in% sm_columns)))
   data <- data[, cols_to_keep$column]
 
   # 4) remove columns with all NA; convert remaining NA to "NA"; convert all columns to factor
