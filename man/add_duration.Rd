@@ -7,7 +7,7 @@
 add_duration(
   .dataset,
   duration_var_name = "duration",
-  uuid = "_uuid",
+  uuid = "uuid",
   start = "start",
   end = "end"
 )
@@ -28,4 +28,28 @@ the clean dataset with 6 new columns: duration, start_date, start_time, end_date
 }
 \description{
 Creates a duration variable using the start and end time of the survey
+}
+\examples{
+test_data <- data.frame(start = c("2021/07/13 11:25:49", "2021/07/13 12:36:16",
+                                  "2021/07/13 10:21:10", "2021/07/13 10:54:07", "2021/07/13 11:18:45"),
+                        end = c("2021/07/13 12:02:39", "2021/07/13 13:20:17",
+                                "2021/07/13 10:53:42", "2021/07/13 11:28:58", "2021/07/13 11:55:24"),
+                        uuid = 1:5)
+
+test_data_w_duration <- test_data \%>\%
+   add_duration()
+
+test_data_kobo_time <- data.frame(`X.U.FEFF.start`= c("2021-07-13T11:25:49.543+03:00",
+                                                      "2021-07-13T12:36:16.316+03:00",
+                                                      "2021-07-13T10:21:10.337+03:00",
+                                                      "2021-07-13T10:54:07.394+03:00",
+                                                     "2021-07-13T11:18:45.521+03:00"),
+                                  end = c("2021-07-14T12:02:39.269+03:00",
+                                          "2021-07-13T13:20:17.815+03:00",
+                                          "2021-07-13T10:53:42.662+03:00",
+                                          "2021-07-13T11:28:58.295+03:00",
+                                          "2021-07-13T11:55:24.366+03:00"),
+                                  uuid = 1:5)
+test_data_kobo_time_w_duration <- test_data_kobo_time \%>\%
+   add_duration(start = "X.U.FEFF.start")
 }

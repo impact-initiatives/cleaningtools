@@ -111,4 +111,32 @@ test_that("duration is correct", {
                expected_output)
 })
 
+#test that the new variable "duration" has correct value (difference end-start) (format YYYY/MM/DD HH:MM:SS)
+test_that("duration is correct", {
+  #test data
+  test_data <- data.frame(`X.U.FEFF.start` = c("2021/07/13 11:25:49", "2021/07/13 12:36:16",
+                                               "2021/07/13 10:21:10", "2021/07/13 10:54:07", "2021/07/13 11:18:45"),
+                          end = c("2021/07/13 12:02:39", "2021/07/13 13:20:17",
+                                  "2021/07/13 10:53:42", "2021/07/13 11:28:58", "2021/07/13 11:55:24"),
+                          uuid = 1:5
+  )
+  #expected output
+  expected_output <- data.frame(`X.U.FEFF.start` = c("2021/07/13 11:25:49", "2021/07/13 12:36:16",
+                                                     "2021/07/13 10:21:10", "2021/07/13 10:54:07", "2021/07/13 11:18:45"),
+                                end = c("2021/07/13 12:02:39", "2021/07/13 13:20:17",
+                                        "2021/07/13 10:53:42", "2021/07/13 11:28:58", "2021/07/13 11:55:24"),
+                                start_date = rep("2021/07/13",5),
+                                start_time = c("685.82", "756.27", "621.17", "654.12", "678.75"),
+                                end_date = rep("2021/07/13", 5),
+                                duration = as.numeric(c("36.83", "44.01", "32.53", "34.85", "36.65")
+                                ))
+  #function
+  actual_output <- add_duration(.dataset=test_data, duration_var_name="duration", start = "X.U.FEFF.start",
+                                end="end", uuid="X_uuid") %>%
+    dplyr::select("X.U.FEFF.start","end",  "start_date","start_time", "end_date", "duration") %>%
+    dplyr::mutate( start_time = as.character(start_time))
 
+  #test
+  expect_equal(actual_output ,
+               expected_output)
+})
