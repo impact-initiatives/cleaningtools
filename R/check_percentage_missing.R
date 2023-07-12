@@ -93,7 +93,7 @@ add_percentage_missing <-
 #' @param .col_to_check string character with the name of the columns to check. Default is
 #' "percentage_missing"
 #' @param log_name name of the log of flagged value, default is percentage_missing_log
-#'
+#' @param strongness_factor Strongness factor define how strong your outliers will be. The default is 3.
 #' @return return a list with the dataset checked stored as checked_dataset and
 #' a dataframe with the flagged values log
 #' @export
@@ -124,6 +124,7 @@ add_percentage_missing <-
 check_percentage_missing <- function(.dataset,
                                      uuid_var = "uuid",
                                      .col_to_check = "percentage_missing",
+                                     strongness_factor = 2 ,
                                      log_name = "percentage_missing_log") {
   if (is.data.frame(.dataset)) {
     .dataset <- list(checked_dataset = .dataset)
@@ -144,7 +145,7 @@ check_percentage_missing <- function(.dataset,
 
   log <- .dataset[["checked_dataset"]] %>%
     dplyr::select(dplyr::all_of(c(uuid_var, .col_to_check))) %>%
-    check_outliers(uuid_col_name = uuid_var)
+    check_outliers(uuid_col_name = uuid_var,strongness_factor = strongness_factor )
 
   log[["potential_outliers"]] <- log[["potential_outliers"]] %>%
     dplyr::mutate(across(.cols = dplyr::everything(), .fns = as.character),

@@ -8,6 +8,7 @@ check_percentage_missing(
   .dataset,
   uuid_var = "uuid",
   .col_to_check = "percentage_missing",
+  strongness_factor = 2,
   log_name = "percentage_missing_log"
 )
 }
@@ -19,6 +20,8 @@ dataframe stored as "checked_dataset"}
 
 \item{.col_to_check}{string character with the name of the columns to check. Default is
 "percentage_missing"}
+
+\item{strongness_factor}{Strongness factor define how strong your outliers will be. The default is 3.}
 
 \item{log_name}{name of the log of flagged value, default is percentage_missing_log}
 }
