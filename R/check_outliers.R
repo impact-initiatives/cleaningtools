@@ -58,7 +58,7 @@ check_outliers <- function(df,
 
   df <- type.convert(df, as.is = TRUE,na.string= c(""," ")) |> dplyr::rename(
     uuid = !!rlang::sym(uuid_col_name)
-  )
+  ) |> dplyr::mutate(uuid = as.character(uuid))
 
   cols_to_add_cleaning_log <- c(cols_to_add_cleaning_log,"uuid") |> unique()
 
