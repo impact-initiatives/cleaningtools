@@ -12,10 +12,10 @@
 #'           check_duplicate(uuid_col_name = "X_uuid") |>
 #'           check_for_value(uuid_col_name = "X_uuid")
 #'
-#'  combine_cleaning_log(list_of_log = list)
+#'  create_combined_log(list_of_log = list)
 #'
 #'
- combine_cleaning_log <- function(list_of_log= a,
+create_combined_log <- function(list_of_log= a,
                                           dataset_name = "checked_dataset"
                                    ){
    ## log must be a list
@@ -44,7 +44,8 @@
 
    print(names(list_of_log) |> glue::glue_collapse(" ,")  %>% glue::glue("List of element to combine- ", .))
 
-   output[["cleaning_log"]] <- dplyr::bind_rows(list_of_log_only)
+   output[["cleaning_log"]] <- dplyr::bind_rows(list_of_log_only)|> dplyr::mutate(change_type = NA_character_,
+                                                                                  new_value = NA_character_)
 
    output
 
