@@ -30,11 +30,13 @@ Imports:
     purrr,
     stats,
     utils,
-    stringi
+    stringi,
+    randomcoloR
 Remotes:
     mhkhan27/illuminate
 Suggests: 
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    withr
 Config/testthat/edition: 3
 LazyData: true
 Depends: 
