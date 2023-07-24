@@ -37,7 +37,7 @@ test_that("expect equal", {
   output <- create_combined_log(list_of_log = list)
 
 
-  testthat::expect_equal(names(output),c("checked_data","cleaning_log"))
+  testthat::expect_equal(names(output),c("checked_dataset","cleaning_log"))
 
 
   expected <- structure(list(uuid = c("all", "all", "all", "all", "all", "ac26e24d-12be-4729-bae7-21060ee00a28",
@@ -69,3 +69,22 @@ test_that("expect equal", {
 
 })
 
+
+
+
+testthat::test_that("check binding capability where data type is different", {
+
+check_data <-  cleaningtools::cleaningtools_raw_data %>%
+  add_percentage_missing()
+checkss <- cleaningtools::check_for_pii(df = check_data) %>%
+  cleaningtools::check_outliers(uuid_col_name = "X_uuid") %>%
+  check_others(uuid = "X_uuid",
+               var_list = names(cleaningtools::cleaningtools_raw_data |> dplyr::select(ends_with("_other")) |> dplyr::select(-contains(".")))) %>%
+  check_percentage_missing(uuid_var = "X_uuid") %>%
+  check_for_logical(uuid_var = "X_uuid", check_to_perform = "inc_employment_pension == tot_expenses", description = "income equals to expenses")
+
+cannot_bind <- create_combined_log(list_of_log = checkss)
+
+testthat::expect_equal(nrow(cannot_bind$cleaning_log) ,722)
+
+})
