@@ -6,23 +6,23 @@ test_that("error and warning check", {
 
   ### NULL check
 
-  testthat::expect_warning(combine_cleaning_log(list_of_log = list,dataset_name = NULL),
+  testthat::expect_warning(create_combined_log(list_of_log = list,dataset_name = NULL),
                            "You have a checked_dataset element in the list_of_log even though you have set dataset_name to NULL. Please check the parameter.")
 
 
   list_2 <- list[names(list)[!names(list) %in% "checked_dataset"]]
 
-  testthat::expect_message(combine_cleaning_log(list_of_log = list_2,dataset_name = NULL),
+  testthat::expect_message(create_combined_log(list_of_log = list_2,dataset_name = NULL),
                            "No dataset name is provided. Assuming that the dataset does not exist in the list_of_log.")
 
-  testthat::expect_error(combine_cleaning_log(list_of_log = list,dataset_name = "dataset"),
+  testthat::expect_error(create_combined_log(list_of_log = list,dataset_name = "dataset"),
                          "dataset can not be found in the list_of_log.")
 
 
-  testthat::expect_error(combine_cleaning_log(list_of_log = "list"),"list_of_log must be a list which should contain the logs.")
+  testthat::expect_error(create_combined_log(list_of_log = "list"),"list_of_log must be a list which should contain the logs.")
 
   list_df <- list[[2]] |> as.data.frame()
-  testthat::expect_error(combine_cleaning_log(list_of_log = list_df),"list_of_log must be a list which should contain the logs.")
+  testthat::expect_error(create_combined_log(list_of_log = list_df),"list_of_log must be a list which should contain the logs.")
 
 
 })
@@ -34,10 +34,10 @@ test_that("expect equal", {
     check_for_value(uuid_col_name = "X_uuid")
 
 
-  output <- combine_cleaning_log(list_of_log = list)
+  output <- create_combined_log(list_of_log = list)
 
 
-  testthat::expect_equal(names(output),c("checked_data","cleaning_log"))
+  testthat::expect_equal(names(output),c("checked_dataset","cleaning_log"))
 
 
   expected <- structure(list(uuid = c("all", "all", "all", "all", "all", "ac26e24d-12be-4729-bae7-21060ee00a28",
@@ -47,7 +47,9 @@ test_that("expect equal", {
                                           "X_index", "X_index"),
                              issue = structure(c("Potential PII", "Potential PII", "Potential PII", "Potential PII", "Potential PII", NA, NA),
                                                class = c("glue", "character")),
-                             old_value = c(NA, NA, NA, NA, NA, "88", "99")),
+                             old_value = c(NA, NA, NA, NA, NA, "88", "99"),
+                             change_type =c(NA_character_, NA_character_, NA_character_, NA_character_, NA_character_,NA_character_,NA_character_),
+                             new_value =c(NA_character_, NA_character_, NA_character_, NA_character_, NA_character_,NA_character_,NA_character_)),
                         row.names = c(NA, -7L),
                         class = c( "data.frame"))
 
@@ -59,7 +61,7 @@ test_that("expect equal", {
   ## WITH NULL
   list_2 <- list[names(list)[!names(list) %in% "checked_dataset"]]
 
-  output <- combine_cleaning_log(list_of_log = list_2,dataset_name = NULL)
+  output <- create_combined_log(list_of_log = list_2,dataset_name = NULL)
   testthat::expect_equal(names(output),c("cleaning_log"))
   actual <- output$cleaning_log |> as.data.frame()
   testthat::expect_equal(actual,expected)
@@ -67,3 +69,22 @@ test_that("expect equal", {
 
 })
 
+
+
+
+testthat::test_that("check binding capability where data type is different", {
+
+check_data <-  cleaningtools::cleaningtools_raw_data %>%
+  add_percentage_missing()
+checkss <- cleaningtools::check_for_pii(df = check_data) %>%
+  cleaningtools::check_outliers(uuid_col_name = "X_uuid") %>%
+  check_others(uuid = "X_uuid",
+               var_list = names(cleaningtools::cleaningtools_raw_data |> dplyr::select(ends_with("_other")) |> dplyr::select(-contains(".")))) %>%
+  check_percentage_missing(uuid_var = "X_uuid") %>%
+  check_for_logical(uuid_var = "X_uuid", check_to_perform = "inc_employment_pension == tot_expenses", description = "income equals to expenses")
+
+cannot_bind <- create_combined_log(list_of_log = checkss)
+
+testthat::expect_equal(nrow(cannot_bind$cleaning_log) ,722)
+
+})
