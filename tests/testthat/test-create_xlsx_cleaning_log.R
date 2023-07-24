@@ -27,14 +27,14 @@ testthat::test_that("Error messege test", {
                                 change_type_col = "change_type")
 
 
-  # expected_output_1 <- openxlsx::read.xlsx(testthat::test_path("fixtures", "write_cleaning_log.xlsx"),1)
+  expected_output_1 <- openxlsx::read.xlsx(testthat::test_path("fixtures", "write_cleaning_log.xlsx"),3)
   expected_output_2 <- openxlsx::read.xlsx(testthat::test_path("fixtures", "write_cleaning_log.xlsx"),2)
 
-  # actual_output_1 <- openxlsx::read.xlsx(paste0(temp_dir_to_test, "\\testing_cleaning_log.xlsx"),1)
+  actual_output_1 <- openxlsx::read.xlsx(paste0(temp_dir_to_test, "\\testing_cleaning_log.xlsx"),4)
   actual_output_2 <- openxlsx::read.xlsx(paste0(temp_dir_to_test, "\\testing_cleaning_log.xlsx"),2)
 
 
-  # testthat::expect_equal(expected_output_1,actual_output_1)
+  testthat::expect_equal(expected_output_1,actual_output_1)
 
   testthat::expect_equal(expected_output_2,actual_output_2)
 

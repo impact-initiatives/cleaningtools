@@ -156,7 +156,16 @@ if("validation_rules" %in% names(write_list)){stop(glue::glue("The list currentl
 
 
   write_list[["validation_rules"]] <- data.frame(
-    change_ttpe_validation = c("change_response","blank_response","remove_survey","no_action")
+    change_type_validation = c("change_response","blank_response","remove_survey","no_action")
+  )
+
+
+  write_list[["readme"]] <- data.frame(
+    change_type_validation = c("change_response","blank_response","remove_survey","no_action"),
+    description = c("Change the response to new.value",
+                    "Remove and NA the response",
+                    "Delete the survey",
+                    "No action to take.")
   )
 
 workbook <-   write_list |> create_formated_wb(cols_for_color = cols_for_color,
