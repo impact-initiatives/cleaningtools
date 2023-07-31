@@ -1,13 +1,11 @@
-
-
-#' Add information to the dataset
+#' Add information to the cleaning log
 #'
 #' @param list A list file containing the cleaning_log and the dataset
-#' @param dataset When If a list is provided, the element name represents the dataset; otherwise, it should be a dataframe.
+#' @param dataset If a list is provided, the element name represents the dataset; otherwise, it should be a dataframe.
 #' @param cleaning_log If a list is provided, the element name represents the cleaning log; otherwise, it is should be a dataframe.
-#' @param dataset_primary_key Primary key name from the dataset.(Default is X_uuid)
-#' @param cleaning_log_primary_key Primary key name from the Cleaning log.(Default is uuid)
-#' @param information_to_add Name of the columns to be added
+#' @param dataset_primary_key Primary key name from the dataset, it can take a vector of several binding key. (Default is X_uuid)
+#' @param cleaning_log_primary_key Primary key name from the Cleaning log, it can take a vector of several binding key. (Default is uuid)
+#' @param information_to_add Vector of name of the columns to be added.
 #'
 #' @return A list with cleaning log with added info and the dataset.
 #' @export
