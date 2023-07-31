@@ -3,6 +3,7 @@
 export("%>%")
 export(add_duration)
 export(add_duration_from_audit)
+export(add_info_to_cleaning_log)
 export(add_percentage_missing)
 export(auto_detect_sm_parents)
 export(auto_sm_parent_children)
