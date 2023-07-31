@@ -135,9 +135,9 @@ test_data <- dplyr::tibble(
   reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_))
 
 cleaningtools::recreate_parent_column(df = test_data,uuid = "uuid",sm_sep = ".") |> head()
-#> Warning in cleaningtools::recreate_parent_column(df = test_data, uuid =
-#> "uuid", : Column(s) names are renamed as multiple separators are found in
-#> dataset column names. Please see the above table with the new name.
+#> Warning in cleaningtools::recreate_parent_column(df = test_data, uuid = "uuid",
+#> : Column(s) names are renamed as multiple separators are found in dataset
+#> column names. Please see the above table with the new name.
 #> # A tibble: 2 × 2
 #>   old_name    new_name   
 #>   <chr>       <chr>      
@@ -852,8 +852,8 @@ cleaningtools::check_fcs(dataset = cleaningtools::cleaningtools_food_consumption
                       oil = "oil_fat_butter",
                       sugar = "sugar_sugary_food") |> head()
 #> Warning in cleaningtools::check_fcs(dataset =
-#> cleaningtools::cleaningtools_food_consumption_df, : Potential issue:: There
-#> are 105 observations where all the variables of food consumption score are the
+#> cleaningtools::cleaningtools_food_consumption_df, : Potential issue:: There are
+#> 105 observations where all the variables of food consumption score are the
 #> same.Check result.
 #>                                 X_uuid cereals_grains_roots_tubers
 #> 1 e7da37c0-dd23-4d38-8cac-2e8e8a243b57                           0
@@ -940,7 +940,11 @@ row.
 #> 3            0              0.000
 ```
 
-##### 3.9.2 The `add_percentage_missing()` function will flag if a survey for its missing values. The missing values column can be created with add_percentage_missing and the values are flagged with check_outliers.
+##### 3.9.2 add_percentage_missing()
+
+The `add_percentage_missing()` function will flag if a survey for its
+missing values. The missing values column can be created with
+add_percentage_missing and the values are flagged with check_outliers.
 
 ``` r
  data_example %>% cleaningtools::check_percentage_missing() |> head()
@@ -958,4 +962,53 @@ row.
 #> $percentage_missing_log
 #> # A tibble: 0 × 4
 #> # ℹ 4 variables: uuid <chr>, issue <chr>, question <chr>, old_value <chr>
+```
+
+#### 3.10 create_combined_log()
+
+The function `create_combined_log()` takes the cleaning logs as input
+and returns a list with two elements: the dataset and the combined
+cleaning log.
+
+``` r
+  list <- cleaningtools::cleaningtools_raw_data |> check_for_pii() |>
+    check_duplicate(uuid_col_name = "X_uuid") |>
+    check_for_value(uuid_col_name = "X_uuid") |> create_combined_log()
+#> List of element to combine- checked_dataset, potential_PII, duplicate_log, flaged_value
+
+list$cleaning_log |> head(6)
+#> # A tibble: 6 × 6
+#>   uuid                            question issue old_value change_type new_value
+#>   <chr>                           <chr>    <chr> <chr>     <chr>       <chr>    
+#> 1 all                             neighbo… Pote… <NA>      <NA>        <NA>     
+#> 2 all                             water_s… Pote… <NA>      <NA>        <NA>     
+#> 3 all                             water_s… Pote… <NA>      <NA>        <NA>     
+#> 4 all                             water_s… Pote… <NA>      <NA>        <NA>     
+#> 5 all                             consent… Pote… <NA>      <NA>        <NA>     
+#> 6 ac26e24d-12be-4729-bae7-21060e… X_index  <NA>  88        <NA>        <NA>
+```
+
+#### 3.11 `add_info_to_cleaning_log()`
+
+The function `add_info_to_cleaning_log()` is designed to add information
+from the dataset into the cleaning log.
+
+``` r
+add_with_info <- list |> add_info_to_cleaning_log()
+
+add_with_info$cleaning_log |> head()
+#>                                   uuid                              question
+#> 1 ac26e24d-12be-4729-bae7-21060ee00a28                               X_index
+#> 2                                  all                         neighbourhood
+#> 3                                  all       water_supply_rest_neighbourhood
+#> 4                                  all     water_supply_other_neighbourhoods
+#> 5                                  all water_supply_other_neighbourhoods_why
+#> 6                                  all              consent_telephone_number
+#>           issue old_value change_type new_value enumerator_num date_assessment
+#> 1          <NA>        88        <NA>      <NA>             13      2021-07-06
+#> 2 Potential PII      <NA>        <NA>      <NA>             NA            <NA>
+#> 3 Potential PII      <NA>        <NA>      <NA>             NA            <NA>
+#> 4 Potential PII      <NA>        <NA>      <NA>             NA            <NA>
+#> 5 Potential PII      <NA>        <NA>      <NA>             NA            <NA>
+#> 6 Potential PII      <NA>        <NA>      <NA>             NA            <NA>
 ```
