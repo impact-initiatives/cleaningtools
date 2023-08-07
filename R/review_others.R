@@ -57,7 +57,7 @@ all_logic <- create_logic_for_other(kobo_survey = kobo_survey ,
 
 
 
-check  <- check_for_logical_with_list(.dataset = data,
+check  <- check_logical_with_list(.dataset = data,
                                       uuid_var = uuid,
                                       list_of_check = all_logic,
                                       check_id_column = "id",
