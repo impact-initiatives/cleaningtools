@@ -236,3 +236,30 @@ test_that("Check if there is no checked_dataset in a list, it will throws an err
 )
 })
 
+
+
+test_that("Check Strongness factor", {
+  data_test <- data.frame(
+    uuid = c(1:3),
+    col_1 = c(1:3),
+    col_2 = c(NA, NA, "expenditures"),
+    col_3 = c("with need", NA, "with need"),
+    col_4 = c("food health school", NA, "food"),
+    col_4.food = c(1, NA, 1),
+    col_4.health = c(1, NA, 0),
+    col_4.school = c(1, NA, 0),
+    percentage_missing = c(.125, .750, 0)
+  )
+
+  # data_with_add <- data_test |> add_percentage_missing()
+  strongnees2_output <- check_percentage_missing(.dataset = data_test,strongness_factor = 2)
+  strongnees1_output <- check_percentage_missing(.dataset = data_test,strongness_factor = 1)
+
+  testthat::expect_equal(nrow(strongnees2_output$percentage_missing_log),0)
+  testthat::expect_equal(nrow(strongnees1_output$percentage_missing_log),1)
+  testthat::expect_equal(strongnees1_output$percentage_missing_log$old_value,"0.75")
+
+  })
+
+
+
