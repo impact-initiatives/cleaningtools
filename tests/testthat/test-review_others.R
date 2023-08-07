@@ -95,7 +95,7 @@ testthat::test_that("expect equal", {
                                       "84c8db18-b1fa-4ba6-a764-b77b642353a3"),
                              question = c("shelter_occupation","shelter_occupation_other",
                                           "primary_livelihood_other", "primary_livelihood.other"
-                             ), old_value = c("other", NA, NA, "TRUE"),
+                             ), old_value = c("other", "NA", "NA", "TRUE"),
                              issue = c("shelter_occupation_other is NA but the shelter_occupation column is seleted as other/relevent choice(other)",
                                        "shelter_occupation_other is NA but the shelter_occupation column is seleted as other/relevent choice(other)",
                                        "primary_livelihood_other is NA but the binary column (primary_livelihood.other)is selected as TRUE/1",
@@ -125,7 +125,7 @@ testthat::test_that("expect equal", {
                                       "f58a7fda-27e8-4003-90b3-479bebbb99ab"),
                              question = c("shelter_occupation",
                                           "shelter_occupation_other"),
-                             old_value = c("other", NA),
+                             old_value = c("other", "NA"),
                              issue = c("shelter_occupation_other is NA but the shelter_occupation column is seleted as other/relevent choice(other)",
                                        "shelter_occupation_other is NA but the shelter_occupation column is seleted as other/relevent choice(other)"
                              ),
