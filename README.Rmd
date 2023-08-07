@@ -295,7 +295,7 @@ output$flaged_value |> head()
 ```
 
 #### 3.5 Check logics
-`check_for_logical()` takes a regular expression, as it is how it will be read from Excel `check_for_logical_with_list()`.
+`check_logical()` takes a regular expression, as it is how it will be read from Excel `check_logical_with_list()`.
 ```{r}
 test_data <- data.frame(uuid = c(1:10) %>% as.character(),
                         today = rep("2023-01-01", 10),
@@ -303,7 +303,7 @@ test_data <- data.frame(uuid = c(1:10) %>% as.character(),
                         distance_to_market = c(rep("less_30", 5), rep("more_30",5)),
                         access_to_market = c(rep("yes",4), rep("no",6)),
                         number_children_05 = c(rep(c(0,1),4),5,6))
-cleaningtools::check_for_logical(test_data,
+cleaningtools::check_logical(test_data,
                                  uuid_var = "uuid",
                                  check_to_perform = "distance_to_market == \"less_30\" & access_to_market == \"no\"",
                                  variables_to_clean = "distance_to_market, access_to_market",
@@ -329,7 +329,7 @@ check_list <- data.frame(name = c("logical_xx", "logical_yy", "logical_zz"),
                          variables_to_clean = c("distance_to_market, access_to_market",
                                                 "number_children_05",
                                                 ""))
-cleaningtools::check_for_logical_with_list(test_data,
+cleaningtools::check_logical_with_list(test_data,
                             uuid_var = "uuid",
                             list_of_check = check_list,
                             check_id_column = "name",

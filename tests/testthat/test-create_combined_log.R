@@ -81,7 +81,7 @@ checkss <- cleaningtools::check_for_pii(df = check_data) %>%
   check_others(uuid = "X_uuid",
                var_list = names(cleaningtools::cleaningtools_raw_data |> dplyr::select(ends_with("_other")) |> dplyr::select(-contains(".")))) %>%
   check_percentage_missing(uuid_var = "X_uuid") %>%
-  check_for_logical(uuid_var = "X_uuid", check_to_perform = "inc_employment_pension == tot_expenses", description = "income equals to expenses")
+  check_logical(uuid_var = "X_uuid", check_to_perform = "inc_employment_pension == tot_expenses", description = "income equals to expenses")
 
 cannot_bind <- create_combined_log(list_of_log = checkss)
 

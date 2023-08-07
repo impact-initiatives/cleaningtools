@@ -135,9 +135,9 @@ test_data <- dplyr::tibble(
   reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_))
 
 cleaningtools::recreate_parent_column(df = test_data,uuid = "uuid",sm_sep = ".") |> head()
-#> Warning in cleaningtools::recreate_parent_column(df = test_data, uuid = "uuid",
-#> : Column(s) names are renamed as multiple separators are found in dataset
-#> column names. Please see the above table with the new name.
+#> Warning in cleaningtools::recreate_parent_column(df = test_data, uuid =
+#> "uuid", : Column(s) names are renamed as multiple separators are found in
+#> dataset column names. Please see the above table with the new name.
 #> # A tibble: 2 × 2
 #>   old_name    new_name   
 #>   <chr>       <chr>      
@@ -566,8 +566,8 @@ output$flaged_value |> head()
 
 #### 3.5 Check logics
 
-`check_for_logical()` takes a regular expression, as it is how it will
-be read from Excel `check_for_logical_with_list()`.
+`check_logical()` takes a regular expression, as it is how it will be
+read from Excel `check_logical_with_list()`.
 
 ``` r
 test_data <- data.frame(uuid = c(1:10) %>% as.character(),
@@ -576,7 +576,7 @@ test_data <- data.frame(uuid = c(1:10) %>% as.character(),
                         distance_to_market = c(rep("less_30", 5), rep("more_30",5)),
                         access_to_market = c(rep("yes",4), rep("no",6)),
                         number_children_05 = c(rep(c(0,1),4),5,6))
-cleaningtools::check_for_logical(test_data,
+cleaningtools::check_logical(test_data,
                                  uuid_var = "uuid",
                                  check_to_perform = "distance_to_market == \"less_30\" & access_to_market == \"no\"",
                                  variables_to_clean = "distance_to_market, access_to_market",
@@ -631,14 +631,14 @@ check_list <- data.frame(name = c("logical_xx", "logical_yy", "logical_zz"),
                          variables_to_clean = c("distance_to_market, access_to_market",
                                                 "number_children_05",
                                                 ""))
-cleaningtools::check_for_logical_with_list(test_data,
+cleaningtools::check_logical_with_list(test_data,
                             uuid_var = "uuid",
                             list_of_check = check_list,
                             check_id_column = "name",
                             check_to_perform_column = "check",
                             variables_to_clean_column = "variables_to_clean",
                             description_column = "description") |> head()
-#> Warning in check_for_logical(.dataset = .dataset, uuid_var = uuid_var,
+#> Warning in check_logical(.dataset = .dataset, uuid_var = uuid_var,
 #> variables_to_add = variables_to_add, : variables_to_clean not shared, results
 #> may not be accurate
 #> $checked_dataset
@@ -852,8 +852,8 @@ cleaningtools::check_fcs(dataset = cleaningtools::cleaningtools_food_consumption
                       oil = "oil_fat_butter",
                       sugar = "sugar_sugary_food") |> head()
 #> Warning in cleaningtools::check_fcs(dataset =
-#> cleaningtools::cleaningtools_food_consumption_df, : Potential issue:: There are
-#> 105 observations where all the variables of food consumption score are the
+#> cleaningtools::cleaningtools_food_consumption_df, : Potential issue:: There
+#> are 105 observations where all the variables of food consumption score are the
 #> same.Check result.
 #>                                 X_uuid cereals_grains_roots_tubers
 #> 1 e7da37c0-dd23-4d38-8cac-2e8e8a243b57                           0
