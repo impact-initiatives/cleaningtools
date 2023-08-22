@@ -12,27 +12,28 @@
 #' @export
 #'
 #' @examples
-#'   testdata <- data.frame(uuid = c(letters[1:4], "a", "b", "c"),
-#'                          col_a = runif(7),
-#'                          col_b = runif(7)
-#'                          )
+#' testdata <- data.frame(
+#'   uuid = c(letters[1:4], "a", "b", "c"),
+#'   col_a = runif(7),
+#'   col_b = runif(7)
+#' )
 #'
 #' check_duplicate(testdata)
 #'
-#' testdata2 <- data.frame(uuid = letters[c(1:7)],
-#'                         village = paste("village", c(1:3,1:3,4)),
-#'                         ki_identifier = paste0("xx_", c(1:5,3,4)))
+#' testdata2 <- data.frame(
+#'   uuid = letters[c(1:7)],
+#'   village = paste("village", c(1:3, 1:3, 4)),
+#'   ki_identifier = paste0("xx_", c(1:5, 3, 4))
+#' )
 #'
 #' check_duplicate(testdata2, columns_to_check = "village")
 #'
 #' check_duplicate(testdata2, columns_to_check = c("village", "ki_identifier"), uuid = "uuid")
 #'
-
 check_duplicate <- function(dataset,
                             uuid_column = "uuid",
                             columns_to_check = NULL,
-                            log_name = "duplicate_log"
-                            ) {
+                            log_name = "duplicate_log") {
   if (is.data.frame(dataset)) {
     dataset <- list(checked_dataset = dataset)
   }
@@ -53,7 +54,13 @@ check_duplicate <- function(dataset,
   }
 
   if (!all(columns_to_check %in% names(dataset[["checked_dataset"]]))) {
-    msg <- glue::glue("Cannot find ", {glue::glue_collapse(columns_to_check, sep = ' ~/~ ')}, " in the names of the dataset")
+    msg <- glue::glue(
+      "Cannot find ",
+      {
+        glue::glue_collapse(columns_to_check, sep = " ~/~ ")
+      },
+      " in the names of the dataset"
+    )
     stop(msg)
   }
 
@@ -75,10 +82,13 @@ check_duplicate <- function(dataset,
   } else {
     duplicate_log <- duplicate_log %>%
       tidyr::pivot_longer(!dplyr::all_of(uuid_column),
-                          names_to = "question",
-                          values_to = "old_value") %>%
+        names_to = "question",
+        values_to = "old_value"
+      ) %>%
       dplyr::mutate(
-        issue = glue::glue("duplicated ", {glue::glue_collapse(columns_to_check, sep = ' ~/~ ')})
+        issue = glue::glue("duplicated ", {
+          glue::glue_collapse(columns_to_check, sep = " ~/~ ")
+        })
       ) %>%
       dplyr::rename(uuid = !!rlang::sym(uuid_column))
   }

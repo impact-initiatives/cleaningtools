@@ -575,7 +575,7 @@ test_that("Works with one test", {
     uuid = c(1:10) %>% as.character(),
     today = rep("2023-01-01", 10),
     location = rep(c("villageA", "villageB"), 5),
-    expenses = c(rep(50,9),5000000)
+    expenses = c(rep(50, 9), 5000000)
   )
 
   expected_results <- list(
@@ -593,10 +593,10 @@ test_that("Works with one test", {
 
   expect_equal(
     check_logical(test_data,
-                  uuid_column = "uuid",
-                  check_to_perform = "expenses > 1000000",
-                  columns_to_clean = "expenses",
-                  description = "check expenses above 1000000"
+      uuid_column = "uuid",
+      check_to_perform = "expenses > 1000000",
+      columns_to_clean = "expenses",
+      description = "check expenses above 1000000"
     ),
     expected_results
   )

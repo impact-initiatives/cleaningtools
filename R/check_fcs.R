@@ -24,8 +24,10 @@ check_fcs <- function(dataset,
                       fruits_column = "fs_fcs_fruit",
                       oil_column = "fs_fcs_fat",
                       sugar_column = "fs_fcs_sugar") {
-  fcs_cols <- c(cereals_column, pulses_column, dairy_column, meat_column, vegetables_column,
-                fruits_column, oil_column, sugar_column)
+  fcs_cols <- c(
+    cereals_column, pulses_column, dairy_column, meat_column, vegetables_column,
+    fruits_column, oil_column, sugar_column
+  )
 
   check_df <- dataset %>%
     dplyr::filter(pmax(!!!syms(fcs_cols), na.rm = T) == pmin(!!!syms(fcs_cols), na.rm = T)) %>%
@@ -45,4 +47,3 @@ check_fcs <- function(dataset,
   }
   check_df
 }
-

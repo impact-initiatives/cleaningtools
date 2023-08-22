@@ -92,28 +92,36 @@ create_audit_list <- function(audit_zip_path,
 #' @export
 #'
 #' @examples
-#' some_audit <- data.frame(event = c("form start", rep("question", 5)),
-#'                          node = c("", paste0("/xx/question", 1:5)),
-#'                          start = c(1661415887295,1661415887301,1661415890819,
-#'                          1661415892297,1661415893529,1661415894720),
-#'                          end = c(NA, 1661415890790, 1661415892273,
-#'                          1661415893506, 1661415894703, 1661415896452))
+#' some_audit <- data.frame(
+#'   event = c("form start", rep("question", 5)),
+#'   node = c("", paste0("/xx/question", 1:5)),
+#'   start = c(
+#'     1661415887295, 1661415887301, 1661415890819,
+#'     1661415892297, 1661415893529, 1661415894720
+#'   ),
+#'   end = c(
+#'     NA, 1661415890790, 1661415892273,
+#'     1661415893506, 1661415894703, 1661415896452
+#'   )
+#' )
 #' create_duration_from_audit_with_start_end(some_audit, "question1", "question3")
 #'
 create_duration_from_audit_with_start_end <- function(audit_file, start_question, end_question) {
-  df_start_subset <- audit_file[grepl(paste0("\\/(?:",start_question,")$"), audit_file$node),]
+  df_start_subset <- audit_file[grepl(paste0("\\/(?:", start_question, ")$"), audit_file$node), ]
   start_question_df <- df_start_subset %>% dplyr::select(start)
-  start_question_df<-min(start_question_df$start)
+  start_question_df <- min(start_question_df$start)
 
-  df_end_subset <- audit_file[grepl(paste0("\\/(?:",end_question,")$"), audit_file$node),]
+  df_end_subset <- audit_file[grepl(paste0("\\/(?:", end_question, ")$"), audit_file$node), ]
   end_question_df <- df_end_subset %>% dplyr::select(end)
-  end_question_df<-max(end_question_df$end)
+  end_question_df <- max(end_question_df$end)
 
-  duration_ms<-end_question_df-start_question_df
-  duration_minutes<- round(duration_ms/1000/60,1)
+  duration_ms <- end_question_df - start_question_df
+  duration_minutes <- round(duration_ms / 1000 / 60, 1)
 
-  data.frame(duration_ms=duration_ms,
-             duration_minutes= duration_minutes)
+  data.frame(
+    duration_ms = duration_ms,
+    duration_minutes = duration_minutes
+  )
 }
 
 #' Calculate duration from audit summing all time
@@ -128,20 +136,27 @@ create_duration_from_audit_with_start_end <- function(audit_file, start_question
 #' @export
 #'
 #' @examples
-#' some_audit <- data.frame(event = c("form start", rep("question", 5)),
-#'                          node = c("", paste0("/xx/question", 1:5)),
-#'                          start = c(1661415887295,1661415887301,1661415890819,
-#'                          1661415892297,1661415893529,1661415894720),
-#'                          end = c(NA, 1661415890790, 1661415892273,
-#'                          1661415893506, 1661415894703, 1661415896452))
+#' some_audit <- data.frame(
+#'   event = c("form start", rep("question", 5)),
+#'   node = c("", paste0("/xx/question", 1:5)),
+#'   start = c(
+#'     1661415887295, 1661415887301, 1661415890819,
+#'     1661415892297, 1661415893529, 1661415894720
+#'   ),
+#'   end = c(
+#'     NA, 1661415890790, 1661415892273,
+#'     1661415893506, 1661415894703, 1661415896452
+#'   )
+#' )
 #' create_duration_from_audit_sum_all(some_audit)
-
 create_duration_from_audit_sum_all <- function(audit_file) {
   audit_file <- audit_file %>% filter(node != "")
   duration_ms <- sum(audit_file$end - audit_file$start)
-  duration_minutes <- round(duration_ms/1000/60,1)
-  data.frame(duration_ms=duration_ms,
-             duration_minutes= duration_minutes)
+  duration_minutes <- round(duration_ms / 1000 / 60, 1)
+  data.frame(
+    duration_ms = duration_ms,
+    duration_minutes = duration_minutes
+  )
 }
 
 #' Adds duration from the audit file
@@ -162,36 +177,55 @@ create_duration_from_audit_sum_all <- function(audit_file) {
 #' @export
 #'
 #' @examples
-#' list_audit <- list(uuid1 = data.frame(event = c("form start", rep("question", 5)),
-#'                                       node = c("", paste0("/xx/question", 1:5)),
-#'                                       start = c(1661415887295, 1661415887301,
-#'                                                 1661415890819, 1661415892297,
-#'                                                 1661415893529, 1661415894720),
-#'                                       end = c(NA, 1661415890790, 1661415892273,
-#'                                               1661415893506, 1661415894703,
-#'                                               1661415896452)),
-#'                    uuid2 = data.frame(event = c("form start", rep("question", 5)),
-#'                                       node = c("", paste0("/xx/question", 1:5)),
-#'                                       start = c(1661415887295,1661415887301,1661415890819,
-#'                                                 1661415892297,1661415893529,1661415894720),
-#'                                       end = c(NA, 1661415890790, 1661415892273,
-#'                                       1661415893506, 1661415894703, 1661415896452)))
-#' some_dataset <- data.frame(X_uuid = c("uuid1", "uuid2"),
-#'                            question1 = c("a","b"),
-#'                            question2 = c("a","b"),
-#'                            question3 = c("a","b"),
-#'                            question4 = c("a","b"),
-#'                            question5 = c("a","b"))
+#' list_audit <- list(
+#'   uuid1 = data.frame(
+#'     event = c("form start", rep("question", 5)),
+#'     node = c("", paste0("/xx/question", 1:5)),
+#'     start = c(
+#'       1661415887295, 1661415887301,
+#'       1661415890819, 1661415892297,
+#'       1661415893529, 1661415894720
+#'     ),
+#'     end = c(
+#'       NA, 1661415890790, 1661415892273,
+#'       1661415893506, 1661415894703,
+#'       1661415896452
+#'     )
+#'   ),
+#'   uuid2 = data.frame(
+#'     event = c("form start", rep("question", 5)),
+#'     node = c("", paste0("/xx/question", 1:5)),
+#'     start = c(
+#'       1661415887295, 1661415887301, 1661415890819,
+#'       1661415892297, 1661415893529, 1661415894720
+#'     ),
+#'     end = c(
+#'       NA, 1661415890790, 1661415892273,
+#'       1661415893506, 1661415894703, 1661415896452
+#'     )
+#'   )
+#' )
+#' some_dataset <- data.frame(
+#'   X_uuid = c("uuid1", "uuid2"),
+#'   question1 = c("a", "b"),
+#'   question2 = c("a", "b"),
+#'   question3 = c("a", "b"),
+#'   question4 = c("a", "b"),
+#'   question5 = c("a", "b")
+#' )
 #' add_duration_from_audit(some_dataset, uuid_column = "X_uuid", audit_list = list_audit)
-#' add_duration_from_audit(some_dataset, uuid_column = "X_uuid", audit_list = list_audit,
-#'                         start_question = "question1",
-#'                         end_question = "question3",
-#'                         sum_all = FALSE)
-#' add_duration_from_audit(some_dataset, uuid_column = "X_uuid", audit_list = list_audit,
-#'                         start_question = "question1",
-#'                         end_question = "question3",
-#'                         sum_all = TRUE)
-
+#' add_duration_from_audit(some_dataset,
+#'   uuid_column = "X_uuid", audit_list = list_audit,
+#'   start_question = "question1",
+#'   end_question = "question3",
+#'   sum_all = FALSE
+#' )
+#' add_duration_from_audit(some_dataset,
+#'   uuid_column = "X_uuid", audit_list = list_audit,
+#'   start_question = "question1",
+#'   end_question = "question3",
+#'   sum_all = TRUE
+#' )
 add_duration_from_audit <- function(dataset,
                                     col_name_prefix = "duration_audit",
                                     uuid_column = "uuid",
@@ -199,78 +233,80 @@ add_duration_from_audit <- function(dataset,
                                     start_question = NULL,
                                     end_question = NULL,
                                     sum_all = TRUE) {
-  #checks input
-  if(is.null(start_question) & !is.null(end_question)) {
+  # checks input
+  if (is.null(start_question) & !is.null(end_question)) {
     stop("start_question is missing")
   }
-  if(!is.null(start_question) & is.null(end_question)) {
+  if (!is.null(start_question) & is.null(end_question)) {
     stop("end_question is missing")
   }
-  if(!is.null(start_question) & !is.null(end_question)) {
+  if (!is.null(start_question) & !is.null(end_question)) {
     new_names_start_end <- paste0(col_name_prefix, c("_start_end_ms", "_start_end_minutes"))
-    if(any(new_names_start_end %in% names(dataset))) {
+    if (any(new_names_start_end %in% names(dataset))) {
       msg <- glue::glue(col_name_prefix, " seems to be already used as name in your dataset.")
       stop(msg)
     }
   }
 
-  if(sum_all) {
+  if (sum_all) {
     new_names_sum_all <- paste0(col_name_prefix, c("_sum_all_ms", "_sum_all_minutes"))
-    if(any(new_names_sum_all %in% names(dataset))) {
+    if (any(new_names_sum_all %in% names(dataset))) {
       msg <- glue::glue(col_name_prefix, " seems to be already used as name in your dataset.")
       stop(msg)
     }
   }
 
-  #calculate duration for each audit file
-  if(!is.null(start_question) & !is.null(end_question)) {
-  duration_with_start_end <- audit_list %>%
-    purrr::map(~create_duration_from_audit_with_start_end(.x,
-                                                          start_question = start_question,
-                                                          end_question = end_question)) %>%
-    purrr::set_names(names(audit_list)) %>%
-    do.call(rbind,.) %>%
-    `names<-`(new_names_start_end) %>%
-    dplyr::mutate(uuid = row.names(.))
+  # calculate duration for each audit file
+  if (!is.null(start_question) & !is.null(end_question)) {
+    duration_with_start_end <- audit_list %>%
+      purrr::map(~ create_duration_from_audit_with_start_end(.x,
+        start_question = start_question,
+        end_question = end_question
+      )) %>%
+      purrr::set_names(names(audit_list)) %>%
+      do.call(rbind, .) %>%
+      `names<-`(new_names_start_end) %>%
+      dplyr::mutate(uuid = row.names(.))
   }
 
-  if(!uuid_column %in% names(dataset)) {
+  if (!uuid_column %in% names(dataset)) {
     msg <- glue::glue(uuid_column, " variable cannot be found in the dataset.")
     stop(msg)
   }
 
-  if(all(!names(audit_list) %in% dataset[[uuid_column]])) {
+  if (all(!names(audit_list) %in% dataset[[uuid_column]])) {
     stop("It seems no uuid are found as name of any data frame of audit list, make sure the data frame are saved with the uuid as name.")
   }
 
   audit_check <- audit_list %>%
-    purrr::map_lgl(function(xx) {all(c("node", "start", "end", "event") %in% names(xx) )}) %>%
+    purrr::map_lgl(function(xx) {
+      all(c("node", "start", "end", "event") %in% names(xx))
+    }) %>%
     all()
-  if(!audit_check) {
+  if (!audit_check) {
     stop("Some columns are missing in the audits, please make sure to have at least event, node, start, end")
   }
 
-  if(sum_all) {
-  duration_with_sum_all <- audit_list %>%
-    purrr::map(create_duration_from_audit_sum_all) %>%
-    purrr::set_names(names(audit_list)) %>%
-    do.call(rbind,.) %>%
-    `names<-`(new_names_sum_all) %>%
-    dplyr::mutate(uuid = row.names(.))
+  if (sum_all) {
+    duration_with_sum_all <- audit_list %>%
+      purrr::map(create_duration_from_audit_sum_all) %>%
+      purrr::set_names(names(audit_list)) %>%
+      do.call(rbind, .) %>%
+      `names<-`(new_names_sum_all) %>%
+      dplyr::mutate(uuid = row.names(.))
   }
 
-  if(exists("duration_with_sum_all")) {
+  if (exists("duration_with_sum_all")) {
     dataset <- dataset %>%
-      left_join(duration_with_sum_all, by = setNames("uuid",uuid_column))
+      left_join(duration_with_sum_all, by = setNames("uuid", uuid_column))
   }
 
-  if(exists("duration_with_start_end")) {
+  if (exists("duration_with_start_end")) {
     dataset <- dataset %>%
-      left_join(duration_with_start_end, by = setNames("uuid",uuid_column))
+      left_join(duration_with_start_end, by = setNames("uuid", uuid_column))
   }
 
   return(dataset)
-
 }
 
 #' Check if duration is outside of a range
@@ -293,13 +329,16 @@ add_duration_from_audit <- function(dataset,
 #' @examples
 #' testdata <- data.frame(
 #'   uuid = c(letters[1:7]),
-#'   duration_audit_start_end_ms = c(2475353, 375491, 2654267, 311585, 817270,
-#'                                   2789505, 8642007),
+#'   duration_audit_start_end_ms = c(
+#'     2475353, 375491, 2654267, 311585, 817270,
+#'     2789505, 8642007
+#'   ),
 #'   duration_audit_start_end_minutes = c(41, 6, 44, 5, 14, 46, 144)
 #' )
 #'
 #' check_duration(testdata,
-#'                column_to_check = "duration_audit_start_end_minutes")
+#'   column_to_check = "duration_audit_start_end_minutes"
+#' )
 #'
 #' check_duration(
 #'   testdata,
@@ -308,21 +347,20 @@ add_duration_from_audit <- function(dataset,
 #'   higher_bound = 8642000
 #' )
 #'
-#' testdata %>% check_duration(column_to_check = "duration_audit_start_end_minutes") %>%
+#' testdata %>%
+#'   check_duration(column_to_check = "duration_audit_start_end_minutes") %>%
 #'   check_duration(
 #'     column_to_check = "duration_audit_start_end_ms",
 #'     log_name = "duration_in_ms",
 #'     lower_bound = 375490,
 #'     higher_bound = 8642000
 #'   )
-
 check_duration <- function(dataset,
                            column_to_check,
                            uuid_column = "uuid",
                            log_name = "duration_log",
                            lower_bound = 25,
                            higher_bound = 90) {
-
   if (is.data.frame(dataset)) {
     dataset <- list(checked_dataset = dataset)
   }
@@ -337,17 +375,18 @@ check_duration <- function(dataset,
 
   log <- dataset[["checked_dataset"]] %>%
     dplyr::mutate(duration_check = !!rlang::sym(column_to_check) < lower_bound |
-                    !!rlang::sym(column_to_check) > higher_bound) %>%
+      !!rlang::sym(column_to_check) > higher_bound) %>%
     dplyr::filter(duration_check) %>%
     dplyr::select(dplyr::all_of(c(uuid_column, column_to_check))) %>%
     dplyr::mutate(
       question = column_to_check,
       issue = "Duration is lower or higher than the thresholds"
     ) %>%
-    dplyr::rename(old_value = !!rlang::sym(column_to_check),
-                  uuid = !!rlang::sym(uuid_column))
+    dplyr::rename(
+      old_value = !!rlang::sym(column_to_check),
+      uuid = !!rlang::sym(uuid_column)
+    )
 
   dataset[[log_name]] <- log
   return(dataset)
-
 }

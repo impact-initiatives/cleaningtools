@@ -23,15 +23,19 @@
 #'   col_4.school = c(1, NA, 0)
 #' )
 #' kobo_survey <- data.frame(
-#'   type = c("uuid",
-#'            "integer",
-#'            "select_one choice2",
-#'            "select_one choice3",
-#'            "select_multiple choice4"),
+#'   type = c(
+#'     "uuid",
+#'     "integer",
+#'     "select_one choice2",
+#'     "select_one choice3",
+#'     "select_multiple choice4"
+#'   ),
 #'   name = c("uuid", "col_1", "col_2", "col_3", "col_4")
 #' )
-#' data_test %>% add_percentage_missing(kobo_survey = kobo_survey,
-#' type_to_include = c("integer","select_one","select_multiple"))
+#' data_test %>% add_percentage_missing(
+#'   kobo_survey = kobo_survey,
+#'   type_to_include = c("integer", "select_one", "select_multiple")
+#' )
 #' data_test %>% add_percentage_missing()
 add_percentage_missing <-
   function(dataset,
@@ -43,16 +47,17 @@ add_percentage_missing <-
         stop("Cannot identify type and/or name columns in kobo")
       }
 
-      type_only <- kobo_survey$type  |> stringr::word(1) |> unique()
+      type_only <- kobo_survey$type |>
+        stringr::word(1) |>
+        unique()
 
       not_found <- type_to_include[!type_to_include %in% type_only]
-        if(length(not_found)>0){
-        msg <- not_found |> glue::glue_collapse(sep = ", ") %>%
-          glue::glue("Following type: ",., " cannot be found in the kobo tool")
+      if (length(not_found) > 0) {
+        msg <- not_found |>
+          glue::glue_collapse(sep = ", ") %>%
+          glue::glue("Following type: ", ., " cannot be found in the kobo tool")
         stop(msg)
       }
-
-
     }
 
     if (column_name %in% names(dataset)) {
@@ -101,30 +106,33 @@ add_percentage_missing <-
 #' @seealso [cleaningtools::add_percentage_missing()], [cleaningtools::check_outliers()]
 #' @examples
 #' # Adding the percentage missing first
-#' data_example <- data.frame(uuid = letters[1:3],
-#'                            col_1 = c(1:3),
-#'                            col_2 = c(NA, NA, "expenditures"),
-#'                            col_3 = c("with need",NA, "with need"),
-#'                            col_4 = c("food health school", NA, "food"),
-#'                            col_4.food = c(1,NA,1),
-#'                            col_4.health = c(1,NA,0),
-#'                            col_4.school = c(1,NA,0))
+#' data_example <- data.frame(
+#'   uuid = letters[1:3],
+#'   col_1 = c(1:3),
+#'   col_2 = c(NA, NA, "expenditures"),
+#'   col_3 = c("with need", NA, "with need"),
+#'   col_4 = c("food health school", NA, "food"),
+#'   col_4.food = c(1, NA, 1),
+#'   col_4.health = c(1, NA, 0),
+#'   col_4.school = c(1, NA, 0)
+#' )
 #' data_example <- data_example %>%
 #'   add_percentage_missing()
 #' data_example %>% check_percentage_missing()
 #'
 #' # With a dataset that already has a percentage missing
-#' data_example2 <- data.frame(uuid = letters,
-#'                             any_cols = LETTERS,
-#'                             any_number = 1:26,
-#'                             percentage_missing = c(rep(.05,25),.99))
+#' data_example2 <- data.frame(
+#'   uuid = letters,
+#'   any_cols = LETTERS,
+#'   any_number = 1:26,
+#'   percentage_missing = c(rep(.05, 25), .99)
+#' )
 #' data_example2 %>% check_percentage_missing()
-#'
 #'
 check_percentage_missing <- function(dataset,
                                      uuid_column = "uuid",
                                      column_to_check = "percentage_missing",
-                                     strongness_factor = 2 ,
+                                     strongness_factor = 2,
                                      log_name = "percentage_missing_log") {
   if (is.data.frame(dataset)) {
     dataset <- list(checked_dataset = dataset)
@@ -145,14 +153,14 @@ check_percentage_missing <- function(dataset,
 
   log <- dataset[["checked_dataset"]] %>%
     dplyr::select(dplyr::all_of(c(uuid_column, column_to_check))) %>%
-    check_outliers(uuid_column = uuid_column,strongness_factor = strongness_factor )
+    check_outliers(uuid_column = uuid_column, strongness_factor = strongness_factor)
 
   log[["potential_outliers"]] <- log[["potential_outliers"]] %>%
     dplyr::mutate(across(.cols = dplyr::everything(), .fns = as.character),
-                  issue = "Percentages of missing values from this survey is different from others")
+      issue = "Percentages of missing values from this survey is different from others"
+    )
 
   dataset[[log_name]] <- log[["potential_outliers"]]
 
   return(dataset)
-
 }

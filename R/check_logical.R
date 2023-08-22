@@ -94,19 +94,19 @@ check_logical <- function(dataset,
   if (exists("tentative_var")) {
     if (length(tentative_var) == 0) {
       dataset[[check_id]] <- trimmed_dataset %>%
-        dplyr::mutate(dplyr::across(.cols = dplyr::everything(), .fns = ~format(., scientific = F, justify = "none", trim = T)),
-                      question = "unable to identify",
-                      old_value = "please check this uuid for this check",
-                      issue = description,
-                      check_id = check_id,
-                      check_binding = paste(check_id, uuid, sep = " ~/~ ")
-                      )
+        dplyr::mutate(dplyr::across(.cols = dplyr::everything(), .fns = ~ format(., scientific = F, justify = "none", trim = T)),
+          question = "unable to identify",
+          old_value = "please check this uuid for this check",
+          issue = description,
+          check_id = check_id,
+          check_binding = paste(check_id, uuid, sep = " ~/~ ")
+        )
       return(dataset)
     }
   }
 
   dataset[[check_id]] <- trimmed_dataset %>%
-    dplyr::mutate(dplyr::across(.cols = dplyr::everything(), .fns = ~format(., scientific = F, justify = "none", trim = T))) %>%
+    dplyr::mutate(dplyr::across(.cols = dplyr::everything(), .fns = ~ format(., scientific = F, justify = "none", trim = T))) %>%
     tidyr::pivot_longer(cols = !dplyr::all_of(c("uuid", information_to_add)), names_to = "question", values_to = "old_value") %>%
     dplyr::mutate(
       issue = description,

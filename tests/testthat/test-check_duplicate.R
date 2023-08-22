@@ -184,85 +184,105 @@ test_that("If column does not exist, return an error", {
 test_that("If 2 values are passed, the duplicated of the combination are passed", {
   testdata <- data.frame(
     uuid = letters[1:7],
-    village = paste("village", c(1:3,1:3,4)),
-    ki_identifier = paste0("xx_", c(1:5,3,4))
+    village = paste("village", c(1:3, 1:3, 4)),
+    ki_identifier = paste0("xx_", c(1:5, 3, 4))
   )
-  expected_output <- list(checked_dataset = testdata,
-                          duplicate_log = dplyr::tibble(
-                            uuid = c("f", "f"),
-                            question = c("village", "ki_identifier"),
-                            old_value = c("village 3", "xx_3"),
-                            issue = rep("duplicated village ~/~ ki_identifier", 2)
-                          ))
-  testthat::expect_equal(check_duplicate(testdata, columns_to_check = c("village", "ki_identifier"), uuid = "uuid"),
-                         expected_output)
-
+  expected_output <- list(
+    checked_dataset = testdata,
+    duplicate_log = dplyr::tibble(
+      uuid = c("f", "f"),
+      question = c("village", "ki_identifier"),
+      old_value = c("village 3", "xx_3"),
+      issue = rep("duplicated village ~/~ ki_identifier", 2)
+    )
+  )
+  testthat::expect_equal(
+    check_duplicate(testdata, columns_to_check = c("village", "ki_identifier"), uuid = "uuid"),
+    expected_output
+  )
 })
 
 test_that("If col_to_check is null, uuid is checked", {
   testdata <- data.frame(
-    uuid = letters[c(1:6,6)],
-    village = paste("village", c(1:3,1:3,4)),
-    ki_identifier = paste0("xx_", c(1:5,3,4))
+    uuid = letters[c(1:6, 6)],
+    village = paste("village", c(1:3, 1:3, 4)),
+    ki_identifier = paste0("xx_", c(1:5, 3, 4))
   )
-  expected_output <- list(checked_dataset = testdata,
-                          duplicate_log = data.frame(
-                            uuid = c("f"),
-                            old_value = c("f"),
-                            question = c("uuid"),
-                            issue = c("duplicated uuid")
-                          ))
-  testthat::expect_equal(check_duplicate(testdata,
-                                         uuid = "uuid"),
-                         expected_output)
-
+  expected_output <- list(
+    checked_dataset = testdata,
+    duplicate_log = data.frame(
+      uuid = c("f"),
+      old_value = c("f"),
+      question = c("uuid"),
+      issue = c("duplicated uuid")
+    )
+  )
+  testthat::expect_equal(
+    check_duplicate(testdata,
+      uuid = "uuid"
+    ),
+    expected_output
+  )
 })
 
 test_that("If col_to_check is given, columns_to_check is checked", {
   testdata <- data.frame(
     uuid = letters[c(1:7)],
-    village = paste("village", c(1:3,1:3,4)),
-    ki_identifier = paste0("xx_", c(1:5,3,4))
+    village = paste("village", c(1:3, 1:3, 4)),
+    ki_identifier = paste0("xx_", c(1:5, 3, 4))
   )
-  expected_output <- list(checked_dataset = testdata,
-                          duplicate_log = dplyr::tibble(
-                            uuid = c("d","e","f"),
-                            question = rep("village", 3),
-                            old_value = c("village 1", "village 2", "village 3"),
-                            issue = rep("duplicated village", 3)
-                          ))
-  testthat::expect_equal(check_duplicate(testdata,
-                                         columns_to_check = "village"),
-                         expected_output)
-
+  expected_output <- list(
+    checked_dataset = testdata,
+    duplicate_log = dplyr::tibble(
+      uuid = c("d", "e", "f"),
+      question = rep("village", 3),
+      old_value = c("village 1", "village 2", "village 3"),
+      issue = rep("duplicated village", 3)
+    )
+  )
+  testthat::expect_equal(
+    check_duplicate(testdata,
+      columns_to_check = "village"
+    ),
+    expected_output
+  )
 })
 
 test_that("If 2 values are passed with an error in names, there should be an error", {
   testdata <- data.frame(
     uuid = letters[1:7],
-    village = paste("village", c(1:3,1:3,4)),
-    ki_identifier = paste0("xx_", c(1:5,3,4))
+    village = paste("village", c(1:3, 1:3, 4)),
+    ki_identifier = paste0("xx_", c(1:5, 3, 4))
   )
 
-  testthat::expect_error(check_duplicate(testdata, columns_to_check = c("village", "ki"), uuid = "uuid"),
-                         "Cannot find village ~/~ ki in the names of the dataset")
+  testthat::expect_error(
+    check_duplicate(testdata, columns_to_check = c("village", "ki"), uuid = "uuid"),
+    "Cannot find village ~/~ ki in the names of the dataset"
+  )
 })
 
 test_that("If 2 variables are from different types (e.g. int and text), it will work", {
   testdata <- data.frame(
     id = c(letters[1:4], "a", "b", "c"),
-    col_a = c(1,2,3,4,1,2,3),
+    col_a = c(1, 2, 3, 4, 1, 2, 3),
     col_b = runif(7),
-    uuid = LETTERS[1:7])
+    uuid = LETTERS[1:7]
+  )
 
-  expected_results <- list(checked_dataset = testdata,
-                           duplicate_log = tibble(uuid = c("E", "E", "F", "F", "G", "G"),
-                                                   question = rep(c("id", "col_a"),3),
-                                                   old_value = c("a", "1", "b", "2", "c", "3"),
-                                                   issue = rep("duplicated id ~/~ col_a", 6)))
- testthat::expect_equal(check_duplicate(testdata,
-                                         uuid_column = "uuid",
-                                         columns_to_check = c("id", "col_a")),
-                         expected_results)
-
+  expected_results <- list(
+    checked_dataset = testdata,
+    duplicate_log = tibble(
+      uuid = c("E", "E", "F", "F", "G", "G"),
+      question = rep(c("id", "col_a"), 3),
+      old_value = c("a", "1", "b", "2", "c", "3"),
+      issue = rep("duplicated id ~/~ col_a", 6)
+    )
+  )
+  testthat::expect_equal(
+    check_duplicate(testdata,
+      uuid_column = "uuid",
+      columns_to_check = c("id", "col_a")
+    ),
+    expected_results
+  )
 })
