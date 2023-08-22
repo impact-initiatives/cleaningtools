@@ -6,37 +6,37 @@
 \usage{
 check_fcs(
   dataset,
-  uuid = "X_uuid",
-  cereals = "fs_fcs_cerealgrainroottuber",
-  pulses = "fs_fcs_beansnuts",
-  dairy = "fs_fcs_dairy",
-  meat = "fs_fcs_meatfishegg",
-  vegetables = "fs_fcs_vegetableleave",
-  fruits = "fs_fcs_fruit",
-  oil = "fs_fcs_fat",
-  sugar = "fs_fcs_sugar"
+  uuid_column = "uuid",
+  cereals_column = "fs_fcs_cerealgrainroottuber",
+  pulses_column = "fs_fcs_beansnuts",
+  dairy_column = "fs_fcs_dairy",
+  meat_column = "fs_fcs_meatfishegg",
+  vegetables_column = "fs_fcs_vegetableleave",
+  fruits_column = "fs_fcs_fruit",
+  oil_column = "fs_fcs_fat",
+  sugar_column = "fs_fcs_sugar"
 )
 }
 \arguments{
-\item{dataset}{Data set}
+\item{dataset}{dataset to be check as a dataframe or a list with the dataframe stored as "checked_dataset"}
 
-\item{uuid}{Column containing unique identifier}
+\item{uuid_column}{uuid column in the dataset. Default is uuid.}
 
-\item{cereals}{Variable name for- In the last 7 days, on how many days did your household eat cereals, grains, roots and tubers, including wild roots?}
+\item{cereals_column}{Variable name for- In the last 7 days, on how many days did your household eat cereals, grains, roots and tubers, including wild roots?}
 
-\item{pulses}{Variable name for-  In the last 7 days, on how many days did your household eat any beans / legumes, pulses or nuts?}
+\item{pulses_column}{Variable name for-  In the last 7 days, on how many days did your household eat any beans / legumes, pulses or nuts?}
 
-\item{dairy}{Variable name for- In the last 7 days, on how many days did your household drink milk or eat other dairy products?}
+\item{dairy_column}{Variable name for- In the last 7 days, on how many days did your household drink milk or eat other dairy products?}
 
-\item{meat}{Variable name for-  In the last 7 days, on how many days did your household eat meat, fish or eggs?}
+\item{meat_column}{Variable name for-  In the last 7 days, on how many days did your household eat meat, fish or eggs?}
 
-\item{vegetables}{Variable name for- In the last 7 days, on how many days did your household eat vegetables or leaves, including all wild vegetables and leaves?}
+\item{vegetables_column}{Variable name for- In the last 7 days, on how many days did your household eat vegetables or leaves, including all wild vegetables and leaves?}
 
-\item{fruits}{Variable name for- In the last 7 days, on how many days did your household eat fruits, including all wild fruits?}
+\item{fruits_column}{Variable name for- In the last 7 days, on how many days did your household eat fruits, including all wild fruits?}
 
-\item{oil}{Variable name for- In the last 7 days, on how many days did your household eat oil, fat, or butter?}
+\item{oil_column}{Variable name for- In the last 7 days, on how many days did your household eat oil, fat, or butter?}
 
-\item{sugar}{Variable name for- In the last 7 days, on how many days did your household eat sugar or sugary foods?}
+\item{sugar_column}{Variable name for- In the last 7 days, on how many days did your household eat sugar or sugary foods?}
 }
 \value{
 dataset with potential issues

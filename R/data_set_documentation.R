@@ -86,4 +86,3 @@
 #' @rdname cleaningtools_sample_frame
 #' @format NULL
 "cleaningtools_sample_frame"
-

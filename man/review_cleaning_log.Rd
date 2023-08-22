@@ -5,51 +5,51 @@
 \title{Review cleaning logs}
 \usage{
 review_cleaning_log(
-  raw_data = raw_data_hh,
-  raw_data_uuid = "X_id",
-  clean_data = clean_data_hh,
-  clean_data_uuid = "X_id",
+  raw_dataset,
+  raw_dataset_uuid_column = "uuid",
+  clean_dataset,
+  clean_dataset_uuid_column = "uuid",
   cleaning_log = cleaning_log_only,
-  cleaning_log_uuid = "id",
+  cleaning_log_uuid_column = "uuid",
   cleaning_log_change_type_column = "change_type",
-  cleaning_log_question_name = "question",
-  cleaning_log_new_value = "new_value",
-  cleaning_log_old_value = "old_value",
-  cleaning_log_added_survey = "added_survey",
-  cleanning_log_no_action_value = c("no_action", "no_change"),
+  cleaning_log_question_column = "question",
+  cleaning_log_new_value_column = "new_value",
+  cleaning_log_old_value_column = "old_value",
+  cleaning_log_added_survey_value = "added_survey",
+  cleaning_log_no_change_value = c("no_action", "no_change"),
   deletion_log = NULL,
-  deletion_log_uuid = NULL,
+  deletion_log_uuid_column = NULL,
   check_for_deletion_log = T
 )
 }
 \arguments{
-\item{raw_data}{Raw dataset}
+\item{raw_dataset}{Raw dataset}
 
-\item{raw_data_uuid}{Unique ID column name of raw dataset}
+\item{raw_dataset_uuid_column}{uuid column in the raw dataset. Default is "uuid".}
 
-\item{clean_data}{Clean dataset}
+\item{clean_dataset}{Clean dataset}
 
-\item{clean_data_uuid}{Unique ID column name of clean dataset}
+\item{clean_dataset_uuid_column}{uuid column in the raw dataset. Default is "uuid".}
 
 \item{cleaning_log}{Cleaning log}
 
-\item{cleaning_log_uuid}{Unique ID column name of cleaning log}
+\item{cleaning_log_uuid_column}{uuid column in the raw dataset. Default is "uuid".}
 
-\item{cleaning_log_change_type_column}{Change type column of cleaning log}
+\item{cleaning_log_change_type_column}{column in cleaning log which specifies which change to be made}
 
-\item{cleaning_log_question_name}{Column name of cleaning log storing the dataset column name}
+\item{cleaning_log_question_column}{column in cleaning log which specifies which column to change}
 
-\item{cleaning_log_new_value}{Cleaning log new value}
+\item{cleaning_log_new_value_column}{cleaning log column specifying the new correct value}
 
-\item{cleaning_log_old_value}{Cleaning log old value}
+\item{cleaning_log_old_value_column}{cleaning log column specifying the old value}
 
-\item{cleaning_log_added_survey}{Value for change type column which defines for new surveys}
+\item{cleaning_log_added_survey_value}{Value for change type column which defines for new surveys}
 
-\item{cleanning_log_no_action_value}{Value for change type column which defines for no action needed}
+\item{cleaning_log_no_change_value}{Value for change type column which defines for no action needed}
 
 \item{deletion_log}{deletion log}
 
-\item{deletion_log_uuid}{Unique ID column name of deletion log}
+\item{deletion_log_uuid_column}{Unique ID column name of deletion log}
 
 \item{check_for_deletion_log}{TRUE to flag the removed survey}
 }
@@ -64,14 +64,14 @@ Review cleaning logs
  deletaion_log <- cleaningtools::cleaning_log |> dplyr::filter(change_type == "remove_survey")
  cleaning_log2 <- cleaningtools::cleaning_log |> dplyr::filter(change_type != "remove_survey")
 
-review_cleaning_log(raw_data = cleaningtools::raw_data,raw_data_uuid = "X_uuid",
-clean_data = cleaningtools::clean_data,clean_data_uuid = "X_uuid",
-cleaning_log = cleaning_log2,cleaning_log_uuid = "X_uuid",
-cleaning_log_question_name = "questions",
-cleaning_log_new_value =  "new_value",
-cleaning_log_old_value = "old_value",
+review_cleaning_log(raw_dataset = cleaningtools::raw_dataset,raw_dataset_uuid_column = "X_uuid",
+clean_dataset = cleaningtools::clean_dataset,clean_dataset_uuid_column = "X_uuid",
+cleaning_log = cleaning_log2,cleaning_log_uuid_column = "X_uuid",
+cleaning_log_question_column = "questions",
+cleaning_log_new_value_column =  "new_value",
+cleaning_log_old_value_column = "old_value",
 deletion_log = deletaion_log,
-deletion_log_uuid = "X_uuid",
+deletion_log_uuid_column = "X_uuid",
 check_for_deletion_log =T)
 }
 }

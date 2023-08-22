@@ -2,23 +2,23 @@
 % Please edit documentation in R/check_duplicate.R
 \name{check_duplicate}
 \alias{check_duplicate}
-\title{Checks for duplicated uuid}
+\title{Checks for duplicated values in columns}
 \usage{
 check_duplicate(
-  .dataset,
-  uuid_col_name = "_uuid",
-  .col_to_check = NULL,
+  dataset,
+  uuid_column = "uuid",
+  columns_to_check = NULL,
   log_name = "duplicate_log"
 )
 }
 \arguments{
-\item{.dataset}{a dataset to be check as a dataframe or a list with the
-dataframe stored as "checked_dataset"}
+\item{dataset}{dataset to be check as a dataframe or a list with the dataframe stored as
+"checked_dataset".}
 
-\item{uuid_col_name}{string character for the uuid, default is "_uuid"}
+\item{uuid_column}{uuid column in the dataset. Default is uuid.}
 
-\item{.col_to_check}{string character with the name of the columns to check. If NULL (default),
-it will check for the uuid_col_name}
+\item{columns_to_check}{string character with the name of the columns to check. If NULL (default),
+it will check for the uuid_column}
 
 \item{log_name}{name of the log of flagged value}
 }
@@ -27,26 +27,22 @@ return a list with the dataset checked stored as checked_dataset and
 a dataframe with the duplicate log
 }
 \description{
-Checks for duplicated uuid
+Checks for duplicated values in columns
 }
 \examples{
-  testdata <- data.frame(
-uuid = c(letters[1:4], "a", "b", "c"),
-col_a = runif(7),
-col_b = runif(7)
-) \%>\%
-  dplyr::rename(`_uuid` = uuid)
+  testdata <- data.frame(uuid = c(letters[1:4], "a", "b", "c"),
+                         col_a = runif(7),
+                         col_b = runif(7)
+                         )
 
 check_duplicate(testdata)
 
-testdata2 <- data.frame(
-              uuid = letters[c(1:7)],
-              village = paste("village", c(1:3,1:3,4)),
-              ki_identifier = paste0("xx_", c(1:5,3,4))) \%>\%
-              dplyr::rename(`_uuid` = uuid)
+testdata2 <- data.frame(uuid = letters[c(1:7)],
+                        village = paste("village", c(1:3,1:3,4)),
+                        ki_identifier = paste0("xx_", c(1:5,3,4)))
 
-check_duplicate(testdata2, .col_to_check = "village")
+check_duplicate(testdata2, columns_to_check = "village")
 
-check_duplicate(testdata2, .col_to_check = c("village", "ki_identifier"), uuid = "_uuid")
+check_duplicate(testdata2, columns_to_check = c("village", "ki_identifier"), uuid = "uuid")
 
 }

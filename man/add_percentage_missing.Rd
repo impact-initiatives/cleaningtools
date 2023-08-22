@@ -5,18 +5,18 @@
 \title{Adds the percentage of missing values per row}
 \usage{
 add_percentage_missing(
-  .dataset,
-  col_name = "percentage_missing",
+  dataset,
+  column_name = "percentage_missing",
   kobo_survey = NULL,
   type_to_include = c("integer", "date", "text", "select_one", "select_multiple")
 )
 }
 \arguments{
-\item{.dataset}{A dataset to add the percentage of missing values}
+\item{dataset}{A dataset to add the percentage of missing values}
 
-\item{col_name}{string variable with the name of the new column to be created, default is percentage_missing}
+\item{column_name}{string variable with the name of the new column to be created, default is percentage_missing}
 
-\item{kobo_survey}{KOBO question or survey sheet including at least the type and name.}
+\item{kobo_survey}{Kobo survey sheet.}
 
 \item{type_to_include}{Types (from KOBO) to be included in the columns default are
 integer, date, text, select_one and select_multiple.}

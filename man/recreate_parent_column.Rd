@@ -5,23 +5,23 @@
 \title{This function recreates the concerted columns for select multiple questions}
 \usage{
 recreate_parent_column(
-  df,
-  uuid = "uuid",
-  kobo_survey_sheet = NULL,
-  kobo_choices_sheet = NULL,
-  sm_sep = "."
+  dataset,
+  uuid_column = "uuid",
+  kobo_survey = NULL,
+  kobo_choices = NULL,
+  sm_seperator = "."
 )
 }
 \arguments{
-\item{df}{data frame}
+\item{dataset}{data frame}
 
-\item{uuid}{Unique ID column(Default is uuid).}
+\item{uuid_column}{uuid column in the dataset. Default is "uuid".}
 
-\item{kobo_survey_sheet}{Kobo survey tab}
+\item{kobo_survey}{Kobo survey sheet.}
 
-\item{kobo_choices_sheet}{Kobo choices tab}
+\item{kobo_choices}{Kobo choices sheet.}
 
-\item{sm_sep}{Separator between question and choice. Default is ..}
+\item{sm_seperator}{Separator for choice multiple questions. The default is "."}
 }
 \description{
 This function recreates the concerted columns for select multiple questions
@@ -38,6 +38,6 @@ reason.yy = c(1,0,0,0,1,0),
 reason.xz = c(0,0,0,1,0,1),
 reason.zy = c(0,1,1,1,0,0),
 reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_))
-recreate_parent_column(df = test_data, uuid = "uuid", sm_sep = ".")
+recreate_parent_column(dataset = test_data, uuid_column = "uuid", sm_seperator = ".")
 
 }

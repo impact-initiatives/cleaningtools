@@ -5,8 +5,8 @@
 \title{check outliers over the dataset}
 \usage{
 check_outliers(
-  df,
-  uuid_col_name = "uuid",
+  dataset,
+  uuid_column = "uuid",
   element_name = "checked_dataset",
   kobo_survey = NULL,
   kobo_choices = NULL,
@@ -14,20 +14,21 @@ check_outliers(
   strongness_factor = 3,
   minimum_unique_value_of_variable = NULL,
   remove_choice_multiple = TRUE,
-  sm_sep = ".",
-  columns_to_remove = NULL
+  sm_seperator = ".",
+  columns_not_to_check = NULL
 )
 }
 \arguments{
-\item{df}{data frame or a list}
+\item{dataset}{dataset to be check as a dataframe or a list with the dataframe stored as
+"checked_dataset"}
 
-\item{uuid_col_name}{UUID. Default is uuid}
+\item{uuid_column}{UUID. Default is uuid}
 
 \item{element_name}{name of the dataset in list}
 
 \item{kobo_survey}{Kobo survey sheet. Default is NULL.}
 
-\item{kobo_choices}{Kobo choices sheet. Default is NULL}
+\item{kobo_choices}{Kobo choices sheet. Default is NULL.}
 
 \item{cols_to_add_cleaning_log}{Variables those must be included in the output}
 
@@ -37,18 +38,19 @@ check_outliers(
 
 \item{remove_choice_multiple}{TRUE (default) will remove choice multiple questions from the output.}
 
-\item{sm_sep}{Separator for choice multiple questions. The default is "."}
+\item{sm_seperator}{Separator for choice multiple questions. The default is "."}
 
-\item{columns_to_remove}{Variables those must not consider for outlier checks even though they are numeric}
+\item{columns_not_to_check}{Columns to exclude from the checks even if they are numeric values.}
 }
 \value{
-Outliers
+return a list with the dataset checked stored as checked_dataset and a dataframe with
+the outliers log
 }
 \description{
 check outliers over the dataset
 }
 \examples{
-df_outlier<- data.frame(
+dataset_outlier<- data.frame(
  uuid = paste0("uuid_", 1:100),
  one_value = c(round(runif(90, min = 45,max =55)), round(runif(5)), round(runif(5,99,100))),
  expense = c(sample(200:500,replace = TRUE,size = 95),c(600,100,80,1020,1050)),
@@ -56,5 +58,5 @@ df_outlier<- data.frame(
  yy = c(rep(100,99),10)
 )
 
-check_outliers(df = df_outlier,uuid_col_name = "uuid")
+check_outliers(dataset = dataset_outlier,uuid_column = "uuid")
 }

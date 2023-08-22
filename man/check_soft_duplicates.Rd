@@ -5,9 +5,9 @@
 \title{Checks for survey similarities - Soft Duplicates}
 \usage{
 check_soft_duplicates(
-  .dataset,
+  dataset,
   kobo_survey,
-  uuid = "uuid",
+  uuid_column = "uuid",
   idnk_value = "idnk",
   sm_seperator = ".",
   log_name = "soft_duplicate_log",
@@ -15,12 +15,12 @@ check_soft_duplicates(
 )
 }
 \arguments{
-\item{.dataset}{RawData to be checked as a dataframe or a list with dataframe
+\item{dataset}{dataset to be check as a dataframe or a list with the dataframe stored as "checked_dataset"
 stored as "checked_dataset"}
 
-\item{kobo_survey}{Kobo Survey Sheet}
+\item{kobo_survey}{Kobo survey sheet.}
 
-\item{uuid}{String character for the uuid column. By default "uuid"}
+\item{uuid_column}{uuid column in the dataset. Default is "uuid".}
 
 \item{idnk_value}{String character for the value of the "I don't know" value}
 
@@ -38,9 +38,9 @@ a dataframe with the soft duplicate log
 Checks for survey similarities - Soft Duplicates
 }
 \examples{
-soft_duplicates <- check_soft_duplicates(.dataset = cleaningtools_raw_data,
+soft_duplicates <- check_soft_duplicates(dataset = cleaningtools_raw_data,
                                          kobo_survey = cleaningtools_survey,
-                                         uuid = "X_uuid",
+                                         uuid_column = "X_uuid",
                                          idnk_value = "dont_know",
                                          sm_seperator = ".",
                                          log_name = "soft_duplicate_log",
@@ -50,9 +50,9 @@ group_by_enum_raw_data <- cleaningtools_raw_data \%>\%
 
 soft_per_enum <- group_by_enum_raw_data \%>\%
   dplyr::group_split() \%>\%
-  purrr::map(~check_soft_duplicates(.dataset = .,
+  purrr::map(~check_soft_duplicates(dataset = .,
                                     kobo_survey = cleaningtools_survey,
-                                    uuid = "X_uuid",idnk_value = "dont_know",
+                                    uuid_column = "X_uuid",idnk_value = "dont_know",
                                     sm_seperator = ".",
                                     log_name = "soft_duplicate_log",
                                     threshold = 7))

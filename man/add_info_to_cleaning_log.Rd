@@ -5,24 +5,28 @@
 \title{Add information to the cleaning log}
 \usage{
 add_info_to_cleaning_log(
-  list = NULL,
+  list_of_log = NULL,
   dataset = "checked_dataset",
   cleaning_log = "cleaning_log",
-  dataset_primary_key = "X_uuid",
-  cleaning_log_primary_key = "uuid",
+  dataset_uuid_column = "uuid",
+  cleaning_log_uuid_column = "uuid",
   information_to_add = c("enumerator_num", "date_assessment")
 )
 }
 \arguments{
-\item{list}{A list file containing the cleaning_log and the dataset}
+\item{list_of_log}{A list file containing the cleaning_log and the dataset}
 
-\item{dataset}{If a list is provided, the element name represents the dataset; otherwise, it should be a dataframe.}
+\item{dataset}{If a list is provided, the element name represents the dataset; otherwise,
+it should be a dataframe.}
 
-\item{cleaning_log}{If a list is provided, the element name represents the cleaning log; otherwise, it is should be a dataframe.}
+\item{cleaning_log}{If a list is provided, the element name represents the cleaning log;
+otherwise, it is should be a dataframe.}
 
-\item{dataset_primary_key}{Primary key name from the dataset, it can take a vector of several binding key. (Default is X_uuid)}
+\item{dataset_uuid_column}{uuid column in the cleaning dataset, it can take a vector of several
+binding key. Default is uuid.}
 
-\item{cleaning_log_primary_key}{Primary key name from the Cleaning log, it can take a vector of several binding key. (Default is uuid)}
+\item{cleaning_log_uuid_column}{uuid column in the cleaning log, it can take a vectore of several
+binding key. Default is uuid.}
 
 \item{information_to_add}{Vector of name of the columns to be added.}
 }
@@ -33,8 +37,10 @@ A list with cleaning log with added info and the dataset.
 Add information to the cleaning log
 }
 \examples{
-cleaningtools::cleaningtools_raw_data |> check_for_pii() |>
-  check_duplicate(uuid_col_name = "X_uuid") |>
-  check_for_value(uuid_col_name = "X_uuid") |>
-  create_combined_log() |> add_info_to_cleaning_log()
+cleaningtools::cleaningtools_raw_data |>
+  check_pii(uuid_column = "X_uuid") |>
+  check_duplicate(uuid_column = "X_uuid") |>
+  check_value(uuid_column = "X_uuid") |>
+  create_combined_log() |>
+  add_info_to_cleaning_log(dataset_uuid_column = "X_uuid")
 }

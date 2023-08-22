@@ -5,20 +5,20 @@
 \title{Check the percentages of missing value}
 \usage{
 check_percentage_missing(
-  .dataset,
-  uuid_var = "uuid",
-  .col_to_check = "percentage_missing",
+  dataset,
+  uuid_column = "uuid",
+  column_to_check = "percentage_missing",
   strongness_factor = 2,
   log_name = "percentage_missing_log"
 )
 }
 \arguments{
-\item{.dataset}{a dataset to be check as a dataframe or a list with the
-dataframe stored as "checked_dataset"}
+\item{dataset}{a dataset to be check as a dataframe or a list with the
+dataframe stored as "checked_dataset".}
 
-\item{uuid_var}{string character for the uuid, default is "uuid"}
+\item{uuid_column}{uuid column in the dataset. Default is "uuid".}
 
-\item{.col_to_check}{string character with the name of the columns to check. Default is
+\item{column_to_check}{string character with the name of the columns to check. Default is
 "percentage_missing"}
 
 \item{strongness_factor}{Strongness factor define how strong your outliers will be. The default is 3.}

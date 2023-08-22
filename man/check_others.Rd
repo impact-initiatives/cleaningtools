@@ -4,14 +4,14 @@
 \alias{check_others}
 \title{Generate a log for other follow up questions}
 \usage{
-check_others(dataset, uuid = "uuid", var_list = NULL)
+check_others(dataset, uuid_column = "uuid", columns_to_check = NULL)
 }
 \arguments{
-\item{dataset}{dataset}
+\item{dataset}{dataset to be check as a dataframe or a list with the dataframe stored as "checked_dataset"}
 
-\item{uuid}{uuid column}
+\item{uuid_column}{uuid column in the dataset. Default is "uuid".}
 
-\item{var_list}{list of questions to generate the logs for}
+\item{columns_to_check}{Columns to include in the checks}
 }
 \value{
 a log with all the values that may require recoding
@@ -21,8 +21,8 @@ Generate a log for other follow up questions
 }
 \examples{
 check_others(dataset = cleaningtools::cleaningtools_clean_data,
-uuid = "X_uuid",
-var_list = names(cleaningtools::cleaningtools_clean_data |>
+uuid_column = "X_uuid",
+columns_to_check = names(cleaningtools::cleaningtools_clean_data |>
 dplyr::select(ends_with("_other")) |>
 dplyr::select(-contains("."))))
 

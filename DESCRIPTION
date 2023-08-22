@@ -1,43 +1,44 @@
 Package: cleaningtools
 Title: cleaningtools package focuses on data cleaning
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: c(
-    person("Mehedi", "Khan", email= "mh.khan@reach-initiative.org", role = "aut",
+    person("Mehedi", "Khan", , "mh.khan@reach-initiative.org", role = "aut",
            comment = c(ORCID = "0000-0002-4276-4485")),
-    person("Yann", "Say",  email= "yann.say@impact-initiatives.org",role = c("cre","aut"),
-           comment = c(ORCID = "0000-0002-7390-4209")))
-Description: The cleaningtools package focuses on cleaning, and has three components: 
-    **Check**, which includes a set of functions that flag values, such as check_outliers and check_logical.
-    **Create**, which includes a set of functions to create different items for use in cleaning, such as the cleaning log from the checks, clean data, and enumerator performance.
-    **Review**, which includes a set of functions to review the cleaning, such as reviewing the cleaning.
+    person("Yann", "Say", , "yann.say@impact-initiatives.org", role = c("cre", "aut"),
+           comment = c(ORCID = "0000-0002-7390-4209"))
+  )
+Description: The cleaningtools package focuses on cleaning, and has three
+    components: **Check**, which includes a set of functions that flag
+    values, such as check_outliers and check_logical.  **Create**, which
+    includes a set of functions to create different items for use in
+    cleaning, such as the cleaning log from the checks, clean data, and
+    enumerator performance.  **Review**, which includes a set of functions
+    to review the cleaning, such as reviewing the cleaning.
 License: MIT
-Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+Depends: 
+    R (>= 2.10)
 Imports:
+    assertthat,
     cluster,
     dplyr,
-    tibble,
-    illuminate,
-    magrittr,
-    snakecase,
-    tidyr,
-    stringr,
     glue,
-    rlang,
+    magrittr,
     openxlsx,
-    assertthat,
     purrr,
+    randomcoloR,
+    rlang,
+    snakecase,
     stats,
-    utils,
     stringi,
-    randomcoloR
-Remotes:
-    mhkhan27/illuminate
+    stringr,
+    tibble,
+    tidyr,
+    utils
 Suggests: 
     testthat (>= 3.0.0),
     withr
 Config/testthat/edition: 3
+Encoding: UTF-8
 LazyData: true
-Depends: 
-    R (>= 2.10)
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3

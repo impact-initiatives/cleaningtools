@@ -4,14 +4,14 @@
 \alias{check_others_checks}
 \title{Check if the input passed to the check_others function is correct}
 \usage{
-check_others_checks(dataset, uuid, var_list)
+check_others_checks(dataset, uuid_column, columns_to_check)
 }
 \arguments{
-\item{dataset}{dataset}
+\item{dataset}{dataset to be check as a dataframe or a list with the dataframe stored as "checked_dataset"}
 
-\item{uuid}{uuid column}
+\item{uuid_column}{uuid column in the dataset. Default is uuid.}
 
-\item{var_list}{list of questions to generate the logs for}
+\item{columns_to_check}{Columns to include in the checks}
 }
 \value{
 nothing

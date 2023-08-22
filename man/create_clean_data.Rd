@@ -5,41 +5,41 @@
 \title{implement cleaning log on raw data set.}
 \usage{
 create_clean_data(
-  df,
-  df_uuid,
-  cl,
-  cl_change_type_col,
-  values_for_change_response = "change_response",
-  values_for_blank_response = "blank_response",
-  values_for_no_change = "no_action",
-  values_for_remove_survey = "remove_survey",
-  cl_change_col,
-  cl_uuid,
-  cl_new_val
+  raw_dataset,
+  raw_data_uuid_column = "uuid",
+  cleaning_log,
+  cleaning_log_uuid_column = "uuid",
+  cleaning_log_question_column,
+  cleaning_log_new_value_column,
+  cleaning_log_change_type_column,
+  change_response_value = "change_response",
+  NA_response_value = "blank_response",
+  no_change_value = "no_action",
+  remove_survey_value = "remove_survey"
 )
 }
 \arguments{
-\item{df}{raw data (data frame or list)}
+\item{raw_dataset}{Raw dataset}
 
-\item{df_uuid}{column in raw data with uuid}
+\item{raw_data_uuid_column}{uuid column in the raw dataset. Default is uuid.}
 
-\item{cl}{cleaning + deletion log (data.frame).}
+\item{cleaning_log}{cleaning + deletion log (data.frame).}
 
-\item{cl_change_type_col}{column in cleaning log which specifies change type to be made}
+\item{cleaning_log_uuid_column}{uuid column in the cleaning log. Default is "uuid".}
 
-\item{values_for_change_response}{values in change type column which should be changed to a new value.}
+\item{cleaning_log_question_column}{column in cleaning log which specifies data set column to change}
 
-\item{values_for_blank_response}{values in change type column which should be blank (NA).}
+\item{cleaning_log_new_value_column}{cleaning log column specifying the new correct value}
 
-\item{values_for_no_change}{values in change type column which should NOT be changed to a new value.}
+\item{cleaning_log_change_type_column}{column in cleaning log which specifies change type to be made}
 
-\item{values_for_remove_survey}{values in change type column which should be deleted from the data.}
+\item{change_response_value}{values in change type column which should be changed to a new value.}
 
-\item{cl_change_col}{column in cleaning log which specifies data set column to change}
+\item{NA_response_value}{values in change type column which should be blank (NA).}
 
-\item{cl_uuid}{uuid in cleaning log}
+\item{no_change_value}{values in change type column which should NOT be changed to a new value.}
 
-\item{cl_new_val}{cleaning log column specifying the new correct value}
+\item{remove_survey_value}{values in change type column which should be deleted from the data.}
 }
 \value{
 clean data set
@@ -63,18 +63,18 @@ strata = c("a","b","c","d")
 )
 
 
-check_cleaning_log(df = test_data,df_uuid = "uuid",cl =cleaning_log_test,
-                cl_change_type_col = "change_type",
-                values_for_change_response =  "change_res",
-                cl_change_col = "question",cl_uuid = "uuid",cl_new_val = "new_value")
+check_cleaning_log(raw_dataset = test_data,raw_data_uuid_column = "uuid",cleaning_log =cleaning_log_test,
+                cleaning_log_change_type_column = "change_type",
+                change_response_value =  "change_res",
+                cleaning_log_question_column = "question",cleaning_log_uuid_column = "uuid",cleaning_log_new_value_column = "new_value")
 
-create_clean_data(df = test_data,df_uuid = "uuid",cl = cleaning_log_test,
-               cl_change_type_col =  "change_type",
-               values_for_change_response = "change_res",
-               values_for_blank_response = "blank_response",
-               values_for_no_change = "no_change",
-               values_for_remove_survey = "Delete",
-               cl_change_col =  "question",
-               cl_uuid = "uuid",
-               cl_new_val = "new_value" )
+create_clean_data(raw_dataset = test_data,raw_data_uuid_column = "uuid",cleaning_log = cleaning_log_test,
+               cleaning_log_change_type_column =  "change_type",
+               change_response_value = "change_res",
+               NA_response_value = "blank_response",
+               no_change_value = "no_change",
+               remove_survey_value = "Delete",
+               cleaning_log_question_column =  "question",
+               cleaning_log_uuid_column = "uuid",
+               cleaning_log_new_value_column = "new_value" )
 }

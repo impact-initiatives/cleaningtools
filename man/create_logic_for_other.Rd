@@ -2,34 +2,36 @@
 % Please edit documentation in R/create_logic_for_other.R
 \name{create_logic_for_other}
 \alias{create_logic_for_other}
-\title{Check for value(s) in the dataset}
+\title{Create logical checks for "other" values.}
 \usage{
 create_logic_for_other(
   kobo_survey,
-  sm_sep = ".",
+  sm_seperator = ".",
   compare_with_dataset = FALSE,
-  data = NULL
+  dataset = NULL
 )
 }
 \arguments{
-\item{kobo_survey}{Kobo survey sheet}
+\item{kobo_survey}{Kobo survey sheet.}
 
-\item{sm_sep}{Separator for choice multiple}
+\item{sm_seperator}{Separator for choice multiple questions. The default is "."}
 
-\item{compare_with_dataset}{Default FALSE will not compare the applicability of logics with the dataset whereas TRUE will check the applicability of logics.}
+\item{compare_with_dataset}{Default FALSE will not compare the applicability of logics with the
+dataset whereas TRUE will check the applicability of logics.}
 
-\item{data}{data}
+\item{dataset}{dataset to be checked.}
 }
 \value{
-A dataframe will all logic.
+A dataframe will all logical tests to check "others" value. It should be used in
+combination of review_others
 }
 \description{
-Check for value(s) in the dataset
+Create logical checks for "other" values.
 }
 \examples{
 create_logic_for_other(kobo_survey = cleaningtools::cleaningtools_survey,
-                       sm_sep = ".",
-                       data = cleaningtools::cleaningtools_clean_data,
+                       sm_seperator = ".",
+                       dataset = cleaningtools::cleaningtools_clean_data,
                        compare_with_dataset = TRUE)
 
 }

@@ -4,14 +4,14 @@
 \alias{create_audit_list}
 \title{Read all audit files from a zip}
 \usage{
-create_audit_list(audit_zip_path, .dataset = NULL, uuid = "_uuid")
+create_audit_list(audit_zip_path, dataset = NULL, uuid_column = "uuid")
 }
 \arguments{
 \item{audit_zip_path}{location to .zip file. It must contain .zip}
 
-\item{.dataset}{dataset to (optional)}
+\item{dataset}{dataset to (optional)}
 
-\item{uuid}{uuid column if a dataset is provided. It will only read the uuid
+\item{uuid_column}{uuid column if a dataset is provided. It will only read the uuid
 present in the dataset. It will only be used if a dataset is provided.}
 }
 \value{

@@ -23,9 +23,9 @@ test_that("Works with one test", {
 
   expect_equal(
     check_logical(test_data,
-      uuid_var = "uuid",
+      uuid_column = "uuid",
       check_to_perform = "distance_to_market == \"less_30\" & access_to_market == \"no\"",
-      variables_to_clean = "distance_to_market, access_to_market",
+      columns_to_clean = "distance_to_market, access_to_market",
       description = "distance to market less than 30 and no access"
     ),
     expected_results
@@ -49,10 +49,10 @@ test_that("Works with one test", {
 
   expect_equal(
     check_logical(test_data,
-      uuid_var = "uuid",
+      uuid_column = "uuid",
       check_to_perform = "distance_to_market == \"less_30\" & access_to_market == \"no\"",
-      variables_to_clean = c("distance_to_market", "access_to_market"),
-      variables_to_add = c("today", "location"),
+      columns_to_clean = c("distance_to_market", "access_to_market"),
+      information_to_add = c("today", "location"),
       description = "distance to market less than 30 and no access"
     ),
     expected_results2
@@ -80,7 +80,7 @@ test_that("Works with list of tests", {
       "distance to market less than 30 and no access",
       "number of children under 5 seems high"
     ),
-    variables_to_clean = c(
+    columns_to_clean = c(
       "distance_to_market, access_to_market",
       "number_children_05"
     )
@@ -118,11 +118,11 @@ test_that("Works with list of tests", {
 
   expect_equal(
     check_logical_with_list(test_data,
-      uuid_var = "uuid",
+      uuid_column = "uuid",
       list_of_check = check_list,
       check_id_column = "name",
       check_to_perform_column = "check",
-      variables_to_clean_column = "variables_to_clean",
+      columns_to_clean_column = "columns_to_clean",
       description_column = "description",
       bind_checks = FALSE
     ),
@@ -144,11 +144,11 @@ test_that("Works with list of tests", {
 
   expect_equal(
     check_logical_with_list(test_data,
-      uuid_var = "uuid",
+      uuid_column = "uuid",
       list_of_check = check_list,
       check_id_column = "name",
       check_to_perform_column = "check",
-      variables_to_clean_column = "variables_to_clean",
+      columns_to_clean_column = "columns_to_clean",
       description_column = "description"
     ),
     binded_expected_results
@@ -179,12 +179,12 @@ test_that("Works with list of tests", {
   )
   expect_equal(
     check_logical_with_list(test_data,
-      uuid_var = "uuid",
-      variables_to_add = c("location"),
+      uuid_column = "uuid",
+      information_to_add = c("location"),
       list_of_check = check_list,
       check_id_column = "name",
       check_to_perform_column = "check",
-      variables_to_clean_column = "variables_to_clean",
+      columns_to_clean_column = "columns_to_clean",
       description_column = "description"
     ),
     binded_expected_results2
@@ -238,9 +238,9 @@ test_that("Inputs as list returns correct results", {
 
   expect_equal(
     check_logical(test_list,
-      uuid_var = "uuid",
+      uuid_column = "uuid",
       check_to_perform = "distance_to_market == \"less_30\" & access_to_market == \"no\"",
-      variables_to_clean = "distance_to_market, access_to_market",
+      columns_to_clean = "distance_to_market, access_to_market",
       description = "distance to market less than 30 and no access"
     ),
     logical_xx
@@ -272,11 +272,11 @@ test_that("Inputs as list returns correct results", {
 
   expect_equal(
     check_logical_with_list(test_list,
-      uuid_var = "uuid",
+      uuid_column = "uuid",
       list_of_check = check_list,
       check_id_column = "name",
       check_to_perform_column = "check",
-      variables_to_clean_column = "variables_to_clean",
+      columns_to_clean_column = "variables_to_clean",
       description_column = "description",
       bind_checks = F
     ),
@@ -297,11 +297,11 @@ test_that("Inputs as list returns correct results", {
   )
   expect_equal(
     check_logical_with_list(test_list,
-      uuid_var = "uuid",
+      uuid_column = "uuid",
       list_of_check = check_list,
       check_id_column = "name",
       check_to_perform_column = "check",
-      variables_to_clean_column = "variables_to_clean",
+      columns_to_clean_column = "variables_to_clean",
       description_column = "description"
     ),
     binded_expected_results
@@ -335,11 +335,11 @@ test_that("duplicates names and log names throws error", {
 
   expect_error(
     check_logical_with_list(test_data,
-      uuid_var = "uuid",
+      uuid_column = "uuid",
       list_of_check = check_list,
       check_id_column = "name",
       check_to_perform_column = "check",
-      variables_to_clean_column = "variables_to_clean",
+      columns_to_clean_column = "variables_to_clean",
       description_column = "description"
     ),
     "The column name from the checklist contains duplicated."
@@ -373,9 +373,9 @@ test_that("description cannot be empty", {
 
   expect_error(
     check_logical(test_data,
-      uuid_var = "uuid",
+      uuid_column = "uuid",
       check_to_perform = "distance_to_market == \"less_30\" & access_to_market == \"no\"",
-      variables_to_clean = "distance_to_market, access_to_market",
+      columns_to_clean = "distance_to_market, access_to_market",
       description = NA
     ),
     "description cannot be empty"
@@ -393,24 +393,24 @@ test_that("Throws a warning if names are not found", {
 
   expect_warning(
     check_logical(test_data,
-      uuid_var = "uuid",
+      uuid_column = "uuid",
       check_to_perform = "distance_to_market == \"less_30\" & access_to_market == \"no\"",
       description = "distance to market less than 30 and no access"
     ),
-    "variables_to_clean not shared, results may not be accurate"
+    "columns_to_clean not shared, results may not be accurate"
   )
 
   expect_warning(
     check_logical(test_data,
-      uuid_var = "uuid",
+      uuid_column = "uuid",
       check_to_perform = "rowSums(across(starts_with(\"number\")), na.rm = T) > 9",
       description = "distance to market less than 30 and no access"
     ),
-    "variables_to_clean not shared, results may not be accurate"
+    "columns_to_clean not shared, results may not be accurate"
   )
 
   results <- check_logical(test_data,
-    uuid_var = "uuid",
+    uuid_column = "uuid",
     check_to_perform = "rowSums(across(starts_with(\"number\")), na.rm = T) > 9",
     description = "number of children very high"
   ) %>%
@@ -438,10 +438,10 @@ test_that("if check_id names already exists, throws an error", {
 
   expect_error(
     check_logical(test_data,
-      uuid_var = "uuid",
+      uuid_column = "uuid",
       check_id = "distance_to_market",
       check_to_perform = "distance_to_market == \"less_30\" & access_to_market == \"no\"",
-      variables_to_clean = "distance_to_market, access_to_market",
+      columns_to_clean = "distance_to_market, access_to_market",
       description = "distance to market less than 30 and no access"
     ),
     "distance_to_market is in the names of the dataset, please change check id name."
@@ -466,16 +466,16 @@ test_that("when variables_to_clean is empty or null, check_with_list with still 
 
   expect_warning(
     check_logical_with_list(
-      .dataset = test_data,
+      dataset = test_data,
       list_of_check = a,
-      variables_to_add = NULL,
-      uuid_var = "uuid",
+      information_to_add = NULL,
+      uuid_column = "uuid",
       check_id_column = "check",
       check_to_perform_column = "logic",
-      variables_to_clean_column = "var",
+      columns_to_clean_column = "var",
       description_column = "des"
     ),
-    "variables_to_clean not shared, results may not be accurate"
+    "columns_to_clean not shared, results may not be accurate"
   )
 
   expected_results <- list(
@@ -491,38 +491,38 @@ test_that("when variables_to_clean is empty or null, check_with_list with still 
     )
   )
   results_1 <- check_logical_with_list(
-    .dataset = test_data,
+    dataset = test_data,
     list_of_check = a,
-    variables_to_add = NULL,
-    uuid_var = "uuid",
+    information_to_add = NULL,
+    uuid_column = "uuid",
     check_id_column = "check",
     check_to_perform_column = "logic",
-    variables_to_clean_column = "var",
+    columns_to_clean_column = "var",
     description_column = "des"
   ) %>%
     suppressWarnings()
 
 
   results_2 <- check_logical_with_list(
-    .dataset = test_data,
+    dataset = test_data,
     list_of_check = a,
-    variables_to_add = NULL,
-    uuid_var = "uuid",
+    information_to_add = NULL,
+    uuid_column = "uuid",
     check_id_column = "check",
     check_to_perform_column = "logic",
-    variables_to_clean_column = NULL,
+    columns_to_clean_column = NULL,
     description_column = "des"
   ) %>%
     suppressWarnings()
 
   results_3 <- check_logical_with_list(
-    .dataset = test_data,
+    dataset = test_data,
     list_of_check = a,
-    variables_to_add = NULL,
-    uuid_var = "uuid",
+    information_to_add = NULL,
+    uuid_column = "uuid",
     check_id_column = "check",
     check_to_perform_column = "logic",
-    variables_to_clean_column = NULL,
+    columns_to_clean_column = NULL,
     description_column = "des"
   ) %>%
     suppressWarnings()
@@ -552,18 +552,18 @@ test_that("id as number is converted to character", {
       "distance to market less than 30 and no access",
       "number of children under 5 seems high"
     ),
-    variables_to_clean = c(
+    columns_to_clean = c(
       "distance_to_market, access_to_market",
       "number_children_05"
     )
   )
 
   expect_no_error(check_logical_with_list(test_data,
-    uuid_var = "uuid",
+    uuid_column = "uuid",
     list_of_check = check_list,
     check_id_column = "name",
     check_to_perform_column = "check",
-    variables_to_clean_column = "variables_to_clean",
+    columns_to_clean_column = "columns_to_clean",
     description_column = "description",
     bind_checks = FALSE
   ))
@@ -575,7 +575,7 @@ test_that("Works with one test", {
     uuid = c(1:10) %>% as.character(),
     today = rep("2023-01-01", 10),
     location = rep(c("villageA", "villageB"), 5),
-    expenses = c(rep(50,9),5000000)
+    expenses = c(rep(50, 9), 5000000)
   )
 
   expected_results <- list(
@@ -593,10 +593,10 @@ test_that("Works with one test", {
 
   expect_equal(
     check_logical(test_data,
-                  uuid_var = "uuid",
-                  check_to_perform = "expenses > 1000000",
-                  variables_to_clean = "expenses",
-                  description = "check expenses above 1000000"
+      uuid_column = "uuid",
+      check_to_perform = "expenses > 1000000",
+      columns_to_clean = "expenses",
+      description = "check expenses above 1000000"
     ),
     expected_results
   )

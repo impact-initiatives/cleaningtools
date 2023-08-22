@@ -5,26 +5,26 @@
 \title{Review discrepancy between kobo relevancies and the dataset.}
 \usage{
 review_others(
-  data,
-  uuid = "uuid",
+  dataset,
+  uuid_column = "uuid",
   kobo_survey,
-  sm_sep = ".",
-  variables_to_add = NULL,
-  questions_not_to_check = NULL
+  sm_seperator = ".",
+  information_to_add = NULL,
+  columns_not_to_check = NULL
 )
 }
 \arguments{
-\item{data}{dataset}
+\item{dataset}{dataset to be check}
 
-\item{uuid}{uuid column}
+\item{uuid_column}{uuid column in the dataset. Default is "uuid".}
 
-\item{kobo_survey}{Kobo survey sheet}
+\item{kobo_survey}{Kobo survey sheet.}
 
-\item{sm_sep}{Separator for choice multiple}
+\item{sm_seperator}{Separator for choice multiple questions. The default is "."}
 
-\item{variables_to_add}{string vector optional, if to add some information to the log (today,village etc.)}
+\item{information_to_add}{string vector optional, if to add some information to the log (today,village etc.)}
 
-\item{questions_not_to_check}{Questions name which you do not want to check (telephone_number etc.. )}
+\item{columns_not_to_check}{Columns to exclude from the checks}
 }
 \value{
 Any discrepancy between kobo relevancies and the dataset.
@@ -33,7 +33,9 @@ Any discrepancy between kobo relevancies and the dataset.
 Review discrepancy between kobo relevancies and the dataset.
 }
 \examples{
-review_others(data = cleaningtools::cleaningtools_clean_data,
-uuid = "X_uuid",kobo_survey = cleaningtools_survey)
+review_others(
+  dataset = cleaningtools::cleaningtools_clean_data,
+  uuid_column = "X_uuid", kobo_survey = cleaningtools_survey
+)
 
 }

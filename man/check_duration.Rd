@@ -5,23 +5,23 @@
 \title{Check if duration is outside of a range}
 \usage{
 check_duration(
-  .dataset,
-  .col_to_check,
-  uuid_var = "_uuid",
-  name_log = "duration_log",
+  dataset,
+  column_to_check,
+  uuid_column = "uuid",
+  log_name = "duration_log",
   lower_bound = 25,
   higher_bound = 90
 )
 }
 \arguments{
-\item{.dataset}{a dataset to be check as a dataframe or a list with the
+\item{dataset}{a dataset to be check as a dataframe or a list with the
 dataframe stored as "checked_dataset"}
 
-\item{.col_to_check}{string character with the name of the duration column}
+\item{column_to_check}{string character with the name of the duration column}
 
-\item{uuid_var}{character string of the uuid variable}
+\item{uuid_column}{uuid column in the dataset. Default is uuid.}
 
-\item{name_log}{character string with name to give to the log}
+\item{log_name}{character string with name to give to the log}
 
 \item{lower_bound}{lower value of the range (strictly inferior to)}
 
@@ -41,23 +41,22 @@ testdata <- data.frame(
   duration_audit_start_end_ms = c(2475353, 375491, 2654267, 311585, 817270,
                                   2789505, 8642007),
   duration_audit_start_end_minutes = c(41, 6, 44, 5, 14, 46, 144)
-) \%>\%
-  dplyr::rename(`_uuid` = uuid)
+)
 
 check_duration(testdata,
-               .col_to_check = "duration_audit_start_end_minutes")
+               column_to_check = "duration_audit_start_end_minutes")
 
 check_duration(
   testdata,
-  .col_to_check = "duration_audit_start_end_ms",
+  column_to_check = "duration_audit_start_end_ms",
   lower_bound = 375490,
   higher_bound = 8642000
 )
 
-testdata \%>\% check_duration(.col_to_check = "duration_audit_start_end_minutes") \%>\%
+testdata \%>\% check_duration(column_to_check = "duration_audit_start_end_minutes") \%>\%
   check_duration(
-    .col_to_check = "duration_audit_start_end_ms",
-    name_log = "duration_in_ms",
+    column_to_check = "duration_audit_start_end_ms",
+    log_name = "duration_in_ms",
     lower_bound = 375490,
     higher_bound = 8642000
   )

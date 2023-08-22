@@ -5,27 +5,27 @@
 \title{Generates cleaning log}
 \usage{
 create_cleaning_log(
-  raw_data = raw_data,
-  raw_data_uuid = "X_id",
-  clean_data = clean_data,
-  clean_data_uuid = "X_id",
+  raw_dataset,
+  raw_dataset_uuid_column = "uuid",
+  clean_dataset = clean_dataset,
+  clean_dataset_uuid_column = "uuid",
   check_for_deletion_log = T,
-  cols_not_to_check = NULL,
+  columns_not_to_check = NULL,
   check_for_variable_name = T
 )
 }
 \arguments{
-\item{raw_data}{Raw dataset}
+\item{raw_dataset}{Raw dataset}
 
-\item{raw_data_uuid}{Unique ID column name of raw dataset}
+\item{raw_dataset_uuid_column}{uuid column in the raw dataset. Default is "uuid".}
 
-\item{clean_data}{Clean dataset}
+\item{clean_dataset}{Clean dataset}
 
-\item{clean_data_uuid}{Unique ID column name of clean dataset}
+\item{clean_dataset_uuid_column}{uuid column in the raw dataset. Default is "uuid".}
 
 \item{check_for_deletion_log}{TRUE to flag the removed survey}
 
-\item{cols_not_to_check}{List of columns those are not to be checked}
+\item{columns_not_to_check}{Columns to exclude from the checks}
 
 \item{check_for_variable_name}{TRUE to flag the removed variables}
 }
@@ -38,8 +38,8 @@ Generates cleaning log
 \examples{
 \dontrun{
 create_cleaning_log(
-raw_data = cleaningtools::cleaningtools_raw_data, raw_data_uuid = "X_uuid",
-clean_data = cleaningtools::cleaningtools_clean_data, clean_data_uuid = "X_uuid",
+raw_dataset = cleaningtools::cleaningtools_raw_data, raw_dataset_uuid_column = "X_uuid",
+clean_dataset = cleaningtools::cleaningtools_clean_data, clean_dataset_uuid_column = "X_uuid",
 check_for_deletion_log = TRUE, check_for_variable_name = TRUE
 )}
 }

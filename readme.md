@@ -85,10 +85,14 @@ promptly identify any issues right from the outset.
 
 ``` r
 
-cleaningtools::check_cleaning_log(df = test_data,df_uuid = "uuid",cl =cleaning_log_test,
-                                  cl_change_type_col = "change_type",
-                                  values_for_change_response =  "change_res",
-                                  cl_change_col = "question",cl_uuid = "uuid",cl_new_val = "new_value")
+cleaningtools::check_cleaning_log(raw_dataset = test_data,
+                                  raw_data_uuid_column = "uuid",
+                                  cleaning_log =cleaning_log_test,
+                                  cleaning_log_change_type_column = "change_type",
+                                  change_response_value =  "change_res",
+                                  cleaning_log_question_column = "question",
+                                  cleaning_log_uuid_column = "uuid",
+                                  cleaning_log_new_value_column = "new_value")
 #> [1] "no issues in cleaning log found"
 ```
 
@@ -99,15 +103,17 @@ clean data by applying`create_clean_data()` function.
 
 ``` r
 
-cleaningtools::create_clean_data(df = test_data,df_uuid = "uuid",cl = cleaning_log_test,
-                                 cl_change_type_col =  "change_type",
-                                 values_for_change_response = "change_res",
-                                 values_for_blank_response = "blank_response",
-                                 values_for_no_change = "no_change",
-                                 values_for_remove_survey = "Delete",
-                                 cl_change_col =  "question",
-                                 cl_uuid = "uuid",
-                                 cl_new_val = "new_value" )
+cleaningtools::create_clean_data(raw_dataset = test_data,
+                                 raw_data_uuid_column = "uuid",
+                                 cleaning_log = cleaning_log_test,
+                                 cleaning_log_change_type_column =  "change_type",
+                                 change_response_value = "change_res",
+                                 NA_response_value = "blank_response",
+                                 no_change_value = "no_change",
+                                 remove_survey_value = "Delete",
+                                 cleaning_log_question_column =  "question",
+                                 cleaning_log_uuid_column = "uuid",
+                                 cleaning_log_new_value_column = "new_value" )
 #> [1] "age"
 #> [1] "strata"
 #>    uuid age gender pop_group strata
@@ -134,10 +140,10 @@ test_data <- dplyr::tibble(
   reason.zy = c(0,1,1,1,0,0),
   reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_))
 
-cleaningtools::recreate_parent_column(df = test_data,uuid = "uuid",sm_sep = ".") |> head()
-#> Warning in cleaningtools::recreate_parent_column(df = test_data, uuid =
-#> "uuid", : Column(s) names are renamed as multiple separators are found in
-#> dataset column names. Please see the above table with the new name.
+cleaningtools::recreate_parent_column(dataset = test_data, uuid_column = "uuid",sm_seperator = ".") |> head()
+#> Warning in cleaningtools::recreate_parent_column(dataset = test_data,
+#> uuid_column = "uuid", : Column(s) names are renamed as multiple separators are
+#> found in dataset column names. Please see the above table with the new name.
 #> # A tibble: 2 × 2
 #>   old_name    new_name   
 #>   <chr>       <chr>      
@@ -201,12 +207,17 @@ log. Finally, flagged the discrepancies between them (if any).
 
 ``` r
 compared_df <- review_cleaning_log(
-  raw_data = cleaningtools::cleaningtools_raw_data, raw_data_uuid = "X_uuid",
-  clean_data = cleaningtools::cleaningtools_clean_data, clean_data_uuid = "X_uuid",
-  cleaning_log = cleaning_log2, cleaning_log_uuid = "X_uuid",
-  cleaning_log_question_name = "questions",
-  cleaning_log_new_value = "new_value", cleaning_log_old_value = "old_value",
-  deletion_log = deletaion_log, deletion_log_uuid = "X_uuid",
+  raw_dataset = cleaningtools::cleaningtools_raw_data, 
+  raw_dataset_uuid_column = "X_uuid",
+  clean_dataset = cleaningtools::cleaningtools_clean_data, 
+  clean_dataset_uuid_column = "X_uuid",
+  cleaning_log = cleaning_log2, 
+  cleaning_log_uuid_column = "X_uuid",
+  cleaning_log_question_column = "questions",
+  cleaning_log_new_value_column = "new_value", 
+  cleaning_log_old_value_column = "old_value",
+  deletion_log = deletaion_log, 
+  deletion_log_uuid_column = "X_uuid",
   check_for_deletion_log = T
 )
 
@@ -226,8 +237,8 @@ compared_df |> head()
 #### 2.2 Example:: The `review_others()` function reviews discrepancy between kobo relevancies and the dataset
 
 ``` r
-review_others(data = cleaningtools::cleaningtools_clean_data,
-   uuid = "X_uuid",kobo_survey = cleaningtools::cleaningtools_survey) |> head()
+review_others(dataset = cleaningtools::cleaningtools_clean_data,
+   uuid_column = "X_uuid",kobo_survey = cleaningtools::cleaningtools_survey) |> head()
 #>                                   uuid                 question old_value
 #> 1 f58a7fda-27e8-4003-90b3-479bebbb99ab consent_telephone_number       yes
 #> 2 956b5ed0-5a62-41b7-aec3-af93fbc5b494 consent_telephone_number       yes
@@ -258,12 +269,12 @@ dataset and provide the overview of completed and remaining surveys.
 
 ``` r
 review_output<- cleaningtools::review_sample_frame_with_dataset(sample_frame = cleaningtools::cleaningtools_sample_frame ,
-                                                                sample_frame_strata_col = "Neighbourhood",
-                                                                sample_frame_target_survey_col ="Total.no.of.HH",
-                                                                clean_data = cleaningtools::cleaningtools_clean_data,
-                                                                clean_data_strata_column = "neighbourhood",
+                                                                sampling_frame_strata_column = "Neighbourhood",
+                                                                sampling_frame_target_survey_column ="Total.no.of.HH",
+                                                                clean_dataset = cleaningtools::cleaningtools_clean_data,
+                                                                clean_dataset_strata_column = "neighbourhood",
                                                                 consent_column = "consent_remote",
-                                                                value_for_consent_yes = "yes")
+                                                                consent_yes_value = "yes")
 review_output |> head()
 #>   Managed.by Governorate Neighbourhood Total.no.of.HH Collected Remaining
 #> 1   Talafar       Ninewa            A1             22        22         0
@@ -278,8 +289,8 @@ review_output |> head()
 
 #### 3.1 Check of PII
 
-`check_for_pii()` function takes raw data (input can be dataframe or
-list. However incase of list, you must specify the element name in
+`check_pii()` function takes raw data (input can be dataframe or list.
+However incase of list, you must specify the element name in
 `element_name` parameter!) and looks for potential PII in the dataset.
 By default, the function will look for following words but you can also
 add additional words to look by using `words_to_look` parameter.The
@@ -291,7 +302,7 @@ second one will be the list of potential PII
 - Using dataframe as input
 
 ``` r
-output_from_data <- cleaningtools::check_for_pii(df = cleaningtools::cleaningtools_raw_data,words_to_look = "date")
+output_from_data <- cleaningtools::check_pii(dataset = cleaningtools::cleaningtools_raw_data,words_to_look = "date", uuid_column = "X_uuid")
 output_from_data$potential_PII |> head()
 #> # A tibble: 6 × 3
 #>   uuid  question                              issue        
@@ -309,7 +320,7 @@ output_from_data$potential_PII |> head()
 ``` r
 ### from list
 df_list <- list(raw_data=cleaningtools::cleaningtools_raw_data)
-output_from_list <- cleaningtools::check_for_pii(df = df_list,element_name = "raw_data",words_to_look = "date")
+output_from_list <- cleaningtools::check_pii(dataset = df_list,element_name = "raw_data", words_to_look = "date", uuid_column = "X_uuid")
 output_from_list$potential_PII |> head()
 #> # A tibble: 6 × 3
 #>   uuid  question                              issue        
@@ -362,7 +373,7 @@ some_dataset <- data.frame(X_uuid = c("uuid1", "uuid2"),
 If you want to sum all the duration.
 
 ``` r
-cleaningtools::add_duration_from_audit(some_dataset, uuid_var = "X_uuid", audit_list = list_audit)
+cleaningtools::add_duration_from_audit(some_dataset, uuid_column = "X_uuid", audit_list = list_audit)
 #>   X_uuid question1 question2 question3 question4 question5
 #> 1  uuid1         a         a         a         a         a
 #> 2  uuid2         b         b         b         b         b
@@ -374,7 +385,7 @@ cleaningtools::add_duration_from_audit(some_dataset, uuid_var = "X_uuid", audit_
 If you want to use calculate duration between 2 questions.
 
 ``` r
-cleaningtools::add_duration_from_audit(some_dataset, uuid_var = "X_uuid", audit_list = list_audit,
+cleaningtools::add_duration_from_audit(some_dataset, uuid_column = "X_uuid", audit_list = list_audit,
                                        start_question = "question1",
                                        end_question = "question3",
                                        sum_all = F)
@@ -389,7 +400,7 @@ cleaningtools::add_duration_from_audit(some_dataset, uuid_var = "X_uuid", audit_
 If you want to do both.
 
 ``` r
-cleaningtools::add_duration_from_audit(some_dataset, uuid_var = "X_uuid", audit_list = list_audit,
+cleaningtools::add_duration_from_audit(some_dataset, uuid_column = "X_uuid", audit_list = list_audit,
                                        start_question = "question1",
                                        end_question = "question3",
                                        sum_all = T)
@@ -415,18 +426,18 @@ testdata <- data.frame(
   duration_audit_start_end_ms = c(2475353, 375491, 2654267, 311585, 817270,
                                   2789505, 8642007),
   duration_audit_start_end_minutes = c(41, 6, 44, 5, 14, 46, 144)
-) %>% dplyr::rename(`_uuid` = uuid)
+)
 
-cleaningtools::check_duration(testdata, .col_to_check = "duration_audit_start_end_minutes") |> head()
+cleaningtools::check_duration(testdata, column_to_check = "duration_audit_start_end_minutes") |> head()
 #> $checked_dataset
-#>   _uuid duration_audit_start_end_ms duration_audit_start_end_minutes
-#> 1     a                     2475353                               41
-#> 2     b                      375491                                6
-#> 3     c                     2654267                               44
-#> 4     d                      311585                                5
-#> 5     e                      817270                               14
-#> 6     f                     2789505                               46
-#> 7     g                     8642007                              144
+#>   uuid duration_audit_start_end_ms duration_audit_start_end_minutes
+#> 1    a                     2475353                               41
+#> 2    b                      375491                                6
+#> 3    c                     2654267                               44
+#> 4    d                      311585                                5
+#> 5    e                      817270                               14
+#> 6    f                     2789505                               46
+#> 7    g                     8642007                              144
 #> 
 #> $duration_log
 #>   uuid old_value                         question
@@ -442,19 +453,19 @@ cleaningtools::check_duration(testdata, .col_to_check = "duration_audit_start_en
 
 cleaningtools::check_duration(
   testdata,
-  .col_to_check = "duration_audit_start_end_ms",
+  column_to_check = "duration_audit_start_end_ms",
   lower_bound = 375490,
   higher_bound = 8642000
 ) |> head()
 #> $checked_dataset
-#>   _uuid duration_audit_start_end_ms duration_audit_start_end_minutes
-#> 1     a                     2475353                               41
-#> 2     b                      375491                                6
-#> 3     c                     2654267                               44
-#> 4     d                      311585                                5
-#> 5     e                      817270                               14
-#> 6     f                     2789505                               46
-#> 7     g                     8642007                              144
+#>   uuid duration_audit_start_end_ms duration_audit_start_end_minutes
+#> 1    a                     2475353                               41
+#> 2    b                      375491                                6
+#> 3    c                     2654267                               44
+#> 4    d                      311585                                5
+#> 5    e                      817270                               14
+#> 6    f                     2789505                               46
+#> 7    g                     8642007                              144
 #> 
 #> $duration_log
 #>   uuid old_value                    question
@@ -464,22 +475,22 @@ cleaningtools::check_duration(
 #> 1 Duration is lower or higher than the thresholds
 #> 2 Duration is lower or higher than the thresholds
 
-testdata %>% cleaningtools::check_duration(.col_to_check = "duration_audit_start_end_minutes") %>%
+testdata %>% cleaningtools::check_duration(column_to_check = "duration_audit_start_end_minutes") %>%
   check_duration(
-    .col_to_check = "duration_audit_start_end_ms",
-    name_log = "duration_in_ms",
+    column_to_check = "duration_audit_start_end_ms",
+    log_name = "duration_in_ms",
     lower_bound = 375490,
     higher_bound = 8642000
   ) |> head()
 #> $checked_dataset
-#>   _uuid duration_audit_start_end_ms duration_audit_start_end_minutes
-#> 1     a                     2475353                               41
-#> 2     b                      375491                                6
-#> 3     c                     2654267                               44
-#> 4     d                      311585                                5
-#> 5     e                      817270                               14
-#> 6     f                     2789505                               46
-#> 7     g                     8642007                              144
+#>   uuid duration_audit_start_end_ms duration_audit_start_end_minutes
+#> 1    a                     2475353                               41
+#> 2    b                      375491                                6
+#> 3    c                     2654267                               44
+#> 4    d                      311585                                5
+#> 5    e                      817270                               14
+#> 6    f                     2789505                               46
+#> 7    g                     8642007                              144
 #> 
 #> $duration_log
 #>   uuid old_value                         question
@@ -519,7 +530,7 @@ df_outlier<- data.frame(
   income = c(c(60,0,80,1020,1050),sample(20000:50000,replace = T,size = 95)),
   yy = c(rep(100,99),10)
 )
-outliers <- cleaningtools::check_outliers(df = df_outlier,uuid_col_name = "uuid")
+outliers <- cleaningtools::check_outliers(dataset = df_outlier, uuid_column = "uuid")
 #> [1] "checking_one_value"
 #> [1] "checking_expense"
 #> [1] "checking_income"
@@ -538,9 +549,9 @@ outliers$potential_outliers |> head()
 
 #### 3.4 Check for value
 
-`check_for_value()` function look for specified value in the given data
-set and return in a cleaning log format. The function can take a data
-frame or a list as input.
+`check_value()` function look for specified value in the given data set
+and return in a cleaning log format. The function can take a data frame
+or a list as input.
 
 ``` r
 set.seed(122)
@@ -550,7 +561,7 @@ df <- data.frame(
   age = c(sample(18:80,replace = T,size = 96),99,99,98,88),
   gender = c("99",sample(c("male","female"),replace = T,size = 95),"98","98","88","888"))
 
-output <- cleaningtools::check_for_value(df = df,uuid_col_name = "X_uuid",element_name = "checked_dataset",values_to_look = c(99,98,88,888))
+output <- cleaningtools::check_value(dataset = df, uuid_column = "X_uuid",element_name = "checked_dataset",values_to_look = c(99,98,88,888))
 
 output$flaged_value |> head()
 #> # A tibble: 6 × 3
@@ -577,9 +588,9 @@ test_data <- data.frame(uuid = c(1:10) %>% as.character(),
                         access_to_market = c(rep("yes",4), rep("no",6)),
                         number_children_05 = c(rep(c(0,1),4),5,6))
 cleaningtools::check_logical(test_data,
-                                 uuid_var = "uuid",
+                                 uuid_column = "uuid",
                                  check_to_perform = "distance_to_market == \"less_30\" & access_to_market == \"no\"",
-                                 variables_to_clean = "distance_to_market, access_to_market",
+                                 columns_to_clean = "distance_to_market, access_to_market",
                                  description = "distance to market less than 30 and no access") |> head()
 #> $checked_dataset
 #>    uuid      today location distance_to_market access_to_market
@@ -632,14 +643,14 @@ check_list <- data.frame(name = c("logical_xx", "logical_yy", "logical_zz"),
                                                 "number_children_05",
                                                 ""))
 cleaningtools::check_logical_with_list(test_data,
-                            uuid_var = "uuid",
+                            uuid_column = "uuid",
                             list_of_check = check_list,
                             check_id_column = "name",
                             check_to_perform_column = "check",
-                            variables_to_clean_column = "variables_to_clean",
+                            columns_to_clean_column = "variables_to_clean",
                             description_column = "description") |> head()
-#> Warning in check_logical(.dataset = .dataset, uuid_var = uuid_var,
-#> variables_to_add = variables_to_add, : variables_to_clean not shared, results
+#> Warning in check_logical(dataset = dataset, uuid_column = uuid_column,
+#> information_to_add = information_to_add, : columns_to_clean not shared, results
 #> may not be accurate
 #> $checked_dataset
 #>    uuid distance_to_market access_to_market number_children_05
@@ -688,24 +699,23 @@ cleaningtools::check_logical_with_list(test_data,
 ``` r
 testdata <- data.frame(uuid = c(letters[1:4], "a", "b", "c"),
                        col_a = runif(7),
-                       col_b = runif(7)) %>%
-  dplyr::rename(`_uuid` = uuid)
+                       col_b = runif(7))
 cleaningtools::check_duplicate(testdata)
 #> $checked_dataset
-#>   _uuid     col_a     col_b
-#> 1     a 0.9166284 0.2958878
-#> 2     b 0.3212423 0.6047783
-#> 3     c 0.2052720 0.8932896
-#> 4     d 0.1512732 0.1883179
-#> 5     a 0.8096267 0.3822435
-#> 6     b 0.5861553 0.6640918
-#> 7     c 0.9902022 0.7932066
+#>   uuid     col_a     col_b
+#> 1    a 0.9166284 0.2958878
+#> 2    b 0.3212423 0.6047783
+#> 3    c 0.2052720 0.8932896
+#> 4    d 0.1512732 0.1883179
+#> 5    a 0.8096267 0.3822435
+#> 6    b 0.5861553 0.6640918
+#> 7    c 0.9902022 0.7932066
 #> 
 #> $duplicate_log
-#>   uuid old_value question            issue
-#> 1    a         a    _uuid duplicated _uuid
-#> 2    b         b    _uuid duplicated _uuid
-#> 3    c         c    _uuid duplicated _uuid
+#>   uuid old_value question           issue
+#> 1    a         a     uuid duplicated uuid
+#> 2    b         b     uuid duplicated uuid
+#> 3    c         c     uuid duplicated uuid
 ```
 
 Or you can check duplicate for a specific variable or combination of
@@ -716,18 +726,17 @@ testdata2 <- data.frame(
   uuid = letters[c(1:7)],
   village = paste("village", c(1:3,1:3,4)),
   ki_identifier = paste0("xx_", c(1:5,3,4))
-) %>%
-  dplyr::rename(`_uuid` = uuid)
-check_duplicate(testdata2, .col_to_check = "village")
+)
+check_duplicate(testdata2, columns_to_check = "village")
 #> $checked_dataset
-#>   _uuid   village ki_identifier
-#> 1     a village 1          xx_1
-#> 2     b village 2          xx_2
-#> 3     c village 3          xx_3
-#> 4     d village 1          xx_4
-#> 5     e village 2          xx_5
-#> 6     f village 3          xx_3
-#> 7     g village 4          xx_4
+#>   uuid   village ki_identifier
+#> 1    a village 1          xx_1
+#> 2    b village 2          xx_2
+#> 3    c village 3          xx_3
+#> 4    d village 1          xx_4
+#> 5    e village 2          xx_5
+#> 6    f village 3          xx_3
+#> 7    g village 4          xx_4
 #> 
 #> $duplicate_log
 #> # A tibble: 3 × 4
@@ -736,16 +745,16 @@ check_duplicate(testdata2, .col_to_check = "village")
 #> 1 d     village  village 1 duplicated village
 #> 2 e     village  village 2 duplicated village
 #> 3 f     village  village 3 duplicated village
-check_duplicate(testdata2, .col_to_check = c("village", "ki_identifier"), uuid = "_uuid")
+check_duplicate(testdata2, columns_to_check = c("village", "ki_identifier"))
 #> $checked_dataset
-#>   _uuid   village ki_identifier
-#> 1     a village 1          xx_1
-#> 2     b village 2          xx_2
-#> 3     c village 3          xx_3
-#> 4     d village 1          xx_4
-#> 5     e village 2          xx_5
-#> 6     f village 3          xx_3
-#> 7     g village 4          xx_4
+#>   uuid   village ki_identifier
+#> 1    a village 1          xx_1
+#> 2    b village 2          xx_2
+#> 3    c village 3          xx_3
+#> 4    d village 1          xx_4
+#> 5    e village 2          xx_5
+#> 6    f village 3          xx_3
+#> 7    g village 4          xx_4
 #> 
 #> $duplicate_log
 #> # A tibble: 2 × 4
@@ -760,9 +769,9 @@ check_duplicate(testdata2, .col_to_check = c("village", "ki_identifier"), uuid =
 To use it with the complete dataset:
 
 ``` r
-soft_duplicates <- check_soft_duplicates(.dataset = cleaningtools_raw_data,
+soft_duplicates <- check_soft_duplicates(dataset = cleaningtools_raw_data,
                                          kobo_survey = cleaningtools_survey,
-                                         uuid = "X_uuid",
+                                         uuid_column = "X_uuid",
                                          idnk_value = "dont_know",
                                          sm_seperator = ".",
                                          log_name = "soft_duplicate_log",
@@ -799,9 +808,9 @@ group_by_enum_raw_data <- cleaningtools_raw_data %>%
   dplyr::group_by(enumerator_num)
 soft_per_enum <- group_by_enum_raw_data %>%
   dplyr::group_split() %>%
-  purrr::map(~check_soft_duplicates(.dataset = .,
+  purrr::map(~check_soft_duplicates(dataset = .,
                                     kobo_survey = cleaningtools_survey,
-                                    uuid = "X_uuid",idnk_value = "dont_know",
+                                    uuid_column = "X_uuid",idnk_value = "dont_know",
                                     sm_seperator = ".",
                                     log_name = "soft_duplicate_log",
                                     threshold = 7))
@@ -842,15 +851,15 @@ all the values are the same.
 
 ``` r
 cleaningtools::check_fcs(dataset = cleaningtools::cleaningtools_food_consumption_df,
-                           uuid = "X_uuid",
-                      cereals = "cereals_grains_roots_tubers",
-                      pulses = "beans_legumes_pulses_nuts",
-                      dairy = "milk_dairy_products",
-                      meat = "meat_fish_eggs",
-                      vegetables = "vegetables",
-                      fruits = "fruite",
-                      oil = "oil_fat_butter",
-                      sugar = "sugar_sugary_food") |> head()
+                         uuid_column = "X_uuid",
+                         cereals_column = "cereals_grains_roots_tubers",
+                         pulses_column = "beans_legumes_pulses_nuts",
+                         dairy_column = "milk_dairy_products",
+                         meat_column = "meat_fish_eggs",
+                         vegetables_column = "vegetables",
+                         fruits_column = "fruite",
+                         oil_column = "oil_fat_butter",
+                         sugar_column = "sugar_sugary_food") |> head()
 #> Warning in cleaningtools::check_fcs(dataset =
 #> cleaningtools::cleaningtools_food_consumption_df, : Potential issue:: There
 #> are 105 observations where all the variables of food consumption score are the
@@ -893,8 +902,8 @@ questions
 ``` r
 
 output <- cleaningtools::check_others(dataset = cleaningtools::cleaningtools_clean_data,
- uuid = "X_uuid",
- var_list = names(cleaningtools::cleaningtools_clean_data |>
+ uuid_column = "X_uuid",
+ columns_to_check = names(cleaningtools::cleaningtools_clean_data |>
  dplyr::select(ends_with("_other")) |> 
    dplyr::select(-contains(".")))) 
 
@@ -971,12 +980,13 @@ and returns a list with two elements: the dataset and the combined
 cleaning log.
 
 ``` r
-  list <- cleaningtools::cleaningtools_raw_data |> check_for_pii() |>
-    check_duplicate(uuid_col_name = "X_uuid") |>
-    check_for_value(uuid_col_name = "X_uuid") |> create_combined_log()
+  list_log <- cleaningtools::cleaningtools_raw_data |> 
+    check_pii(uuid_column = "X_uuid") |>
+    check_duplicate(uuid_column = "X_uuid") |>
+    check_value(uuid_column = "X_uuid") |> create_combined_log()
 #> List of element to combine- checked_dataset, potential_PII, duplicate_log, flaged_value
 
-list$cleaning_log |> head(6)
+list_log$cleaning_log |> head(6)
 #> # A tibble: 6 × 6
 #>   uuid                            question issue old_value change_type new_value
 #>   <chr>                           <chr>    <chr> <chr>     <chr>       <chr>    
@@ -994,7 +1004,7 @@ The function `add_info_to_cleaning_log()` is designed to add information
 from the dataset into the cleaning log.
 
 ``` r
-add_with_info <- list |> add_info_to_cleaning_log()
+add_with_info <- list_log |> add_info_to_cleaning_log(dataset_uuid_column = "X_uuid")
 
 add_with_info$cleaning_log |> head()
 #>                                   uuid                              question
