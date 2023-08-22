@@ -1,22 +1,22 @@
 #test 1a: that there is a "start" variable in the dataset, else error
 test_that("start variable exists", {
-  expect_error(add_duration(.dataset=cleaningtools_clean_data, duration_var_name="duration", start = "ddd",
-                            end="end", uuid="X_uuid"),
+  expect_error(add_duration(dataset=cleaningtools_clean_data, duration_column="duration", start_column = "ddd",
+                            end_column="end", uuid_column="X_uuid"),
                regexp ="data needs to have a column start for this function work")
 
 })
 #test 1b: that there is a  "end" variable in the dataset, else error
 test_that("end variable exists", {
-  expect_error(add_duration(.dataset=cleaningtools_clean_data, duration_var_name="duration", start = "X.U.FEFF.start",
-                            end="end_xx", uuid="X_uuid"),
+  expect_error(add_duration(dataset=cleaningtools_clean_data, duration_column="duration", start_column = "X.U.FEFF.start",
+                            end_column="end_xx", uuid_column="X_uuid"),
                regexp ="data needs to have a column end for this function work")
 
 })
-#test 2: that the duration_var_name column does not exist already
+#test 2: that the duration_column column does not exist already
 test_that("variable duration does not exist", {
-  expect_error(add_duration(.dataset=cleaningtools_clean_data, duration_var_name="X_status", start = "X.U.FEFF.start",
-                            end="end", uuid="X_uuid"),
-               regexp ="There is already a variable called duration_var_name in your dataset, please input another duration_var_name")
+  expect_error(add_duration(dataset=cleaningtools_clean_data, duration_column="X_status", start_column = "X.U.FEFF.start",
+                            end_column="end", uuid_column="X_uuid"),
+               regexp ="There is already a variable called duration_column in your dataset, please input another duration_column")
 
 })
 
@@ -24,8 +24,8 @@ test_that("variable duration does not exist", {
 test_that("no missing values in start and end variables", {
   test_data <- cleaningtools_clean_data
   test_data[1,"X.U.FEFF.start"] <- NA
-  expect_warning(add_duration(.dataset=test_data, duration_var_name="new_duration", start = "X.U.FEFF.start",
-                              end="end", uuid="X_uuid"),
+  expect_warning(add_duration(dataset=test_data, duration_column="new_duration", start_column = "X.U.FEFF.start",
+                              end_column="end", uuid_column="X_uuid"),
                regexp ="There are some observations for which either start or end is missing. The duration will not be computed for these")
 
 })
@@ -34,8 +34,8 @@ test_that("no missing values in start and end variables", {
 test_that("function does not run if the data is not in KOBO format", {
   test_data <- cleaningtools_clean_data
   test_data[1,"X.U.FEFF.start"] <- "111111111"
-  expect_error(add_duration(.dataset=test_data, duration_var_name="new_duration", start = "X.U.FEFF.start",
-                              end="end", uuid="X_uuid"),
+  expect_error(add_duration(dataset=test_data, duration_column="new_duration", start_column = "X.U.FEFF.start",
+                              end_column="end", uuid_column="X_uuid"),
                  regexp ="The dates are not in the correct format, the duration cannot be computed")
 
 })
@@ -43,7 +43,7 @@ test_that("function does not run if the data is not in KOBO format", {
 
 # #test that both start and end have the correct format (date and time), else STOP ////[later]if not, the variable should be made in the correct format
 # test_that("start and end are in the correct format", {
-#   expect_warning(make_duration(.dataset = data),
+#   expect_warning(make_duration(dataset = data),
 #                  regexp ="Start and end are not in the format DD/MM/YY Hour")
 #
 # })
@@ -70,8 +70,8 @@ test_that("duration is correct", {
                                 duration = as.numeric(c("36.83", "44.01", "32.53", "34.85", "36.65")
                                                       ))
   #function
-  actual_output <- add_duration(.dataset=test_data, duration_var_name="duration", start = "X.U.FEFF.start",
-                                  end="end", uuid="X_uuid") %>%
+  actual_output <- add_duration(dataset=test_data, duration_column="duration", start_column = "X.U.FEFF.start",
+                                  end_column="end", uuid_column="X_uuid") %>%
     dplyr::select("X.U.FEFF.start","end",  "start_date","start_time", "end_date", "duration") %>%
     dplyr::mutate( start_time = as.character(start_time))
 
@@ -101,8 +101,8 @@ test_that("duration is correct", {
                                 duration = as.numeric(c("1476.83", "44.01", "32.53", "34.85", "36.65") #change first duration to 24*60 + old duration
                                 ))
   #function
-  actual_output <- add_duration(.dataset=test_data, duration_var_name="duration", start = "X.U.FEFF.start",
-                                end="end", uuid="X_uuid") %>%
+  actual_output <- add_duration(dataset=test_data, duration_column="duration", start_column = "X.U.FEFF.start",
+                                end_column="end", uuid_column="X_uuid") %>%
     dplyr::select("X.U.FEFF.start","end",  "start_date","start_time", "end_date", "duration") %>%
     dplyr::mutate( start_time = as.character(start_time))
 
@@ -131,8 +131,8 @@ test_that("duration is correct", {
                                 duration = as.numeric(c("36.83", "44.01", "32.53", "34.85", "36.65")
                                 ))
   #function
-  actual_output <- add_duration(.dataset=test_data, duration_var_name="duration", start = "X.U.FEFF.start",
-                                end="end", uuid="X_uuid") %>%
+  actual_output <- add_duration(dataset=test_data, duration_column="duration", start_column = "X.U.FEFF.start",
+                                end_column="end", uuid_column="X_uuid") %>%
     dplyr::select("X.U.FEFF.start","end",  "start_date","start_time", "end_date", "duration") %>%
     dplyr::mutate( start_time = as.character(start_time))
 

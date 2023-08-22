@@ -1,27 +1,27 @@
 #' Checks for potential PII
-#' @param df Data set
-#' @param uuid  Column name defining the uuid
+#' @param dataset dataset to be check as a dataframe or a list with the dataframe stored as "checked_dataset"
+#' @param uuid_column  uuid column in the dataset. Default is uuid.
 #' @param element_name If the input is a list file, please specify the element name that contains the dataset
 #' @param words_to_look Specify the words that might be the PIIs
 #' @return dataset with potential PII
 #' @import dplyr tibble snakecase
 #' @export
 
-check_for_pii<- function(df,element_name =NULL,uuid ="X_uuid",words_to_look = NULL){
+check_pii<- function(dataset, element_name = NULL,uuid_column = "uuid", words_to_look = NULL){
 
-  dataframe <- df
+  dataframe <- dataset
 
-  if(is.data.frame(df) & !is.null(element_name)){warning("Input is a dataframe, ignoring element_name")}
+  if(is.data.frame(dataset) & !is.null(element_name)){warning("Input is a dataframe, ignoring element_name")}
 
-  if(!is.data.frame(df) & is.list(df) ){
+  if(!is.data.frame(dataset) & is.list(dataset) ){
     if(is.null(element_name)){stop("element_name is missing")}
-    if(!element_name %in% names(df)){stop("element_name not found")}
+    if(!element_name %in% names(dataset)){stop("element_name not found")}
   }
 
-  if(!is.data.frame(df) & is.list(df)){df <- df[[element_name]]}
+  if(!is.data.frame(dataset) & is.list(dataset)){dataset <- dataset[[element_name]]}
 
 
-  if(uuid %in% names(df)==FALSE){stop("uuid not found in the dataset")}
+  if(uuid_column %in% names(dataset)==FALSE){stop("uuid not found in the dataset")}
 
 
   cols_to_look_for <- c("telephone","contact","name","gps","neighbourhood","latitude","longitude","phone",
@@ -31,12 +31,12 @@ check_for_pii<- function(df,element_name =NULL,uuid ="X_uuid",words_to_look = NU
   cols_to_look_for <- c(words_to_look,cols_to_look_for) %>% to_snake_case()
   cols_to_look_for <-   paste0(cols_to_look_for,collapse = "|")
 
-  select_multiple_to_ignore <- auto_sm_parent_children(df)
+  select_multiple_to_ignore <- auto_sm_parent_children(dataset)
   ignore <- c(select_multiple_to_ignore$sm_child, select_multiple_to_ignore$sm_parent) %>% unique()
 
   potential_PII <- tibble(
     uuid= "all",
-    question = names(df)
+    question = names(dataset)
   ) %>% dplyr::filter(!question %in% ignore) %>% dplyr::mutate(
     snkae_case_cols = snakecase::to_snake_case(question)
   ) %>% dplyr::filter((grepl(cols_to_look_for,snkae_case_cols)) |(grepl(cols_to_look_for,question))) %>% dplyr::mutate(
@@ -44,7 +44,7 @@ check_for_pii<- function(df,element_name =NULL,uuid ="X_uuid",words_to_look = NU
   ) %>% dplyr::select(-snkae_case_cols)
   ## Append the list
   if(is.data.frame(dataframe)){
-    checked_dataset <- df
+    checked_dataset <- dataset
     return(list(checked_dataset = checked_dataset,
                 potential_PII=potential_PII))}
 
@@ -53,10 +53,5 @@ check_for_pii<- function(df,element_name =NULL,uuid ="X_uuid",words_to_look = NU
 
     return(append(dataframe,list_Df))
     }
-
-
-
-
-
 
 }

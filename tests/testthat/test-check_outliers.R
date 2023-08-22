@@ -1,21 +1,17 @@
-library(dplyr)
-library(tidyr)
-library(testthat)
-
 test_that("Outliers check", {
 
   ### test cols to add
 
-  outliers1 <- check_outliers(df = cleaningtools_raw_data,uuid_col_name = "X_uuid",columns_to_remove = "enumerator_num",strongness_factor = 1.5)
-  outliers2 <- check_outliers(cleaningtools_raw_data,uuid_col_name = "X_uuid",strongness_factor = 1.5)
+  outliers1 <- check_outliers(dataset = cleaningtools_raw_data,uuid_column = "X_uuid",columns_not_to_check = "enumerator_num",strongness_factor = 1.5)
+  outliers2 <- check_outliers(cleaningtools_raw_data,uuid_column = "X_uuid",strongness_factor = 1.5)
 
   expect_false("enumerator_num" %in% outliers1$potential_outliers$question)
   expect_true("uuid" %in% names(outliers1$potential_outliers))
   expect_true("enumerator_num" %in% outliers2$potential_outliers$question)
 
   ## test with null in unique number
-  outliers3 <- check_outliers(cleaningtools_raw_data,uuid_col_name = "X_uuid",minimum_unique_value_of_variable = 10)
-  outliers4 <- check_outliers(cleaningtools_raw_data,uuid_col_name = "X_uuid",minimum_unique_value_of_variable = NULL)
+  outliers3 <- check_outliers(cleaningtools_raw_data,uuid_column = "X_uuid",minimum_unique_value_of_variable = 10)
+  outliers4 <- check_outliers(cleaningtools_raw_data,uuid_column = "X_uuid",minimum_unique_value_of_variable = NULL)
 
   expect_false("air_coolers_nb" %in% outliers3$potential_outliers$question)
   expect_true("air_coolers_nb" %in% outliers4$potential_outliers$question)
@@ -28,18 +24,18 @@ test_that("Outliers check", {
     income = c(sample(20000:50000,replace = T,size = 95),c(60,0,80,1020,1050))
   )
 
-  outliers5 <- check_outliers(df = df_outlier,uuid_col_name = "uuid",strongness_factor = 1.5)
+  outliers5 <- check_outliers(dataset = df_outlier,uuid_column = "uuid",strongness_factor = 1.5)
 
 
 
-  outliers6 <- check_outliers(df = df_outlier,uuid_col_name = "uuid",strongness_factor = 3)
+  outliers6 <- check_outliers(dataset = df_outlier,uuid_column = "uuid",strongness_factor = 3)
 
   expect_true(nrow(outliers5$potential_outliers) > nrow(outliers6$potential_outliers))
 
 
   df_list <- list(df_outlier = df_outlier)
-  expect_no_error(check_outliers(df = df_list,uuid_col_name = "uuid",element_name = "df_outlier"))
-  expect_length(check_outliers(df = df_list,uuid_col_name = "uuid",element_name = "df_outlier"),2)
+  expect_no_error(check_outliers(dataset = df_list,uuid_column = "uuid",element_name = "df_outlier"))
+  expect_length(check_outliers(dataset = df_list,uuid_column = "uuid",element_name = "df_outlier"),2)
 
 
 })
@@ -85,7 +81,7 @@ test_that("outlier_check returns correct results", {
   expected_outcome <- rbind(one_value_outlier, expense_outlier, income_outlier, yy_outlier)
 
 
-  outliers_xx <- check_outliers(df = df_outlier,uuid_col_name  = "uuid",strongness_factor = 3)
+  outliers_xx <- check_outliers(dataset = df_outlier,uuid_column  = "uuid",strongness_factor = 3)
   expect_equal(outliers_xx$potential_outliers,expected_outcome, ignore_attr = TRUE)
 })
 
@@ -94,19 +90,19 @@ test_that("outlier_check returns correct results", {
 test_that("Outliers check with kobo", {
 
 
-  expect_warning(check_outliers(df = cleaningtools_raw_data,uuid_col_name  = "X_uuid",kobo_survey = cleaningtools_survey,
+  expect_warning(check_outliers(dataset = cleaningtools_raw_data,uuid_column  = "X_uuid",kobo_survey = cleaningtools_survey,
                                 kobo_choices = NULL,strongness_factor = 3))
-  expect_warning(check_outliers(df = cleaningtools_raw_data,uuid_col_name  = "X_uuid",kobo_survey = NULL,
+  expect_warning(check_outliers(dataset = cleaningtools_raw_data,uuid_column  = "X_uuid",kobo_survey = NULL,
                                 kobo_choices = cleaningtools_choices,strongness_factor = 3))
-  expect_no_warning(check_outliers(df = cleaningtools_raw_data,uuid_col_name  = "X_uuid",kobo_survey = NULL,
+  expect_no_warning(check_outliers(dataset = cleaningtools_raw_data,uuid_column  = "X_uuid",kobo_survey = NULL,
                                 kobo_choices = NULL,strongness_factor = 3))
 
 
   a <- cleaningtools_raw_data |> mutate_if(is.logical,as.integer)
-  outliers_xx <- check_outliers(df = a,uuid_col_name  = "X_uuid",kobo_survey = cleaningtools_survey,
+  outliers_xx <- check_outliers(dataset = a,uuid_column  = "X_uuid",kobo_survey = cleaningtools_survey,
                                 kobo_choices = cleaningtools_choices,strongness_factor = 3,
                                 remove_choice_multiple = F)
-  outliers_yy <- check_outliers(df = a,uuid_col_name  = "X_uuid",strongness_factor = 3,
+  outliers_yy <- check_outliers(dataset = a,uuid_column  = "X_uuid",strongness_factor = 3,
                                 remove_choice_multiple = T)
 
   testthat::expect_true("primary_livelihood.support" %in% outliers_xx$potential_outliers$question)

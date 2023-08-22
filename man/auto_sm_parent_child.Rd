@@ -5,16 +5,17 @@
 \alias{auto_sm_parent_children}
 \title{detect and group together select multiple parent and children columns}
 \usage{
-auto_sm_parent_children(df, sm_sep = ".")
+auto_sm_parent_children(dataset, sm_seperator = ".")
 }
 \arguments{
-\item{df}{a survey object or dataframe}
+\item{dataset}{dataset to correct}
 
-\item{sm_sep}{select multiple parent child separator. This is specific for XLSForm data (default = /).
+\item{sm_seperator}{Separator for choice multiple questions. The default is "."
 If using read_csv to read in data the separator will most likely be '/' where as if using read.csv it will likely be '.'}
 }
 \value{
-a data frame containing the the child select multiple columns alongside there parents
+a data frame containing the the child select multiple columns alongside there parents and
+a log with all changes recorded.
 }
 \description{
 \code{auto_sm_parent_children} is mean to detect select multiple parent columns & children columns in a way that does

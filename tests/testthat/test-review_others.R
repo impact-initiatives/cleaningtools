@@ -1,31 +1,34 @@
 testthat::test_that("Error check", {
 
-  testthat::expect_error(review_others(data = cleaningtools::cleaningtools_clean_data,
-                                       uuid = "uuid",kobo_survey = cleaningtools_survey))
+  testthat::expect_error(review_others(dataset = cleaningtools::cleaningtools_clean_data,
+                                       uuid_column = "uuid",kobo_survey = cleaningtools_survey))
 
-  testthat::expect_error(review_others(data = cleaningtools::cleaningtools_clean_data,
-                                       uuid = "X_uuid",kobo_survey = cleaningtools_survey,
-                                       variables_to_add = "eenumerator_num"))
+  testthat::expect_error(review_others(dataset = cleaningtools::cleaningtools_clean_data,
+                                       uuid_column = "X_uuid",kobo_survey = cleaningtools_survey,
+                                       information_to_add = "eenumerator_num"))
 
-  testthat::expect_no_error(review_others(data = cleaningtools::cleaningtools_clean_data,
-                                          uuid = "X_uuid",kobo_survey = cleaningtools_survey,
-                                          variables_to_add = "enumerator_num"))
+  testthat::expect_no_error(review_others(dataset = cleaningtools::cleaningtools_clean_data,
+                                          uuid_column = "X_uuid",kobo_survey = cleaningtools_survey,
+                                          information_to_add = "enumerator_num") %>%
+                              suppressWarnings())
 
-
-  testthat::expect_warning(review_others(data = cleaningtools::cleaningtools_clean_data,
-                                         uuid = "X_uuid",
-                                         kobo_survey = cleaningtools_survey,
-                                         questions_not_to_check = "consent_stelephone_number",
-                                         variables_to_add = "enumerator_num"))
+  review_others(dataset = cleaningtools::cleaningtools_clean_data,
+                uuid_column = "X_uuid",
+                kobo_survey = cleaningtools_survey,
+                columns_not_to_check = "consent_stelephone_number",
+                information_to_add = "enumerator_num") %>%
+    testthat::expect_warning() %>%
+    testthat::expect_warning()
 
 })
 
 
 testthat::test_that("expect equal", {
 
-  actual<-  review_others(data = cleaningtools::cleaningtools_clean_data,
-                          uuid = "X_uuid",kobo_survey = cleaningtools_survey,
-                          variables_to_add = "enumerator_num")[1:5,]
+  actual<-  review_others(dataset = cleaningtools::cleaningtools_clean_data,
+                          uuid_column = "X_uuid",kobo_survey = cleaningtools_survey,
+                          information_to_add = "enumerator_num")[1:5,] %>%
+    suppressWarnings()
 
 
   expected_df <- structure(list(uuid = c("f58a7fda-27e8-4003-90b3-479bebbb99ab",
@@ -54,9 +57,10 @@ testthat::test_that("expect equal", {
   df$shelter_occupation_other[1] <- "select_one_error"
   df$primary_livelihood_other[10] <- "select_multiple_error"
 
-  actual <- review_others(data = df,
-                          uuid = "X_uuid",kobo_survey = cleaningtools_survey,
-                          questions_not_to_check = "consent_telephone_number")
+  actual <- review_others(dataset = df,
+                          uuid_column = "X_uuid",kobo_survey = cleaningtools_survey,
+                          columns_not_to_check = "consent_telephone_number") %>%
+    suppressWarnings()
 
   expected <- structure(list(uuid = c("f58a7fda-27e8-4003-90b3-479bebbb99ab",
                                       "f58a7fda-27e8-4003-90b3-479bebbb99ab",
@@ -85,9 +89,10 @@ testthat::test_that("expect equal", {
   df$shelter_occupation[1] <- "other"
   df$primary_livelihood.other[10] <- TRUE
 
-  actual <- review_others(data = df,
-                          uuid = "X_uuid",kobo_survey = cleaningtools_survey,
-                          questions_not_to_check = "consent_telephone_number")
+  actual <- review_others(dataset = df,
+                          uuid_column = "X_uuid",kobo_survey = cleaningtools_survey,
+                          columns_not_to_check = "consent_telephone_number") %>%
+    suppressWarnings()
 
   expected <- structure(list(uuid = c("f58a7fda-27e8-4003-90b3-479bebbb99ab",
                                       "f58a7fda-27e8-4003-90b3-479bebbb99ab",
@@ -118,8 +123,9 @@ testthat::test_that("expect equal", {
   df$primary_livelihood_other[10] <- "TRUEs"
 
   actual <- review_others(data = df,
-                          uuid = "X_uuid",kobo_survey = cleaningtools_survey,
-                          questions_not_to_check = "consent_telephone_number")
+                          uuid_column = "X_uuid",kobo_survey = cleaningtools_survey,
+                          columns_not_to_check = "consent_telephone_number") %>%
+    suppressWarnings()
 
   expected <- structure(list(uuid = c("f58a7fda-27e8-4003-90b3-479bebbb99ab",
                                       "f58a7fda-27e8-4003-90b3-479bebbb99ab"),

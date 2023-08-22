@@ -5,9 +5,9 @@
 \title{Adds duration from the audit file}
 \usage{
 add_duration_from_audit(
-  .dataset,
+  dataset,
   col_name_prefix = "duration_audit",
-  uuid_var = "_uuid",
+  uuid_column = "uuid",
   audit_list,
   start_question = NULL,
   end_question = NULL,
@@ -15,11 +15,11 @@ add_duration_from_audit(
 )
 }
 \arguments{
-\item{.dataset}{a dataframe to add the duration.}
+\item{dataset}{dataset to add the duration}
 
 \item{col_name_prefix}{string character to be used for the prefix of new columns}
 
-\item{uuid_var}{string character for the uuid variable name in the dataset}
+\item{uuid_column}{uuid column in the dataset. Default is uuid.}
 
 \item{audit_list}{list of dataframe that are the audit file with the uuid of
 each interview as name of the dataframe.}
@@ -58,12 +58,12 @@ some_dataset <- data.frame(X_uuid = c("uuid1", "uuid2"),
                            question3 = c("a","b"),
                            question4 = c("a","b"),
                            question5 = c("a","b"))
-add_duration_from_audit(some_dataset, uuid_var = "X_uuid", audit_list = list_audit)
-add_duration_from_audit(some_dataset, uuid_var = "X_uuid", audit_list = list_audit,
+add_duration_from_audit(some_dataset, uuid_column = "X_uuid", audit_list = list_audit)
+add_duration_from_audit(some_dataset, uuid_column = "X_uuid", audit_list = list_audit,
                         start_question = "question1",
                         end_question = "question3",
                         sum_all = FALSE)
-add_duration_from_audit(some_dataset, uuid_var = "X_uuid", audit_list = list_audit,
+add_duration_from_audit(some_dataset, uuid_column = "X_uuid", audit_list = list_audit,
                         start_question = "question1",
                         end_question = "question3",
                         sum_all = TRUE)

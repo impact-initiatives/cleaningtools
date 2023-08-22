@@ -1,6 +1,3 @@
-library(testthat)
-library(tibble)
-
 test_that("Check for PII", {
 
 ### TEST 1::Happy path, columns found in the dataframe
@@ -14,19 +11,21 @@ test_that("Check for PII", {
   df33 <- data.frame(a = c(1,2))
   no_pii_data <- cleaningtools_raw_data %>% dplyr::select(-dplyr::all_of(to_rm))
 
-  df_list <- list(cleaningtools_raw_data=cleaningtools_raw_data,
+  df_list <- list(cleaningtools_raw_data= cleaningtools_raw_data,
                   df33 = df33,
                   no_pii_data =  no_pii_data)
 
 
-  output1 <- check_for_pii(df = df_list,element_name = "cleaningtools_raw_data",words_to_look = "date")
-  output2 <- check_for_pii(df = df_list,element_name = "cleaningtools_raw_data")
-  output3 <- check_for_pii(df = df_list,element_name = "no_pii_data")
-  output4 <- check_for_pii(df = df_list,element_name = "cleaningtools_raw_data",words_to_look = c("date","enumerator"))
+  output1 <- check_pii(dataset = df_list, element_name = "cleaningtools_raw_data", uuid_column = "X_uuid",
+                           words_to_look = "date")
+  output2 <- check_pii(dataset = df_list, element_name = "cleaningtools_raw_data", uuid_column = "X_uuid",)
+  output3 <- check_pii(dataset = df_list, element_name = "no_pii_data", uuid_column = "X_uuid",)
+  output4 <- check_pii(dataset = df_list, element_name = "cleaningtools_raw_data", uuid_column = "X_uuid",
+                           words_to_look = c("date","enumerator"))
 
 
-  output_fm_data_frame1 <- check_for_pii(cleaningtools_raw_data,words_to_look = "date")
-  output_fm_data_frame2 <- check_for_pii(cleaningtools_raw_data)
+  output_fm_data_frame1 <- check_pii(cleaningtools_raw_data, words_to_look = "date" , uuid_column = "X_uuid")
+  output_fm_data_frame2 <- check_pii(cleaningtools_raw_data, uuid_column = "X_uuid")
 
 
 
@@ -59,10 +58,10 @@ test_that("Check for PII", {
 
 ### TEST 2::Sad path, columns not found in the dataframe
 
-  expect_error(check_for_pii(df_list,words_to_look ="Date"),regexp = "element_name is missing")
-  expect_error(check_for_pii(df_list,element_name = "A",words_to_look ="Date"),regexp = "element_name not found")
-  expect_warning(check_for_pii(cleaningtools_raw_data,element_name = "a",words_to_look = "date"),regexp = "Input is a dataframe, ignoring element_name")
-  expect_error(check_for_pii(cleaningtools_raw_data,uuid = "uuid"),regexp = "uuid not found in the dataset")
+  expect_error(check_pii(df_list, words_to_look ="Date", uuid_column = "X_uuid"),regexp = "element_name is missing")
+  expect_error(check_pii(df_list, element_name = "A", words_to_look ="Date", uuid_column = "X_uuid"),regexp = "element_name not found")
+  expect_warning(check_pii(cleaningtools_raw_data,element_name = "a", words_to_look = "date", uuid_column = "X_uuid"),regexp = "Input is a dataframe, ignoring element_name")
+  expect_error(check_pii(cleaningtools_raw_data, uuid_column = "uuid"),regexp = "uuid not found in the dataset")
 
 
   expect_length(output1,4)

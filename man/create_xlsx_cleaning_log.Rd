@@ -41,13 +41,17 @@ create_xlsx_cleaning_log(
 
 \item{output_path}{Output path. Default is NULL which will return a workbook instead of an excel file.}
 }
+\value{
+save a .xlsx file or return a workbook object
+}
 \description{
 Creates formatted excel for cleaning log
 }
 \examples{
-list <- cleaningtools::cleaningtools_raw_data |> check_for_pii() |>
- check_duplicate(uuid_col_name = "X_uuid") |>
- check_for_value(uuid_col_name = "X_uuid")
+list <- cleaningtools::cleaningtools_raw_data |>
+ check_pii(uuid_column = "X_uuid") |>
+ check_duplicate(uuid_column = "X_uuid") |>
+ check_value(uuid_column = "X_uuid")
 
 create_combined_log(list_of_log = list) |>
  create_xlsx_cleaning_log()

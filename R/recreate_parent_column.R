@@ -3,13 +3,13 @@
 #' @title Detect select multiple parent columns
 #' @description `auto_detect_sm_parents` is mean to detect select multiple parent columns in a way that does
 #' not rely on the XLSForm as the input
-#' @param df a survey object or dataframe
-#' @param sm_sep select multiple parent child separator. This is specific for XLSForm data (default = /).
+#' @param dataset dataset to correct
+#' @param sm_seperator Separator for choice multiple questions. The default is "."
 #'  If using read_csv to read in data the separator will most likely be '/' where as if using read.csv it will likely be '.'
 #' @return a list of select multiple parent columns in data set.
 #' @export
-auto_detect_sm_parents<- function(df, sm_sep="."){
-  sm_parents<-sub(glue::glue('.[^\\{sm_sep}]*$'), '', colnames(df))
+auto_detect_sm_parents<- function(dataset, sm_seperator="."){
+  sm_parents<-sub(glue::glue('.[^\\{sm_seperator}]*$'), '', colnames(dataset))
   sm_parents<-data.frame(col_names=sm_parents[sm_parents!=""])
   select_multiple_detected<-sm_parents %>%
     dplyr::group_by(col_names) %>%
@@ -24,20 +24,21 @@ auto_detect_sm_parents<- function(df, sm_sep="."){
 #' @title detect and group together select multiple parent and children columns
 #' @description `auto_sm_parent_children` is mean to detect select multiple parent columns & children columns in a way that does
 #' not rely on the XLSForm as the input
-#' @param df a survey object or dataframe
-#' @param sm_sep select multiple parent child separator. This is specific for XLSForm data (default = /).
+#' @param dataset dataset to correct
+#' @param sm_seperator Separator for choice multiple questions. The default is "."
 #'  If using read_csv to read in data the separator will most likely be '/' where as if using read.csv it will likely be '.'
-#' @return a data frame containing the the child select multiple columns alongside there parents
+#' @return a data frame containing the the child select multiple columns alongside there parents and
+#' a log with all changes recorded.
 #' @export
 
 
-auto_sm_parent_children<- function(df, sm_sep="."){
-  sm_parents<-auto_detect_sm_parents(df, sm_sep)
-  sm_child<- df %>%
-    dplyr::select(dplyr::starts_with(glue::glue("{sm_parents}{sm_sep}"))) %>%
+auto_sm_parent_children<- function(dataset, sm_seperator="."){
+  sm_parents<-auto_detect_sm_parents(dataset, sm_seperator)
+  sm_child<- dataset %>%
+    dplyr::select(dplyr::starts_with(glue::glue("{sm_parents}{sm_seperator}"))) %>%
     colnames()
   dplyr::tibble(
-    sm_parent=sub(glue::glue('.[^\\{sm_sep}]*$'),'',sm_child),
+    sm_parent=sub(glue::glue('.[^\\{sm_seperator}]*$'),'',sm_child),
     sm_child
   )
 
@@ -46,11 +47,11 @@ auto_sm_parent_children<- function(df, sm_sep="."){
 
 
 #' This function recreates the concerted columns for select multiple questions
-#' @param df data frame
-#' @param uuid Unique ID column(Default is uuid).
-#' @param kobo_survey_sheet Kobo survey tab
-#' @param kobo_choices_sheet Kobo choices tab
-#' @param sm_sep Separator between question and choice. Default is ..
+#' @param dataset data frame
+#' @param uuid_column uuid column in the dataset. Default is "uuid".
+#' @param kobo_survey Kobo survey sheet.
+#' @param kobo_choices Kobo choices sheet.
+#' @param sm_seperator Separator for choice multiple questions. The default is "."
 #' @export
 #' @examples
 #' test_data <- dplyr::tibble(
@@ -64,28 +65,28 @@ auto_sm_parent_children<- function(df, sm_sep="."){
 #' reason.xz = c(0,0,0,1,0,1),
 #' reason.zy = c(0,1,1,1,0,0),
 #' reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_))
-#' recreate_parent_column(df = test_data, uuid = "uuid", sm_sep = ".")
+#' recreate_parent_column(dataset = test_data, uuid_column = "uuid", sm_seperator = ".")
 #'
 
 
-recreate_parent_column <- function(df,
-                                   uuid = "uuid",
-                                   kobo_survey_sheet =NULL,
-                                   kobo_choices_sheet =NULL,
-                                   sm_sep= "."){
+recreate_parent_column <- function(dataset,
+                                   uuid_column = "uuid",
+                                   kobo_survey =NULL,
+                                   kobo_choices =NULL,
+                                   sm_seperator= "."){
 
-checked_data <- df
+checked_data <- dataset
 
-initial_order <- names(df)
+initial_order <- names(dataset)
 
-if(is.null(kobo_survey_sheet)){
-old_name <- names(df)
-number_of_separator <- names(df) |> stringr::str_count(pattern = paste0("\\",sm_sep)) |> max(na.rm =T)
+if(is.null(kobo_survey)){
+old_name <- names(dataset)
+number_of_separator <- names(dataset) |> stringr::str_count(pattern = paste0("\\",sm_seperator)) |> max(na.rm =T)
 for (i in 1:number_of_separator) {
-  names(df) <- sub(paste0("(\\",sm_sep,".*?)\\",sm_sep), "\\1_", names(df))
+  names(dataset) <- sub(paste0("(\\",sm_seperator,".*?)\\",sm_seperator), "\\1_", names(dataset))
   }
 
-cols_order <- df %>% names()
+cols_order <- dataset %>% names()
 
 
 difference_df <- dplyr::tibble(
@@ -100,27 +101,27 @@ if(nrow(difference_df) > 0){
 }
 
 
-select_multiple <- auto_sm_parent_children(df,sm_sep =sm_sep )
+select_multiple <- auto_sm_parent_children(dataset,sm_seperator =sm_seperator )
 }
 
-if(!is.null(kobo_survey_sheet)){
-  choice_to_join <- kobo_choices_sheet |> dplyr::select(list_name,name)
+if(!is.null(kobo_survey)){
+  choice_to_join <- kobo_choices |> dplyr::select(list_name,name)
 
-  select_multiple <- kobo_survey_sheet|> dplyr::filter(grepl("select_multiple",type)) |> dplyr::select(type,name) |> dplyr::mutate(
+  select_multiple <- kobo_survey|> dplyr::filter(grepl("select_multiple",type)) |> dplyr::select(type,name) |> dplyr::mutate(
     type = stringr::str_replace_all(type,"select_multiple ","")
   ) |> rename(
     list_name = type,
     sm_parent = name  ) |> dplyr::left_join(choice_to_join,multiple = "all",by ="list_name") |> mutate(
-      sm_child = paste0(sm_parent,sm_sep,name)
+      sm_child = paste0(sm_parent,sm_seperator,name)
     ) |> dplyr::select(sm_parent,sm_child)
 
-  missing_column <- select_multiple$sm_child [!select_multiple$sm_child %in% names(df)]
+  missing_column <- select_multiple$sm_child [!select_multiple$sm_child %in% names(dataset)]
 
   if(length(missing_column)>0){
     print(missing_column)
     warning(paste0("Ignoring the above column(s) as they do not exist in the dataset."))
 }
-  select_multiple <- select_multiple |> dplyr::filter(sm_child %in% names(df))
+  select_multiple <- select_multiple |> dplyr::filter(sm_child %in% names(dataset))
 
   }
 
@@ -133,12 +134,12 @@ if(nrow(select_multiple) > 0){
       concat_col <- select_multi_single$sm_parent %>% unique()
       choice_cols <- select_multi_single$sm_child %>% unique()
 
-      df_only_cols <- df %>% dplyr::select(dplyr::all_of(choice_cols),dplyr::all_of(uuid))
+      df_only_cols <- dataset %>% dplyr::select(dplyr::all_of(choice_cols),dplyr::all_of(uuid_column))
 
       pivot_long <-  df_only_cols %>% dplyr::mutate_at(names(df_only_cols),as.character)
 
-      final_df <- pivot_long %>% tidyr::pivot_longer(cols = !uuid,names_to = "cols" ,values_to = "value") %>%
-        filter(value == 1 | value == TRUE | value == "1" | value == "TRUE") %>% dplyr::group_by(!!sym(uuid)) %>%
+      final_df <- pivot_long %>% tidyr::pivot_longer(cols = !dplyr::all_of(uuid_column),names_to = "cols" ,values_to = "value") %>%
+        filter(value == 1 | value == TRUE | value == "1" | value == "TRUE") %>% dplyr::group_by(!!sym(uuid_column)) %>%
         dplyr::summarise(
           !!rlang::sym(concat_col):= paste0(cols,collapse = " ")
         )
@@ -148,19 +149,19 @@ if(nrow(select_multiple) > 0){
       select_multiple_list[[concat_col]] <- final_df
     }
 
-    final_df_for_export<- purrr::reduce(select_multiple_list, dplyr::full_join, by = uuid)
-    concat_col_names_from_fina_export <-  final_df_for_export %>% dplyr::select(-dplyr::all_of(uuid)) %>% names()
+    final_df_for_export<- purrr::reduce(select_multiple_list, dplyr::full_join, by = uuid_column)
+    concat_col_names_from_fina_export <-  final_df_for_export %>% dplyr::select(!dplyr::all_of(uuid_column)) %>% names()
 
-    data_with_fix_concat <- df %>% dplyr::select(-dplyr::all_of(concat_col_names_from_fina_export)) %>%
-      dplyr::left_join(final_df_for_export,by = uuid) ### added by uuid
+    data_with_fix_concat <- dataset %>% dplyr::select(-dplyr::all_of(concat_col_names_from_fina_export)) %>%
+      dplyr::left_join(final_df_for_export,by = uuid_column)
 
-    if(is.null(kobo_survey_sheet)){data_with_fix_concat <- data_with_fix_concat %>% dplyr::select(dplyr::all_of(cols_order))}
-    if(!is.null(kobo_survey_sheet)){data_with_fix_concat <- data_with_fix_concat %>% dplyr::select(dplyr::all_of(initial_order))}
+    if(is.null(kobo_survey)){data_with_fix_concat <- data_with_fix_concat %>% dplyr::select(dplyr::all_of(cols_order))}
+    if(!is.null(kobo_survey)){data_with_fix_concat <- data_with_fix_concat %>% dplyr::select(dplyr::all_of(initial_order))}
 
-    change_log <- create_cleaning_log(raw_data = checked_data,
-                                      raw_data_uuid = uuid,
-                                      clean_data = data_with_fix_concat,
-                                      clean_data_uuid = uuid
+    change_log <- create_cleaning_log(raw_dataset = checked_data,
+                                      raw_dataset_uuid_column = uuid_column,
+                                      clean_dataset = data_with_fix_concat,
+                                      clean_dataset_uuid_column = uuid_column
                                         )
     if("comment" %in% names(change_log)) {
       change_log <- change_log %>%

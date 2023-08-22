@@ -8,9 +8,10 @@
 #' @export
 #'
 #' @examples
-#'   list <- cleaningtools::cleaningtools_raw_data |> check_for_pii() |>
-#'           check_duplicate(uuid_col_name = "X_uuid") |>
-#'           check_for_value(uuid_col_name = "X_uuid")
+#'   list <- cleaningtools::cleaningtools_raw_data |>
+#'           check_pii(uuid_column = "X_uuid") |>
+#'           check_duplicate(uuid_column = "X_uuid") |>
+#'           check_value(uuid_column = "X_uuid")
 #'
 #'  create_combined_log(list_of_log = list)
 #'

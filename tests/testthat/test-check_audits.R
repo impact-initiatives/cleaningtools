@@ -16,7 +16,7 @@ test_that("if 92 audits, 1 dataset of 92 rows, 92 audits in the dataset, returns
     create_audit_list(
       audit_zip_path = testthat::test_path("fixtures/audits/audit_for_tests_92.zip"),
       uuid = "X_uuid",
-      .dataset = df_for_test
+      dataset = df_for_test
     ),
     expected_results_2
   )
@@ -29,7 +29,7 @@ test_that("if 100 audits, 1 dataset of 90 rows, 90 audits in the dataset, return
     results <- create_audit_list(
       audit_zip_path = testthat::test_path("fixtures/audits/audit_for_tests_100.zip"),
       uuid = "X_uuid",
-      .dataset = df_for_test
+      dataset = df_for_test
     ),
     "10 audit files are found but not in the dataset. They won't be read."
   )
@@ -45,7 +45,7 @@ test_that("if 100 audits, 1 dataset of 110 rows, 92 audits in thee dataset, retu
   create_audit_list(
     audit_zip_path = testthat::test_path("fixtures/audits/audit_for_tests_100.zip"),
     uuid = "X_uuid",
-    .dataset = df_for_test
+    dataset = df_for_test
   ) %>%
     expect_warning("10 audit files are found but not in the dataset. They won't be read.") %>%
     expect_warning(
@@ -55,7 +55,7 @@ test_that("if 100 audits, 1 dataset of 110 rows, 92 audits in thee dataset, retu
   results <- create_audit_list(
     audit_zip_path = testthat::test_path("fixtures/audits/audit_for_tests_100.zip"),
     uuid = "X_uuid",
-    .dataset = df_for_test
+    dataset = df_for_test
   ) %>%
     suppressWarnings()
 
@@ -78,9 +78,9 @@ test_that("throw error if uuid in dataset not found", {
   expect_error(
     create_audit_list(
       audit_zip_path = testthat::test_path("fixtures/audits/audit_for_tests_100.zip"),
-      .dataset = df_for_test
+      dataset = df_for_test
     ),
-    "The variable _uuid cannot be identified in the dataset provided."
+    "The variable uuid cannot be identified in the dataset provided."
   )
 })
 
@@ -179,7 +179,7 @@ test_that("test that when uuid variable name is not correct, it gives an error",
   audit_list <- readRDS(testthat::test_path("fixtures/audits/test_create_audit_list_2.RDS"))
   expect_error(add_duration_from_audit(df_for_test,
                                        audit_list = audit_list),
-               "_uuid variable cannot be found in the dataset.")
+               "uuid variable cannot be found in the dataset.")
 })
 
 test_that("test that all audits containts at least event, start, end, node", {
@@ -188,7 +188,7 @@ test_that("test that all audits containts at least event, start, end, node", {
     purrr::map(~dplyr::select(.x, -node))
   expect_error(add_duration_from_audit(df_for_test,
                                        audit_list = audit_list,
-                                       uuid_var = "X_uuid"),
+                                       uuid_column = "X_uuid"),
                "Some columns are missing in the audits, please make sure to have at least event, node, start, end")
 })
 
@@ -219,8 +219,7 @@ test_that("4 outside of boundaries, return 4 flagged", {
     duration_audit_start_end_ms = c(2475353, 375491, 2654267, 311585, 817270,
                                     2789505, 8642007),
     duration_audit_start_end_minutes = c(41, 6, 44, 5, 14, 46, 144)
-  ) %>%
-    dplyr::rename(`_uuid` = uuid)
+  )
   expected_results <- list(
     checked_dataset = testdata,
     duration_log = data.frame(
@@ -239,8 +238,7 @@ test_that("no outside of boundaries, no flagged", {
     duration_audit_start_end_ms = c(2475353, 375491, 2654267, 311585, 817270,
                                     2789505, 8642007),
     duration_audit_start_end_minutes = c(41, 6, 44, 5, 14, 46, 144)
-  ) %>%
-    dplyr::rename(`_uuid` = uuid)
+  )
 
   expected_results <- list(
     checked_dataset = testdata,
@@ -258,7 +256,7 @@ test_that("no outside of boundaries, no flagged", {
                expected_results)
 })
 
-test_that("no outside of boundaries, no flagged - names different than _uuid", {
+test_that("no outside of boundaries, no flagged - names different than uuid", {
   testdata <- data.frame(
     uuid = c(letters[1:7]),
     duration_audit_start_end_ms = c(2475353, 375491, 2654267, 311585, 817270,
@@ -275,14 +273,14 @@ test_that("no outside of boundaries, no flagged - names different than _uuid", {
     )
   )
   expect_equal(check_duration(testdata,
-                              .col_to_check = "duration_audit_start_end_minutes",
-                              uuid_var = "uuid",
+                              column_to_check = "duration_audit_start_end_minutes",
+                              uuid_column = "uuid",
                               lower_bound = 3,
                               higher_bound = 170),
                expected_results)
 })
 
-test_that("4 outside of boundaries, return 4 flagged - names different than _uuid", {
+test_that("4 outside of boundaries, return 4 flagged - names different than uuid", {
   testdata <- data.frame(
     uuid = c(letters[1:7]),
     duration_audit_start_end_ms = c(2475353, 375491, 2654267, 311585, 817270,
@@ -299,8 +297,8 @@ test_that("4 outside of boundaries, return 4 flagged - names different than _uui
     )
   )
   expect_equal(check_duration(testdata,
-                              .col_to_check = "duration_audit_start_end_minutes",
-                              uuid_var = "uuid"),
+                              column_to_check = "duration_audit_start_end_minutes",
+                              uuid_column = "uuid"),
                expected_results)
 })
 
@@ -311,8 +309,7 @@ test_that("Adds to the list if there is already a check.", {
       duration_audit_start_end_ms = c(2475353, 375491, 2654267, 311585, 817270,
                                       2789505, 8642007),
       duration_audit_start_end_minutes = c(41, 6, 44, 5, 14, 46, 144)
-    ) %>%
-      dplyr::rename(`_uuid` = uuid),
+    ),
     outlier_log = data.frame(
       uuid = NULL,
       old_value = NULL,
@@ -337,14 +334,14 @@ test_that("Adds to the list if there is already a check.", {
       )
   )
   expect_equal(check_duration(test_list,
-                              .col_to_check = "duration_audit_start_end_minutes"),
+                              column_to_check = "duration_audit_start_end_minutes"),
                expected_results)
 })
 
 test_that("Check that the list has an object called checked_dataset", {
   test_list <- list(
     dataset = data.frame(
-      `_uuid` = c(letters[1:4], "a", "b", "c"),
+      uuid = c(letters[1:4], "a", "b", "c"),
       col_a = runif(7),
       col_b = runif(7)
     ),
@@ -367,8 +364,7 @@ test_that("If column does not exist, return an error", {
     duration_audit_start_end_ms = c(2475353, 375491, 2654267, 311585, 817270,
                                     2789505, 8642007),
     duration_audit_start_end_minutes = c(41, 6, 44, 5, 14, 46, 144)
-  ) %>%
-    dplyr::rename(`_uuid` = uuid)
+  )
   testthat::expect_error(
     check_duration(testdata, "duration_audit_sum_all_minutes"),
     "Cannot find duration_audit_sum_all_minutes in the names of the dataset"

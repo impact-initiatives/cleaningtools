@@ -1,8 +1,8 @@
 #' Adds the percentage of missing values per row
 #'
-#' @param .dataset A dataset to add the percentage of missing values
-#' @param col_name string variable with the name of the new column to be created, default is percentage_missing
-#' @param kobo_survey KOBO question or survey sheet including at least the type and name.
+#' @param dataset A dataset to add the percentage of missing values
+#' @param column_name string variable with the name of the new column to be created, default is percentage_missing
+#' @param kobo_survey Kobo survey sheet.
 #' @param type_to_include Types (from KOBO) to be included in the columns default are
 #' integer, date, text, select_one and select_multiple.
 #'
@@ -34,8 +34,8 @@
 #' type_to_include = c("integer","select_one","select_multiple"))
 #' data_test %>% add_percentage_missing()
 add_percentage_missing <-
-  function(.dataset,
-           col_name = "percentage_missing",
+  function(dataset,
+           column_name = "percentage_missing",
            kobo_survey = NULL,
            type_to_include = c("integer", "date", "text", "select_one", "select_multiple")) {
     if (!is.null(kobo_survey)) {
@@ -55,29 +55,29 @@ add_percentage_missing <-
 
     }
 
-    if (col_name %in% names(.dataset)) {
-      msg <- glue::glue("There is already a column called ", col_name)
+    if (column_name %in% names(dataset)) {
+      msg <- glue::glue("There is already a column called ", column_name)
       stop(msg)
     }
 
     if (is.null(kobo_survey)) {
-      .dataset <- .dataset %>%
-        dplyr::mutate(!!rlang::sym(col_name) := rowSums(dplyr::across(.cols = dplyr::everything(), .fns = is.na)) / ncol(.))
-      return(.dataset)
+      dataset <- dataset %>%
+        dplyr::mutate(!!rlang::sym(column_name) := rowSums(dplyr::across(.cols = dplyr::everything(), .fns = is.na)) / ncol(.))
+      return(dataset)
     } else {
       lookup_value <- type_to_include %>% stringr::str_c(collapse = "|")
 
       col_to_count <- kobo_survey %>%
         dplyr::filter(stringr::str_detect(type, lookup_value)) %>%
-        dplyr::filter(name %in% names(.dataset)) %>%
+        dplyr::filter(name %in% names(dataset)) %>%
         dplyr::pull(name)
 
-      .dataset <- .dataset %>%
-        dplyr::mutate(!!rlang::sym(col_name) := rowSums(dplyr::across(
+      dataset <- dataset %>%
+        dplyr::mutate(!!rlang::sym(column_name) := rowSums(dplyr::across(
           .cols = dplyr::all_of(col_to_count),
           .fns = is.na
         )) / length(col_to_count))
-      return(.dataset)
+      return(dataset)
     }
   }
 
@@ -87,10 +87,10 @@ add_percentage_missing <-
 #' The function will flag if a survey for its missing values. The missing values column can be created
 #' with add_percentage_missing and the values are flagged with check_outliers.
 #'
-#' @param .dataset a dataset to be check as a dataframe or a list with the
-#' dataframe stored as "checked_dataset"
-#' @param uuid_var string character for the uuid, default is "uuid"
-#' @param .col_to_check string character with the name of the columns to check. Default is
+#' @param dataset a dataset to be check as a dataframe or a list with the
+#' dataframe stored as "checked_dataset".
+#' @param uuid_column uuid column in the dataset. Default is "uuid".
+#' @param column_to_check string character with the name of the columns to check. Default is
 #' "percentage_missing"
 #' @param log_name name of the log of flagged value, default is percentage_missing_log
 #' @param strongness_factor Strongness factor define how strong your outliers will be. The default is 3.
@@ -121,38 +121,38 @@ add_percentage_missing <-
 #' data_example2 %>% check_percentage_missing()
 #'
 #'
-check_percentage_missing <- function(.dataset,
-                                     uuid_var = "uuid",
-                                     .col_to_check = "percentage_missing",
+check_percentage_missing <- function(dataset,
+                                     uuid_column = "uuid",
+                                     column_to_check = "percentage_missing",
                                      strongness_factor = 2 ,
                                      log_name = "percentage_missing_log") {
-  if (is.data.frame(.dataset)) {
-    .dataset <- list(checked_dataset = .dataset)
+  if (is.data.frame(dataset)) {
+    dataset <- list(checked_dataset = dataset)
   }
-  if (!("checked_dataset" %in% names(.dataset))) {
+  if (!("checked_dataset" %in% names(dataset))) {
     stop("Cannot identify the dataset in the list")
   }
 
-  if (!(uuid_var %in% names(.dataset[["checked_dataset"]]))) {
-    msg <- glue::glue("Cannot find ", uuid_var, " in the names of the dataset")
+  if (!(uuid_column %in% names(dataset[["checked_dataset"]]))) {
+    msg <- glue::glue("Cannot find ", uuid_column, " in the names of the dataset")
     stop(msg)
   }
 
-  if (!(.col_to_check %in% names(.dataset[["checked_dataset"]]))) {
-    msg <- glue::glue("Cannot find ", .col_to_check, " in the names of the dataset")
+  if (!(column_to_check %in% names(dataset[["checked_dataset"]]))) {
+    msg <- glue::glue("Cannot find ", column_to_check, " in the names of the dataset")
     stop(msg)
   }
 
-  log <- .dataset[["checked_dataset"]] %>%
-    dplyr::select(dplyr::all_of(c(uuid_var, .col_to_check))) %>%
-    check_outliers(uuid_col_name = uuid_var,strongness_factor = strongness_factor )
+  log <- dataset[["checked_dataset"]] %>%
+    dplyr::select(dplyr::all_of(c(uuid_column, column_to_check))) %>%
+    check_outliers(uuid_column = uuid_column,strongness_factor = strongness_factor )
 
   log[["potential_outliers"]] <- log[["potential_outliers"]] %>%
     dplyr::mutate(across(.cols = dplyr::everything(), .fns = as.character),
                   issue = "Percentages of missing values from this survey is different from others")
 
-  .dataset[[log_name]] <- log[["potential_outliers"]]
+  dataset[[log_name]] <- log[["potential_outliers"]]
 
-  return(.dataset)
+  return(dataset)
 
 }

@@ -1,8 +1,9 @@
 test_that("error and warning check", {
 
-  list <- cleaningtools::cleaningtools_raw_data |> check_for_pii() |>
-    check_duplicate(uuid_col_name = "X_uuid") |>
-    check_for_value(uuid_col_name = "X_uuid")
+  list <- cleaningtools::cleaningtools_raw_data |>
+    check_pii(uuid_column = "X_uuid") |>
+    check_duplicate(uuid_column = "X_uuid") |>
+    check_value(uuid_column = "X_uuid")
 
   ### NULL check
 
@@ -29,9 +30,10 @@ test_that("error and warning check", {
 
 test_that("expect equal", {
 
-  list <- cleaningtools::cleaningtools_raw_data |> check_for_pii() |>
-    check_duplicate(uuid_col_name = "X_uuid") |>
-    check_for_value(uuid_col_name = "X_uuid")
+  list <- cleaningtools::cleaningtools_raw_data |>
+    check_pii(uuid_column = "X_uuid") |>
+    check_duplicate(uuid_column = "X_uuid") |>
+    check_value(uuid_column = "X_uuid")
 
 
   output <- create_combined_log(list_of_log = list)
@@ -76,12 +78,12 @@ testthat::test_that("check binding capability where data type is different", {
 
 check_data <-  cleaningtools::cleaningtools_raw_data %>%
   add_percentage_missing()
-checkss <- cleaningtools::check_for_pii(df = check_data) %>%
-  cleaningtools::check_outliers(uuid_col_name = "X_uuid") %>%
-  check_others(uuid = "X_uuid",
-               var_list = names(cleaningtools::cleaningtools_raw_data |> dplyr::select(ends_with("_other")) |> dplyr::select(-contains(".")))) %>%
-  check_percentage_missing(uuid_var = "X_uuid") %>%
-  check_logical(uuid_var = "X_uuid", check_to_perform = "inc_employment_pension == tot_expenses", description = "income equals to expenses")
+checkss <- cleaningtools::check_pii(dataset = check_data, uuid_column = "X_uuid") %>%
+  cleaningtools::check_outliers(uuid_column = "X_uuid") %>%
+  check_others(uuid_column = "X_uuid",
+               columns_to_check = names(cleaningtools::cleaningtools_raw_data |> dplyr::select(ends_with("_other")) |> dplyr::select(-contains(".")))) %>%
+  check_percentage_missing(uuid_column = "X_uuid") %>%
+  check_logical(uuid_column = "X_uuid", check_to_perform = "inc_employment_pension == tot_expenses", description = "income equals to expenses")
 
 cannot_bind <- create_combined_log(list_of_log = checkss)
 

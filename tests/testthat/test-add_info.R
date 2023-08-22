@@ -1,37 +1,39 @@
 testthat::test_that("error messege check ", {
 
 
-  # list is a dataframe. It must be either list or NULL
+  # list_of_log is a dataframe. It must be either list or NULL
 
-  testthat::expect_error(add_info_to_cleaning_log(list = cleaningtools::cleaningtools_clean_data))
+  testthat::expect_error(add_info_to_cleaning_log(list_of_log = cleaningtools::cleaningtools_clean_data))
 
   #### Element check
 
-  list <- cleaningtools::cleaningtools_raw_data |> check_for_pii() |>
-    check_duplicate(uuid_col_name = "X_uuid") |>
-    check_for_value(uuid_col_name = "X_uuid")
+  list_test <- cleaningtools::cleaningtools_raw_data |>
+    check_pii(uuid_column = "X_uuid") |>
+    check_duplicate(uuid_column = "X_uuid") |>
+    check_value(uuid_column = "X_uuid")
 
   ### element check- dataset
-  testthat::expect_error(add_info_to_cleaning_log(list = list,dataset = "s"))
+  testthat::expect_error(add_info_to_cleaning_log(list_of_log = list_test, dataset = "s"))
 
   ### element check- cleaning_log
-  testthat::expect_error(add_info_to_cleaning_log(list = list,cleaning_log =  "cl"))
+  testthat::expect_error(add_info_to_cleaning_log(list_of_log = list_test,cleaning_log =  "cl"))
 
 
-  ### LIST NULL
+  ### list_of_log NULL
 
 
-  list <- cleaningtools::cleaningtools_raw_data |> check_for_pii() |>
-    check_duplicate(uuid_col_name = "X_uuid") |>
-    check_for_value(uuid_col_name = "X_uuid") |>
+  list_test2 <- cleaningtools::cleaningtools_raw_data |>
+    check_pii(uuid_column = "X_uuid") |>
+    check_duplicate(uuid_column = "X_uuid") |>
+    check_value(uuid_column = "X_uuid") |>
     create_combined_log()
 
-  df <- list$checked_dataset
-  cl <- list$cleaning_log
+  df <- list_test2$checked_dataset
+  cl <- list_test2$cleaning_log
 
 
-  testthat::expect_error(add_info_to_cleaning_log(cleaning_log =  list,dataset = df))
-  testthat::expect_error(add_info_to_cleaning_log(cleaning_log =  cl,dataset = list))
+  testthat::expect_error(add_info_to_cleaning_log(cleaning_log = list_test2,dataset = df))
+  testthat::expect_error(add_info_to_cleaning_log(cleaning_log =  cl,dataset = list_test2))
 
 
 })
@@ -40,10 +42,11 @@ testthat::test_that("error messege check ", {
 
 testthat::test_that("expect equal ", {
   ######## test with list
-  actual <- cleaningtools::cleaningtools_raw_data |> check_for_pii() |>
-    check_duplicate(uuid_col_name = "X_uuid") |>
-    check_for_value(uuid_col_name = "X_uuid") |>
-    create_combined_log() |> add_info_to_cleaning_log()
+  actual <- cleaningtools::cleaningtools_raw_data |>
+    check_pii(uuid_column = "X_uuid") |>
+    check_duplicate(uuid_column = "X_uuid") |>
+    check_value(uuid_column = "X_uuid") |>
+    create_combined_log() |> add_info_to_cleaning_log(dataset_uuid_column = "X_uuid")
 
 
   testthat::expect_equal(length(actual),2)
@@ -71,18 +74,19 @@ testthat::test_that("expect equal ", {
 
   ############### check with dataframe
 
-  list <- cleaningtools::cleaningtools_raw_data |> check_for_pii() |>
-    check_duplicate(uuid_col_name = "X_uuid") |>
-    check_for_value(uuid_col_name = "X_uuid") |>
+  list_test3 <- cleaningtools::cleaningtools_raw_data |>
+    check_pii(uuid_column = "X_uuid") |>
+    check_duplicate(uuid_column = "X_uuid") |>
+    check_value(uuid_column = "X_uuid") |>
     create_combined_log()
 
 
 
 
-  df <- list$checked_dataset
-  cl <- list$cleaning_log
+  df <- list_test3$checked_dataset
+  cl <- list_test3$cleaning_log
 
-  actual <- add_info_to_cleaning_log(dataset = df,cleaning_log = cl )
+  actual <- add_info_to_cleaning_log(dataset = df,cleaning_log = cl, dataset_uuid_column = "X_uuid")
 
   actual <- actual$cleaning_log
   testthat::expect_equal(actual,expected)
@@ -92,7 +96,7 @@ testthat::test_that("expect equal ", {
   raw <- list(df =df,
               cl =cl)
 
-  actual <- add_info_to_cleaning_log(list = raw,cleaning_log = "cl",dataset = "df" )
+  actual <- add_info_to_cleaning_log(list_of_log = raw,cleaning_log = "cl",dataset = "df", dataset_uuid_column = "X_uuid" )
 
   testthat::expect_equal(length(actual),2)
   testthat::expect_equal(names(actual),c("checked_dataset","cleaning_log"))
@@ -117,7 +121,7 @@ testthat::test_that("expect equal ", {
   raw <- list(df =df,
               cl =cl)
 
-  actual <- add_info_to_cleaning_log(list = raw,cleaning_log = "cl",dataset = "df",dataset_primary_key = "id",cleaning_log_primary_key = "id1" )
+  actual <- add_info_to_cleaning_log(list_of_log = raw,cleaning_log = "cl",dataset = "df",dataset_uuid_column = "id",cleaning_log_uuid_column = "id1" )
 
   testthat::expect_equal(length(actual),2)
   testthat::expect_equal(names(actual),c("checked_dataset","cleaning_log"))
@@ -149,11 +153,11 @@ testthat::test_that("expect equal ", {
   raw <- list(df =df,
               cl =cl)
 
-  actual <- add_info_to_cleaning_log(list = raw,
+  actual <- add_info_to_cleaning_log(list_of_log = raw,
                                      cleaning_log = "cl",
                                      dataset = "df",
-                                     dataset_primary_key = c("id","primary_key_2"),
-                                     cleaning_log_primary_key = c("id1","primary_key" ))
+                                     dataset_uuid_column = c("id","primary_key_2"),
+                                     cleaning_log_uuid_column = c("id1","primary_key" ))
 
   actual <- actual$cleaning_log
 

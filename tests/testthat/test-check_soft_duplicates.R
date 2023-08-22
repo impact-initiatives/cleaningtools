@@ -1,20 +1,20 @@
 testthat::test_that("Error checks", {
-  testthat::expect_error(check_soft_duplicates(.dataset = cleaningtools::cleaningtools_sample_frame,
+  testthat::expect_error(check_soft_duplicates(dataset = cleaningtools::cleaningtools_sample_frame,
                                                kobo_survey = cleaningtools::cleaningtools_survey,
-                                               uuid = "X_uuid"))
-  testthat::expect_error(check_soft_duplicates(.dataset = cleaningtools::cleaningtools_raw_data,
+                                               uuid_column = "X_uuid"))
+  testthat::expect_error(check_soft_duplicates(dataset = cleaningtools::cleaningtools_raw_data,
                                                kobo_survey = cleaningtools::cleaningtools_survey,
-                                               uuid = "uuid"))
+                                               uuid_column = "uuid"))
   t
-  testthat::expect_no_error(check_soft_duplicates(.dataset = cleaningtools::cleaningtools_raw_data,
+  testthat::expect_no_error(check_soft_duplicates(dataset = cleaningtools::cleaningtools_raw_data,
                                                   kobo_survey = cleaningtools::cleaningtools_survey,
-                                                  uuid = "X_uuid",idnk_value = "dont_know"))
+                                                  uuid_column = "X_uuid",idnk_value = "dont_know"))
 })
 
 testthat::test_that("Exact equals", {
-  actual_output <- check_soft_duplicates(.dataset = cleaningtools::cleaningtools_raw_data,
+  actual_output <- check_soft_duplicates(dataset = cleaningtools::cleaningtools_raw_data,
                                          kobo_survey = cleaningtools::cleaningtools_survey,
-                                         uuid = "X_uuid",idnk_value = "dont_know")[[2]] %>% head()
+                                         uuid_column = "X_uuid",idnk_value = "dont_know")[[2]] %>% head()
 
   expected_output <- data.frame(X_uuid = c("3370f726-395a-4675-94fe-9e745e0b36e9",
                                          "93095da3-5291-4d16-a19a-41bf13144bfe",
@@ -40,18 +40,18 @@ testthat::test_that("Exact equals", {
   })
 
 testthat::test_that("Check all uuids", {
-  actual_output <- check_soft_duplicates(.dataset = cleaningtools::cleaningtools_raw_data,
+  actual_output <- check_soft_duplicates(dataset = cleaningtools::cleaningtools_raw_data,
                                          kobo_survey = cleaningtools::cleaningtools_survey,
-                                         uuid = "X_uuid", idnk_value = "dont_know")[[2]] %>%
+                                         uuid_column = "X_uuid", idnk_value = "dont_know")[[2]] %>%
     arrange(X_uuid) %>% select(X_uuid) %>% pull
   expected_output <- cleaningtools::cleaningtools_raw_data %>% arrange(X_uuid) %>% select(X_uuid) %>% pull
   testthat::expect_equal(actual_output,expected_output)
 })
 
 testthat::test_that("Returns a list of 2 dataframe", {
-  actual_output <- check_soft_duplicates(.dataset = cleaningtools::cleaningtools_raw_data,
+  actual_output <- check_soft_duplicates(dataset = cleaningtools::cleaningtools_raw_data,
                                          kobo_survey = cleaningtools::cleaningtools_survey,
-                                         uuid = "X_uuid",idnk_value = "dont_know")
+                                         uuid_column = "X_uuid",idnk_value = "dont_know")
   testthat::expect_equal(length(actual_output),2)
   testthat::expect_equal(names(actual_output),c("checked_dataset","soft_duplicate_log"))
 })

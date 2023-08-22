@@ -4,12 +4,12 @@
 \alias{auto_detect_sm_parents}
 \title{Detect select multiple parent columns}
 \usage{
-auto_detect_sm_parents(df, sm_sep = ".")
+auto_detect_sm_parents(dataset, sm_seperator = ".")
 }
 \arguments{
-\item{df}{a survey object or dataframe}
+\item{dataset}{dataset to correct}
 
-\item{sm_sep}{select multiple parent child separator. This is specific for XLSForm data (default = /).
+\item{sm_seperator}{Separator for choice multiple questions. The default is "."
 If using read_csv to read in data the separator will most likely be '/' where as if using read.csv it will likely be '.'}
 }
 \value{

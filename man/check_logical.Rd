@@ -5,29 +5,29 @@
 \title{Check a logical test}
 \usage{
 check_logical(
-  .dataset,
-  uuid_var = "uuid",
-  variables_to_add = NULL,
+  dataset,
+  uuid_column = "uuid",
+  information_to_add = NULL,
   check_id = "logical_xx",
   check_to_perform,
-  variables_to_clean = NULL,
+  columns_to_clean = NULL,
   description
 )
 }
 \arguments{
-\item{.dataset}{a dataset to be check as a dataframe or a list with the
-dataframe stored as "checked_dataset"}
+\item{dataset}{dataset to be check as a dataframe or a list with the dataframe stored as
+"checked_dataset"}
 
-\item{uuid_var}{string variable with the name of uuid column}
+\item{uuid_column}{uuid column in the dataset. Default is "uuid".}
 
-\item{variables_to_add}{string vector optional, if to add some information to the log
+\item{information_to_add}{string vector optional, if to add some information to the log
 (today, vilagge)}
 
 \item{check_id}{name of the check to perform}
 
 \item{check_to_perform}{test to perform as R code (in text format)}
 
-\item{variables_to_clean}{variables to be put in the log. if not provided, it will try to detect
+\item{columns_to_clean}{variables to be put in the log. if not provided, it will try to detect
 variables}
 
 \item{description}{description of the check performed}
@@ -50,18 +50,18 @@ test_data <- data.frame(
 )
 
 check_logical(test_data,
-  uuid_var = "uuid",
+  uuid_column = "uuid",
   check_id = "my_test",
   check_to_perform = "distance_to_market == \"less_30\" & access_to_market == \"no\"",
-  variables_to_clean = "distance_to_market, access_to_market",
+  columns_to_clean = "distance_to_market, access_to_market",
   description = "distance to market less than 30 and no access"
 )
 
 check_logical(test_data,
-  uuid_var = "uuid",
-  variables_to_add = c("today", "location"),
+  uuid_column = "uuid",
+  information_to_add = c("today", "location"),
   check_to_perform = "distance_to_market == \"less_30\" & access_to_market == \"no\"",
-  variables_to_clean = "distance_to_market, access_to_market",
+  columns_to_clean = "distance_to_market, access_to_market",
   description = "distance to market less than 30 and no access"
 )
 }

@@ -5,24 +5,24 @@
 \title{Check several logical test}
 \usage{
 check_logical_with_list(
-  .dataset,
-  uuid_var = "uuid",
-  variables_to_add = NULL,
+  dataset,
+  uuid_column = "uuid",
+  information_to_add = NULL,
   list_of_check,
   check_id_column,
   check_to_perform_column,
-  variables_to_clean_column = NULL,
+  columns_to_clean_column = NULL,
   description_column,
   bind_checks = TRUE
 )
 }
 \arguments{
-\item{.dataset}{dataset to be check as a dataframe or a list with the
-dataframe stored as "checked_dataset"}
+\item{dataset}{dataset to be check as a dataframe or a list with the dataframe stored as
+"checked_dataset"}
 
-\item{uuid_var}{string variable with the name of uuid column}
+\item{uuid_column}{uuid column in the dataset. Default is "uuid".}
 
-\item{variables_to_add}{string vector optional, if to add some information to the log (today, vilagge)}
+\item{information_to_add}{string vector optional, if to add some information to the log (today, vilagge)}
 
 \item{list_of_check}{a dataframe with the checks to perform}
 
@@ -30,7 +30,7 @@ dataframe stored as "checked_dataset"}
 
 \item{check_to_perform_column}{the column name with the checks to perform as R code (in text format)}
 
-\item{variables_to_clean_column}{the column name with the variables to be put in the log.}
+\item{columns_to_clean_column}{the column name with the variables to be put in the log.}
 
 \item{description_column}{the column name with the description}
 
@@ -63,18 +63,18 @@ check_list <- data.frame(
     "number of children under 5 seems high",
     "number of children very high"
   ),
-  variables_to_clean = c(
+  columns_to_clean = c(
     "distance_to_market, access_to_market",
     "number_children_05",
     ""
   )
 )
 check_logical_with_list(test_data,
-  uuid_var = "uuid",
+  uuid_column = "uuid",
   list_of_check = check_list,
   check_id_column = "name",
   check_to_perform_column = "check",
-  variables_to_clean_column = "variables_to_clean",
+  columns_to_clean_column = "columns_to_clean",
   description_column = "description"
 )
 }

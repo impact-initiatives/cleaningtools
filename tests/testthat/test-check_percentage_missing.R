@@ -37,7 +37,7 @@ test_that("test that if the new names exists, it will stop", {
 test_that("test that if the new names exists, it will stop", {
   test_data <- data.frame(uuid = c(1:3),
                           perc_missing = c(.8,.8,.9))  %>% dplyr::rename(`_uuid` = uuid)
-  testthat::expect_error(add_percentage_missing(test_data, col_name = "perc_missing"),
+  testthat::expect_error(add_percentage_missing(test_data, column_name = "perc_missing"),
                "There is already a column called perc_missing")
 
 })
@@ -166,7 +166,7 @@ test_that("check_percentage_missing returns the correct values", {
                                     old_value = "0.99",
                                   ))
 
-  expect_equal(check_percentage_missing(renamed_data_test, uuid_var = "X_uuid", .col_to_check = "blanks"), renamed_expected_output)
+  expect_equal(check_percentage_missing(renamed_data_test, uuid_column = "X_uuid", column_to_check = "blanks"), renamed_expected_output)
 
   renamed_log_expected_output <- list(checked_dataset = data_test,
                                       blanks_log = dplyr::tibble(
@@ -214,12 +214,12 @@ test_that("If column does not exist, return an error", {
   )
 
   testthat::expect_error(
-    check_percentage_missing(data_test, uuid_var = "X_uuid"),
+    check_percentage_missing(data_test, uuid_column = "X_uuid"),
     "Cannot find X_uuid in the names of the dataset"
   )
 
   testthat::expect_error(
-    check_percentage_missing(data_test, .col_to_check = "blanks"),
+    check_percentage_missing(data_test, column_to_check = "blanks"),
     "Cannot find blanks in the names of the dataset"
   )
 })
@@ -252,8 +252,8 @@ test_that("Check Strongness factor", {
   )
 
   # data_with_add <- data_test |> add_percentage_missing()
-  strongnees2_output <- check_percentage_missing(.dataset = data_test,strongness_factor = 2)
-  strongnees1_output <- check_percentage_missing(.dataset = data_test,strongness_factor = 1)
+  strongnees2_output <- check_percentage_missing(dataset = data_test,strongness_factor = 2)
+  strongnees1_output <- check_percentage_missing(dataset = data_test,strongness_factor = 1)
 
   testthat::expect_equal(nrow(strongnees2_output$percentage_missing_log),0)
   testthat::expect_equal(nrow(strongnees1_output$percentage_missing_log),1)

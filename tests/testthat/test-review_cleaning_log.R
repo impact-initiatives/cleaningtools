@@ -34,8 +34,8 @@ testthat::test_that("Checking with test data", {
     expenditure= c(200,300,NA_real_,44444,300)
   )
 
-  cleaing_log_actual <- create_cleaning_log(raw_data = test_raw_data,raw_data_uuid = "uuid",
-                                            clean_data = test_clean_data,clean_data_uuid = "uuid",
+  cleaing_log_actual <- create_cleaning_log(raw_dataset = test_raw_data,raw_dataset_uuid_column = "uuid",
+                                            clean_dataset = test_clean_data,clean_dataset_uuid_column = "uuid",
                                             check_for_deletion_log = T,
                                             check_for_variable_name = F) |> dplyr::select(dplyr::all_of(names(expected_cleaning_log)))
   ### check create cleaning log
@@ -43,27 +43,27 @@ testthat::test_that("Checking with test data", {
 
   ## check review cleaning log
 
-  testthat::expect_equal(nrow(review_cleaning_log(raw_data = test_raw_data,raw_data_uuid = "uuid",
-                                                  clean_data = test_clean_data,clean_data_uuid = "uuid",
-                                                  cleaning_log = test_cleaning_log,cleaning_log_uuid = "uuid",
-                                                  cleaning_log_question_name = "question_name",cleaning_log_new_value = "new_value",
-                                                  cleaning_log_old_value = "old_value",deletion_log = test_deletion_log,deletion_log_uuid = "uuid",
+  testthat::expect_equal(nrow(review_cleaning_log(raw_dataset = test_raw_data,raw_dataset_uuid_column = "uuid",
+                                                  clean_dataset = test_clean_data,clean_dataset_uuid_column = "uuid",
+                                                  cleaning_log = test_cleaning_log,cleaning_log_uuid_column = "uuid",
+                                                  cleaning_log_question_column = "question_name",cleaning_log_new_value_column = "new_value",
+                                                  cleaning_log_old_value_column = "old_value",deletion_log = test_deletion_log,deletion_log_uuid_column = "uuid",
                                                   check_for_deletion_log =T)),0)
 
   test_clean_data_faulty <- test_clean_data
   test_clean_data_faulty[4,"expenditure"] <- 444
   test_clean_data_faulty[1,"gender"] <- "male"
 
-  actual <-  review_cleaning_log(raw_data = test_raw_data,raw_data_uuid = "uuid",
-                                 clean_data = test_clean_data_faulty,
-                                 clean_data_uuid = "uuid",
+  actual <-  review_cleaning_log(raw_dataset = test_raw_data,raw_dataset_uuid_column = "uuid",
+                                 clean_dataset = test_clean_data_faulty,
+                                 clean_dataset_uuid_column = "uuid",
                                  cleaning_log = test_cleaning_log,
-                                 cleaning_log_uuid = "uuid",
-                                 cleaning_log_question_name = "question_name",
-                                 cleaning_log_new_value = "new_value",
-                                 cleaning_log_old_value = "old_value",
+                                 cleaning_log_uuid_column = "uuid",
+                                 cleaning_log_question_column = "question_name",
+                                 cleaning_log_new_value_column = "new_value",
+                                 cleaning_log_old_value_column = "old_value",
                                  deletion_log = test_deletion_log,
-                                 deletion_log_uuid = "uuid",
+                                 deletion_log_uuid_column = "uuid",
                                  check_for_deletion_log =T) |> as.data.frame()
 
 
@@ -117,8 +117,8 @@ testthat::test_that("Checking with test data", {
     expenditure= c(200,300,NA_real_,44444,300)
   )
 
-  cleaing_log_actual <- create_cleaning_log(raw_data = test_raw_data,raw_data_uuid = "X_uuid",
-                                            clean_data = test_clean_data,clean_data_uuid = "uuid",
+  cleaing_log_actual <- create_cleaning_log(raw_dataset = test_raw_data,raw_dataset_uuid_column = "X_uuid",
+                                            clean_dataset = test_clean_data,clean_dataset_uuid_column = "uuid",
                                             check_for_deletion_log = T,
                                             check_for_variable_name = F) |> dplyr::select(dplyr::all_of(names(expected_cleaning_log)))
   ### check create cleaning log
@@ -126,16 +126,16 @@ testthat::test_that("Checking with test data", {
 
   ## check review cleaning log
 
-  testthat::expect_equal(nrow(review_cleaning_log(raw_data = test_raw_data,raw_data_uuid = "X_uuid",
-                                                  clean_data = test_clean_data,clean_data_uuid = "uuid",
+  testthat::expect_equal(nrow(review_cleaning_log(raw_dataset = test_raw_data,raw_dataset_uuid_column = "X_uuid",
+                                                  clean_dataset = test_clean_data,clean_dataset_uuid_column = "uuid",
                                                   cleaning_log = test_cleaning_log,
-                                                  cleaning_log_uuid = "_uuid",
-                                                  cleaning_log_question_name = "question_name",
+                                                  cleaning_log_uuid_column = "_uuid",
+                                                  cleaning_log_question_column = "question_name",
                                                   cleaning_log_change_type_column = "change_type_col",
-                                                  cleaning_log_new_value = "new.value",
-                                                  cleaning_log_old_value = "old_value",
+                                                  cleaning_log_new_value_column = "new.value",
+                                                  cleaning_log_old_value_column = "old_value",
                                                   deletion_log = test_deletion_log,
-                                                  deletion_log_uuid = "_uuid",
+                                                  deletion_log_uuid_column = "_uuid",
                                                   check_for_deletion_log =T)),0)
 
 
@@ -149,17 +149,17 @@ testthat::test_that("Checking with test data", {
     question = question_name
   )
 
-  actual_output <- review_cleaning_log(raw_data = test_raw_data,raw_data_uuid = "X_uuid",
-                                       clean_data = test_clean_data_faulty,
-                                       clean_data_uuid = "uuid",
+  actual_output <- review_cleaning_log(raw_dataset = test_raw_data,raw_dataset_uuid_column = "X_uuid",
+                                       clean_dataset = test_clean_data_faulty,
+                                       clean_dataset_uuid_column = "uuid",
                                        cleaning_log = test_cleaning_log,
-                                       cleaning_log_uuid = "_uuid",
+                                       cleaning_log_uuid_column = "_uuid",
                                        cleaning_log_change_type_column = "change_type_col",
-                                       cleaning_log_question_name = "question",
-                                       cleaning_log_new_value = "new.value",
-                                       cleaning_log_old_value = "old_value",
+                                       cleaning_log_question_column = "question",
+                                       cleaning_log_new_value_column = "new.value",
+                                       cleaning_log_old_value_column = "old_value",
                                        deletion_log = test_deletion_log,
-                                       deletion_log_uuid = "_uuid",
+                                       deletion_log_uuid_column = "_uuid",
                                        check_for_deletion_log =T) |> as.data.frame()
   expected_output <- data.frame(
     uuid = c("uuid1","uuid4"),
@@ -183,22 +183,22 @@ testthat::test_that("Checking with test data", {
 
 testthat::test_that("Checking with real data", {
   expect_no_error(create_cleaning_log(
-    raw_data = cleaningtools::cleaningtools_raw_data, raw_data_uuid = "X_uuid",
-    clean_data = cleaningtools::cleaningtools_clean_data, clean_data_uuid = "X_uuid",
+    raw_dataset = cleaningtools::cleaningtools_raw_data, raw_dataset_uuid_column = "X_uuid",
+    clean_dataset = cleaningtools::cleaningtools_clean_data, clean_dataset_uuid_column = "X_uuid",
     check_for_deletion_log = T, check_for_variable_name = T
   ))
 
   deletaion_log <- cleaningtools::cleaningtools_cleaning_log |> dplyr::filter(change_type == "remove_survey")
   cleaning_log2 <- cleaningtools::cleaningtools_cleaning_log |> dplyr::filter(change_type != "remove_survey")
 
-  expect_no_error(review_cleaning_log(raw_data = cleaningtools::cleaningtools_raw_data,raw_data_uuid = "X_uuid",
-                                      clean_data = cleaningtools::cleaningtools_clean_data,clean_data_uuid = "X_uuid",
-                                      cleaning_log = cleaning_log2,cleaning_log_uuid = "X_uuid",
-                                      cleaning_log_question_name = "questions",
-                                      cleaning_log_new_value =  "new_value",
-                                      cleaning_log_old_value = "old_value",
+  expect_no_error(review_cleaning_log(raw_dataset = cleaningtools::cleaningtools_raw_data,raw_dataset_uuid_column = "X_uuid",
+                                      clean_dataset = cleaningtools::cleaningtools_clean_data,clean_dataset_uuid_column = "X_uuid",
+                                      cleaning_log = cleaning_log2,cleaning_log_uuid_column = "X_uuid",
+                                      cleaning_log_question_column = "questions",
+                                      cleaning_log_new_value_column =  "new_value",
+                                      cleaning_log_old_value_column = "old_value",
                                       deletion_log = deletaion_log,
-                                      deletion_log_uuid = "X_uuid",
+                                      deletion_log_uuid_column = "X_uuid",
                                       check_for_deletion_log =T))
 
 })
@@ -299,18 +299,18 @@ testthat::test_that("create cleaning log with no deletion survey", {
     change_type = c("remove_survey","remove_survey"),
     comment = c("No matching uuid in the cleaned dataset","c"))
 
-  output <- review_cleaning_log(raw_data = test_raw_data,
-                                raw_data_uuid = "uuid",
-                                clean_data = test_raw_data,
-                                clean_data_uuid = "uuid",
+  output <- review_cleaning_log(raw_dataset = test_raw_data,
+                                raw_dataset_uuid_column = "uuid",
+                                clean_dataset = test_raw_data,
+                                clean_dataset_uuid_column = "uuid",
                                 cleaning_log = test_cleaning_log,
-                                cleaning_log_uuid = "uuid",
+                                cleaning_log_uuid_column = "uuid",
                                 cleaning_log_change_type_column = "change_type",
-                                cleaning_log_question_name = "question_name",
-                                cleaning_log_new_value = "new_value",
-                                cleaning_log_old_value = "old_value",
+                                cleaning_log_question_column = "question_name",
+                                cleaning_log_new_value_column = "new_value",
+                                cleaning_log_old_value_column = "old_value",
                                 deletion_log = test_deletion_log,
-                                deletion_log_uuid = "uuid",
+                                deletion_log_uuid_column = "uuid",
                                 check_for_deletion_log =T)
 
   expected <- structure(list(uuid = c("uuid6", "uuid2"),
@@ -346,9 +346,9 @@ testthat::test_that("Test related to deletion and added surveys", {
                               gender = c("male", "male", NA, "male", NA),
                               my_new_var = letters[1:5])
 
-  testthat::expect_no_error(create_cleaning_log(raw_data = me_raw_data,raw_data_uuid = "uuid",
-                                                clean_data = me_clean_data,
-                                                clean_data_uuid = "uuid"))
+  testthat::expect_no_error(create_cleaning_log(raw_dataset = me_raw_data,raw_dataset_uuid_column = "uuid",
+                                                clean_dataset = me_clean_data,
+                                                clean_dataset_uuid_column = "uuid"))
 
 
   ### test added survey
@@ -357,31 +357,31 @@ testthat::test_that("Test related to deletion and added surveys", {
                               gender = c("male", "male", NA, "male", NA,56),
                               my_new_var = letters[1:6])
 
-  testthat::expect_no_error(create_cleaning_log(raw_data = me_raw_data,raw_data_uuid = "uuid",
-                                                clean_data = me_clean_data,
-                                                clean_data_uuid = "uuid"))
+  testthat::expect_no_error(create_cleaning_log(raw_dataset = me_raw_data,raw_dataset_uuid_column = "uuid",
+                                                clean_dataset = me_clean_data,
+                                                clean_dataset_uuid_column = "uuid"))
 
 
   ### [expect no error and no observation] check review cleaning log with added survey
-  cleaning_log_test <- create_cleaning_log(raw_data = me_raw_data,raw_data_uuid = "uuid",
-                                           clean_data = me_clean_data,check_for_variable_name = F,
-                                           clean_data_uuid = "uuid",check_for_deletion_log = T)
+  cleaning_log_test <- create_cleaning_log(raw_dataset = me_raw_data,raw_dataset_uuid_column = "uuid",
+                                           clean_dataset = me_clean_data,check_for_variable_name = F,
+                                           clean_dataset_uuid_column = "uuid",check_for_deletion_log = T)
 
   cl_test <-  cleaning_log_test |> dplyr::filter(change_type != "remove_survey")
   dl_test <-  cleaning_log_test |> dplyr::filter(change_type == "remove_survey")
 
-  testthat::expect_equal(nrow(review_cleaning_log(raw_data = me_raw_data,raw_data_uuid = "uuid",clean_data = me_clean_data,clean_data_uuid = "uuid",
-                                                  cleaning_log = cl_test,cleaning_log_uuid = "uuid",cleaning_log_change_type_column = "change_type",
-                                                  cleaning_log_question_name = "question_name",cleaning_log_new_value = "new_value",
-                                                  cleaning_log_old_value = "old_value",deletion_log = dl_test,deletion_log_uuid = "uuid",
-                                                  cleaning_log_added_survey = "added_survey",
+  testthat::expect_equal(nrow(review_cleaning_log(raw_dataset = me_raw_data,raw_dataset_uuid_column = "uuid",clean_dataset = me_clean_data,clean_dataset_uuid_column = "uuid",
+                                                  cleaning_log = cl_test,cleaning_log_uuid_column = "uuid",cleaning_log_change_type_column = "change_type",
+                                                  cleaning_log_question_column = "question_name",cleaning_log_new_value_column = "new_value",
+                                                  cleaning_log_old_value_column = "old_value",deletion_log = dl_test,deletion_log_uuid_column = "uuid",
+                                                  cleaning_log_added_survey_value = "added_survey",
                                                   check_for_deletion_log = T )),0)
 
-  testthat::expect_no_error(review_cleaning_log(raw_data = me_raw_data,raw_data_uuid = "uuid",clean_data = me_clean_data,clean_data_uuid = "uuid",
-                                                cleaning_log = cl_test,cleaning_log_uuid = "uuid",cleaning_log_change_type_column = "change_type",
-                                                cleaning_log_question_name = "question_name",cleaning_log_new_value = "new_value",
-                                                cleaning_log_old_value = "old_value",deletion_log = dl_test,deletion_log_uuid = "uuid",
-                                                cleaning_log_added_survey = "added_survey",
+  testthat::expect_no_error(review_cleaning_log(raw_dataset = me_raw_data,raw_dataset_uuid_column = "uuid",clean_dataset = me_clean_data,clean_dataset_uuid_column = "uuid",
+                                                cleaning_log = cl_test,cleaning_log_uuid_column = "uuid",cleaning_log_change_type_column = "change_type",
+                                                cleaning_log_question_column = "question_name",cleaning_log_new_value_column = "new_value",
+                                                cleaning_log_old_value_column = "old_value",deletion_log = dl_test,deletion_log_uuid_column = "uuid",
+                                                cleaning_log_added_survey_value = "added_survey",
                                                 check_for_deletion_log = T ))
 
   ### check review cleaning log with added survey [expected - added_survey is missing in the cleaning log]
@@ -396,11 +396,11 @@ testthat::test_that("Test related to deletion and added surveys", {
                              cl.old_value = NA_character_, comment = "Survey missing in the raw data"),
                         row.names = c(NA, -1L), class = "data.frame")
 
-  actual <- review_cleaning_log(raw_data = me_raw_data,raw_data_uuid = "uuid",clean_data = me_clean_data,clean_data_uuid = "uuid",
-                                cleaning_log = cl_test,cleaning_log_uuid = "uuid",cleaning_log_change_type_column = "change_type",
-                                cleaning_log_question_name = "question_name",cleaning_log_new_value = "new_value",
-                                cleaning_log_old_value = "old_value",deletion_log = dl_test,deletion_log_uuid = "uuid",
-                                cleaning_log_added_survey = "added_survey",
+  actual <- review_cleaning_log(raw_dataset = me_raw_data,raw_dataset_uuid_column = "uuid",clean_dataset = me_clean_data,clean_dataset_uuid_column = "uuid",
+                                cleaning_log = cl_test,cleaning_log_uuid_column = "uuid",cleaning_log_change_type_column = "change_type",
+                                cleaning_log_question_column = "question_name",cleaning_log_new_value_column = "new_value",
+                                cleaning_log_old_value_column = "old_value",deletion_log = dl_test,deletion_log_uuid_column = "uuid",
+                                cleaning_log_added_survey_value = "added_survey",
                                 check_for_deletion_log = T )
 
 
@@ -413,8 +413,8 @@ testthat::test_that("Test related to deletion and added surveys", {
                             gender = c("male","male", NA, "male", NA),
                             my_new_var = letters[1:5])
 
-  testthat::expect_equal(nrow(create_cleaning_log(raw_data = me_raw_data,raw_data_uuid = "uuid",check_for_deletion_log = F,
-                                                  clean_data = me_raw_data,clean_data_uuid = "uuid")),0) ### expect nothing. comparing raw data with raw data
+  testthat::expect_equal(nrow(create_cleaning_log(raw_dataset = me_raw_data,raw_dataset_uuid_column = "uuid",check_for_deletion_log = F,
+                                                  clean_dataset = me_raw_data,clean_dataset_uuid_column = "uuid")),0) ### expect nothing. comparing raw data with raw data
 
 
   # check if added survey is missing in the clean data
@@ -422,14 +422,14 @@ testthat::test_that("Test related to deletion and added surveys", {
                              new_value = NA_character_, old_value = NA_character_, comment = "Survey added to the clean dataset."), class = "data.frame", row.names = "...1")
 
   #
-  actual <- review_cleaning_log(raw_data = me_raw_data,raw_data_uuid = "uuid",
-                                clean_data = me_raw_data,clean_data_uuid = "uuid",
-                                cleaning_log = cl_test,cleaning_log_uuid = "uuid",
+  actual <- review_cleaning_log(raw_dataset = me_raw_data,raw_dataset_uuid_column = "uuid",
+                                clean_dataset = me_raw_data,clean_dataset_uuid_column = "uuid",
+                                cleaning_log = cl_test,cleaning_log_uuid_column = "uuid",
                                 cleaning_log_change_type_column = "change_type",
-                                cleaning_log_question_name = "question_name",
-                                cleaning_log_new_value = "new_value",
-                                cleaning_log_old_value = "old_value",
-                                cleaning_log_added_survey = "added_survey",
+                                cleaning_log_question_column = "question_name",
+                                cleaning_log_new_value_column = "new_value",
+                                cleaning_log_old_value_column = "old_value",
+                                cleaning_log_added_survey_value = "added_survey",
                                 check_for_deletion_log = F )
 
   expected <- structure(list(uuid = "6", df.question_name = NA_character_,
@@ -482,17 +482,17 @@ testthat::test_that("Test related to deletion and added surveys", {
     expenditure= c(200,300,NA_real_,44444,300)
   )
 
-  output <- review_cleaning_log(raw_data = test_raw_data,raw_data_uuid = "uuid",
-                                clean_data = test_clean_data,
-                                clean_data_uuid = "uuid",
+  output <- review_cleaning_log(raw_dataset = test_raw_data,raw_dataset_uuid_column = "uuid",
+                                clean_dataset = test_clean_data,
+                                clean_dataset_uuid_column = "uuid",
                                 cleaning_log = test_cleaning_log,
-                                cleaning_log_uuid = "uuid",
+                                cleaning_log_uuid_column = "uuid",
                                 cleaning_log_change_type_column = "change_type",
-                                cleaning_log_question_name = "question_name",
-                                cleaning_log_new_value = "new_value",
-                                cleaning_log_old_value = "old_value",
+                                cleaning_log_question_column = "question_name",
+                                cleaning_log_new_value_column = "new_value",
+                                cleaning_log_old_value_column = "old_value",
                                 deletion_log = test_deletion_log,
-                                deletion_log_uuid = "uuid",
+                                deletion_log_uuid_column = "uuid",
                                 check_for_deletion_log =T)
   testthat::expect_equal(output$comment, "This survey should be deleted from the clean dataset but it was not deleted")
   ################ END::11: deletion: in deleted log, not in clean data ####################
@@ -515,17 +515,17 @@ testthat::test_that("Test related to deletion and added surveys", {
   )
 
 
-  output2 <- review_cleaning_log(raw_data = test_raw_data,raw_data_uuid = "uuid",
-                                 clean_data = test_clean_data,
-                                 clean_data_uuid = "uuid",
+  output2 <- review_cleaning_log(raw_dataset = test_raw_data,raw_dataset_uuid_column = "uuid",
+                                 clean_dataset = test_clean_data,
+                                 clean_dataset_uuid_column = "uuid",
                                  cleaning_log = test_cleaning_log,
-                                 cleaning_log_uuid = "uuid",
+                                 cleaning_log_uuid_column = "uuid",
                                  cleaning_log_change_type_column = "change_type",
-                                 cleaning_log_question_name = "question_name",
-                                 cleaning_log_new_value = "new_value",
-                                 cleaning_log_old_value = "old_value",
+                                 cleaning_log_question_column = "question_name",
+                                 cleaning_log_new_value_column = "new_value",
+                                 cleaning_log_old_value_column = "old_value",
                                  deletion_log = test_deletion_log,
-                                 deletion_log_uuid = "uuid",
+                                 deletion_log_uuid_column = "uuid",
                                  check_for_deletion_log =T)
 
   testthat::expect_equal(output2$comment, "This survey was removed but currently missing in cleaning log")
@@ -580,46 +580,46 @@ testthat::test_that("Test related to deletion and added surveys", {
                         class = c("tbl_df", "tbl", "data.frame"))
 
 
-  output3 <- review_cleaning_log(raw_data = test_raw_data,raw_data_uuid = "uuid",
-                                 clean_data = test_clean_data,
-                                 clean_data_uuid = "uuid",
+  output3 <- review_cleaning_log(raw_dataset = test_raw_data,raw_dataset_uuid_column = "uuid",
+                                 clean_dataset = test_clean_data,
+                                 clean_dataset_uuid_column = "uuid",
                                  cleaning_log = test_cleaning_log,
-                                 cleaning_log_uuid = "uuid",
+                                 cleaning_log_uuid_column = "uuid",
                                  cleaning_log_change_type_column = "change_type",
-                                 cleaning_log_question_name = "question_name",
-                                 cleaning_log_new_value = "new_value",
-                                 cleaning_log_old_value = "old_value",
+                                 cleaning_log_question_column = "question_name",
+                                 cleaning_log_new_value_column = "new_value",
+                                 cleaning_log_old_value_column = "old_value",
                                  deletion_log = test_deletion_log,
-                                 deletion_log_uuid = "uuid",
+                                 deletion_log_uuid_column = "uuid",
                                  check_for_deletion_log =T)
 
   testthat::expect_equal(output3,expected )
 
   ################ END::12: deletion: in deleted log, in clean data ####################
   ## error msg check
-  testthat::expect_error( review_cleaning_log(raw_data = test_raw_data,raw_data_uuid = "uuid",
-                                              clean_data = test_clean_data,
-                                              clean_data_uuid = "uuid",
+  testthat::expect_error( review_cleaning_log(raw_dataset = test_raw_data,raw_dataset_uuid_column = "uuid",
+                                              clean_dataset = test_clean_data,
+                                              clean_dataset_uuid_column = "uuid",
                                               cleaning_log = test_cleaning_log,
-                                              cleaning_log_uuid = "uuid",
+                                              cleaning_log_uuid_column = "uuid",
                                               cleaning_log_change_type_column = "change_type",
-                                              cleaning_log_question_name = "question_name",
-                                              cleaning_log_new_value = "new_value",
-                                              cleaning_log_old_value = "old_value",
-                                              deletion_log_uuid = "uuid",
+                                              cleaning_log_question_column = "question_name",
+                                              cleaning_log_new_value_column = "new_value",
+                                              cleaning_log_old_value_column = "old_value",
+                                              deletion_log_uuid_column = "uuid",
                                               check_for_deletion_log =T),"Please provide deletion log")
 
-  testthat::expect_error( review_cleaning_log(raw_data = test_raw_data,raw_data_uuid = "uuid",
-                                              clean_data = test_clean_data,
-                                              clean_data_uuid = "uuid",
+  testthat::expect_error( review_cleaning_log(raw_dataset = test_raw_data,raw_dataset_uuid_column = "uuid",
+                                              clean_dataset = test_clean_data,
+                                              clean_dataset_uuid_column = "uuid",
                                               cleaning_log = test_cleaning_log,
-                                              cleaning_log_uuid = "uuid",
+                                              cleaning_log_uuid_column = "uuid",
                                               cleaning_log_change_type_column = "change_type",
-                                              cleaning_log_question_name = "question_name",
-                                              cleaning_log_new_value = "new_value",
-                                              cleaning_log_old_value = "old_value",
+                                              cleaning_log_question_column = "question_name",
+                                              cleaning_log_new_value_column = "new_value",
+                                              cleaning_log_old_value_column = "old_value",
                                               deletion_log = test_deletion_log,
-                                              deletion_log_uuid = "X_uuid",
+                                              deletion_log_uuid_column = "X_uuid",
                                               check_for_deletion_log =T),"Deletion log uuid not found")
 
 })
@@ -652,15 +652,15 @@ testthat::test_that("Change not applied", {
     old_value = c("male","44444",NA_character_,300),
     new_value = c("female","444","250",NA_character_)
   )
-  output4 <- review_cleaning_log(raw_data = test_raw_data,raw_data_uuid = "uuid",
-                                 clean_data = test_clean_data,
-                                 clean_data_uuid = "uuid",
+  output4 <- review_cleaning_log(raw_dataset = test_raw_data,raw_dataset_uuid_column = "uuid",
+                                 clean_dataset = test_clean_data,
+                                 clean_dataset_uuid_column = "uuid",
                                  cleaning_log = test_cleaning_log,
-                                 cleaning_log_uuid = "uuid",
+                                 cleaning_log_uuid_column = "uuid",
                                  cleaning_log_change_type_column = "change_type",
-                                 cleaning_log_question_name = "question",
-                                 cleaning_log_new_value = "new_value",
-                                 cleaning_log_old_value = "old_value",
+                                 cleaning_log_question_column = "question",
+                                 cleaning_log_new_value_column = "new_value",
+                                 cleaning_log_old_value_column = "old_value",
                                  check_for_deletion_log = F)
 
   expected <- structure(list(uuid = c("uuid5", "uuid1", "uuid5"),
@@ -710,15 +710,15 @@ testthat::test_that("Change applied", {
   )
 
 
-  testthat::expect_equal(nrow(review_cleaning_log(raw_data = test_raw_data,raw_data_uuid = "uuid",
-                                                  clean_data = test_clean_data,
-                                                  clean_data_uuid = "uuid",
+  testthat::expect_equal(nrow(review_cleaning_log(raw_dataset = test_raw_data,raw_dataset_uuid_column = "uuid",
+                                                  clean_dataset = test_clean_data,
+                                                  clean_dataset_uuid_column = "uuid",
                                                   cleaning_log = test_cleaning_log,
-                                                  cleaning_log_uuid = "uuid",
+                                                  cleaning_log_uuid_column = "uuid",
                                                   cleaning_log_change_type_column = "change_type",
-                                                  cleaning_log_question_name = "question",
-                                                  cleaning_log_new_value = "new_value",
-                                                  cleaning_log_old_value = "old_value",
+                                                  cleaning_log_question_column = "question",
+                                                  cleaning_log_new_value_column = "new_value",
+                                                  cleaning_log_old_value_column = "old_value",
                                                   check_for_deletion_log = F)),0)
 
 })
@@ -757,17 +757,17 @@ testthat::test_that("entry both in deletion log and cleaning log", {
   )
 
 
-  output6 <- review_cleaning_log(raw_data = test_raw_data,raw_data_uuid = "uuid",
-                                 clean_data = test_clean_data,
-                                 clean_data_uuid = "uuid",
+  output6 <- review_cleaning_log(raw_dataset = test_raw_data,raw_dataset_uuid_column = "uuid",
+                                 clean_dataset = test_clean_data,
+                                 clean_dataset_uuid_column = "uuid",
                                  cleaning_log = test_cleaning_log,
-                                 cleaning_log_uuid = "uuid",
+                                 cleaning_log_uuid_column = "uuid",
                                  cleaning_log_change_type_column = "change_type",
-                                 cleaning_log_question_name = "question",
-                                 cleaning_log_new_value = "new_value",
-                                 cleaning_log_old_value = "old_value",
+                                 cleaning_log_question_column = "question",
+                                 cleaning_log_new_value_column = "new_value",
+                                 cleaning_log_old_value_column = "old_value",
                                  deletion_log = test_deletion_log,
-                                 deletion_log_uuid = "uuid",
+                                 deletion_log_uuid_column = "uuid",
                                  check_for_deletion_log = T)
   testthat::expect_equal(output6$comment,"UUID found in deletion log. Please remove the entry.")
 
@@ -801,18 +801,18 @@ testthat::test_that("Test no change", {
                 "Added change response"))
 
 
-  output7 <- review_cleaning_log(raw_data = test_raw_data,raw_data_uuid = "uuid",
-                                 clean_data = test_clean_data,
-                                 clean_data_uuid = "uuid",
+  output7 <- review_cleaning_log(raw_dataset = test_raw_data,raw_dataset_uuid_column = "uuid",
+                                 clean_dataset = test_clean_data,
+                                 clean_dataset_uuid_column = "uuid",
                                  cleaning_log = test_cleaning_log,
-                                 cleaning_log_uuid = "uuid",
-                                 cleanning_log_no_action_value = c("no_action","no_change","do_nothing"),
+                                 cleaning_log_uuid_column = "uuid",
+                                 cleaning_log_no_change_value = c("no_action","no_change","do_nothing"),
                                  cleaning_log_change_type_column = "change_type",
-                                 cleaning_log_question_name = "question",
-                                 cleaning_log_new_value = "new_value",
-                                 cleaning_log_old_value = "old_value",
+                                 cleaning_log_question_column = "question",
+                                 cleaning_log_new_value_column = "new_value",
+                                 cleaning_log_old_value_column = "old_value",
                                  deletion_log = test_deletion_log,
-                                 deletion_log_uuid = "uuid",
+                                 deletion_log_uuid_column = "uuid",
                                  check_for_deletion_log = F)
 
   expected <- structure(list(uuid = c("uuid5", "uuid3", "uuid4"),

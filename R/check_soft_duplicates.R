@@ -1,9 +1,9 @@
 #' Checks for survey similarities - Soft Duplicates
 #'
-#' @param .dataset RawData to be checked as a dataframe or a list with dataframe
+#' @param dataset dataset to be check as a dataframe or a list with the dataframe stored as "checked_dataset"
 #'  stored as "checked_dataset"
-#' @param kobo_survey Kobo Survey Sheet
-#' @param uuid String character for the uuid column. By default "uuid"
+#' @param kobo_survey Kobo survey sheet.
+#' @param uuid_column uuid column in the dataset. Default is "uuid".
 #' @param idnk_value String character for the value of the "I don't know" value
 #' @param sm_seperator Separator for choice multiple questions. The default is "."
 #' @param log_name Name of the log dataframe flagged in the end of the function
@@ -14,9 +14,9 @@
 #' @export
 #'
 #' @examples
-#' soft_duplicates <- check_soft_duplicates(.dataset = cleaningtools_raw_data,
+#' soft_duplicates <- check_soft_duplicates(dataset = cleaningtools_raw_data,
 #'                                          kobo_survey = cleaningtools_survey,
-#'                                          uuid = "X_uuid",
+#'                                          uuid_column = "X_uuid",
 #'                                          idnk_value = "dont_know",
 #'                                          sm_seperator = ".",
 #'                                          log_name = "soft_duplicate_log",
@@ -26,9 +26,9 @@
 #'
 #' soft_per_enum <- group_by_enum_raw_data %>%
 #'   dplyr::group_split() %>%
-#'   purrr::map(~check_soft_duplicates(.dataset = .,
+#'   purrr::map(~check_soft_duplicates(dataset = .,
 #'                                     kobo_survey = cleaningtools_survey,
-#'                                     uuid = "X_uuid",idnk_value = "dont_know",
+#'                                     uuid_column = "X_uuid",idnk_value = "dont_know",
 #'                                     sm_seperator = ".",
 #'                                     log_name = "soft_duplicate_log",
 #'                                     threshold = 7))
@@ -38,29 +38,29 @@
 #'               ~dplyr::mutate(.x, enum = .y)) %>%
 #'   do.call(dplyr::bind_rows,.)
 
-check_soft_duplicates <- function(.dataset,
+check_soft_duplicates <- function(dataset,
                                   kobo_survey,
-                                  uuid="uuid",
+                                  uuid_column="uuid",
                                   idnk_value="idnk",
                                   sm_seperator = ".",
                                   log_name = "soft_duplicate_log",
                                   threshold = 7){
-  if(is.data.frame(.dataset)){
-    .dataset <- list(checked_dataset = .dataset)
+  if(is.data.frame(dataset)){
+    dataset <- list(checked_dataset = dataset)
   }
 
-  if(!"checked_dataset" %in% names(.dataset)) {
+  if(!"checked_dataset" %in% names(dataset)) {
     stop("Cannot identify the dataset in the list.")
   }
 
-  if(!uuid %in% names(.dataset[["checked_dataset"]])){
-    msg <- glue::glue("Cannot find ", uuid, " in the names of the dataset")
+  if(!uuid_column %in% names(dataset[["checked_dataset"]])){
+    msg <- glue::glue("Cannot find ", uuid_column, " in the names of the dataset")
     stop(msg)
   }
 
-  df <- .dataset$checked_dataset
+  df <- dataset$checked_dataset
   # 1) store UUIDs
-  uuids <- df[[uuid]]
+  uuids <- df[[uuid_column]]
 
   # 2) convert all columns to character and tolower
   df <- dplyr::mutate_all(df, as.character)
@@ -102,15 +102,15 @@ check_soft_duplicates <- function(.dataset,
   }))
 
   # 7) add relevant columns
-  outdata <- .dataset$checked_dataset[,uuid]
+  outdata <- dataset$checked_dataset[,uuid_column]
   outdata[["num_cols_not_NA"]] <- rowSums(df!="NA")
   outdata[["total_columns_compared"]] <- ncol(df)
   outdata[[paste0("num_cols_", idnk_value)]] <- rowSums(df==idnk_value)
   outdata[["id_most_similar_survey"]] <- uuids[as.numeric(names(r))]
   outdata[["number_different_columns"]] <- as.numeric(r)
   outdata[["issue"]][outdata[["number_different_columns"]] <= threshold] <- glue::glue("Less than ",threshold," differents options")
-  outdata <- outdata %>% dplyr::arrange(number_different_columns, !!rlang::sym(uuid))
-  .dataset[[log_name]] <- as.data.frame(outdata)
-  return(.dataset)
+  outdata <- outdata %>% dplyr::arrange(number_different_columns, !!rlang::sym(uuid_column))
+  dataset[[log_name]] <- as.data.frame(outdata)
+  return(dataset)
 }
 

@@ -5,32 +5,32 @@
 \title{check cleaning log}
 \usage{
 check_cleaning_log(
-  df,
-  df_uuid,
-  cl,
-  cl_change_type_col,
-  values_for_change_response = "change_response",
-  cl_change_col,
-  cl_uuid,
-  cl_new_val
+  raw_dataset,
+  raw_data_uuid_column = "uuid",
+  cleaning_log,
+  cleaning_log_uuid_column = "uuid",
+  cleaning_log_question_column,
+  cleaning_log_new_value_column,
+  cleaning_log_change_type_column,
+  change_response_value = "change_response"
 )
 }
 \arguments{
-\item{df}{raw data (data.frame)}
+\item{raw_dataset}{Raw dataset}
 
-\item{df_uuid}{column in raw data with uuid}
+\item{raw_data_uuid_column}{uuid column in the raw dataset. Default is "uuid".}
 
-\item{cl}{cleaning log (data.frame)}
+\item{cleaning_log}{cleaning log (data.frame)}
 
-\item{cl_change_type_col}{column in cleaning log which specifies change type to be made}
+\item{cleaning_log_uuid_column}{uuid column in the cleaning log. Default is "uuid".}
 
-\item{values_for_change_response}{values in change type column which should be changed to a new value.}
+\item{cleaning_log_question_column}{column in cleaning log which specifies data set column to change}
 
-\item{cl_change_col}{column in cleaning log which specifies data set column to change}
+\item{cleaning_log_new_value_column}{cleaning log column specifying the new correct value}
 
-\item{cl_uuid}{uuid in cleaning log}
+\item{cleaning_log_change_type_column}{column in cleaning log which specifies change type to be made}
 
-\item{cl_new_val}{cleaning log column specifying the new correct value}
+\item{change_response_value}{values in change type column which should be changed to a new value.}
 }
 \value{
 cleaning log with only problematic entries and note specifying problem

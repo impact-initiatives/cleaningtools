@@ -1,7 +1,7 @@
 test_that("recreate other columns", {
 
 
-####### sm_sep = "." single "."
+####### sm_seperator = "." single "."
 
 pre_clean_test <- dplyr::tibble(
     uuid = paste0("uuid_",1:6),
@@ -32,13 +32,13 @@ pre_clean_test <- dplyr::tibble(
     reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_))
 
   ### apply function
-  testthat::expect_no_warning(recreate_parent_column(df = pre_clean_test,uuid = "uuid",sm_sep = "."))
-  actual_result <- recreate_parent_column(df = pre_clean_test,uuid = "uuid",sm_sep = ".")
+  testthat::expect_no_warning(recreate_parent_column(dataset = pre_clean_test,uuid_column = "uuid",sm_seperator = "."))
+  actual_result <- recreate_parent_column(dataset = pre_clean_test,uuid_column = "uuid",sm_seperator = ".")
 
   testthat::expect_equal(actual_result$data_with_fix_concat,expected_test)
 
 
-  ####### sm_sep = "." multiple "."
+  ####### sm_seperator = "." multiple "."
 
 
   pre_clean_test <- dplyr::tibble(
@@ -67,13 +67,14 @@ pre_clean_test <- dplyr::tibble(
     reason.zy = c(0,1,1,1,0,0),
     reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_))
 
-  actual_result <- recreate_parent_column(df = pre_clean_test,uuid = "uuid",sm_sep = ".")
+  actual_result <- recreate_parent_column(dataset = pre_clean_test,uuid_column = "uuid",sm_seperator = ".") %>%
+    suppressWarnings()
 
   testthat::expect_equal(actual_result$data_with_fix_concat,expected_test)
-  testthat::expect_warning(recreate_parent_column(df = pre_clean_test,uuid = "uuid",sm_sep = "."))
+  testthat::expect_warning(recreate_parent_column(dataset = pre_clean_test,uuid_column = "uuid",sm_seperator = "."))
 
 
-  ####### check sm_sep = "/" mix with "."
+  ####### check sm_seperator = "/" mix with "."
 
 
   pre_clean_test <- dplyr::tibble(
@@ -103,13 +104,13 @@ pre_clean_test <- dplyr::tibble(
     `reason/zy` = c(0,1,1,1,0,0),
     reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_))
 
-  actual_result <- recreate_parent_column(df = pre_clean_test,uuid = "uuid",sm_sep = "/")
+  actual_result <- recreate_parent_column(dataset = pre_clean_test,uuid_column = "uuid",sm_seperator = "/")
 
   testthat::expect_equal(actual_result$data_with_fix_concat,expected_test)
 
 
 
-  ####### sm_sep = "/"with multiple "/"
+  ####### sm_seperator = "/"with multiple "/"
 
 
   pre_clean_test <- dplyr::tibble(
@@ -139,8 +140,9 @@ pre_clean_test <- dplyr::tibble(
     `reason/z_y` = c(0,1,1,1,0,0),
     reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_))
 
-  testthat::expect_warning(recreate_parent_column(df = pre_clean_test,uuid = "uuid",sm_sep = "/"))
-  actual_result <- recreate_parent_column(df = pre_clean_test,uuid = "uuid",sm_sep = "/")
+  testthat::expect_warning(recreate_parent_column(dataset = pre_clean_test,uuid_column = "uuid",sm_seperator = "/"))
+  actual_result <- recreate_parent_column(dataset = pre_clean_test,uuid_column = "uuid",sm_seperator = "/") %>%
+    suppressWarnings()
 
   testthat::expect_equal(actual_result$data_with_fix_concat,expected_test)
 
@@ -183,18 +185,18 @@ pre_clean_test <- dplyr::tibble(
   )
 
 
-  actual_result <- recreate_parent_column(df = pre_clean_test,uuid = "uuid",sm_sep = "/",
-                                          kobo_survey_sheet = survey_sheet,
-                                          kobo_choices_sheet = choice_sheet)
+  actual_result <- recreate_parent_column(dataset = pre_clean_test,uuid_column = "uuid",sm_seperator = "/",
+                                          kobo_survey = survey_sheet,
+                                          kobo_choices = choice_sheet)
 
   testthat::expect_equal(expected_result,actual_result$data_with_fix_concat)
 
   ### check error message
   choice_sheet <- dplyr::tibble(list_name =c("xxx","xxx","xxx","xxx"),
                                 name = c("x/x","y.y","xz","x_y")) ## checking missing column
-  testthat::expect_warning(recreate_parent_column(df = pre_clean_test,uuid = "uuid",sm_sep = "/",
-                                      kobo_survey_sheet = survey_sheet,
-                                      kobo_choices_sheet = choice_sheet))
+  testthat::expect_warning(recreate_parent_column(dataset = pre_clean_test,uuid_column = "uuid",sm_seperator = "/",
+                                      kobo_survey = survey_sheet,
+                                      kobo_choices = choice_sheet))
 
 
   ### check with several changes in one line
@@ -224,7 +226,7 @@ pre_clean_test <- dplyr::tibble(
     reason.zy = c(0,1,1,1,1,0),
     reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_))
 
-  actual_output <- recreate_parent_column(df = pre_clean_test,uuid = "uuid",sm_sep = ".")
+  actual_output <- recreate_parent_column(dataset = pre_clean_test,uuid_column = "uuid",sm_seperator = ".")
   expect_equal(expected_test, actual_output$data_with_fix_concat)
 
   ### check with adding one option (line3) and swapping options (line 6)
@@ -254,13 +256,13 @@ pre_clean_test <- dplyr::tibble(
     reason.zy = c(0,1,1,1,1,1),
     reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_))
 
-  actual_output <- recreate_parent_column(df = pre_clean_test,uuid = "uuid",sm_sep = ".")
+  actual_output <- recreate_parent_column(dataset = pre_clean_test,uuid_column = "uuid",sm_seperator = ".")
   expect_equal(expected_test, actual_output$data_with_fix_concat)
 })
 
 test_that("auto_detect_sm_parents detects correclty", {
 
-  ####### sm_sep = "." single "."
+  ####### sm_seperator = "." single "."
   pre_clean_test <- dplyr::tibble(
     uuid = paste0("uuid_",1:6),
     gender = rep(c("male","female"),3),
@@ -275,9 +277,9 @@ test_that("auto_detect_sm_parents detects correclty", {
 
   )
 
-  expect_equal(auto_detect_sm_parents(df = pre_clean_test), "reason")
+  expect_equal(auto_detect_sm_parents(dataset = pre_clean_test), "reason")
 
-  ####### sm_sep = "." multiple "."
+  ####### sm_seperator = "." multiple "."
   pre_clean_test <- dplyr::tibble(
     uuid = paste0("uuid_",1:6),
     gender = rep(c("male","female"),3),
@@ -292,9 +294,9 @@ test_that("auto_detect_sm_parents detects correclty", {
 
   )
 
-  expect_equal(auto_detect_sm_parents(df = pre_clean_test), "reason")
+  expect_equal(auto_detect_sm_parents(dataset = pre_clean_test), "reason")
 
-  ####### check sm_sep = "/" mix with "."
+  ####### check sm_seperator = "/" mix with "."
   pre_clean_test <- dplyr::tibble(
     uuid = paste0("uuid_",1:6),
     gender = rep(c("male","female"),3),
@@ -309,9 +311,9 @@ test_that("auto_detect_sm_parents detects correclty", {
 
   )
 
-  expect_equal(auto_detect_sm_parents(df = pre_clean_test, sm_sep = "/"), "reason")
+  expect_equal(auto_detect_sm_parents(dataset = pre_clean_test, sm_seperator = "/"), "reason")
 
-  ####### sm_sep = "/"with multiple "/"
+  ####### sm_seperator = "/"with multiple "/"
   pre_clean_test <- dplyr::tibble(
     uuid = paste0("uuid_",1:6),
     gender = rep(c("male","female"),3),
@@ -326,12 +328,12 @@ test_that("auto_detect_sm_parents detects correclty", {
 
   )
 
-  expect_equal(auto_detect_sm_parents(df = pre_clean_test, sm_sep = "/"), "reason")
+  expect_equal(auto_detect_sm_parents(dataset = pre_clean_test, sm_seperator = "/"), "reason")
 })
 
 test_that("auto_sm_parent_children detects correclty", {
 
-  ####### sm_sep = "." single "."
+  ####### sm_seperator = "." single "."
   pre_clean_test <- dplyr::tibble(
     uuid = paste0("uuid_",1:6),
     gender = rep(c("male","female"),3),
@@ -349,9 +351,9 @@ test_that("auto_sm_parent_children detects correclty", {
   expected_results <- data.frame(sm_parent = rep("reason", 4),
                                  sm_child = c("reason.xx", "reason.yy", "reason.xz", "reason.zy"))
 
-  expect_equal(auto_sm_parent_children(df = pre_clean_test), expected_results, ignore_attr = TRUE)
+  expect_equal(auto_sm_parent_children(dataset = pre_clean_test), expected_results, ignore_attr = TRUE)
 
-  ####### sm_sep = "." multiple "."
+  ####### sm_seperator = "." multiple "."
   pre_clean_test <- dplyr::tibble(
     uuid = paste0("uuid_",1:6),
     gender = rep(c("male","female"),3),
@@ -369,9 +371,9 @@ test_that("auto_sm_parent_children detects correclty", {
   expected_results <- data.frame(sm_parent = c("reason.x.x", "reason", "reason.x", "reason"),
                                  sm_child = c("reason.x.x.", "reason.yy", "reason.x.z", "reason.zy"))
 
-  expect_equal(auto_sm_parent_children(df = pre_clean_test), expected_results, ignore_attr = TRUE)
+  expect_equal(auto_sm_parent_children(dataset = pre_clean_test), expected_results, ignore_attr = TRUE)
 
-  ####### check sm_sep = "/" mix with "."
+  ####### check sm_seperator = "/" mix with "."
   pre_clean_test <- dplyr::tibble(
     uuid = paste0("uuid_",1:6),
     gender = rep(c("male","female"),3),
@@ -389,9 +391,9 @@ test_that("auto_sm_parent_children detects correclty", {
   expected_results <- data.frame(sm_parent = rep("reason", 4),
                                  sm_child = c("reason/x.x.", "reason/yy", "reason/x.z", "reason/zy"))
 
-  expect_equal(auto_sm_parent_children(df = pre_clean_test, sm_sep = "/"), expected_results, ignore_attr = TRUE)
+  expect_equal(auto_sm_parent_children(dataset = pre_clean_test, sm_seperator = "/"), expected_results, ignore_attr = TRUE)
 
-  ####### sm_sep = "/"with multiple "/"
+  ####### sm_seperator = "/"with multiple "/"
   pre_clean_test <- dplyr::tibble(
     uuid = paste0("uuid_",1:6),
     gender = rep(c("male","female"),3),
@@ -409,7 +411,7 @@ test_that("auto_sm_parent_children detects correclty", {
   expected_results <- data.frame(sm_parent = c("reason/x.x", "reason", "reason", "reason/z"),
                                  sm_child = c("reason/x.x/", "reason/yy", "reason/x.z", "reason/z/y"))
 
-  expect_equal(auto_sm_parent_children(df = pre_clean_test, sm_sep = "/"), expected_results, ignore_attr = TRUE)
+  expect_equal(auto_sm_parent_children(dataset = pre_clean_test, sm_seperator = "/"), expected_results, ignore_attr = TRUE)
 })
 
 
@@ -431,7 +433,7 @@ test_that("recreate other columns/with no change", {
     reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_))
 
 
-  actual_result <- recreate_parent_column(df = test_data,uuid = "uuid",sm_sep = "/")
+  actual_result <- recreate_parent_column(dataset = test_data,uuid_column = "uuid",sm_seperator = "/")
 
   expected <- structure(list(), class = c("tbl_df", "tbl", "data.frame"), row.names = integer(0), names = character(0))
 
@@ -458,7 +460,7 @@ test_that("recreate other columns/with no choice multiple", {
     reason_zy = c(NA_character_,"A","B","C",NA_character_,NA_character_))
 
 
-  actual_result <- recreate_parent_column(df = test_data,uuid = "uuid",sm_sep = "/")
+  actual_result <- recreate_parent_column(dataset = test_data,uuid_column = "uuid",sm_seperator = "/")
 
   expected <- structure(list(), class = c("tbl_df", "tbl", "data.frame"), row.names = integer(0), names = character(0))
 

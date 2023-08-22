@@ -6,7 +6,7 @@ df <- data.frame(
     age = c(sample(18:80,replace = T,size = 96),99,99,98,88),
     gender = c("99",sample(c("male","female"),replace = T,size = 95),"98","98","88","888"))
 
-output <- check_for_value(df = df,uuid_col_name = "X_uuid",element_name = "checked_dataset",values_to_look = c(99,98,88,888))
+output <- check_value(dataset = df,uuid_column = "X_uuid",element_name = "checked_dataset",values_to_look = c(99,98,88,888))
 
 expected_output <- data.frame(
   uuid = c("uuid_1", "uuid_97", "uuid_97", "uuid_98", "uuid_98", "uuid_99",
@@ -24,7 +24,7 @@ df2 <- data.frame(
   age = c(sample(18:80,replace = T,size = 100)),
   gender = c(sample(c("male","female"),replace = T,size = 100)))
 
-output2 <- check_for_value(df = df2,uuid_col_name = "X_uuid",element_name = "checked_dataset",values_to_look = c(99,98,88,888))
+output2 <- check_value(dataset = df2,uuid_column = "X_uuid",element_name = "checked_dataset",values_to_look = c(99,98,88,888))
 
 expect_equal(nrow(as.data.frame(output2$flaged_value)),0)
 
