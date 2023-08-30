@@ -40,10 +40,10 @@ Creates formatted workbook with openxlsx
 }
 \examples{
 list <- cleaningtools::cleaningtools_raw_data |>
- check_pii(uuid_column = "X_uuid") |>
- check_duplicate(uuid_column = "X_uuid") |>
- check_value(uuid_column = "X_uuid")
+  check_pii(uuid_column = "X_uuid") |>
+  check_duplicate(uuid_column = "X_uuid") |>
+  check_value(uuid_column = "X_uuid")
 
 create_combined_log(list_of_log = list) |>
- create_formated_wb()
+  create_formated_wb()
 }

@@ -49,10 +49,10 @@ Creates formatted excel for cleaning log
 }
 \examples{
 list <- cleaningtools::cleaningtools_raw_data |>
- check_pii(uuid_column = "X_uuid") |>
- check_duplicate(uuid_column = "X_uuid") |>
- check_value(uuid_column = "X_uuid")
+  check_pii(uuid_column = "X_uuid") |>
+  check_duplicate(uuid_column = "X_uuid") |>
+  check_value(uuid_column = "X_uuid")
 
 create_combined_log(list_of_log = list) |>
- create_xlsx_cleaning_log()
+  create_xlsx_cleaning_log()
 }

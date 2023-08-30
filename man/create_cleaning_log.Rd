@@ -38,8 +38,9 @@ Generates cleaning log
 \examples{
 \dontrun{
 create_cleaning_log(
-raw_dataset = cleaningtools::cleaningtools_raw_data, raw_dataset_uuid_column = "X_uuid",
-clean_dataset = cleaningtools::cleaningtools_clean_data, clean_dataset_uuid_column = "X_uuid",
-check_for_deletion_log = TRUE, check_for_variable_name = TRUE
-)}
+  raw_dataset = cleaningtools::cleaningtools_raw_data, raw_dataset_uuid_column = "X_uuid",
+  clean_dataset = cleaningtools::cleaningtools_clean_data, clean_dataset_uuid_column = "X_uuid",
+  check_for_deletion_log = TRUE, check_for_variable_name = TRUE
+)
+}
 }

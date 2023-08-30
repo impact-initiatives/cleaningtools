@@ -18,11 +18,17 @@ Duration is the difference between the sum of all start and the sum of all end.
 It ignores all node that are empty such as form_start, end screen, form save, etc.
 }
 \examples{
-some_audit <- data.frame(event = c("form start", rep("question", 5)),
-                         node = c("", paste0("/xx/question", 1:5)),
-                         start = c(1661415887295,1661415887301,1661415890819,
-                         1661415892297,1661415893529,1661415894720),
-                         end = c(NA, 1661415890790, 1661415892273,
-                         1661415893506, 1661415894703, 1661415896452))
+some_audit <- data.frame(
+  event = c("form start", rep("question", 5)),
+  node = c("", paste0("/xx/question", 1:5)),
+  start = c(
+    1661415887295, 1661415887301, 1661415890819,
+    1661415892297, 1661415893529, 1661415894720
+  ),
+  end = c(
+    NA, 1661415890790, 1661415892273,
+    1661415893506, 1661415894703, 1661415896452
+  )
+)
 create_duration_from_audit_sum_all(some_audit)
 }

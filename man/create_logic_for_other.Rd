@@ -29,9 +29,11 @@ combination of review_others
 Create logical checks for "other" values.
 }
 \examples{
-create_logic_for_other(kobo_survey = cleaningtools::cleaningtools_survey,
-                       sm_seperator = ".",
-                       dataset = cleaningtools::cleaningtools_clean_data,
-                       compare_with_dataset = TRUE)
+create_logic_for_other(
+  kobo_survey = cleaningtools::cleaningtools_survey,
+  sm_seperator = ".",
+  dataset = cleaningtools::cleaningtools_clean_data,
+  compare_with_dataset = TRUE
+)
 
 }

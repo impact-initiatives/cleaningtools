@@ -49,32 +49,36 @@ implement cleaning log on raw data set.
 }
 \examples{
 cleaning_log_test <- data.frame(
-uuid = paste0("uuid",1:4),
-question= c("age","gender","pop_group","strata"),
-change_type = c("blank_response","no_change","Delete","change_res"),
-new_value = c(NA_character_,NA_character_,NA_character_,"st-a")
+  uuid = paste0("uuid", 1:4),
+  question = c("age", "gender", "pop_group", "strata"),
+  change_type = c("blank_response", "no_change", "Delete", "change_res"),
+  new_value = c(NA_character_, NA_character_, NA_character_, "st-a")
 )
 test_data <- data.frame(
-uuid =  paste0("uuid",1:4),
-age = c(180,23,45,67),
-gender = c("male","female","male","female"),
-pop_group = c("idp","refugee","host","idp"),
-strata = c("a","b","c","d")
+  uuid = paste0("uuid", 1:4),
+  age = c(180, 23, 45, 67),
+  gender = c("male", "female", "male", "female"),
+  pop_group = c("idp", "refugee", "host", "idp"),
+  strata = c("a", "b", "c", "d")
 )
 
 
-check_cleaning_log(raw_dataset = test_data,raw_data_uuid_column = "uuid",cleaning_log =cleaning_log_test,
-                cleaning_log_change_type_column = "change_type",
-                change_response_value =  "change_res",
-                cleaning_log_question_column = "question",cleaning_log_uuid_column = "uuid",cleaning_log_new_value_column = "new_value")
+check_cleaning_log(
+  raw_dataset = test_data, raw_data_uuid_column = "uuid", cleaning_log = cleaning_log_test,
+  cleaning_log_change_type_column = "change_type",
+  change_response_value = "change_res",
+  cleaning_log_question_column = "question", cleaning_log_uuid_column = "uuid", cleaning_log_new_value_column = "new_value"
+)
 
-create_clean_data(raw_dataset = test_data,raw_data_uuid_column = "uuid",cleaning_log = cleaning_log_test,
-               cleaning_log_change_type_column =  "change_type",
-               change_response_value = "change_res",
-               NA_response_value = "blank_response",
-               no_change_value = "no_change",
-               remove_survey_value = "Delete",
-               cleaning_log_question_column =  "question",
-               cleaning_log_uuid_column = "uuid",
-               cleaning_log_new_value_column = "new_value" )
+create_clean_data(
+  raw_dataset = test_data, raw_data_uuid_column = "uuid", cleaning_log = cleaning_log_test,
+  cleaning_log_change_type_column = "change_type",
+  change_response_value = "change_res",
+  NA_response_value = "blank_response",
+  no_change_value = "no_change",
+  remove_survey_value = "Delete",
+  cleaning_log_question_column = "question",
+  cleaning_log_uuid_column = "uuid",
+  cleaning_log_new_value_column = "new_value"
+)
 }

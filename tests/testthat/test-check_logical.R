@@ -10,7 +10,7 @@ test_that("Works with one test", {
 
   expected_results <- list(
     checked_dataset = test_data %>%
-      mutate(logical_xx = c(rep(FALSE, 4), TRUE, rep(FALSE, 5))),
+      dplyr::mutate(logical_xx = c(rep(FALSE, 4), TRUE, rep(FALSE, 5))),
     logical_xx = dplyr::tibble(
       uuid = rep("5", 2),
       question = c("distance_to_market", "access_to_market"),
@@ -18,7 +18,7 @@ test_that("Works with one test", {
       issue = rep("distance to market less than 30 and no access", 2),
       check_id = rep("logical_xx", 2)
     ) %>%
-      mutate(check_binding = paste(check_id, "~/~", uuid))
+      dplyr::mutate(check_binding = paste(check_id, "~/~", uuid))
   )
 
   expect_equal(
@@ -34,7 +34,7 @@ test_that("Works with one test", {
   # with extra columns
   expected_results2 <- list(
     checked_dataset = test_data %>%
-      mutate(logical_xx = c(rep(FALSE, 4), TRUE, rep(FALSE, 5))),
+      dplyr::mutate(logical_xx = c(rep(FALSE, 4), TRUE, rep(FALSE, 5))),
     logical_xx = dplyr::tibble(
       uuid = rep("5", 2),
       today = rep("2023-01-01", 2),
@@ -44,7 +44,7 @@ test_that("Works with one test", {
       issue = rep("distance to market less than 30 and no access", 2),
       check_id = rep("logical_xx", 2)
     ) %>%
-      mutate(check_binding = paste(check_id, "~/~", uuid))
+      dplyr::mutate(check_binding = paste(check_id, "~/~", uuid))
   )
 
   expect_equal(
@@ -94,7 +94,7 @@ test_that("Works with list of tests", {
     issue = rep("distance to market less than 30 and no access", 2),
     check_id = rep("logical_xx", 2)
   ) %>%
-    mutate(check_binding = paste(check_id, "~/~", uuid))
+    dplyr::mutate(check_binding = paste(check_id, "~/~", uuid))
 
 
   logical_yy <- dplyr::tibble(
@@ -104,11 +104,11 @@ test_that("Works with list of tests", {
     issue = rep("number of children under 5 seems high", 2),
     check_id = rep("logical_yy", 2)
   ) %>%
-    mutate(check_binding = paste(check_id, "~/~", uuid))
+    dplyr::mutate(check_binding = paste(check_id, "~/~", uuid))
 
   unbinded_expected_results <- list(
     checked_dataset = test_data %>%
-      mutate(
+      dplyr::mutate(
         logical_xx = c(rep(FALSE, 4), TRUE, rep(FALSE, 5)),
         logical_yy = c(rep(FALSE, 8), rep(TRUE, 2))
       ),
@@ -132,7 +132,7 @@ test_that("Works with list of tests", {
   # binded
   binded_expected_results <- list(
     checked_dataset = test_data %>%
-      mutate(
+      dplyr::mutate(
         logical_xx = c(rep(FALSE, 4), TRUE, rep(FALSE, 5)),
         logical_yy = c(rep(FALSE, 8), rep(TRUE, 2))
       ),
@@ -157,7 +157,7 @@ test_that("Works with list of tests", {
   # with location
   binded_expected_results2 <- list(
     checked_dataset = test_data %>%
-      mutate(
+      dplyr::mutate(
         logical_xx = c(rep(FALSE, 4), TRUE, rep(FALSE, 5)),
         logical_yy = c(rep(FALSE, 8), rep(TRUE, 2))
       ),
@@ -224,7 +224,7 @@ test_that("Inputs as list returns correct results", {
 
   logical_xx <- list(
     checked_dataset = test_data %>%
-      mutate(logical_xx = c(rep(FALSE, 4), TRUE, rep(FALSE, 5))),
+      dplyr::mutate(logical_xx = c(rep(FALSE, 4), TRUE, rep(FALSE, 5))),
     other_log = data.frame(xx = "other"),
     logical_xx = dplyr::tibble(
       uuid = rep("5", 2),
@@ -233,7 +233,7 @@ test_that("Inputs as list returns correct results", {
       issue = rep("distance to market less than 30 and no access", 2),
       check_id = rep("logical_xx", 2)
     ) %>%
-      mutate(check_binding = paste(check_id, "~/~", uuid))
+      dplyr::mutate(check_binding = paste(check_id, "~/~", uuid))
   )
 
   expect_equal(
@@ -248,7 +248,7 @@ test_that("Inputs as list returns correct results", {
 
   logical_yy <- list(
     checked_dataset = test_data %>%
-      mutate(logical_yy = c(rep(FALSE, 8), rep(TRUE, 2))),
+      dplyr::mutate(logical_yy = c(rep(FALSE, 8), rep(TRUE, 2))),
     other_log = data.frame(xx = "other"),
     logical_yy = dplyr::tibble(
       uuid = c("9", "10"),
@@ -257,11 +257,11 @@ test_that("Inputs as list returns correct results", {
       issue = rep("number of children under 5 seems high", 2),
       check_id = rep("logical_yy", 2)
     ) %>%
-      mutate(check_binding = paste(check_id, "~/~", uuid))
+      dplyr::mutate(check_binding = paste(check_id, "~/~", uuid))
   )
   unbinded_expected_results <- list(
     checked_dataset = test_data %>%
-      mutate(
+      dplyr::mutate(
         logical_xx = c(rep(FALSE, 4), TRUE, rep(FALSE, 5)),
         logical_yy = c(rep(FALSE, 8), rep(TRUE, 2))
       ),
@@ -285,7 +285,7 @@ test_that("Inputs as list returns correct results", {
 
   binded_expected_results <- list(
     checked_dataset = test_data %>%
-      mutate(
+      dplyr::mutate(
         logical_xx = c(rep(FALSE, 4), TRUE, rep(FALSE, 5)),
         logical_yy = c(rep(FALSE, 8), rep(TRUE, 2))
       ),
@@ -403,7 +403,7 @@ test_that("Throws a warning if names are not found", {
   expect_warning(
     check_logical(test_data,
       uuid_column = "uuid",
-      check_to_perform = "rowSums(across(starts_with(\"number\")), na.rm = T) > 9",
+      check_to_perform = "rowSums(dplyr::across(starts_with(\"number\")), na.rm = T) > 9",
       description = "distance to market less than 30 and no access"
     ),
     "columns_to_clean not shared, results may not be accurate"
@@ -411,7 +411,7 @@ test_that("Throws a warning if names are not found", {
 
   results <- check_logical(test_data,
     uuid_column = "uuid",
-    check_to_perform = "rowSums(across(starts_with(\"number\")), na.rm = T) > 9",
+    check_to_perform = "rowSums(dplyr::across(starts_with(\"number\")), na.rm = T) > 9",
     description = "number of children very high"
   ) %>%
     suppressWarnings()
@@ -481,7 +481,7 @@ test_that("when variables_to_clean is empty or null, check_with_list with still 
   expected_results <- list(
     checked_dataset = test_data %>%
       dplyr::mutate(aa = c(rep(FALSE, 4), TRUE, rep(FALSE, 5))),
-    logical_all = tibble(
+    logical_all = tibble::tibble(
       uuid = c("5", "5"),
       question = c("distance_to_market", "access_to_market"),
       old_value = c("less_30", "no"),
@@ -580,7 +580,7 @@ test_that("Works with one test", {
 
   expected_results <- list(
     checked_dataset = test_data %>%
-      mutate(logical_xx = c(rep(FALSE, 9), TRUE)),
+      dplyr::mutate(logical_xx = c(rep(FALSE, 9), TRUE)),
     logical_xx = dplyr::tibble(
       uuid = "10",
       question = "expenses",
@@ -588,7 +588,7 @@ test_that("Works with one test", {
       issue = "check expenses above 1000000",
       check_id = "logical_xx"
     ) %>%
-      mutate(check_binding = paste(check_id, "~/~", uuid))
+      dplyr::mutate(check_binding = paste(check_id, "~/~", uuid))
   )
 
   expect_equal(

@@ -36,11 +36,13 @@ a dataset with the two additional columns with the number of completed surveys a
 Compares the sample frame with the clean data
 }
 \examples{
-review_sample_frame_with_dataset(sample_frame = cleaningtools::cleaningtools_sample_frame ,
-sampling_frame_strata_column = "Neighbourhood",
-sampling_frame_target_survey_column ="Total.no.of.HH",
-clean_dataset = cleaningtools::cleaningtools_clean_data,
-clean_dataset_strata_column = "neighbourhood",
-consent_column = "consent_remote",
-consent_yes_value = "yes")
+review_sample_frame_with_dataset(
+  sample_frame = cleaningtools::cleaningtools_sample_frame,
+  sampling_frame_strata_column = "Neighbourhood",
+  sampling_frame_target_survey_column = "Total.no.of.HH",
+  clean_dataset = cleaningtools::cleaningtools_clean_data,
+  clean_dataset_strata_column = "neighbourhood",
+  consent_column = "consent_remote",
+  consent_yes_value = "yes"
+)
 }

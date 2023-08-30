@@ -131,7 +131,7 @@ test_that("add duration with sum all and from and to", {
   audit_list <- readRDS(testthat::test_path("fixtures/audits/test_create_audit_list_2.RDS"))
   expected_outcomes <- readRDS(testthat::test_path("fixtures/audits/test_add_duration_audits_sum_all.RDS"))
   expected_outcomes2 <- readRDS(testthat::test_path("fixtures/audits/test_add_duration_audits_start_end.RDS"))
-  expected_outcomes_final <- left_join(expected_outcomes, expected_outcomes2, by = "X_uuid")
+  expected_outcomes_final <- dplyr::left_join(expected_outcomes, expected_outcomes2, by = "X_uuid")
 
   results <- add_duration_from_audit(df_for_test,
     uuid = "X_uuid",

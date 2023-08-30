@@ -69,12 +69,12 @@ add_duration <- function(dataset, duration_column = "duration",
     # split the columns start_column and end_column
     if (all(grepl("^\\d{4}/\\d{2}/\\d{2}\\s\\d{2}:\\d{2}:\\d{2}$", dataset[[start_column]])) & all(grepl("^\\d{4}/\\d{2}/\\d{2}\\s\\d{2}:\\d{2}:\\d{2}$", dataset[[end_column]]))) {
       dataset <- dataset %>%
-        tidyr::separate(!!sym(start_column), c("start_date", "start_time"), " ", remove = F) %>%
-        tidyr::separate(!!sym(end_column), c("end_date", "end_time"), " ", remove = F)
+        tidyr::separate(!!rlang::sym(start_column), c("start_date", "start_time"), " ", remove = F) %>%
+        tidyr::separate(!!rlang::sym(end_column), c("end_date", "end_time"), " ", remove = F)
     } else {
       dataset <- dataset %>%
-        tidyr::separate(!!sym(start_column), c("start_date", "start_time"), "T", remove = F) %>%
-        tidyr::separate(!!sym(end_column), c("end_date", "end_time"), "T", remove = F)
+        tidyr::separate(!!rlang::sym(start_column), c("start_date", "start_time"), "T", remove = F) %>%
+        tidyr::separate(!!rlang::sym(end_column), c("end_date", "end_time"), "T", remove = F)
     }
 
     # test 3: warning if there is not a start_column and end_column for each survey

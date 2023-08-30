@@ -28,31 +28,31 @@ input_datasets <- list(
       var2 = c(NA, NA, "other_answer_1"),
       var3 = c("other_answer_2", "other_answer_3", "")
     ),
-    xx_log = tibble()
+    xx_log = tibble::tibble()
   )
 )
 
 
 output_datasets <- list(
-  expected_output_1 = tibble(
+  expected_output_1 = tibble::tibble(
     uuid = c("uuid_1", "uuid_3"),
     question = c("var3", "var2"),
     old_value = c("other_answer_2", "other_answer_1"),
     issue = c("recode other", "recode other")
   ),
-  expected_output_2 = tibble(
+  expected_output_2 = tibble::tibble(
     uuid = c("uuid_1", "uuid_3"),
     question = c("var3", "var2"),
     old_value = c("other_answer_2", "other_answer_1"),
     issue = c("recode other", "recode other")
   ),
-  expected_output_3 = tibble(
+  expected_output_3 = tibble::tibble(
     uuid = character(),
     question = character(),
     old_value = character(),
     issue = character()
   ),
-  expected_output_4 = tibble(
+  expected_output_4 = tibble::tibble(
     uuid = c("uuid_1", "uuid_2", "uuid_3"),
     question = c("var3", "var3", "var2"),
     old_value = c("other_answer_2", "other_answer_3", "other_answer_1"),
@@ -65,8 +65,8 @@ output_datasets <- list(
       var2 = c(NA, NA, "other_answer_1"),
       var3 = c("other_answer_2", "other_answer_3", "")
     ),
-    xx_log = tibble(),
-    other_log = tibble(
+    xx_log = tibble::tibble(),
+    other_log = tibble::tibble(
       uuid = c("uuid_1", "uuid_2", "uuid_3"),
       question = c("var3", "var3", "var2"),
       old_value = c("other_answer_2", "other_answer_3", "other_answer_1"),

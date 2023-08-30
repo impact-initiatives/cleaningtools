@@ -57,13 +57,13 @@ testthat::test_that("Check all uuids", {
     kobo_survey = cleaningtools::cleaningtools_survey,
     uuid_column = "X_uuid", idnk_value = "dont_know"
   )[[2]] %>%
-    arrange(X_uuid) %>%
-    select(X_uuid) %>%
-    pull()
+    dplyr::arrange(X_uuid) %>%
+    dplyr::select(X_uuid) %>%
+    dplyr::pull()
   expected_output <- cleaningtools::cleaningtools_raw_data %>%
-    arrange(X_uuid) %>%
-    select(X_uuid) %>%
-    pull()
+    dplyr::arrange(X_uuid) %>%
+    dplyr::select(X_uuid) %>%
+    dplyr::pull()
   testthat::expect_equal(actual_output, expected_output)
 })
 

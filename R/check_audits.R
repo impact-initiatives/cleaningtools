@@ -150,7 +150,7 @@ create_duration_from_audit_with_start_end <- function(audit_file, start_question
 #' )
 #' create_duration_from_audit_sum_all(some_audit)
 create_duration_from_audit_sum_all <- function(audit_file) {
-  audit_file <- audit_file %>% filter(node != "")
+  audit_file <- audit_file %>% dplyr::filter(node != "")
   duration_ms <- sum(audit_file$end - audit_file$start)
   duration_minutes <- round(duration_ms / 1000 / 60, 1)
   data.frame(
@@ -298,12 +298,12 @@ add_duration_from_audit <- function(dataset,
 
   if (exists("duration_with_sum_all")) {
     dataset <- dataset %>%
-      left_join(duration_with_sum_all, by = setNames("uuid", uuid_column))
+      dplyr::left_join(duration_with_sum_all, by = setNames("uuid", uuid_column))
   }
 
   if (exists("duration_with_start_end")) {
     dataset <- dataset %>%
-      left_join(duration_with_start_end, by = setNames("uuid", uuid_column))
+      dplyr::left_join(duration_with_start_end, by = setNames("uuid", uuid_column))
   }
 
   return(dataset)

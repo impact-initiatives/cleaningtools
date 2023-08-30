@@ -30,16 +30,19 @@ a dataframe with the duplicate log
 Checks for duplicated values in columns
 }
 \examples{
-  testdata <- data.frame(uuid = c(letters[1:4], "a", "b", "c"),
-                         col_a = runif(7),
-                         col_b = runif(7)
-                         )
+testdata <- data.frame(
+  uuid = c(letters[1:4], "a", "b", "c"),
+  col_a = runif(7),
+  col_b = runif(7)
+)
 
 check_duplicate(testdata)
 
-testdata2 <- data.frame(uuid = letters[c(1:7)],
-                        village = paste("village", c(1:3,1:3,4)),
-                        ki_identifier = paste0("xx_", c(1:5,3,4)))
+testdata2 <- data.frame(
+  uuid = letters[c(1:7)],
+  village = paste("village", c(1:3, 1:3, 4)),
+  ki_identifier = paste0("xx_", c(1:5, 3, 4))
+)
 
 check_duplicate(testdata2, columns_to_check = "village")
 

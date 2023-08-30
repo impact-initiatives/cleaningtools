@@ -50,13 +50,13 @@ the outliers log
 check outliers over the dataset
 }
 \examples{
-dataset_outlier<- data.frame(
- uuid = paste0("uuid_", 1:100),
- one_value = c(round(runif(90, min = 45,max =55)), round(runif(5)), round(runif(5,99,100))),
- expense = c(sample(200:500,replace = TRUE,size = 95),c(600,100,80,1020,1050)),
- income = c(c(60,0,80,1020,1050),sample(20000:50000,replace = TRUE,size = 95)),
- yy = c(rep(100,99),10)
+dataset_outlier <- data.frame(
+  uuid = paste0("uuid_", 1:100),
+  one_value = c(round(runif(90, min = 45, max = 55)), round(runif(5)), round(runif(5, 99, 100))),
+  expense = c(sample(200:500, replace = TRUE, size = 95), c(600, 100, 80, 1020, 1050)),
+  income = c(c(60, 0, 80, 1020, 1050), sample(20000:50000, replace = TRUE, size = 95)),
+  yy = c(rep(100, 99), 10)
 )
 
-check_outliers(dataset = dataset_outlier,uuid_column = "uuid")
+check_outliers(dataset = dataset_outlier, uuid_column = "uuid")
 }

@@ -85,7 +85,7 @@ check_soft_duplicates <- function(dataset,
     dplyr::select(dplyr::starts_with(glue::glue("{sm_parents}{sm_seperator}"))) %>%
     colnames()
   cols_to_keep <- data.frame(column = colnames(df)) %>%
-    dplyr::left_join(select(kobo_survey, name, type), by = c("column" = "name")) %>%
+    dplyr::left_join(dplyr::select(kobo_survey, name, type), by = c("column" = "name")) %>%
     dplyr::filter(!is.na(type)) %>%
     dplyr::filter((!(type %in% types_to_remove) & !stringr::str_starts(column, "X_") &
       !(stringr::str_starts(column, "[[:punct:]]")) & !(column %in% sm_columns)))
