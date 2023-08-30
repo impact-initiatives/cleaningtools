@@ -18,12 +18,11 @@ Combined cleaning log
 Merging the cleaning logs
 }
 \examples{
-  list <- cleaningtools::cleaningtools_raw_data |>
-          check_pii(uuid_column = "X_uuid") |>
-          check_duplicate(uuid_column = "X_uuid") |>
-          check_value(uuid_column = "X_uuid")
+list <- cleaningtools::cleaningtools_raw_data |>
+  check_pii(uuid_column = "X_uuid") |>
+  check_duplicate(uuid_column = "X_uuid") |>
+  check_value(uuid_column = "X_uuid")
 
- create_combined_log(list_of_log = list)
-
+create_combined_log(list_of_log = list)
 
 }

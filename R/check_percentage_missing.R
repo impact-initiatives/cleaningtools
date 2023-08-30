@@ -156,7 +156,7 @@ check_percentage_missing <- function(dataset,
     check_outliers(uuid_column = uuid_column, strongness_factor = strongness_factor)
 
   log[["potential_outliers"]] <- log[["potential_outliers"]] %>%
-    dplyr::mutate(across(.cols = dplyr::everything(), .fns = as.character),
+    dplyr::mutate(dplyr::across(.cols = dplyr::everything(), .fns = as.character),
       issue = "Percentages of missing values from this survey is different from others"
     )
 

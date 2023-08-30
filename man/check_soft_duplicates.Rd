@@ -38,27 +38,33 @@ a dataframe with the soft duplicate log
 Checks for survey similarities - Soft Duplicates
 }
 \examples{
-soft_duplicates <- check_soft_duplicates(dataset = cleaningtools_raw_data,
-                                         kobo_survey = cleaningtools_survey,
-                                         uuid_column = "X_uuid",
-                                         idnk_value = "dont_know",
-                                         sm_seperator = ".",
-                                         log_name = "soft_duplicate_log",
-                                         threshold = 7)
+soft_duplicates <- check_soft_duplicates(
+  dataset = cleaningtools_raw_data,
+  kobo_survey = cleaningtools_survey,
+  uuid_column = "X_uuid",
+  idnk_value = "dont_know",
+  sm_seperator = ".",
+  log_name = "soft_duplicate_log",
+  threshold = 7
+)
 group_by_enum_raw_data <- cleaningtools_raw_data \%>\%
   dplyr::group_by(enumerator_num)
 
 soft_per_enum <- group_by_enum_raw_data \%>\%
   dplyr::group_split() \%>\%
-  purrr::map(~check_soft_duplicates(dataset = .,
-                                    kobo_survey = cleaningtools_survey,
-                                    uuid_column = "X_uuid",idnk_value = "dont_know",
-                                    sm_seperator = ".",
-                                    log_name = "soft_duplicate_log",
-                                    threshold = 7))
+  purrr::map(~ check_soft_duplicates(
+    dataset = .,
+    kobo_survey = cleaningtools_survey,
+    uuid_column = "X_uuid", idnk_value = "dont_know",
+    sm_seperator = ".",
+    log_name = "soft_duplicate_log",
+    threshold = 7
+  ))
 soft_per_enum \%>\%
-  purrr::map(~.[["soft_duplicate_log"]]) \%>\%
-  purrr::map2(.y = dplyr::group_keys(group_by_enum_raw_data) \%>\% unlist(),
-              ~dplyr::mutate(.x, enum = .y)) \%>\%
-  do.call(dplyr::bind_rows,.)
+  purrr::map(~ .[["soft_duplicate_log"]]) \%>\%
+  purrr::map2(
+    .y = dplyr::group_keys(group_by_enum_raw_data) \%>\% unlist(),
+    ~ dplyr::mutate(.x, enum = .y)
+  ) \%>\%
+  do.call(dplyr::bind_rows, .)
 }

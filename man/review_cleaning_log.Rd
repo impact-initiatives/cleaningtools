@@ -61,17 +61,19 @@ Review cleaning logs
 }
 \examples{
 \dontrun{
- deletaion_log <- cleaningtools::cleaning_log |> dplyr::filter(change_type == "remove_survey")
- cleaning_log2 <- cleaningtools::cleaning_log |> dplyr::filter(change_type != "remove_survey")
+deletaion_log <- cleaningtools::cleaning_log |> dplyr::filter(change_type == "remove_survey")
+cleaning_log2 <- cleaningtools::cleaning_log |> dplyr::filter(change_type != "remove_survey")
 
-review_cleaning_log(raw_dataset = cleaningtools::raw_dataset,raw_dataset_uuid_column = "X_uuid",
-clean_dataset = cleaningtools::clean_dataset,clean_dataset_uuid_column = "X_uuid",
-cleaning_log = cleaning_log2,cleaning_log_uuid_column = "X_uuid",
-cleaning_log_question_column = "questions",
-cleaning_log_new_value_column =  "new_value",
-cleaning_log_old_value_column = "old_value",
-deletion_log = deletaion_log,
-deletion_log_uuid_column = "X_uuid",
-check_for_deletion_log =T)
+review_cleaning_log(
+  raw_dataset = cleaningtools::raw_dataset, raw_dataset_uuid_column = "X_uuid",
+  clean_dataset = cleaningtools::clean_dataset, clean_dataset_uuid_column = "X_uuid",
+  cleaning_log = cleaning_log2, cleaning_log_uuid_column = "X_uuid",
+  cleaning_log_question_column = "questions",
+  cleaning_log_new_value_column = "new_value",
+  cleaning_log_old_value_column = "old_value",
+  deletion_log = deletaion_log,
+  deletion_log_uuid_column = "X_uuid",
+  check_for_deletion_log = T
+)
 }
 }

@@ -52,15 +52,15 @@ check_value <- function(dataset,
   #######################
 
 
-  dataset <- dataset |> rename(uuid = !!rlang::sym(uuid_column))
-  dataset <- dataset |> mutate_all(as.character)
+  dataset <- dataset |> dplyr::rename(uuid = !!rlang::sym(uuid_column))
+  dataset <- dataset |> dplyr::mutate_all(as.character)
 
-  dataset_only_na <- dataset |> filter_all(any_vars(. %in% values_to_look))
+  dataset_only_na <- dataset |> dplyr::filter_all(dplyr::any_vars(. %in% values_to_look))
 
   flaged_value <- dataset_only_na |>
     tidyr::pivot_longer(cols = !uuid) |>
     dplyr::filter(value %in% values_to_look) |>
-    rename(
+    dplyr::rename(
       question = name,
       old_value = value
     )

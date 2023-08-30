@@ -102,7 +102,7 @@ test_that("Outliers check with kobo", {
   ))
 
 
-  a <- cleaningtools_raw_data |> mutate_if(is.logical, as.integer)
+  a <- cleaningtools_raw_data |> dplyr::mutate_if(is.logical, as.integer)
   outliers_xx <- check_outliers(
     dataset = a, uuid_column = "X_uuid", kobo_survey = cleaningtools_survey,
     kobo_choices = cleaningtools_choices, strongness_factor = 3,

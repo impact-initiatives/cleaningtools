@@ -13,7 +13,7 @@ auto_detect_sm_parents <- function(dataset, sm_seperator = ".") {
   sm_parents <- data.frame(col_names = sm_parents[sm_parents != ""])
   select_multiple_detected <- sm_parents %>%
     dplyr::group_by(col_names) %>%
-    dplyr::summarise(n = n()) %>%
+    dplyr::summarise(n = dplyr::n()) %>%
     dplyr::filter(n > 1) %>%
     dplyr::select(col_names)
   return(as.character(select_multiple_detected$col_names))
@@ -113,12 +113,12 @@ recreate_parent_column <- function(dataset,
       dplyr::mutate(
         type = stringr::str_replace_all(type, "select_multiple ", "")
       ) |>
-      rename(
+      dplyr::rename(
         list_name = type,
         sm_parent = name
       ) |>
       dplyr::left_join(choice_to_join, multiple = "all", by = "list_name") |>
-      mutate(
+      dplyr::mutate(
         sm_child = paste0(sm_parent, sm_seperator, name)
       ) |>
       dplyr::select(sm_parent, sm_child)
@@ -147,8 +147,8 @@ recreate_parent_column <- function(dataset,
 
       final_df <- pivot_long %>%
         tidyr::pivot_longer(cols = !dplyr::all_of(uuid_column), names_to = "cols", values_to = "value") %>%
-        filter(value == 1 | value == TRUE | value == "1" | value == "TRUE") %>%
-        dplyr::group_by(!!sym(uuid_column)) %>%
+        dplyr::filter(value == 1 | value == TRUE | value == "1" | value == "TRUE") %>%
+        dplyr::group_by(!!rlang::sym(uuid_column)) %>%
         dplyr::summarise(
           !!rlang::sym(concat_col) := paste0(cols, collapse = " ")
         )

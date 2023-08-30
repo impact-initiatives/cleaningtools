@@ -56,7 +56,7 @@ check_list <- data.frame(
   check = c(
     "distance_to_market == \"less_30\" & access_to_market == \"no\"",
     "number_children_05 > 3",
-    "rowSums(across(starts_with(\"number\")), na.rm = T) > 9"
+    "rowSums(dplyr::across(starts_with(\"number\")), na.rm = T) > 9"
   ),
   description = c(
     "distance to market less than 30 and no access",

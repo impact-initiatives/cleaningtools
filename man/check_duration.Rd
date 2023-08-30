@@ -38,13 +38,16 @@ superior of the higher threshold.
 \examples{
 testdata <- data.frame(
   uuid = c(letters[1:7]),
-  duration_audit_start_end_ms = c(2475353, 375491, 2654267, 311585, 817270,
-                                  2789505, 8642007),
+  duration_audit_start_end_ms = c(
+    2475353, 375491, 2654267, 311585, 817270,
+    2789505, 8642007
+  ),
   duration_audit_start_end_minutes = c(41, 6, 44, 5, 14, 46, 144)
 )
 
 check_duration(testdata,
-               column_to_check = "duration_audit_start_end_minutes")
+  column_to_check = "duration_audit_start_end_minutes"
+)
 
 check_duration(
   testdata,
@@ -53,7 +56,8 @@ check_duration(
   higher_bound = 8642000
 )
 
-testdata \%>\% check_duration(column_to_check = "duration_audit_start_end_minutes") \%>\%
+testdata \%>\%
+  check_duration(column_to_check = "duration_audit_start_end_minutes") \%>\%
   check_duration(
     column_to_check = "duration_audit_start_end_ms",
     log_name = "duration_in_ms",

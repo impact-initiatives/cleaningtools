@@ -271,7 +271,7 @@ test_that("If 2 variables are from different types (e.g. int and text), it will 
 
   expected_results <- list(
     checked_dataset = testdata,
-    duplicate_log = tibble(
+    duplicate_log = tibble::tibble(
       uuid = c("E", "E", "F", "F", "G", "G"),
       question = rep(c("id", "col_a"), 3),
       old_value = c("a", "1", "b", "2", "c", "3"),

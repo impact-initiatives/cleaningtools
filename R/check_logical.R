@@ -84,10 +84,10 @@ check_logical <- function(dataset,
   }
 
   dataset[["checked_dataset"]] <- dataset[["checked_dataset"]] %>%
-    mutate(!!sym(as.character(check_id)) := eval(parse(text = check_to_perform)))
+    dplyr::mutate(!!rlang::sym(as.character(check_id)) := eval(parse(text = check_to_perform)))
 
   trimmed_dataset <- dataset[["checked_dataset"]] %>%
-    dplyr::filter(!!sym(check_id)) %>%
+    dplyr::filter(!!rlang::sym(check_id)) %>%
     dplyr::mutate(uuid := !!rlang::sym(uuid_column)) %>%
     dplyr::select(dplyr::all_of(c("uuid", variables_across_by)))
 
@@ -148,7 +148,7 @@ check_logical <- function(dataset,
 #'   check = c(
 #'     "distance_to_market == \"less_30\" & access_to_market == \"no\"",
 #'     "number_children_05 > 3",
-#'     "rowSums(across(starts_with(\"number\")), na.rm = T) > 9"
+#'     "rowSums(dplyr::across(starts_with(\"number\")), na.rm = T) > 9"
 #'   ),
 #'   description = c(
 #'     "distance to market less than 30 and no access",
@@ -200,8 +200,8 @@ check_logical_with_list <- function(dataset,
 
   # split the check in a list and map check_logical
   log_of_logical_checks <- list_of_check %>%
-    dplyr::mutate(!!sym(check_id_column) := as.character(!!sym(check_id_column))) %>%
-    dplyr::group_by(!!sym(check_id_column)) %>%
+    dplyr::mutate(!!rlang::sym(check_id_column) := as.character(!!rlang::sym(check_id_column))) %>%
+    dplyr::group_by(!!rlang::sym(check_id_column)) %>%
     dplyr::group_split() %>%
     purrr::map(~ check_logical(
       dataset = dataset,

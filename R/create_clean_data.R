@@ -70,7 +70,7 @@ create_clean_data <- function(raw_dataset,
   all_type <- c(change_response_value, NA_response_value, no_change_value, remove_survey_value)
 
   cleaning_log <- cleaning_log |> dplyr::mutate(
-    change_type_created_f = case_when(
+    change_type_created_f = dplyr::case_when(
       !!rlang::sym(cleaning_log_change_type_column) %in% change_response_value ~ "change_response",
       !!rlang::sym(cleaning_log_change_type_column) %in% NA_response_value ~ "blank_response",
       !!rlang::sym(cleaning_log_change_type_column) %in% no_change_value ~ "no_action",
@@ -190,7 +190,7 @@ check_cleaning_log <- function(raw_dataset,
   cl_uuid_prob_df <- cleaning_log %>%
     dplyr::filter(!!rlang::sym(cleaning_log_uuid_column) %in% c(raw_dataset[[raw_data_uuid_column]], "all_data") == FALSE) %>%
     dplyr::mutate(cl_prob = "uuid_does_not_exist") %>%
-    dplyr::filter(!!sym(cleaning_log_uuid_column) %in% raw_dataset[[raw_data_uuid_column]] == FALSE) %>%
+    dplyr::filter(!!rlang::sym(cleaning_log_uuid_column) %in% raw_dataset[[raw_data_uuid_column]] == FALSE) %>%
     dplyr::select(cl_prob, dplyr::everything())
 
   na_change_type_prob_df <- cleaning_log %>%
@@ -199,7 +199,7 @@ check_cleaning_log <- function(raw_dataset,
     dplyr::select(cl_prob, dplyr::everything())
 
   cl_problems_df <- dplyr::bind_rows(get0("cl_change_col_prob_df"), get0("cl_uuid_prob_df")) |>
-    bind_rows(get0("na_change_type_prob_df"))
+    dplyr::bind_rows(get0("na_change_type_prob_df"))
 
   if (nrow(cl_problems_df) > 0) {
     print("cleaning log has issues, see output table")
