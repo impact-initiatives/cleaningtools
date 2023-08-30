@@ -33,7 +33,8 @@ Imports:
     stringr,
     tibble,
     tidyr,
-    utils
+    utils,
+    data.table
 Suggests: 
     testthat (>= 3.0.0),
     withr

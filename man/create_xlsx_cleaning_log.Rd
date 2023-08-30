@@ -15,6 +15,10 @@ create_xlsx_cleaning_log(
   header_front = "Arial Narrow",
   body_front = "Arial Narrow",
   body_front_size = 11,
+  use_dropdown = F,
+  sm_dropdown_type = NULL,
+  kobo_survey = NULL,
+  kobo_choices = NULL,
   output_path = NULL
 )
 }
@@ -39,20 +43,27 @@ create_xlsx_cleaning_log(
 
 \item{body_front_size}{Front size for body (default is 11)}
 
+\item{use_dropdown}{Use drop down lists for data validation in the cleaning log output (default is FALSE)}
+
+\item{sm_dropdown_type}{Dropdown list options for select multiple questions: numerical (1/0) or logical (TRUE/FALSE) - default is logical}
+
+\item{kobo_survey}{Kobo survey dataframe}
+
+\item{kobo_choices}{Kobo choices dataframe}
+
 \item{output_path}{Output path. Default is NULL which will return a workbook instead of an excel file.}
 }
 \value{
-save a .xlsx file or return a workbook object
+workbook
 }
 \description{
 Creates formatted excel for cleaning log
 }
 \examples{
-list <- cleaningtools::cleaningtools_raw_data |>
-  check_pii(uuid_column = "X_uuid") |>
-  check_duplicate(uuid_column = "X_uuid") |>
-  check_value(uuid_column = "X_uuid")
+list <- cleaningtools::cleaningtools_raw_data |> check_pii(uuid_column = "X_uuid") |>
+ cleaningtools::check_duplicate(uuid_column = "X_uuid") |>
+ cleaningtools::check_value(uuid_column = "X_uuid")
 
 create_combined_log(list_of_log = list) |>
-  create_xlsx_cleaning_log()
+ create_xlsx_cleaning_log()
 }
