@@ -78,7 +78,9 @@ create_formated_wb <- function(write_list,
       for (x in u) {
         y <- which(dataset[[cols_for_color]] == x)
 
-        random.color <- randomcoloR::randomColor(1, luminosity = "light")
+        ### to be fixed see issue #62
+        # random.color <- randomcoloR::randomColor(1, luminosity = "light")
+        random.color <- NULL
 
         style <- openxlsx::createStyle(
           fgFill = random.color,
