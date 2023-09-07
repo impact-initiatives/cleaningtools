@@ -66,4 +66,20 @@ list <- cleaningtools::cleaningtools_raw_data |> check_pii(uuid_column = "X_uuid
 
 create_combined_log(list_of_log = list) |>
  create_xlsx_cleaning_log()
+
+logical_check_example <- cleaningtools::cleaningtools_raw_data |> check_logical(check_to_perform = 'treat_cook_water == "always_treat"',
+uuid_column = "X_uuid",
+description = "description",
+check_id = "check_4",
+columns_to_clean = "rental_contract")
+
+create_combined_log(logical_check_example) |> create_xlsx_cleaning_log(cols_for_color = "question",
+ output_path = paste0(tempdir(check = TRUE), "/cleaning_log.xlsx"),
+ cleaning_log_name = "cleaning_log",
+ change_type_col = "change_type",
+ kobo_survey = cleaningtools::cleaningtools_survey,
+ kobo_choices = cleaningtools::cleaningtools_choices,
+ use_dropdown = TRUE,
+ sm_dropdown_type = "logical")
+
 }

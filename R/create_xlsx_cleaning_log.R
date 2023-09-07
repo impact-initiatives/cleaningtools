@@ -135,6 +135,22 @@ create_formated_wb <- function(write_list,
 #'
 #'create_combined_log(list_of_log = list) |>
 #'  create_xlsx_cleaning_log()
+#'
+#' logical_check_example <- cleaningtools::cleaningtools_raw_data |> check_logical(check_to_perform = 'treat_cook_water == "always_treat"',
+#' uuid_column = "X_uuid",
+#' description = "description",
+#' check_id = "check_4",
+#' columns_to_clean = "rental_contract")
+#'
+#' create_combined_log(logical_check_example) |> create_xlsx_cleaning_log(cols_for_color = "question",
+#'  output_path = paste0(tempdir(check = TRUE), "/cleaning_log.xlsx"),
+#'  cleaning_log_name = "cleaning_log",
+#'  change_type_col = "change_type",
+#'  kobo_survey = cleaningtools::cleaningtools_survey,
+#'  kobo_choices = cleaningtools::cleaningtools_choices,
+#'  use_dropdown = TRUE,
+#'  sm_dropdown_type = "logical")
+#'
 
 create_xlsx_cleaning_log <- function(write_list,
                                      cleaning_log_name= "cleaning_log",
@@ -156,8 +172,8 @@ create_xlsx_cleaning_log <- function(write_list,
 
 
   if(use_dropdown & (is.null(kobo_survey) | is.null(kobo_choices))) {stop(glue::glue("Kobo survey and choices sheets should be provided to use dropdown lists"))}
-  if(!is.null(kobo_survey) && !check_valid_survey(kobo_survey)) {stop(glue::glue("The Kobo survey dataframe is not valid"))}
-  if(!is.null(kobo_choices) && !check_valid_choices(kobo_choices)) {stop(glue::glue("The Kobo choices dataframe is not valid"))}
+  if(!is.null(kobo_survey) && !verify_valid_survey(kobo_survey)) {stop(glue::glue("The Kobo survey dataframe is not valid"))}
+  if(!is.null(kobo_choices) && !verify_valid_choices(kobo_choices)) {stop(glue::glue("The Kobo choices dataframe is not valid"))}
   if(!is.null(sm_dropdown_type) && !stringr::str_to_lower(sm_dropdown_type) %in% c("logical","numerical")) {stop(glue::glue("Invalid value for sm_dropdown_type - only 'logical' and 'numerical' are accepted"))}
   if(!cleaning_log_name %in% names(write_list)){stop(glue::glue(cleaning_log_name, " not found in the given list."))}
   if(!change_type_col %in% names(write_list[[cleaning_log_name]])){stop(glue::glue(change_type_col, " not found in ", cleaning_log_name, "."))}

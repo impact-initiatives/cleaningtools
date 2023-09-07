@@ -36,7 +36,7 @@ stop_words_replace <- c("!", "&", "%")
 stop_words_functions <- c("na.rm", "TRUE", "FALSE", "T", "F")
 
 
-#' Check if the Kobo survey dataframe is valid
+#' Verify if the Kobo survey dataframe is valid
 #'
 #' This function checks whether the provided Kobo survey dataframe meets certain criteria:
 #' 1. It is a dataframe.
@@ -52,12 +52,12 @@ stop_words_functions <- c("na.rm", "TRUE", "FALSE", "T", "F")
 #' @examples
 #' # Assume df_valid is a valid Kobo survey dataframe
 #' df_valid <- data.frame(type = c("integer", "selecte_one yesno"), name = c("age", "consent"))
-#' check_valid_survey(df_valid)  # should return TRUE
+#' verify_valid_survey(df_valid)  # should return TRUE
 #'
 #' # Assume df_invalid lacks the required columns
 #' df_invalid <- data.frame(column1 = c("integer", "selecte_one yesno"), column2 = c("age", "consent"))
-#' check_valid_survey(df_invalid)  # should return FALSE
-check_valid_survey <- function(kobo_survey) {
+#' verify_valid_survey(df_invalid)  # should return FALSE
+verify_valid_survey <- function(kobo_survey) {
 
   if(!is.data.frame(kobo_survey)) return(F)
   if(length(kobo_survey) == 0) return(F)
@@ -67,7 +67,7 @@ check_valid_survey <- function(kobo_survey) {
 
 }
 
-#' Check if the Kobo choices dataframe is valid
+#' Verify if the Kobo choices dataframe is valid
 #'
 #' This function checks whether the provided Kobo choices dataframe meets certain criteria:
 #' 1. It is a dataframe.
@@ -83,12 +83,12 @@ check_valid_survey <- function(kobo_survey) {
 #' @examples
 #' # Assume df_valid_choices is a valid Kobo choices dataframe
 #' df_valid_choices <- data.frame(list_name = c("ChoiceA", "ChoiceB"), name = c("Option1", "Option2"))
-#' check_valid_choices(df_valid_choices)  # should return TRUE
+#' verify_valid_choices(df_valid_choices)  # should return TRUE
 #'
 #' # Assume df_invalid_choices lacks the required columns
 #' df_invalid_choices <- data.frame(column1 = c("ChoiceA", "ChoiceB"), column2 = c("Option1", "Option2"))
-#' check_valid_choices(df_invalid_choices)  # should return FALSE
-check_valid_choices <- function(kobo_choices) {
+#' verify_valid_choices(df_invalid_choices)  # should return FALSE
+verify_valid_choices <- function(kobo_choices) {
 
   if(!is.data.frame(kobo_choices)) return(F)
   if(length(kobo_choices) == 0) return(F)

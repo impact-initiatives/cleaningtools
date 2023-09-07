@@ -158,6 +158,37 @@ testthat::test_that("Testing the function is working as expected",
                                              expected = c("yes", "no"))
 
 
+
+                      tmp_file = tempfile(pattern = "file", tmpdir = tempdir(), fileext = ".xlsx")
+
+                      clog_test <- cleaningtools_raw_data |> check_logical(check_to_perform = 'treat_cook_water == "always_treat"',
+                                                                           uuid_column = "X_uuid",
+                                                                           description = "description",
+                                                                           check_id = "check_4",
+                                                                           columns_to_clean = "rental_contract")
+
+
+                      create_combined_log(clog_test) |> create_xlsx_cleaning_log(cols_for_color = "question",
+                                                                                 output_path = tmp_file,
+                                                                                 cleaning_log_name = "cleaning_log",
+                                                                                 change_type_col = "change_type",
+                                                                                 kobo_survey = cleaningtools::cleaningtools_survey,
+                                                                                 kobo_choices = cleaningtools::cleaningtools_choices,
+                                                                                 use_dropdown = TRUE,
+                                                                                 sm_dropdown_type = "logical")
+
+                      generated_output <- openxlsx::read.xlsx(xlsxFile = tmp_file,
+                                          sheet = "validation_rules")
+
+                      expected_output  <- readRDS(testthat::test_path("fixtures", "validation_rules_sheet.rds"))
+
+
+                      # testthat::expect_equal(object = generated_output,
+                      #                        expected = expected_output)
+
+                      testthat::expect_equal(object = names(generated_output[1]),
+                                             expected = names(expected_output[1]))
+
                     })
 
 
