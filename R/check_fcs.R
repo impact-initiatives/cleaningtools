@@ -1,5 +1,3 @@
-library(dplyr)
-
 #' FCS component checks
 #' @param dataset dataset to be check as a dataframe or a list with the dataframe stored as "checked_dataset"
 #' @param uuid_column uuid column in the dataset. Default is uuid.

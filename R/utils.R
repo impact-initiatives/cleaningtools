@@ -6,27 +6,33 @@
 #' @export
 #'
 #' @examples
-#'   string_to_check <- c("ki_age> 1",
-#'                        "noo==\"mar\"",
-#'                        "sum(var1, var2, na.rm = T)",
-#'                        "oks != \"mar2\"",
-#'                        "oknospace!=\"mar2\"")
-#'   detect_variable(string_to_check)
-detect_variable <- function(codeintext){
+#' string_to_check <- c(
+#'   "ki_age> 1",
+#'   "noo==\"mar\"",
+#'   "sum(var1, var2, na.rm = T)",
+#'   "oks != \"mar2\"",
+#'   "oknospace!=\"mar2\""
+#' )
+#' detect_variable(string_to_check)
+detect_variable <- function(codeintext) {
   var_vector <- codeintext %>%
-    stringr::str_replace_all(pattern = "[:symbol:]", replace = " ") %>% #removes anything | ` =  + ^ ~ < > $
-    stringr::str_replace_all(pattern = stop_words_replace %>% stringi::stri_c(collapse = "|"),
-                             replace = " ") %>% #removes anything ! & %
+    stringr::str_replace_all(pattern = "[:symbol:]", replace = " ") %>% # removes anything | ` =  + ^ ~ < > $
+    stringr::str_replace_all(
+      pattern = stop_words_replace %>% stringi::stri_c(collapse = "|"),
+      replace = " "
+    ) %>% # removes anything ! & %
 
-    stringi::stri_split(regex = " ", omit_empty = T)  %>%
-    do.call(c,.) %>%
-    stringr::str_subset(pattern = "\"", negate = T) %>% #removes anything that starts with a quote
-    stringr::str_subset(pattern = "^[:digit:]+$", negate = T) %>% #removes anything that is only number
-    stringr::str_subset(pattern = "[:alnum:]+(?=\\()", negate = T) %>% #removes functions, i.e. text(
-    stringr::str_replace_all(pattern ="\\(|\\)", " ") %>% #removes parenthesis
-    stringr::str_replace_all(pattern ="\\(|\\)", " ") %>%
-    stringr::str_subset(pattern = stop_words_functions %>% stringi::stri_c(collapse = "|"),
-                        negate = T) %>% #removes stop words from functions
+    stringi::stri_split(regex = " ", omit_empty = T) %>%
+    do.call(c, .) %>%
+    stringr::str_subset(pattern = "\"", negate = T) %>% # removes anything that starts with a quote
+    stringr::str_subset(pattern = "^[:digit:]+$", negate = T) %>% # removes anything that is only number
+    stringr::str_subset(pattern = "[:alnum:]+(?=\\()", negate = T) %>% # removes functions, i.e. text(
+    stringr::str_replace_all(pattern = "\\(|\\)", " ") %>% # removes parenthesis
+    stringr::str_replace_all(pattern = "\\(|\\)", " ") %>%
+    stringr::str_subset(
+      pattern = stop_words_functions %>% stringi::stri_c(collapse = "|"),
+      negate = T
+    ) %>% # removes stop words from functions
     stringr::str_trim() %>%
     unique()
 
@@ -52,19 +58,23 @@ stop_words_functions <- c("na.rm", "TRUE", "FALSE", "T", "F")
 #' @examples
 #' # Assume df_valid is a valid Kobo survey dataframe
 #' df_valid <- data.frame(type = c("integer", "selecte_one yesno"), name = c("age", "consent"))
-#' verify_valid_survey(df_valid)  # should return TRUE
+#' verify_valid_survey(df_valid) # should return TRUE
 #'
 #' # Assume df_invalid lacks the required columns
 #' df_invalid <- data.frame(column1 = c("integer", "selecte_one yesno"), column2 = c("age", "consent"))
-#' verify_valid_survey(df_invalid)  # should return FALSE
+#' verify_valid_survey(df_invalid) # should return FALSE
 verify_valid_survey <- function(kobo_survey) {
-
-  if(!is.data.frame(kobo_survey)) return(F)
-  if(length(kobo_survey) == 0) return(F)
-  if (!all(c("type","name") %in% names(kobo_survey))) return(F)
+  if (!is.data.frame(kobo_survey)) {
+    return(F)
+  }
+  if (length(kobo_survey) == 0) {
+    return(F)
+  }
+  if (!all(c("type", "name") %in% names(kobo_survey))) {
+    return(F)
+  }
 
   return(TRUE)
-
 }
 
 #' Verify if the Kobo choices dataframe is valid
@@ -83,19 +93,23 @@ verify_valid_survey <- function(kobo_survey) {
 #' @examples
 #' # Assume df_valid_choices is a valid Kobo choices dataframe
 #' df_valid_choices <- data.frame(list_name = c("ChoiceA", "ChoiceB"), name = c("Option1", "Option2"))
-#' verify_valid_choices(df_valid_choices)  # should return TRUE
+#' verify_valid_choices(df_valid_choices) # should return TRUE
 #'
 #' # Assume df_invalid_choices lacks the required columns
 #' df_invalid_choices <- data.frame(column1 = c("ChoiceA", "ChoiceB"), column2 = c("Option1", "Option2"))
-#' verify_valid_choices(df_invalid_choices)  # should return FALSE
+#' verify_valid_choices(df_invalid_choices) # should return FALSE
 verify_valid_choices <- function(kobo_choices) {
-
-  if(!is.data.frame(kobo_choices)) return(F)
-  if(length(kobo_choices) == 0) return(F)
-  if (!all(c("list_name","name") %in% names(kobo_choices))) return(F)
+  if (!is.data.frame(kobo_choices)) {
+    return(F)
+  }
+  if (length(kobo_choices) == 0) {
+    return(F)
+  }
+  if (!all(c("list_name", "name") %in% names(kobo_choices))) {
+    return(F)
+  }
 
   return(TRUE)
-
 }
 
 
@@ -120,13 +134,12 @@ verify_valid_choices <- function(kobo_choices) {
 #'
 #' @export
 create_validation_list <- function(choices, tool) {
-
   new_lists <- list(
-    c("change_type_validation","change_response;\nblank_response;\nremove_survey;\nno_action"),
-    c("binaries_sm_options_lgl","FALSE;\nTRUE"),
-    c("binaries_sm_options_num","0;\n1")
-    #c("_duplicates_","-- keep the survey --;\n-- delete the survey --"),
-    #c("_action_","-- confirm --;\n-- update --;\n-- delete --")
+    c("change_type_validation", "change_response;\nblank_response;\nremove_survey;\nno_action"),
+    c("binaries_sm_options_lgl", "FALSE;\nTRUE"),
+    c("binaries_sm_options_num", "0;\n1")
+    # c("_duplicates_","-- keep the survey --;\n-- delete the survey --"),
+    # c("_action_","-- confirm --;\n-- update --;\n-- delete --")
   ) %>%
     do.call(rbind, .) %>%
     as.data.frame() %>%
@@ -134,14 +147,14 @@ create_validation_list <- function(choices, tool) {
 
   choicelist <- new_lists %>%
     dplyr::bind_rows(create_formatted_choices(choices, tool) %>%
-                       dplyr::select(name, choices))
+      dplyr::select(name, choices))
 
   choice_validation <- choicelist %>%
     unique() %>%
     data.table::transpose() %>%
-    setNames(.[1,]) %>%
+    setNames(.[1, ]) %>%
     dplyr::slice(-1) %>%
-    dplyr::mutate_all(~stringr::str_split(., ";\n"))
+    dplyr::mutate_all(~ stringr::str_split(., ";\n"))
 
   nrow_validation <- lapply(choice_validation, function(x) length(x[[1]])) %>%
     unlist() %>%
@@ -177,7 +190,6 @@ create_validation_list <- function(choices, tool) {
 #'
 #' @export
 create_formatted_choices <- function(choices, tool) {
-
   list.choices <- choices %>%
     dplyr::filter(!is.na(list_name)) %>%
     dplyr::group_by(list_name) %>%
@@ -195,7 +207,11 @@ create_formatted_choices <- function(choices, tool) {
       })),
       list_name = as.character(lapply(type, function(x) {
         x.1 <- stringr::str_split(x, " ")[[1]]
-        if (length(x.1) == 1) return(NA) else return(x.1[2])
+        if (length(x.1) == 1) {
+          return(NA)
+        } else {
+          return(x.1[2])
+        }
       }))
     ) %>%
     dplyr::filter(q.type == "select_one") %>%
@@ -225,21 +241,16 @@ create_formatted_choices <- function(choices, tool) {
 #' # range_string <- create_col_range('consent', df)
 #'
 #' @export
-create_col_range <- function(variable, data.val){
-
-  column.number <- which(colnames(data.val)==variable)
+create_col_range <- function(variable, data.val) {
+  column.number <- which(colnames(data.val) == variable)
   all <- expand.grid(LETTERS, LETTERS)
-  all <- all[order(all$Var1,all$Var2),]
-  alphabet <- c(LETTERS, do.call('paste0',all))
+  all <- all[order(all$Var1, all$Var2), ]
+  alphabet <- c(LETTERS, do.call("paste0", all))
   col.excel <- alphabet[column.number]
-  nrow <- nrow(data.val %>% filter(!is.na(!!sym(variable))))
+  nrow <- nrow(data.val %>% dplyr::filter(!is.na(!!rlang::sym(variable))))
   range.vect <- c("$", col.excel, "$2:$", col.excel, "$", (nrow + 1))
-  range <- paste(range.vect, sep="", collapse="")
+  range <- paste(range.vect, sep = "", collapse = "")
   value.sheet <- paste("'validation_rules'!")
-  value <- paste(value.sheet, range, sep="", collapse="")
+  value <- paste(value.sheet, range, sep = "", collapse = "")
   return(value)
 }
-
-
-
-
