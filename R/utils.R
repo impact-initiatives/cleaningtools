@@ -232,7 +232,7 @@ create_col_range <- function(variable, data.val){
   all <- all[order(all$Var1,all$Var2),]
   alphabet <- c(LETTERS, do.call('paste0',all))
   col.excel <- alphabet[column.number]
-  nrow <- nrow(data.val %>% filter(!is.na(!!sym(variable))))
+  nrow <- nrow(data.val %>% dplyr::filter(!is.na(!!rlang::sym(variable))))
   range.vect <- c("$", col.excel, "$2:$", col.excel, "$", (nrow + 1))
   range <- paste(range.vect, sep="", collapse="")
   value.sheet <- paste("'validation_rules'!")

@@ -129,20 +129,22 @@ create_formated_wb <- function(write_list,
 #' @export
 #'
 #' @examples
+#'\dontrun{
 #' list <- cleaningtools::cleaningtools_raw_data |> check_pii(uuid_column = "X_uuid") |>
 #'  cleaningtools::check_duplicate(uuid_column = "X_uuid") |>
 #'  cleaningtools::check_value(uuid_column = "X_uuid")
 #'
-#'create_combined_log(list_of_log = list) |>
+#' create_combined_log(list_of_log = list) |>
 #'  create_xlsx_cleaning_log()
 #'
-#' logical_check_example <- cleaningtools::cleaningtools_raw_data |> check_logical(check_to_perform = 'treat_cook_water == "always_treat"',
-#' uuid_column = "X_uuid",
-#' description = "description",
-#' check_id = "check_4",
-#' columns_to_clean = "rental_contract")
-#'
-#' create_combined_log(logical_check_example) |> create_xlsx_cleaning_log(cols_for_color = "question",
+#' logical_check_example <- cleaningtools::cleaningtools_raw_data |>
+#'    check_logical(check_to_perform = 'treat_cook_water == "always_treat"',
+#'    uuid_column = "X_uuid",
+#'    description = "description",
+#'    check_id = "check_4",
+#'    columns_to_clean = "rental_contract")
+#' create_combined_log(logical_check_example) |>
+#' create_xlsx_cleaning_log(cols_for_color = "question",
 #'  output_path = paste0(tempdir(check = TRUE), "/cleaning_log.xlsx"),
 #'  cleaning_log_name = "cleaning_log",
 #'  change_type_col = "change_type",
@@ -150,7 +152,7 @@ create_formated_wb <- function(write_list,
 #'  kobo_choices = cleaningtools::cleaningtools_choices,
 #'  use_dropdown = TRUE,
 #'  sm_dropdown_type = "logical")
-#'
+#' }
 
 create_xlsx_cleaning_log <- function(write_list,
                                      cleaning_log_name= "cleaning_log",
@@ -181,7 +183,7 @@ create_xlsx_cleaning_log <- function(write_list,
 
   tryCatch(
     if (!is.null(kobo_survey) & !is.null(kobo_choices) & use_dropdown == TRUE)
-    {data.val <- create_validation_list(kobo_choices, kobo_survey |> filter(!stringr::str_detect(pattern = "(begin|end)(\\s+|_)group",type)))},
+    {data.val <- create_validation_list(kobo_choices, kobo_survey |> dplyr::filter(!stringr::str_detect(pattern = "(begin|end)(\\s+|_)group",type)))},
     error = function(e) {
       warning("Validation list was not created")
     }

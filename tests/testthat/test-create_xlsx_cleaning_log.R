@@ -183,8 +183,8 @@ testthat::test_that("Testing the function is working as expected",
                       expected_output  <- readRDS(testthat::test_path("fixtures", "validation_rules_sheet.rds"))
 
 
-                      # testthat::expect_equal(object = generated_output,
-                      #                        expected = expected_output)
+                      testthat::expect_equal(object = generated_output,
+                                             expected = expected_output)
 
                       testthat::expect_equal(object = names(generated_output[1]),
                                              expected = names(expected_output[1]))

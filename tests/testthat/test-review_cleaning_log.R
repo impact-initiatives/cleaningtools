@@ -1,6 +1,3 @@
-library(dplyr)
-library(testthat)
-
 # creating and reviewing cleaning log ---------------------------------------------------
 
 testthat::test_that("Checking with test data", {
