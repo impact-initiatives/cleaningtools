@@ -15,6 +15,10 @@ create_xlsx_cleaning_log(
   header_front = "Arial Narrow",
   body_front = "Arial Narrow",
   body_front_size = 11,
+  use_dropdown = F,
+  sm_dropdown_type = NULL,
+  kobo_survey = NULL,
+  kobo_choices = NULL,
   output_path = NULL
 )
 }
@@ -39,20 +43,43 @@ create_xlsx_cleaning_log(
 
 \item{body_front_size}{Front size for body (default is 11)}
 
+\item{use_dropdown}{Use drop down lists for data validation in the cleaning log output (default is FALSE)}
+
+\item{sm_dropdown_type}{Dropdown list options for select multiple questions: numerical (1/0) or logical (TRUE/FALSE) - default is logical}
+
+\item{kobo_survey}{Kobo survey dataframe}
+
+\item{kobo_choices}{Kobo choices dataframe}
+
 \item{output_path}{Output path. Default is NULL which will return a workbook instead of an excel file.}
 }
 \value{
-save a .xlsx file or return a workbook object
+workbook
 }
 \description{
 Creates formatted excel for cleaning log
 }
 \examples{
-list <- cleaningtools::cleaningtools_raw_data |>
-  check_pii(uuid_column = "X_uuid") |>
-  check_duplicate(uuid_column = "X_uuid") |>
-  check_value(uuid_column = "X_uuid")
+list <- cleaningtools::cleaningtools_raw_data |> check_pii(uuid_column = "X_uuid") |>
+ cleaningtools::check_duplicate(uuid_column = "X_uuid") |>
+ cleaningtools::check_value(uuid_column = "X_uuid")
 
 create_combined_log(list_of_log = list) |>
-  create_xlsx_cleaning_log()
+ create_xlsx_cleaning_log()
+
+logical_check_example <- cleaningtools::cleaningtools_raw_data |> check_logical(check_to_perform = 'treat_cook_water == "always_treat"',
+uuid_column = "X_uuid",
+description = "description",
+check_id = "check_4",
+columns_to_clean = "rental_contract")
+
+create_combined_log(logical_check_example) |> create_xlsx_cleaning_log(cols_for_color = "question",
+ output_path = paste0(tempdir(check = TRUE), "/cleaning_log.xlsx"),
+ cleaning_log_name = "cleaning_log",
+ change_type_col = "change_type",
+ kobo_survey = cleaningtools::cleaningtools_survey,
+ kobo_choices = cleaningtools::cleaningtools_choices,
+ use_dropdown = TRUE,
+ sm_dropdown_type = "logical")
+
 }
