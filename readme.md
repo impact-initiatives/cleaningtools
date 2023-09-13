@@ -1080,3 +1080,10 @@ add_with_info$cleaning_log |> head()
 #> 5 Potential PII      <NA>        <NA>      <NA>             NA            <NA>
 #> 6 Potential PII      <NA>        <NA>      <NA>             NA            <NA>
 ```
+
+## Code of Conduct
+
+Please note that the cleaningtools project is released with a
+[Contributor Code of
+Conduct](https://impact-initiatives.github.io/cleaningtools/CODE_OF_CONDUCT.html).
+By contributing to this project, you agree to abide by its terms.
