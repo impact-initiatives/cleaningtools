@@ -16,10 +16,12 @@ a vector with strings
 detects variables names in code
 }
 \examples{
-  string_to_check <- c("ki_age> 1",
-                       "noo==\"mar\"",
-                       "sum(var1, var2, na.rm = T)",
-                       "oks != \"mar2\"",
-                       "oknospace!=\"mar2\"")
-  detect_variable(string_to_check)
+string_to_check <- c(
+  "ki_age> 1",
+  "noo==\"mar\"",
+  "sum(var1, var2, na.rm = T)",
+  "oks != \"mar2\"",
+  "oknospace!=\"mar2\""
+)
+detect_variable(string_to_check)
 }

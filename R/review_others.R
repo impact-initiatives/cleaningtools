@@ -53,7 +53,8 @@ review_others <- function(dataset,
   all_logic <- create_logic_for_other(
     kobo_survey = kobo_survey,
     compare_with_dataset = TRUE,
-    dataset = dataset
+    dataset = dataset,
+    sm_seperator = sm_seperator
   )
 
 

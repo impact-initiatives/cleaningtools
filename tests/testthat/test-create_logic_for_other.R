@@ -24,7 +24,7 @@ test_that("create logic for other", {
 
   # Other/choice is not select in parent column but text/_other column not found in the dataset
   logic_filter_1 <- c(
-    "(water_sources.other == TRUE | water_sources.other == 1 ) & !is.na(water_sources.other)",
+    "(`water_sources.other` == TRUE | `water_sources.other` == 1 ) & !is.na(`water_sources.other`)",
     paste0("water_source_drinking == ", "\"", "other", "\"")
   )
 
@@ -58,7 +58,7 @@ test_that("create logic for other", {
     dplyr::filter(grepl("is selected as FALSE/0/NA", description))
 
 
-  logic_filter_4 <- c("!is.na(primary_livelihood_other) & (primary_livelihood.other==0 |primary_livelihood.other==FALSE | is.na(primary_livelihood.other))")
+  logic_filter_4 <- c("!is.na(primary_livelihood_other) & (`primary_livelihood.other`==0 |`primary_livelihood.other`==FALSE | is.na(`primary_livelihood.other`))")
   testthat::expect_true(all(logic_filter_4 %in% logic_df_filter_4$logic))
 
 
@@ -67,7 +67,7 @@ test_that("create logic for other", {
   logic_df_filter_5 <- logic_df |>
     dplyr::filter(grepl("is selected as TRUE/1", description))
 
-  logic_filter_5 <- c("is.na(primary_livelihood_other) & (primary_livelihood.other==1 |primary_livelihood.other== TRUE)")
+  logic_filter_5 <- c("is.na(primary_livelihood_other) & (`primary_livelihood.other`==1 |`primary_livelihood.other`== TRUE)")
   testthat::expect_true(all(logic_filter_5 %in% logic_df_filter_5$logic))
 })
 
@@ -113,7 +113,7 @@ test_that("check sm_spe", {
 
 
 
-  logic_filter_4 <- c("!is.na(primary_livelihood_other) & (primary_livelihood/other==0 |primary_livelihood/other==FALSE | is.na(primary_livelihood/other))")
+  logic_filter_4 <- c("!is.na(primary_livelihood_other) & (`primary_livelihood/other`==0 |`primary_livelihood/other`==FALSE | is.na(`primary_livelihood/other`))")
   testthat::expect_true(all(logic_filter_4 %in% logic_df_filter_4$logic))
 
 
@@ -122,7 +122,7 @@ test_that("check sm_spe", {
   logic_df_filter_5 <- logic_df |>
     dplyr::filter(grepl("is selected as TRUE/1", description))
 
-  logic_filter_5 <- c("is.na(primary_livelihood_other) & (primary_livelihood/other==1 |primary_livelihood/other== TRUE)")
+  logic_filter_5 <- c("is.na(primary_livelihood_other) & (`primary_livelihood/other`==1 |`primary_livelihood/other`== TRUE)")
   testthat::expect_true(all(logic_filter_5 %in% logic_df_filter_5$logic))
 })
 
@@ -148,26 +148,26 @@ test_that("expect equal", {
     "id- 34", "id- 35", "id- 36", "id- 37", "id- 38", "id- 39", "id- 40",
     "id- 41", "id- 42", "id- 43", "id- 44", "id- 45", "id- 46", "id- 47"
   ), logic = c(
-    "(water_sources.other == TRUE | water_sources.other == 1 ) & !is.na(water_sources.other)",
-    "water_source_drinking == \"other\"", "(treat_drink_water_how.other == TRUE | treat_drink_water_how.other == 1 ) & !is.na(treat_drink_water_how.other)",
-    "water_source_cook == \"other\"", "(treat_cook_water_how.other == TRUE | treat_cook_water_how.other == 1 ) & !is.na(treat_cook_water_how.other)",
-    "(piped_quality.no_other == TRUE | piped_quality.no_other == 1 ) & !is.na(piped_quality.no_other)",
-    "(tap_quality.no_other == TRUE | tap_quality.no_other == 1 ) & !is.na(tap_quality.no_other)",
-    "(borehole_quality.no_other == TRUE | borehole_quality.no_other == 1 ) & !is.na(borehole_quality.no_other)",
-    "(trucking_quality.no_other == TRUE | trucking_quality.no_other == 1 ) & !is.na(trucking_quality.no_other)",
+    "(`water_sources.other` == TRUE | `water_sources.other` == 1 ) & !is.na(`water_sources.other`)",
+    "water_source_drinking == \"other\"", "(`treat_drink_water_how.other` == TRUE | `treat_drink_water_how.other` == 1 ) & !is.na(`treat_drink_water_how.other`)",
+    "water_source_cook == \"other\"", "(`treat_cook_water_how.other` == TRUE | `treat_cook_water_how.other` == 1 ) & !is.na(`treat_cook_water_how.other`)",
+    "(`piped_quality.no_other` == TRUE | `piped_quality.no_other` == 1 ) & !is.na(`piped_quality.no_other`)",
+    "(`tap_quality.no_other` == TRUE | `tap_quality.no_other` == 1 ) & !is.na(`tap_quality.no_other`)",
+    "(`borehole_quality.no_other` == TRUE | `borehole_quality.no_other` == 1 ) & !is.na(`borehole_quality.no_other`)",
+    "(`trucking_quality.no_other` == TRUE | `trucking_quality.no_other` == 1 ) & !is.na(`trucking_quality.no_other`)",
     "water_source_bath == \"other\"", "water_source_clothes == \"other\"",
     "water_source_house == \"other\"", "water_source_animals == \"other\"",
     "water_source_crops == \"other\"", "pump_horsepower == \"other\"",
     "pay_water_charges_method == \"other\"", "pay_water_charges_prefer == \"other\"",
-    "(why_share_connection.other == TRUE | why_share_connection.other == 1 ) & !is.na(why_share_connection.other)",
-    "(why_no_subscription.other == TRUE | why_no_subscription.other == 1 ) & !is.na(why_no_subscription.other)",
-    "(own_subscription_assist_type.other == TRUE | own_subscription_assist_type.other == 1 ) & !is.na(own_subscription_assist_type.other)",
-    "(problems_water_who_appr.other == TRUE | problems_water_who_appr.other == 1 ) & !is.na(problems_water_who_appr.other)",
-    "(problems_water_who_attend.other == TRUE | problems_water_who_attend.other == 1 ) & !is.na(problems_water_who_attend.other)",
-    "(water_supply_other_neighbourhoods_how.other == TRUE | water_supply_other_neighbourhoods_how.other == 1 ) & !is.na(water_supply_other_neighbourhoods_how.other)",
-    "(users_build_trust.other == TRUE | users_build_trust.other == 1 ) & !is.na(users_build_trust.other)",
-    "(help_office_improve.other == TRUE | help_office_improve.other == 1 ) & !is.na(help_office_improve.other)",
-    "(how_engaged_by_office.other == TRUE | how_engaged_by_office.other == 1 ) & !is.na(how_engaged_by_office.other)",
+    "(`why_share_connection.other` == TRUE | `why_share_connection.other` == 1 ) & !is.na(`why_share_connection.other`)",
+    "(`why_no_subscription.other` == TRUE | `why_no_subscription.other` == 1 ) & !is.na(`why_no_subscription.other`)",
+    "(`own_subscription_assist_type.other` == TRUE | `own_subscription_assist_type.other` == 1 ) & !is.na(`own_subscription_assist_type.other`)",
+    "(`problems_water_who_appr.other` == TRUE | `problems_water_who_appr.other` == 1 ) & !is.na(`problems_water_who_appr.other`)",
+    "(`problems_water_who_attend.other` == TRUE | `problems_water_who_attend.other` == 1 ) & !is.na(`problems_water_who_attend.other`)",
+    "(`water_supply_other_neighbourhoods_how.other` == TRUE | `water_supply_other_neighbourhoods_how.other` == 1 ) & !is.na(`water_supply_other_neighbourhoods_how.other`)",
+    "(`users_build_trust.other` == TRUE | `users_build_trust.other` == 1 ) & !is.na(`users_build_trust.other`)",
+    "(`help_office_improve.other` == TRUE | `help_office_improve.other` == 1 ) & !is.na(`help_office_improve.other`)",
+    "(`how_engaged_by_office.other` == TRUE | `how_engaged_by_office.other` == 1 ) & !is.na(`how_engaged_by_office.other`)",
     "consent_telephone_number == \"yes\"", "!is.na(shelter_occupation_other) & (shelter_occupation!=\"other\")",
     "!is.na(pay_water_charges_why_not_other) & (pay_water_charges_why_not!=\"other\")",
     "!is.na(problems_water_who_appr_not_other) & (problems_water_who_appr_not!=\"other\")",
@@ -182,12 +182,12 @@ test_that("expect equal", {
     "is.na(level_service_why_poor_other) & (level_service_why_poor==\"other\")",
     "is.na(trust_water_office_why_not) & (trust_water_office==\"no\")",
     "is.na(prefer_not_engage_other) & (prefer_not_engage==\"other\")",
-    "!is.na(primary_livelihood_other) & (primary_livelihood.other==0 |primary_livelihood.other==FALSE | is.na(primary_livelihood.other))",
-    "!is.na(access_water_enough_why_not_other) & (access_water_enough_why_not.other==0 |access_water_enough_why_not.other==FALSE | is.na(access_water_enough_why_not.other))",
-    "!is.na(suggestions_improve_services_other) & (suggestions_improve_services.other==0 |suggestions_improve_services.other==FALSE | is.na(suggestions_improve_services.other))",
-    "is.na(primary_livelihood_other) & (primary_livelihood.other==1 |primary_livelihood.other== TRUE)",
-    "is.na(access_water_enough_why_not_other) & (access_water_enough_why_not.other==1 |access_water_enough_why_not.other== TRUE)",
-    "is.na(suggestions_improve_services_other) & (suggestions_improve_services.other==1 |suggestions_improve_services.other== TRUE)"
+    "!is.na(primary_livelihood_other) & (`primary_livelihood.other`==0 |`primary_livelihood.other`==FALSE | is.na(`primary_livelihood.other`))",
+    "!is.na(access_water_enough_why_not_other) & (`access_water_enough_why_not.other`==0 |`access_water_enough_why_not.other`==FALSE | is.na(`access_water_enough_why_not.other`))",
+    "!is.na(suggestions_improve_services_other) & (`suggestions_improve_services.other`==0 |`suggestions_improve_services.other`==FALSE | is.na(`suggestions_improve_services.other`))",
+    "is.na(primary_livelihood_other) & (`primary_livelihood.other`==1 |`primary_livelihood.other`== TRUE)",
+    "is.na(access_water_enough_why_not_other) & (`access_water_enough_why_not.other`==1 |`access_water_enough_why_not.other`== TRUE)",
+    "is.na(suggestions_improve_services_other) & (`suggestions_improve_services.other`==1 |`suggestions_improve_services.other`== TRUE)"
   ), description = c(
     "water_sources.other is selected but water_sources_other is not found in the dataset",
     "water_source_drinking is selected but water_source_drinking_other is not found in the dataset",
@@ -264,4 +264,21 @@ test_that("expect equal", {
   )), row.names = c(NA, -47L), class = c("tbl_df", "tbl", "data.frame"))
 
   testthat::expect_equal(expected_df, unique_df)
+})
+
+
+testthat::test_that("Test that create_logic_for_others with both select_multiple separator", {
+  actual <- create_logic_for_other(
+    kobo_survey = cleaningtools_survey,
+    sm_sep = "/"
+  )
+
+  expected <- create_logic_for_other(kobo_survey = cleaningtools_survey)
+
+  actual$logic <- gsub("/", "\\.", actual$logic)
+  actual$variables_to_clean_column <- gsub("/", "\\.", actual$variables_to_clean_column)
+
+  expect_equal(actual$logic, expected$logic)
+
+  expect_equal(actual$variables_to_clean_column, expected$variables_to_clean_column)
 })

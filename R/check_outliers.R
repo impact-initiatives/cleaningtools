@@ -76,7 +76,7 @@ check_outliers <- function(dataset,
 
 
   if (remove_choice_multiple == T) {
-    all_select_multiple_parent <- auto_sm_parent_children(dataset, sm_sep = sm_seperator)
+    all_select_multiple_parent <- auto_sm_parent_children(dataset, sm_seperator = sm_seperator)
     all_select_multiple_cols <- all_select_multiple_parent$sm_child
   }
 
@@ -107,11 +107,11 @@ check_outliers <- function(dataset,
 
   cols_name_exist_in_loop_numeric <- dataset %>%
     dplyr::select_if(is.numeric) %>%
-    dplyr::select(-starts_with("X")) %>%
+    dplyr::select(-dplyr::starts_with("X")) %>%
     names()
   cols_name_exist_in_loop_int <- dataset %>%
     dplyr::select_if(is.integer) %>%
-    dplyr::select(-starts_with("X")) %>%
+    dplyr::select(-dplyr::starts_with("X")) %>%
     names()
 
   if (!is.null(kobo_survey) & !is.null(kobo_choices)) {
@@ -163,7 +163,7 @@ check_outliers <- function(dataset,
         issue = dplyr::case_when(dataset[[x]] %in% outliers_value ~ "outlier (normal distribution)"),
       ) %>%
       dplyr::filter(issue == "outlier (normal distribution)") %>%
-      dplyr::select(all_of(cols_to_add_cleaning_log), issue, all_of(x)) %>%
+      dplyr::select(dplyr::all_of(cols_to_add_cleaning_log), issue, dplyr::all_of(x)) %>%
       tidyr::pivot_longer(cols = paste0(x), names_to = "question", values_to = "old_value")
 
 
@@ -196,7 +196,7 @@ check_outliers <- function(dataset,
         issue = dplyr::case_when(dataset[["log"]] %in% outliers_value_log ~ "outlier (log distribution)"),
       ) %>%
       dplyr::filter(issue == "outlier (log distribution)") %>%
-      dplyr::select(all_of(cols_to_add_cleaning_log), issue, all_of(x)) %>%
+      dplyr::select(dplyr::all_of(cols_to_add_cleaning_log), issue, dplyr::all_of(x)) %>%
       tidyr::pivot_longer(cols = paste0(x), names_to = "question", values_to = "old_value")
   }
 

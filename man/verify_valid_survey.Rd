@@ -23,9 +23,9 @@ This function checks whether the provided Kobo survey dataframe meets certain cr
 \examples{
 # Assume df_valid is a valid Kobo survey dataframe
 df_valid <- data.frame(type = c("integer", "selecte_one yesno"), name = c("age", "consent"))
-verify_valid_survey(df_valid)  # should return TRUE
+verify_valid_survey(df_valid) # should return TRUE
 
 # Assume df_invalid lacks the required columns
 df_invalid <- data.frame(column1 = c("integer", "selecte_one yesno"), column2 = c("age", "consent"))
-verify_valid_survey(df_invalid)  # should return FALSE
+verify_valid_survey(df_invalid) # should return FALSE
 }

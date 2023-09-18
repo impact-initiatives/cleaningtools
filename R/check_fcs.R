@@ -29,7 +29,7 @@ check_fcs <- function(dataset,
 
   check_df <- dataset %>%
     dplyr::filter(pmax(!!!rlang::syms(fcs_cols), na.rm = T) == pmin(!!!rlang::syms(fcs_cols), na.rm = T)) %>%
-    dplyr::select(!!rlang::sym(uuid_column), all_of(fcs_cols)) %>%
+    dplyr::select(!!rlang::sym(uuid_column), dplyr::all_of(fcs_cols)) %>%
     dplyr::mutate(
       issue = "All the vlaues of of food consumption variables are the same"
     ) ## filtering only observation where all the values are same. Didn't use if_all to consider NA.
