@@ -59,250 +59,12 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <div class="section level2">
 <h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
 <div class="section level3">
-<h3 id="id_1-example-creating-cleaning-log-from-raw-data-and-clean-data">1. Example:: Creating cleaning log from raw data and clean data<a class="anchor" aria-label="anchor" href="#id_1-example-creating-cleaning-log-from-raw-data-and-clean-data"></a></h3>
-<p><code>create_cleaning_log</code> function takes raw data and clean data as inputs and its identify any changes between them and finally provide the output as cleaning log format.</p>
+<h3 id="id_1-checks-on-the-dataset">1. Checks on the dataset<a class="anchor" aria-label="anchor" href="#id_1-checks-on-the-dataset"></a></h3>
 <div class="section level4">
-<h4 id="id_11-create-dummy-cleaning-log">1.1 Create dummy cleaning log<a class="anchor" aria-label="anchor" href="#id_11-create-dummy-cleaning-log"></a></h4>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cleaning_log_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  uuid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"uuid"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>,</span>
-<span>  question <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"age"</span>, <span class="st">"gender"</span>, <span class="st">"pop_group"</span>, <span class="st">"strata"</span><span class="op">)</span>,</span>
-<span>  change_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blank_response"</span>, <span class="st">"no_change"</span>, <span class="st">"Delete"</span>, <span class="st">"change_res"</span><span class="op">)</span>,</span>
-<span>  new_value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA_character_</span>, <span class="cn">NA_character_</span>, <span class="cn">NA_character_</span>, <span class="st">"st-a"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">cleaning_log_test</span></span>
-<span><span class="co">#&gt;    uuid  question    change_type new_value</span></span>
-<span><span class="co">#&gt; 1 uuid1       age blank_response      &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 2 uuid2    gender      no_change      &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 3 uuid3 pop_group         Delete      &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 4 uuid4    strata     change_res      st-a</span></span></code></pre></div>
-</div>
-<div class="section level4">
-<h4 id="id_12-create-dummy-dataset">1.2 Create dummy dataset<a class="anchor" aria-label="anchor" href="#id_12-create-dummy-dataset"></a></h4>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  uuid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"uuid"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>,</span>
-<span>  age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">180</span>, <span class="fl">23</span>, <span class="fl">45</span>, <span class="fl">67</span><span class="op">)</span>,</span>
-<span>  gender <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span>, <span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
-<span>  pop_group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"idp"</span>, <span class="st">"refugee"</span>, <span class="st">"host"</span>, <span class="st">"idp"</span><span class="op">)</span>,</span>
-<span>  strata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"d"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">test_data</span></span>
-<span><span class="co">#&gt;    uuid age gender pop_group strata</span></span>
-<span><span class="co">#&gt; 1 uuid1 180   male       idp      a</span></span>
-<span><span class="co">#&gt; 2 uuid2  23 female   refugee      b</span></span>
-<span><span class="co">#&gt; 3 uuid3  45   male      host      c</span></span>
-<span><span class="co">#&gt; 4 uuid4  67 female       idp      d</span></span></code></pre></div>
-<div class="section level5">
-<h5 id="id_13-check-the-cleaning-log">1.3 Check the cleaning log<a class="anchor" aria-label="anchor" href="#id_13-check-the-cleaning-log"></a></h5>
-<p>After obtaining both the cleaning log and dataset, it is considered good practice to utilize the check_cleaning_log() function to ensure the consistency between the cleaning log and the dataset. It is highly recommended to perform this check on a daily basis, enabling you to promptly identify any issues right from the outset.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">cleaningtools</span><span class="fu">::</span><span class="fu"><a href="reference/check_cleaning_log.html">check_cleaning_log</a></span><span class="op">(</span></span>
-<span>  raw_dataset <span class="op">=</span> <span class="va">test_data</span>,</span>
-<span>  raw_data_uuid_column <span class="op">=</span> <span class="st">"uuid"</span>,</span>
-<span>  cleaning_log <span class="op">=</span> <span class="va">cleaning_log_test</span>,</span>
-<span>  cleaning_log_change_type_column <span class="op">=</span> <span class="st">"change_type"</span>,</span>
-<span>  change_response_value <span class="op">=</span> <span class="st">"change_res"</span>,</span>
-<span>  cleaning_log_question_column <span class="op">=</span> <span class="st">"question"</span>,</span>
-<span>  cleaning_log_uuid_column <span class="op">=</span> <span class="st">"uuid"</span>,</span>
-<span>  cleaning_log_new_value_column <span class="op">=</span> <span class="st">"new_value"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "no issues in cleaning log found"</span></span></code></pre></div>
-</div>
-</div>
-<div class="section level4">
-<h4 id="id_14-create-the-clean-data-from-the-raw-data-and-cleaning-log">1.4 Create the clean data from the raw data and cleaning log<a class="anchor" aria-label="anchor" href="#id_14-create-the-clean-data-from-the-raw-data-and-cleaning-log"></a></h4>
-<p>Once you have a perfect cleaning log and the raw dataset, you can create clean data by applying<code><a href="reference/create_clean_data.html">create_clean_data()</a></code> function.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">cleaningtools</span><span class="fu">::</span><span class="fu"><a href="reference/create_clean_data.html">create_clean_data</a></span><span class="op">(</span></span>
-<span>  raw_dataset <span class="op">=</span> <span class="va">test_data</span>,</span>
-<span>  raw_data_uuid_column <span class="op">=</span> <span class="st">"uuid"</span>,</span>
-<span>  cleaning_log <span class="op">=</span> <span class="va">cleaning_log_test</span>,</span>
-<span>  cleaning_log_change_type_column <span class="op">=</span> <span class="st">"change_type"</span>,</span>
-<span>  change_response_value <span class="op">=</span> <span class="st">"change_res"</span>,</span>
-<span>  NA_response_value <span class="op">=</span> <span class="st">"blank_response"</span>,</span>
-<span>  no_change_value <span class="op">=</span> <span class="st">"no_change"</span>,</span>
-<span>  remove_survey_value <span class="op">=</span> <span class="st">"Delete"</span>,</span>
-<span>  cleaning_log_question_column <span class="op">=</span> <span class="st">"question"</span>,</span>
-<span>  cleaning_log_uuid_column <span class="op">=</span> <span class="st">"uuid"</span>,</span>
-<span>  cleaning_log_new_value_column <span class="op">=</span> <span class="st">"new_value"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "age"</span></span>
-<span><span class="co">#&gt; [1] "strata"</span></span>
-<span><span class="co">#&gt;    uuid age gender pop_group strata</span></span>
-<span><span class="co">#&gt; 1 uuid1  NA   male       idp      a</span></span>
-<span><span class="co">#&gt; 2 uuid2  23 female   refugee      b</span></span>
-<span><span class="co">#&gt; 3 uuid4  67 female       idp   st-a</span></span></code></pre></div>
-</div>
-<div class="section level4">
-<h4 id="id_15-recreate-parent-column-for-choice-multiple">1.5. Recreate parent column for choice multiple<a class="anchor" aria-label="anchor" href="#id_15-recreate-parent-column-for-choice-multiple"></a></h4>
-<p><code><a href="reference/recreate_parent_column.html">recreate_parent_column()</a></code> recreates the concerted columns for select multiple questions</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
-<span>  uuid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"uuid_"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>,</span>
-<span>  gender <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span>,</span>
-<span>  reason <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    <span class="st">"xx,yy"</span>, <span class="st">"xx,zy"</span>,</span>
-<span>    <span class="st">"zy"</span>, <span class="st">"xx,xz,zy"</span>,</span>
-<span>    <span class="cn">NA_character_</span>, <span class="st">"xz"</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  reason.x.x. <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,</span>
-<span>  reason.yy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,</span>
-<span>  reason.x.z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span>  reason.zy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,</span>
-<span>  reason_zy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA_character_</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="cn">NA_character_</span>, <span class="cn">NA_character_</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">cleaningtools</span><span class="fu">::</span><span class="fu"><a href="reference/recreate_parent_column.html">recreate_parent_column</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">test_data</span>, uuid_column <span class="op">=</span> <span class="st">"uuid"</span>, sm_seperator <span class="op">=</span> <span class="st">"."</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in cleaningtools::recreate_parent_column(dataset = test_data,</span></span>
-<span><span class="co">#&gt; uuid_column = "uuid", : Column(s) names are renamed as multiple separators are</span></span>
-<span><span class="co">#&gt; found in dataset column names. Please see the above table with the new name.</span></span>
-<span><span class="co">#&gt; # A tibble: 2 × 2</span></span>
-<span><span class="co">#&gt;   old_name    new_name   </span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;      </span></span>
-<span><span class="co">#&gt; 1 reason.x.x. reason.x_x_</span></span>
-<span><span class="co">#&gt; 2 reason.x.z  reason.x_z</span></span>
-<span><span class="co">#&gt; gender</span></span>
-<span><span class="co">#&gt; reason.yy</span></span>
-<span><span class="co">#&gt; reason.zy</span></span>
-<span><span class="co">#&gt; reason_zy</span></span>
-<span><span class="co">#&gt; gender</span></span>
-<span><span class="co">#&gt; reason.yy</span></span>
-<span><span class="co">#&gt; reason.zy</span></span>
-<span><span class="co">#&gt; reason_zy</span></span>
-<span><span class="co">#&gt; gender</span></span>
-<span><span class="co">#&gt; reason</span></span>
-<span><span class="co">#&gt; reason.yy</span></span>
-<span><span class="co">#&gt; reason.zy</span></span>
-<span><span class="co">#&gt; reason_zy</span></span>
-<span><span class="co">#&gt; $data_with_fix_concat</span></span>
-<span><span class="co">#&gt; # A tibble: 6 × 8</span></span>
-<span><span class="co">#&gt;   uuid   gender reason      reason.x_x_ reason.yy reason.x_z reason.zy reason_zy</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;             &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;    </span></span>
-<span><span class="co">#&gt; 1 uuid_1 male   yy                    0         1          0         0 &lt;NA&gt;     </span></span>
-<span><span class="co">#&gt; 2 uuid_2 female x_x_ zy               1         0          0         1 A        </span></span>
-<span><span class="co">#&gt; 3 uuid_3 male   zy                    0         0          0         1 B        </span></span>
-<span><span class="co">#&gt; 4 uuid_4 female x_x_ x_z zy           1         0          1         1 C        </span></span>
-<span><span class="co">#&gt; 5 uuid_5 male   yy                    0         1          0         0 &lt;NA&gt;     </span></span>
-<span><span class="co">#&gt; 6 uuid_6 female x_z                   0         0          1         0 &lt;NA&gt;     </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $change_log</span></span>
-<span><span class="co">#&gt;     uuid question_name      change_type   new_value old_value</span></span>
-<span><span class="co">#&gt; 1    all   reason.x.x. variable_removed        &lt;NA&gt;      &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 2    all    reason.x.z variable_removed        &lt;NA&gt;      &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 3    all   reason.x_x_   variable_added        &lt;NA&gt;      &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 4    all    reason.x_z   variable_added        &lt;NA&gt;      &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 5 uuid_1        reason  change_response          yy     xx,yy</span></span>
-<span><span class="co">#&gt; 6 uuid_2        reason  change_response     x_x_ zy     xx,zy</span></span>
-<span><span class="co">#&gt; 7 uuid_4        reason  change_response x_x_ x_z zy  xx,xz,zy</span></span>
-<span><span class="co">#&gt; 8 uuid_6        reason  change_response         x_z        xz</span></span>
-<span><span class="co">#&gt; 9 uuid_5        reason   change_respose          yy      &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;                                           comment</span></span>
-<span><span class="co">#&gt; 1         variable removed from the clean dataset</span></span>
-<span><span class="co">#&gt; 2         variable removed from the clean dataset</span></span>
-<span><span class="co">#&gt; 3             variable added to the clean dataset</span></span>
-<span><span class="co">#&gt; 4             variable added to the clean dataset</span></span>
-<span><span class="co">#&gt; 5 Parent column changed to match children columns</span></span>
-<span><span class="co">#&gt; 6 Parent column changed to match children columns</span></span>
-<span><span class="co">#&gt; 7 Parent column changed to match children columns</span></span>
-<span><span class="co">#&gt; 8 Parent column changed to match children columns</span></span>
-<span><span class="co">#&gt; 9                             NA changed to value</span></span></code></pre></div>
-</div>
-</div>
-<div class="section level3">
-<h3 id="id_2-review-of-the-cleaning">2. Review of the cleaning<a class="anchor" aria-label="anchor" href="#id_2-review-of-the-cleaning"></a></h3>
-<div class="section level4">
-<h4 id="id_21-review-cleaning-log-with-clean-data-and-raw-data">2.1 Review cleaning log with clean data and raw data<a class="anchor" aria-label="anchor" href="#id_21-review-cleaning-log-with-clean-data-and-raw-data"></a></h4>
-<p><code>review_cleaning_log</code> function takes raw data, clean data and cleaning log as inputs, and it first creates the cleaning log by comparing raw data and clean data, then compares it with the user-provided cleaning log. Finally, flagged the discrepancies between them (if any).</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">compared_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/review_cleaning_log.html">review_cleaning_log</a></span><span class="op">(</span></span>
-<span>  raw_dataset <span class="op">=</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va"><a href="reference/cleaningtools_raw_data.html">cleaningtools_raw_data</a></span>,</span>
-<span>  raw_dataset_uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span>
-<span>  clean_dataset <span class="op">=</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va"><a href="reference/cleaningtools_clean_data.html">cleaningtools_clean_data</a></span>,</span>
-<span>  clean_dataset_uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span>
-<span>  cleaning_log <span class="op">=</span> <span class="va">cleaning_log2</span>,</span>
-<span>  cleaning_log_uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span>
-<span>  cleaning_log_question_column <span class="op">=</span> <span class="st">"questions"</span>,</span>
-<span>  cleaning_log_new_value_column <span class="op">=</span> <span class="st">"new_value"</span>,</span>
-<span>  cleaning_log_old_value_column <span class="op">=</span> <span class="st">"old_value"</span>,</span>
-<span>  deletion_log <span class="op">=</span> <span class="va">deletaion_log</span>,</span>
-<span>  deletion_log_uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span>
-<span>  check_for_deletion_log <span class="op">=</span> <span class="cn">T</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">compared_df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 6 × 8</span></span>
-<span><span class="co">#&gt;   uuid    df.question_name df.change_type df.new_value cl.new_value df.old_value</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;            &lt;chr&gt;          &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;       </span></span>
-<span><span class="co">#&gt; 1 1a8023… air_coolers_nb   change_respon… &lt;NA&gt;         4            &lt;NA&gt;        </span></span>
-<span><span class="co">#&gt; 2 a37512… air_coolers_nb   change_respon… &lt;NA&gt;         2            &lt;NA&gt;        </span></span>
-<span><span class="co">#&gt; 3 bdcca6… air_coolers_nb   no_action      &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;        </span></span>
-<span><span class="co">#&gt; 4 dd3a99… connection_fees… no_action      &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;        </span></span>
-<span><span class="co">#&gt; 5 9dac8c… connection_fees… no_action      &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;        </span></span>
-<span><span class="co">#&gt; 6 2b148a… days_available_… no_action      &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;        </span></span>
-<span><span class="co">#&gt; # ℹ 2 more variables: cl.old_value &lt;chr&gt;, comment &lt;chr&gt;</span></span></code></pre></div>
-</div>
-<div class="section level4">
-<h4 id="id_22-example-the-review_others-function-reviews-discrepancy-between-kobo-relevancies-and-the-dataset">2.2 Example:: The <code>review_others()</code> function reviews discrepancy between kobo relevancies and the dataset<a class="anchor" aria-label="anchor" href="#id_22-example-the-review_others-function-reviews-discrepancy-between-kobo-relevancies-and-the-dataset"></a></h4>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/review_others.html">review_others</a></span><span class="op">(</span></span>
-<span>  dataset <span class="op">=</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va"><a href="reference/cleaningtools_clean_data.html">cleaningtools_clean_data</a></span>,</span>
-<span>  uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>, kobo_survey <span class="op">=</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va"><a href="reference/cleaningtools_survey.html">cleaningtools_survey</a></span></span>
-<span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                                   uuid                 question old_value</span></span>
-<span><span class="co">#&gt; 1 f58a7fda-27e8-4003-90b3-479bebbb99ab consent_telephone_number       yes</span></span>
-<span><span class="co">#&gt; 2 956b5ed0-5a62-41b7-aec3-af93fbc5b494 consent_telephone_number       yes</span></span>
-<span><span class="co">#&gt; 3 3413afd2-8f05-4a6e-8ec7-5d64dc8fea23 consent_telephone_number       yes</span></span>
-<span><span class="co">#&gt; 4 630d0067-d84a-4fd0-8c36-029e87913c40 consent_telephone_number       yes</span></span>
-<span><span class="co">#&gt; 5 2cd180e8-7f2b-460b-82b5-fb9d163f8e7b consent_telephone_number       yes</span></span>
-<span><span class="co">#&gt; 6 929d60f8-ed9c-4c42-9ee1-cb4a67e4ba27 consent_telephone_number       yes</span></span>
-<span><span class="co">#&gt;                                                                                   issue</span></span>
-<span><span class="co">#&gt; 1 consent_telephone_number is selected but telephone_number is not found in the dataset</span></span>
-<span><span class="co">#&gt; 2 consent_telephone_number is selected but telephone_number is not found in the dataset</span></span>
-<span><span class="co">#&gt; 3 consent_telephone_number is selected but telephone_number is not found in the dataset</span></span>
-<span><span class="co">#&gt; 4 consent_telephone_number is selected but telephone_number is not found in the dataset</span></span>
-<span><span class="co">#&gt; 5 consent_telephone_number is selected but telephone_number is not found in the dataset</span></span>
-<span><span class="co">#&gt; 6 consent_telephone_number is selected but telephone_number is not found in the dataset</span></span>
-<span><span class="co">#&gt;   check_id                                   check_binding</span></span>
-<span><span class="co">#&gt; 1   id- 27 id- 27 ~/~ f58a7fda-27e8-4003-90b3-479bebbb99ab</span></span>
-<span><span class="co">#&gt; 2   id- 27 id- 27 ~/~ 956b5ed0-5a62-41b7-aec3-af93fbc5b494</span></span>
-<span><span class="co">#&gt; 3   id- 27 id- 27 ~/~ 3413afd2-8f05-4a6e-8ec7-5d64dc8fea23</span></span>
-<span><span class="co">#&gt; 4   id- 27 id- 27 ~/~ 630d0067-d84a-4fd0-8c36-029e87913c40</span></span>
-<span><span class="co">#&gt; 5   id- 27 id- 27 ~/~ 2cd180e8-7f2b-460b-82b5-fb9d163f8e7b</span></span>
-<span><span class="co">#&gt; 6   id- 27 id- 27 ~/~ 929d60f8-ed9c-4c42-9ee1-cb4a67e4ba27</span></span></code></pre></div>
-</div>
-<div class="section level4">
-<h4 id="id_23-example-review_sample_frame_with_dataset">2.3 Example:: <code>review_sample_frame_with_dataset()</code>
-<a class="anchor" aria-label="anchor" href="#id_23-example-review_sample_frame_with_dataset"></a></h4>
-<p><code><a href="reference/review_sample_frame_with_dataset.html">review_sample_frame_with_dataset()</a></code> compares the sample frame with dataset and provide the overview of completed and remaining surveys.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">review_output</span> <span class="op">&lt;-</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="fu"><a href="reference/review_sample_frame_with_dataset.html">review_sample_frame_with_dataset</a></span><span class="op">(</span></span>
-<span>  sample_frame <span class="op">=</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va"><a href="reference/cleaningtools_sample_frame.html">cleaningtools_sample_frame</a></span>,</span>
-<span>  sampling_frame_strata_column <span class="op">=</span> <span class="st">"Neighbourhood"</span>,</span>
-<span>  sampling_frame_target_survey_column <span class="op">=</span> <span class="st">"Total.no.of.HH"</span>,</span>
-<span>  clean_dataset <span class="op">=</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va"><a href="reference/cleaningtools_clean_data.html">cleaningtools_clean_data</a></span>,</span>
-<span>  clean_dataset_strata_column <span class="op">=</span> <span class="st">"neighbourhood"</span>,</span>
-<span>  consent_column <span class="op">=</span> <span class="st">"consent_remote"</span>,</span>
-<span>  consent_yes_value <span class="op">=</span> <span class="st">"yes"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">review_output</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   Managed.by Governorate Neighbourhood Total.no.of.HH Collected Remaining</span></span>
-<span><span class="co">#&gt; 1   Talafar       Ninewa            A1             22        22         0</span></span>
-<span><span class="co">#&gt; 2   Talafar       Ninewa            A2             19        19         0</span></span>
-<span><span class="co">#&gt; 3   Talafar       Ninewa            A3              5         5         0</span></span>
-<span><span class="co">#&gt; 4   Talafar       Ninewa            A4              6         6         0</span></span>
-<span><span class="co">#&gt; 5   Talafar       Ninewa            B1             12        12         0</span></span>
-<span><span class="co">#&gt; 6   Talafar       Ninewa            B2             15        15         0</span></span></code></pre></div>
-</div>
-</div>
-<div class="section level3">
-<h3 id="id_3-checks-on-the-dataset">3. Checks on the dataset<a class="anchor" aria-label="anchor" href="#id_3-checks-on-the-dataset"></a></h3>
-<div class="section level4">
-<h4 id="id_31-check-of-pii">3.1 Check of PII<a class="anchor" aria-label="anchor" href="#id_31-check-of-pii"></a></h4>
+<h4 id="id_11-check-of-pii">1.1 Check of PII<a class="anchor" aria-label="anchor" href="#id_11-check-of-pii"></a></h4>
 <p><code><a href="reference/check_pii.html">check_pii()</a></code> function takes raw data (input can be dataframe or list. However incase of list, you must specify the element name in <code>element_name</code> parameter!) and looks for potential PII in the dataset. By default, the function will look for following words but you can also add additional words to look by using <code>words_to_look</code> parameter.The default words are-<code>c("telephone","contact","name","gps","neighbourhood","latitude","logitude","contact","nom","gps","voisinage")</code>. The function will give a list with two element. One will be the data and second one will be the list of potential PII</p>
 <ul><li>Using dataframe as input</li>
-</ul><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+</ul><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">output_from_data</span> <span class="op">&lt;-</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="fu"><a href="reference/check_pii.html">check_pii</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va"><a href="reference/cleaningtools_raw_data.html">cleaningtools_raw_data</a></span>, words_to_look <span class="op">=</span> <span class="st">"date"</span>, uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span><span class="op">)</span></span>
 <span><span class="va">output_from_data</span><span class="op">$</span><span class="va">potential_PII</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 3</span></span>
@@ -315,7 +77,7 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="co">#&gt; 5 all   water_supply_other_neighbourhoods     Potential PII</span></span>
 <span><span class="co">#&gt; 6 all   water_supply_other_neighbourhoods_why Potential PII</span></span></code></pre></div>
 <ul><li>Using list as input</li>
-</ul><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+</ul><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">### from list</span></span>
 <span><span class="va">df_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>raw_data <span class="op">=</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va"><a href="reference/cleaningtools_raw_data.html">cleaningtools_raw_data</a></span><span class="op">)</span></span>
 <span><span class="va">output_from_list</span> <span class="op">&lt;-</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="fu"><a href="reference/check_pii.html">check_pii</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">df_list</span>, element_name <span class="op">=</span> <span class="st">"raw_data"</span>, words_to_look <span class="op">=</span> <span class="st">"date"</span>, uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span><span class="op">)</span></span>
@@ -331,17 +93,17 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="co">#&gt; 6 all   water_supply_other_neighbourhoods_why Potential PII</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="id_32-check-of-duration-from-audits">3.2 Check of duration from audits<a class="anchor" aria-label="anchor" href="#id_32-check-of-duration-from-audits"></a></h4>
+<h4 id="id_12-check-of-duration-from-audits">1.2 Check of duration from audits<a class="anchor" aria-label="anchor" href="#id_12-check-of-duration-from-audits"></a></h4>
 <div class="section level5">
-<h5 id="id_321-reading-the-audits-files">3.2.1 Reading the audits files<a class="anchor" aria-label="anchor" href="#id_321-reading-the-audits-files"></a></h5>
+<h5 id="id_121-reading-the-audits-files">1.2.1 Reading the audits files<a class="anchor" aria-label="anchor" href="#id_121-reading-the-audits-files"></a></h5>
 <p>It will read only the compressed file.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_audit_list</span> <span class="op">&lt;-</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="fu"><a href="reference/create_audit_list.html">create_audit_list</a></span><span class="op">(</span>audit_zip_path <span class="op">=</span> <span class="st">"audit_for_tests_100.zip"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level5">
-<h5 id="id_322-adding-the-duration-to-the-dataset">3.2.2 Adding the duration to the dataset<a class="anchor" aria-label="anchor" href="#id_322-adding-the-duration-to-the-dataset"></a></h5>
+<h5 id="id_122-adding-the-duration-to-the-dataset">1.2.2 Adding the duration to the dataset<a class="anchor" aria-label="anchor" href="#id_122-adding-the-duration-to-the-dataset"></a></h5>
 <p>Once you have read your audit file from the zip, you will get a list of audit. You can use this list to calculate and add the duration. You have 2 options with a start and end question or summing all the durations.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">list_audit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  uuid1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>    event <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"form start"</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"question"</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -373,7 +135,7 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span>  question5 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>If you want to sum all the duration.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">cleaningtools</span><span class="fu">::</span><span class="fu"><a href="reference/add_duration_from_audit.html">add_duration_from_audit</a></span><span class="op">(</span><span class="va">some_dataset</span>, uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>, audit_list <span class="op">=</span> <span class="va">list_audit</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   X_uuid question1 question2 question3 question4 question5</span></span>
 <span><span class="co">#&gt; 1  uuid1         a         a         a         a         a</span></span>
@@ -382,7 +144,7 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="co">#&gt; 1                      9058                            0.2</span></span>
 <span><span class="co">#&gt; 2                      9058                            0.2</span></span></code></pre></div>
 <p>If you want to use calculate duration between 2 questions.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">cleaningtools</span><span class="fu">::</span><span class="fu"><a href="reference/add_duration_from_audit.html">add_duration_from_audit</a></span><span class="op">(</span><span class="va">some_dataset</span>,</span>
 <span>  uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>, audit_list <span class="op">=</span> <span class="va">list_audit</span>,</span>
 <span>  start_question <span class="op">=</span> <span class="st">"question1"</span>,</span>
@@ -396,7 +158,7 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="co">#&gt; 1                        6205                              0.1</span></span>
 <span><span class="co">#&gt; 2                        6205                              0.1</span></span></code></pre></div>
 <p>If you want to do both.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">cleaningtools</span><span class="fu">::</span><span class="fu"><a href="reference/add_duration_from_audit.html">add_duration_from_audit</a></span><span class="op">(</span><span class="va">some_dataset</span>,</span>
 <span>  uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>, audit_list <span class="op">=</span> <span class="va">list_audit</span>,</span>
 <span>  start_question <span class="op">=</span> <span class="st">"question1"</span>,</span>
@@ -414,9 +176,9 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="co">#&gt; 2                        6205                              0.1</span></span></code></pre></div>
 </div>
 <div class="section level5">
-<h5 id="id_323-checking-the-duration-of-the-dataset">3.2.3 checking the duration of the dataset<a class="anchor" aria-label="anchor" href="#id_323-checking-the-duration-of-the-dataset"></a></h5>
+<h5 id="id_123-checking-the-duration-of-the-dataset">1.2.3 checking the duration of the dataset<a class="anchor" aria-label="anchor" href="#id_123-checking-the-duration-of-the-dataset"></a></h5>
 <p>Once you have added the duration to the dataset, you can check if duration are between the threshold you are looking for.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">testdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  uuid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">7</span><span class="op">]</span><span class="op">)</span>,</span>
 <span>  duration_audit_start_end_ms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
@@ -514,9 +276,9 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 </div>
 </div>
 <div class="section level4">
-<h4 id="id_33-check-outliers">3.3 Check outliers<a class="anchor" aria-label="anchor" href="#id_33-check-outliers"></a></h4>
+<h4 id="id_13-check-outliers">1.3 Check outliers<a class="anchor" aria-label="anchor" href="#id_13-check-outliers"></a></h4>
 <p><code><a href="reference/check_outliers.html">check_outliers()</a></code> takes raw data set and look for potential outlines. It can both data frame or list. However you must specify the element name (name of your data set in the given list) in <code>element_name</code> parameter!</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">122</span><span class="op">)</span></span>
 <span><span class="co">### from list</span></span>
 <span><span class="va">df_outlier</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
@@ -543,9 +305,9 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="co">#&gt; 6 uuid_96 outlier (normal distribution) one_value       100</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="id_34-check-for-value">3.4 Check for value<a class="anchor" aria-label="anchor" href="#id_34-check-for-value"></a></h4>
+<h4 id="id_14-check-for-value">1.4 Check for value<a class="anchor" aria-label="anchor" href="#id_14-check-for-value"></a></h4>
 <p><code><a href="reference/check_value.html">check_value()</a></code> function look for specified value in the given data set and return in a cleaning log format. The function can take a data frame or a list as input.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">122</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
@@ -568,9 +330,9 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="co">#&gt; 6 uuid_99 age      98</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="id_35-check-logics">3.5 Check logics<a class="anchor" aria-label="anchor" href="#id_35-check-logics"></a></h4>
+<h4 id="id_15-check-logics">1.5 Check logics<a class="anchor" aria-label="anchor" href="#id_15-check-logics"></a></h4>
 <p><code><a href="reference/check_logical.html">check_logical()</a></code> takes a regular expression, as it is how it will be read from Excel <code><a href="reference/check_logical_with_list.html">check_logical_with_list()</a></code>.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  uuid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  today <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"2023-01-01"</span>, <span class="fl">10</span><span class="op">)</span>,</span>
@@ -615,7 +377,7 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;              &lt;chr&gt;     &lt;chr&gt;                &lt;chr&gt;    &lt;chr&gt;        </span></span>
 <span><span class="co">#&gt; 1 5     distance_to_market less_30   distance to market … logical… logical_xx ~…</span></span>
 <span><span class="co">#&gt; 2 5     access_to_market   no        distance to market … logical… logical_xx ~…</span></span></code></pre></div>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  uuid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  distance_to_market <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"less_30"</span>, <span class="st">"more_30"</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span>,</span>
@@ -693,10 +455,10 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="co">#&gt; 10 10    unable to identify please check this uuid… numb… logical… logical_zz ~…</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="id_36-check-for-duplicates">3.6 Check for duplicates<a class="anchor" aria-label="anchor" href="#id_36-check-for-duplicates"></a></h4>
+<h4 id="id_16-check-for-duplicates">1.6 Check for duplicates<a class="anchor" aria-label="anchor" href="#id_16-check-for-duplicates"></a></h4>
 <div class="section level5">
-<h5 id="id_361-with-one-or-several-variables">3.6.1 With one or several variables<a class="anchor" aria-label="anchor" href="#id_361-with-one-or-several-variables"></a></h5>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<h5 id="id_161-with-one-or-several-variables">1.6.1 With one or several variables<a class="anchor" aria-label="anchor" href="#id_161-with-one-or-several-variables"></a></h5>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">testdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  uuid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span><span class="op">)</span>,</span>
 <span>  col_a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">7</span><span class="op">)</span>,</span>
@@ -719,7 +481,7 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="co">#&gt; 2    b         b     uuid duplicated uuid</span></span>
 <span><span class="co">#&gt; 3    c         c     uuid duplicated uuid</span></span></code></pre></div>
 <p>Or you can check duplicate for a specific variable or combination of variables.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">testdata2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  uuid <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">7</span><span class="op">)</span><span class="op">]</span>,</span>
 <span>  village <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"village"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -762,9 +524,9 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="co">#&gt; 2 f     ki_identifier xx_3      duplicated village ~/~ ki_identifier</span></span></code></pre></div>
 </div>
 <div class="section level5">
-<h5 id="id_362-with-the-gower-distance-soft-duplicates">3.6.2 With the gower distance (soft duplicates)<a class="anchor" aria-label="anchor" href="#id_362-with-the-gower-distance-soft-duplicates"></a></h5>
+<h5 id="id_162-with-the-gower-distance-soft-duplicates">1.6.2 With the gower distance (soft duplicates)<a class="anchor" aria-label="anchor" href="#id_162-with-the-gower-distance-soft-duplicates"></a></h5>
 <p>To use it with the complete dataset:</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">soft_duplicates</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/check_soft_duplicates.html">check_soft_duplicates</a></span><span class="op">(</span></span>
 <span>  dataset <span class="op">=</span> <span class="va">cleaningtools_raw_data</span>,</span>
 <span>  kobo_survey <span class="op">=</span> <span class="va">cleaningtools_survey</span>,</span>
@@ -798,7 +560,7 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="co">#&gt; 5                       10  &lt;NA&gt;</span></span>
 <span><span class="co">#&gt; 6                       10  &lt;NA&gt;</span></span></code></pre></div>
 <p>To use it grouping by enumerator:</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">group_by_enum_raw_data</span> <span class="op">&lt;-</span> <span class="va">cleaningtools_raw_data</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">enumerator_num</span><span class="op">)</span></span>
 <span><span class="va">soft_per_enum</span> <span class="op">&lt;-</span> <span class="va">group_by_enum_raw_data</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
@@ -843,9 +605,9 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 </div>
 </div>
 <div class="section level4">
-<h4 id="id_37-check-the-food-consumption-score">3.7 Check the food consumption score<a class="anchor" aria-label="anchor" href="#id_37-check-the-food-consumption-score"></a></h4>
+<h4 id="id_17-check-the-food-consumption-score">1.7 Check the food consumption score<a class="anchor" aria-label="anchor" href="#id_17-check-the-food-consumption-score"></a></h4>
 <p>The <code><a href="reference/check_fcs.html">check_fcs()</a></code> function verifies whether all the food consumption components have identical values or not. It will flag the UUIDs where all the values are the same.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">cleaningtools</span><span class="fu">::</span><span class="fu"><a href="reference/check_fcs.html">check_fcs</a></span><span class="op">(</span></span>
 <span>  dataset <span class="op">=</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va"><a href="reference/cleaningtools_food_consumption_df.html">cleaningtools_food_consumption_df</a></span>,</span>
 <span>  uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span>
@@ -892,9 +654,9 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="co">#&gt; 6 All the vlaues of of food consumption variables are the same</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="id_38-check-others-values">3.8 Check others values<a class="anchor" aria-label="anchor" href="#id_38-check-others-values"></a></h4>
+<h4 id="id_18-check-others-values">1.8 Check others values<a class="anchor" aria-label="anchor" href="#id_18-check-others-values"></a></h4>
 <p>The <code><a href="reference/check_others.html">check_others()</a></code> function generate a log for other follow up questions</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="fu"><a href="reference/check_others.html">check_others</a></span><span class="op">(</span></span>
 <span>  dataset <span class="op">=</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va"><a href="reference/cleaningtools_clean_data.html">cleaningtools_clean_data</a></span>,</span>
 <span>  uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span>
@@ -915,11 +677,11 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="co">#&gt; 6 b4588be7-aa42-47de-9d00-e85ec968c1fa problems_water_main_comp… عدم وجود… reco…</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="id_39-check-percentage-of-missing-values">3.9 Check percentage of missing values.<a class="anchor" aria-label="anchor" href="#id_39-check-percentage-of-missing-values"></a></h4>
+<h4 id="id_19-check-percentage-of-missing-values">1.9 Check percentage of missing values.<a class="anchor" aria-label="anchor" href="#id_19-check-percentage-of-missing-values"></a></h4>
 <div class="section level5">
-<h5 id="id_391-add-the-percentage-missing">3.9.1 Add the percentage missing<a class="anchor" aria-label="anchor" href="#id_391-add-the-percentage-missing"></a></h5>
+<h5 id="id_191-add-the-percentage-missing">1.9.1 Add the percentage missing<a class="anchor" aria-label="anchor" href="#id_191-add-the-percentage-missing"></a></h5>
 <p>The <code><a href="reference/add_percentage_missing.html">add_percentage_missing()</a></code> adds the percentage of missing values per row.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_example</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  uuid <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>,</span>
 <span>  col_1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="cn">NA</span>, <span class="fl">3</span><span class="op">)</span>,</span>
@@ -943,9 +705,9 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="co">#&gt; 3            0              0.000</span></span></code></pre></div>
 </div>
 <div class="section level5">
-<h5 id="id_392-add_percentage_missing">3.9.2 add_percentage_missing()<a class="anchor" aria-label="anchor" href="#id_392-add_percentage_missing"></a></h5>
+<h5 id="id_192-add_percentage_missing">1.9.2 add_percentage_missing()<a class="anchor" aria-label="anchor" href="#id_192-add_percentage_missing"></a></h5>
 <p>The <code><a href="reference/add_percentage_missing.html">add_percentage_missing()</a></code> function will flag if a survey for its missing values. The missing values column can be created with add_percentage_missing and the values are flagged with check_outliers.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_example</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">cleaningtools</span><span class="fu">::</span><span class="fu"><a href="reference/check_percentage_missing.html">check_percentage_missing</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -965,10 +727,13 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="co">#&gt; # ℹ 4 variables: uuid &lt;chr&gt;, issue &lt;chr&gt;, question &lt;chr&gt;, old_value &lt;chr&gt;</span></span></code></pre></div>
 </div>
 </div>
+</div>
+<div class="section level3">
+<h3 id="id_2-exporting-the-flags-in-excel">2. Exporting the flags in excel.<a class="anchor" aria-label="anchor" href="#id_2-exporting-the-flags-in-excel"></a></h3>
 <div class="section level4">
-<h4 id="id_310-create_combined_log">3.10 create_combined_log()<a class="anchor" aria-label="anchor" href="#id_310-create_combined_log"></a></h4>
+<h4 id="id_21-create_combined_log">2.1 create_combined_log()<a class="anchor" aria-label="anchor" href="#id_21-create_combined_log"></a></h4>
 <p>The function <code><a href="reference/create_combined_log.html">create_combined_log()</a></code> takes the cleaning logs as input and returns a list with two elements: the dataset and the combined cleaning log.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">list_log</span> <span class="op">&lt;-</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va"><a href="reference/cleaningtools_raw_data.html">cleaningtools_raw_data</a></span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/check_pii.html">check_pii</a></span><span class="op">(</span>uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/check_duplicate.html">check_duplicate</a></span><span class="op">(</span>uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -988,10 +753,10 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="co">#&gt; 6 ac26e24d-12be-4729-bae7-21060e… X_index  &lt;NA&gt;  88        &lt;NA&gt;        &lt;NA&gt;</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="id_311-add_info_to_cleaning_log">3.11 <code>add_info_to_cleaning_log()</code>
-<a class="anchor" aria-label="anchor" href="#id_311-add_info_to_cleaning_log"></a></h4>
+<h4 id="id_22-add_info_to_cleaning_log">2.2 <code>add_info_to_cleaning_log()</code>
+<a class="anchor" aria-label="anchor" href="#id_22-add_info_to_cleaning_log"></a></h4>
 <p>The function <code><a href="reference/add_info_to_cleaning_log.html">add_info_to_cleaning_log()</a></code> is designed to add information from the dataset into the cleaning log.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">add_with_info</span> <span class="op">&lt;-</span> <span class="va">list_log</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/add_info_to_cleaning_log.html">add_info_to_cleaning_log</a></span><span class="op">(</span>dataset_uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">add_with_info</span><span class="op">$</span><span class="va">cleaning_log</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -1009,6 +774,249 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="co">#&gt; 4 Potential PII      &lt;NA&gt;        &lt;NA&gt;      &lt;NA&gt;             NA            &lt;NA&gt;</span></span>
 <span><span class="co">#&gt; 5 Potential PII      &lt;NA&gt;        &lt;NA&gt;      &lt;NA&gt;             NA            &lt;NA&gt;</span></span>
 <span><span class="co">#&gt; 6 Potential PII      &lt;NA&gt;        &lt;NA&gt;      &lt;NA&gt;             NA            &lt;NA&gt;</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="id_23-create_xlsx_cleaning_log">2.3 <code>create_xlsx_cleaning_log()</code>
+<a class="anchor" aria-label="anchor" href="#id_23-create_xlsx_cleaning_log"></a></h4>
+<p>The function <code><a href="reference/add_info_to_cleaning_log.html">add_info_to_cleaning_log()</a></code> is designed to add information from the dataset into the cleaning log.</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">add_with_info</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="reference/create_xlsx_cleaning_log.html">create_xlsx_cleaning_log</a></span><span class="op">(</span>kobo_survey <span class="op">=</span> <span class="va">cleaningtools_survey</span>,</span>
+<span>                           kobo_choices <span class="op">=</span> <span class="va">cleaningtools_choices</span>,</span>
+<span>                           use_dropdown <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                           output_path <span class="op">=</span> <span class="st">"mycleaninglog.xlsx"</span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="id_3-create-a-clean-data">3. Create a clean data<a class="anchor" aria-label="anchor" href="#id_3-create-a-clean-data"></a></h3>
+<p>We are creating a dataset and cleaning log for the example</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  uuid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"uuid"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>,</span>
+<span>  age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">180</span>, <span class="fl">23</span>, <span class="fl">45</span>, <span class="fl">67</span><span class="op">)</span>,</span>
+<span>  gender <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span>, <span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span>
+<span>  pop_group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"idp"</span>, <span class="st">"refugee"</span>, <span class="st">"host"</span>, <span class="st">"idp"</span><span class="op">)</span>,</span>
+<span>  strata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"d"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">test_data</span></span>
+<span><span class="co">#&gt;    uuid age gender pop_group strata</span></span>
+<span><span class="co">#&gt; 1 uuid1 180   male       idp      a</span></span>
+<span><span class="co">#&gt; 2 uuid2  23 female   refugee      b</span></span>
+<span><span class="co">#&gt; 3 uuid3  45   male      host      c</span></span>
+<span><span class="co">#&gt; 4 uuid4  67 female       idp      d</span></span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cleaning_log_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  uuid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"uuid"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>,</span>
+<span>  question <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"age"</span>, <span class="st">"gender"</span>, <span class="st">"pop_group"</span>, <span class="st">"strata"</span><span class="op">)</span>,</span>
+<span>  change_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blank_response"</span>, <span class="st">"no_change"</span>, <span class="st">"Delete"</span>, <span class="st">"change_res"</span><span class="op">)</span>,</span>
+<span>  new_value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA_character_</span>, <span class="cn">NA_character_</span>, <span class="cn">NA_character_</span>, <span class="st">"st-a"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">cleaning_log_test</span></span>
+<span><span class="co">#&gt;    uuid  question    change_type new_value</span></span>
+<span><span class="co">#&gt; 1 uuid1       age blank_response      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 2 uuid2    gender      no_change      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 3 uuid3 pop_group         Delete      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 4 uuid4    strata     change_res      st-a</span></span></code></pre></div>
+<div class="section level4">
+<h4 id="id_31-check-the-cleaning-log">3.1 Check the cleaning log<a class="anchor" aria-label="anchor" href="#id_31-check-the-cleaning-log"></a></h4>
+<p>After obtaining both the cleaning log and dataset, it is considered good practice to utilize the check_cleaning_log() function to ensure the consistency between the cleaning log and the dataset. It is highly recommended to perform this check on a daily basis, enabling you to promptly identify any issues right from the outset.</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">cleaningtools</span><span class="fu">::</span><span class="fu"><a href="reference/check_cleaning_log.html">check_cleaning_log</a></span><span class="op">(</span></span>
+<span>  raw_dataset <span class="op">=</span> <span class="va">test_data</span>,</span>
+<span>  raw_data_uuid_column <span class="op">=</span> <span class="st">"uuid"</span>,</span>
+<span>  cleaning_log <span class="op">=</span> <span class="va">cleaning_log_test</span>,</span>
+<span>  cleaning_log_change_type_column <span class="op">=</span> <span class="st">"change_type"</span>,</span>
+<span>  change_response_value <span class="op">=</span> <span class="st">"change_res"</span>,</span>
+<span>  cleaning_log_question_column <span class="op">=</span> <span class="st">"question"</span>,</span>
+<span>  cleaning_log_uuid_column <span class="op">=</span> <span class="st">"uuid"</span>,</span>
+<span>  cleaning_log_new_value_column <span class="op">=</span> <span class="st">"new_value"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "no issues in cleaning log found"</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="id_32-create-the-clean-data-from-the-raw-data-and-cleaning-log">3.2 Create the clean data from the raw data and cleaning log<a class="anchor" aria-label="anchor" href="#id_32-create-the-clean-data-from-the-raw-data-and-cleaning-log"></a></h4>
+<p>Once you have a perfect cleaning log and the raw dataset, you can create clean data by applying<code><a href="reference/create_clean_data.html">create_clean_data()</a></code> function.</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">cleaningtools</span><span class="fu">::</span><span class="fu"><a href="reference/create_clean_data.html">create_clean_data</a></span><span class="op">(</span></span>
+<span>  raw_dataset <span class="op">=</span> <span class="va">test_data</span>,</span>
+<span>  raw_data_uuid_column <span class="op">=</span> <span class="st">"uuid"</span>,</span>
+<span>  cleaning_log <span class="op">=</span> <span class="va">cleaning_log_test</span>,</span>
+<span>  cleaning_log_change_type_column <span class="op">=</span> <span class="st">"change_type"</span>,</span>
+<span>  change_response_value <span class="op">=</span> <span class="st">"change_res"</span>,</span>
+<span>  NA_response_value <span class="op">=</span> <span class="st">"blank_response"</span>,</span>
+<span>  no_change_value <span class="op">=</span> <span class="st">"no_change"</span>,</span>
+<span>  remove_survey_value <span class="op">=</span> <span class="st">"Delete"</span>,</span>
+<span>  cleaning_log_question_column <span class="op">=</span> <span class="st">"question"</span>,</span>
+<span>  cleaning_log_uuid_column <span class="op">=</span> <span class="st">"uuid"</span>,</span>
+<span>  cleaning_log_new_value_column <span class="op">=</span> <span class="st">"new_value"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "age"</span></span>
+<span><span class="co">#&gt; [1] "strata"</span></span>
+<span><span class="co">#&gt;    uuid age gender pop_group strata</span></span>
+<span><span class="co">#&gt; 1 uuid1  NA   male       idp      a</span></span>
+<span><span class="co">#&gt; 2 uuid2  23 female   refugee      b</span></span>
+<span><span class="co">#&gt; 3 uuid4  67 female       idp   st-a</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="id_33-recreate-parent-column-for-choice-multiple">3.3 Recreate parent column for choice multiple<a class="anchor" aria-label="anchor" href="#id_33-recreate-parent-column-for-choice-multiple"></a></h4>
+<p><code><a href="reference/recreate_parent_column.html">recreate_parent_column()</a></code> recreates the concerted columns for select multiple questions</p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
+<span>  uuid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"uuid_"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>,</span>
+<span>  gender <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span>,</span>
+<span>  reason <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"xx,yy"</span>, <span class="st">"xx,zy"</span>,</span>
+<span>    <span class="st">"zy"</span>, <span class="st">"xx,xz,zy"</span>,</span>
+<span>    <span class="cn">NA_character_</span>, <span class="st">"xz"</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  reason.x.x. <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,</span>
+<span>  reason.yy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,</span>
+<span>  reason.x.z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  reason.zy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,</span>
+<span>  reason_zy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA_character_</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="cn">NA_character_</span>, <span class="cn">NA_character_</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cleaningtools</span><span class="fu">::</span><span class="fu"><a href="reference/recreate_parent_column.html">recreate_parent_column</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">test_data</span>, uuid_column <span class="op">=</span> <span class="st">"uuid"</span>, sm_seperator <span class="op">=</span> <span class="st">"."</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in cleaningtools::recreate_parent_column(dataset = test_data,</span></span>
+<span><span class="co">#&gt; uuid_column = "uuid", : Column(s) names are renamed as multiple separators are</span></span>
+<span><span class="co">#&gt; found in dataset column names. Please see the above table with the new name.</span></span>
+<span><span class="co">#&gt; # A tibble: 2 × 2</span></span>
+<span><span class="co">#&gt;   old_name    new_name   </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;      </span></span>
+<span><span class="co">#&gt; 1 reason.x.x. reason.x_x_</span></span>
+<span><span class="co">#&gt; 2 reason.x.z  reason.x_z</span></span>
+<span><span class="co">#&gt; gender</span></span>
+<span><span class="co">#&gt; reason.yy</span></span>
+<span><span class="co">#&gt; reason.zy</span></span>
+<span><span class="co">#&gt; reason_zy</span></span>
+<span><span class="co">#&gt; gender</span></span>
+<span><span class="co">#&gt; reason.yy</span></span>
+<span><span class="co">#&gt; reason.zy</span></span>
+<span><span class="co">#&gt; reason_zy</span></span>
+<span><span class="co">#&gt; gender</span></span>
+<span><span class="co">#&gt; reason</span></span>
+<span><span class="co">#&gt; reason.yy</span></span>
+<span><span class="co">#&gt; reason.zy</span></span>
+<span><span class="co">#&gt; reason_zy</span></span>
+<span><span class="co">#&gt; $data_with_fix_concat</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 8</span></span>
+<span><span class="co">#&gt;   uuid   gender reason      reason.x_x_ reason.yy reason.x_z reason.zy reason_zy</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;             &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;    </span></span>
+<span><span class="co">#&gt; 1 uuid_1 male   yy                    0         1          0         0 &lt;NA&gt;     </span></span>
+<span><span class="co">#&gt; 2 uuid_2 female x_x_ zy               1         0          0         1 A        </span></span>
+<span><span class="co">#&gt; 3 uuid_3 male   zy                    0         0          0         1 B        </span></span>
+<span><span class="co">#&gt; 4 uuid_4 female x_x_ x_z zy           1         0          1         1 C        </span></span>
+<span><span class="co">#&gt; 5 uuid_5 male   yy                    0         1          0         0 &lt;NA&gt;     </span></span>
+<span><span class="co">#&gt; 6 uuid_6 female x_z                   0         0          1         0 &lt;NA&gt;     </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $change_log</span></span>
+<span><span class="co">#&gt;     uuid question_name      change_type   new_value old_value</span></span>
+<span><span class="co">#&gt; 1    all   reason.x.x. variable_removed        &lt;NA&gt;      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 2    all    reason.x.z variable_removed        &lt;NA&gt;      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 3    all   reason.x_x_   variable_added        &lt;NA&gt;      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 4    all    reason.x_z   variable_added        &lt;NA&gt;      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 5 uuid_1        reason  change_response          yy     xx,yy</span></span>
+<span><span class="co">#&gt; 6 uuid_2        reason  change_response     x_x_ zy     xx,zy</span></span>
+<span><span class="co">#&gt; 7 uuid_4        reason  change_response x_x_ x_z zy  xx,xz,zy</span></span>
+<span><span class="co">#&gt; 8 uuid_6        reason  change_response         x_z        xz</span></span>
+<span><span class="co">#&gt; 9 uuid_5        reason   change_respose          yy      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt;                                           comment</span></span>
+<span><span class="co">#&gt; 1         variable removed from the clean dataset</span></span>
+<span><span class="co">#&gt; 2         variable removed from the clean dataset</span></span>
+<span><span class="co">#&gt; 3             variable added to the clean dataset</span></span>
+<span><span class="co">#&gt; 4             variable added to the clean dataset</span></span>
+<span><span class="co">#&gt; 5 Parent column changed to match children columns</span></span>
+<span><span class="co">#&gt; 6 Parent column changed to match children columns</span></span>
+<span><span class="co">#&gt; 7 Parent column changed to match children columns</span></span>
+<span><span class="co">#&gt; 8 Parent column changed to match children columns</span></span>
+<span><span class="co">#&gt; 9                             NA changed to value</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="id_4-review-of-the-cleaning">4. Review of the cleaning<a class="anchor" aria-label="anchor" href="#id_4-review-of-the-cleaning"></a></h3>
+<div class="section level4">
+<h4 id="id_41-review-cleaning-log-with-clean-data-and-raw-data">4.1 Review cleaning log with clean data and raw data<a class="anchor" aria-label="anchor" href="#id_41-review-cleaning-log-with-clean-data-and-raw-data"></a></h4>
+<p><code>review_cleaning_log</code> function takes raw data, clean data and cleaning log as inputs, and it first creates the cleaning log by comparing raw data and clean data, then compares it with the user-provided cleaning log. Finally, flagged the discrepancies between them (if any).</p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">compared_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/review_cleaning_log.html">review_cleaning_log</a></span><span class="op">(</span></span>
+<span>  raw_dataset <span class="op">=</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va"><a href="reference/cleaningtools_raw_data.html">cleaningtools_raw_data</a></span>,</span>
+<span>  raw_dataset_uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span>
+<span>  clean_dataset <span class="op">=</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va"><a href="reference/cleaningtools_clean_data.html">cleaningtools_clean_data</a></span>,</span>
+<span>  clean_dataset_uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span>
+<span>  cleaning_log <span class="op">=</span> <span class="va">cleaning_log2</span>,</span>
+<span>  cleaning_log_uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span>
+<span>  cleaning_log_question_column <span class="op">=</span> <span class="st">"questions"</span>,</span>
+<span>  cleaning_log_new_value_column <span class="op">=</span> <span class="st">"new_value"</span>,</span>
+<span>  cleaning_log_old_value_column <span class="op">=</span> <span class="st">"old_value"</span>,</span>
+<span>  deletion_log <span class="op">=</span> <span class="va">deletaion_log</span>,</span>
+<span>  deletion_log_uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span>
+<span>  check_for_deletion_log <span class="op">=</span> <span class="cn">T</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">compared_df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 8</span></span>
+<span><span class="co">#&gt;   uuid    df.question_name df.change_type df.new_value cl.new_value df.old_value</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;            &lt;chr&gt;          &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;       </span></span>
+<span><span class="co">#&gt; 1 1a8023… air_coolers_nb   change_respon… &lt;NA&gt;         4            &lt;NA&gt;        </span></span>
+<span><span class="co">#&gt; 2 a37512… air_coolers_nb   change_respon… &lt;NA&gt;         2            &lt;NA&gt;        </span></span>
+<span><span class="co">#&gt; 3 bdcca6… air_coolers_nb   no_action      &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;        </span></span>
+<span><span class="co">#&gt; 4 dd3a99… connection_fees… no_action      &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;        </span></span>
+<span><span class="co">#&gt; 5 9dac8c… connection_fees… no_action      &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;        </span></span>
+<span><span class="co">#&gt; 6 2b148a… days_available_… no_action      &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;        </span></span>
+<span><span class="co">#&gt; # ℹ 2 more variables: cl.old_value &lt;chr&gt;, comment &lt;chr&gt;</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="id_42-example-the-review_others-function-reviews-discrepancy-between-kobo-relevancies-and-the-dataset">4.2 Example:: The <code>review_others()</code> function reviews discrepancy between kobo relevancies and the dataset<a class="anchor" aria-label="anchor" href="#id_42-example-the-review_others-function-reviews-discrepancy-between-kobo-relevancies-and-the-dataset"></a></h4>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/review_others.html">review_others</a></span><span class="op">(</span></span>
+<span>  dataset <span class="op">=</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va"><a href="reference/cleaningtools_clean_data.html">cleaningtools_clean_data</a></span>,</span>
+<span>  uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>, kobo_survey <span class="op">=</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va"><a href="reference/cleaningtools_survey.html">cleaningtools_survey</a></span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                                   uuid                 question old_value</span></span>
+<span><span class="co">#&gt; 1 f58a7fda-27e8-4003-90b3-479bebbb99ab consent_telephone_number       yes</span></span>
+<span><span class="co">#&gt; 2 956b5ed0-5a62-41b7-aec3-af93fbc5b494 consent_telephone_number       yes</span></span>
+<span><span class="co">#&gt; 3 3413afd2-8f05-4a6e-8ec7-5d64dc8fea23 consent_telephone_number       yes</span></span>
+<span><span class="co">#&gt; 4 630d0067-d84a-4fd0-8c36-029e87913c40 consent_telephone_number       yes</span></span>
+<span><span class="co">#&gt; 5 2cd180e8-7f2b-460b-82b5-fb9d163f8e7b consent_telephone_number       yes</span></span>
+<span><span class="co">#&gt; 6 929d60f8-ed9c-4c42-9ee1-cb4a67e4ba27 consent_telephone_number       yes</span></span>
+<span><span class="co">#&gt;                                                                                   issue</span></span>
+<span><span class="co">#&gt; 1 consent_telephone_number is selected but telephone_number is not found in the dataset</span></span>
+<span><span class="co">#&gt; 2 consent_telephone_number is selected but telephone_number is not found in the dataset</span></span>
+<span><span class="co">#&gt; 3 consent_telephone_number is selected but telephone_number is not found in the dataset</span></span>
+<span><span class="co">#&gt; 4 consent_telephone_number is selected but telephone_number is not found in the dataset</span></span>
+<span><span class="co">#&gt; 5 consent_telephone_number is selected but telephone_number is not found in the dataset</span></span>
+<span><span class="co">#&gt; 6 consent_telephone_number is selected but telephone_number is not found in the dataset</span></span>
+<span><span class="co">#&gt;   check_id                                   check_binding</span></span>
+<span><span class="co">#&gt; 1   id- 27 id- 27 ~/~ f58a7fda-27e8-4003-90b3-479bebbb99ab</span></span>
+<span><span class="co">#&gt; 2   id- 27 id- 27 ~/~ 956b5ed0-5a62-41b7-aec3-af93fbc5b494</span></span>
+<span><span class="co">#&gt; 3   id- 27 id- 27 ~/~ 3413afd2-8f05-4a6e-8ec7-5d64dc8fea23</span></span>
+<span><span class="co">#&gt; 4   id- 27 id- 27 ~/~ 630d0067-d84a-4fd0-8c36-029e87913c40</span></span>
+<span><span class="co">#&gt; 5   id- 27 id- 27 ~/~ 2cd180e8-7f2b-460b-82b5-fb9d163f8e7b</span></span>
+<span><span class="co">#&gt; 6   id- 27 id- 27 ~/~ 929d60f8-ed9c-4c42-9ee1-cb4a67e4ba27</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="id_43-example-review_sample_frame_with_dataset">4.3 Example:: <code>review_sample_frame_with_dataset()</code>
+<a class="anchor" aria-label="anchor" href="#id_43-example-review_sample_frame_with_dataset"></a></h4>
+<p><code><a href="reference/review_sample_frame_with_dataset.html">review_sample_frame_with_dataset()</a></code> compares the sample frame with dataset and provide the overview of completed and remaining surveys.</p>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">review_output</span> <span class="op">&lt;-</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="fu"><a href="reference/review_sample_frame_with_dataset.html">review_sample_frame_with_dataset</a></span><span class="op">(</span></span>
+<span>  sample_frame <span class="op">=</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va"><a href="reference/cleaningtools_sample_frame.html">cleaningtools_sample_frame</a></span>,</span>
+<span>  sampling_frame_strata_column <span class="op">=</span> <span class="st">"Neighbourhood"</span>,</span>
+<span>  sampling_frame_target_survey_column <span class="op">=</span> <span class="st">"Total.no.of.HH"</span>,</span>
+<span>  clean_dataset <span class="op">=</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va"><a href="reference/cleaningtools_clean_data.html">cleaningtools_clean_data</a></span>,</span>
+<span>  clean_dataset_strata_column <span class="op">=</span> <span class="st">"neighbourhood"</span>,</span>
+<span>  consent_column <span class="op">=</span> <span class="st">"consent_remote"</span>,</span>
+<span>  consent_yes_value <span class="op">=</span> <span class="st">"yes"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">review_output</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   Managed.by Governorate Neighbourhood Total.no.of.HH Collected Remaining</span></span>
+<span><span class="co">#&gt; 1   Talafar       Ninewa            A1             22        22         0</span></span>
+<span><span class="co">#&gt; 2   Talafar       Ninewa            A2             19        19         0</span></span>
+<span><span class="co">#&gt; 3   Talafar       Ninewa            A3              5         5         0</span></span>
+<span><span class="co">#&gt; 4   Talafar       Ninewa            A4              6         6         0</span></span>
+<span><span class="co">#&gt; 5   Talafar       Ninewa            B1             12        12         0</span></span>
+<span><span class="co">#&gt; 6   Talafar       Ninewa            B2             15        15         0</span></span></code></pre></div>
 </div>
 </div>
 </div>
