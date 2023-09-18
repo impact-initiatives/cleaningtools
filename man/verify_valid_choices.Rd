@@ -23,9 +23,9 @@ This function checks whether the provided Kobo choices dataframe meets certain c
 \examples{
 # Assume df_valid_choices is a valid Kobo choices dataframe
 df_valid_choices <- data.frame(list_name = c("ChoiceA", "ChoiceB"), name = c("Option1", "Option2"))
-verify_valid_choices(df_valid_choices)  # should return TRUE
+verify_valid_choices(df_valid_choices) # should return TRUE
 
 # Assume df_invalid_choices lacks the required columns
 df_invalid_choices <- data.frame(column1 = c("ChoiceA", "ChoiceB"), column2 = c("Option1", "Option2"))
-verify_valid_choices(df_invalid_choices)  # should return FALSE
+verify_valid_choices(df_invalid_choices) # should return FALSE
 }

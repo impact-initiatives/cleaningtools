@@ -33,270 +33,9 @@ devtools::install_github("impact-initiatives/cleaningtools")
 
 ## Examples
 
-### 1. Example:: Creating cleaning log from raw data and clean data
+### 1. Checks on the dataset
 
-`create_cleaning_log` function takes raw data and clean data as inputs
-and its identify any changes between them and finally provide the output
-as cleaning log format.
-
-#### 1.1 Create dummy cleaning log
-
-``` r
-cleaning_log_test <- data.frame(
-  uuid = paste0("uuid", 1:4),
-  question = c("age", "gender", "pop_group", "strata"),
-  change_type = c("blank_response", "no_change", "Delete", "change_res"),
-  new_value = c(NA_character_, NA_character_, NA_character_, "st-a")
-)
-
-cleaning_log_test
-#>    uuid  question    change_type new_value
-#> 1 uuid1       age blank_response      <NA>
-#> 2 uuid2    gender      no_change      <NA>
-#> 3 uuid3 pop_group         Delete      <NA>
-#> 4 uuid4    strata     change_res      st-a
-```
-
-#### 1.2 Create dummy dataset
-
-``` r
-test_data <- data.frame(
-  uuid = paste0("uuid", 1:4),
-  age = c(180, 23, 45, 67),
-  gender = c("male", "female", "male", "female"),
-  pop_group = c("idp", "refugee", "host", "idp"),
-  strata = c("a", "b", "c", "d")
-)
-test_data
-#>    uuid age gender pop_group strata
-#> 1 uuid1 180   male       idp      a
-#> 2 uuid2  23 female   refugee      b
-#> 3 uuid3  45   male      host      c
-#> 4 uuid4  67 female       idp      d
-```
-
-##### 1.3 Check the cleaning log
-
-After obtaining both the cleaning log and dataset, it is considered good
-practice to utilize the check_cleaning_log() function to ensure the
-consistency between the cleaning log and the dataset. It is highly
-recommended to perform this check on a daily basis, enabling you to
-promptly identify any issues right from the outset.
-
-``` r
-cleaningtools::check_cleaning_log(
-  raw_dataset = test_data,
-  raw_data_uuid_column = "uuid",
-  cleaning_log = cleaning_log_test,
-  cleaning_log_change_type_column = "change_type",
-  change_response_value = "change_res",
-  cleaning_log_question_column = "question",
-  cleaning_log_uuid_column = "uuid",
-  cleaning_log_new_value_column = "new_value"
-)
-#> [1] "no issues in cleaning log found"
-```
-
-#### 1.4 Create the clean data from the raw data and cleaning log
-
-Once you have a perfect cleaning log and the raw dataset, you can create
-clean data by applying`create_clean_data()` function.
-
-``` r
-cleaningtools::create_clean_data(
-  raw_dataset = test_data,
-  raw_data_uuid_column = "uuid",
-  cleaning_log = cleaning_log_test,
-  cleaning_log_change_type_column = "change_type",
-  change_response_value = "change_res",
-  NA_response_value = "blank_response",
-  no_change_value = "no_change",
-  remove_survey_value = "Delete",
-  cleaning_log_question_column = "question",
-  cleaning_log_uuid_column = "uuid",
-  cleaning_log_new_value_column = "new_value"
-)
-#> [1] "age"
-#> [1] "strata"
-#>    uuid age gender pop_group strata
-#> 1 uuid1  NA   male       idp      a
-#> 2 uuid2  23 female   refugee      b
-#> 3 uuid4  67 female       idp   st-a
-```
-
-#### 1.5. Recreate parent column for choice multiple
-
-`recreate_parent_column()` recreates the concerted columns for select
-multiple questions
-
-``` r
-test_data <- dplyr::tibble(
-  uuid = paste0("uuid_", 1:6),
-  gender = rep(c("male", "female"), 3),
-  reason = c(
-    "xx,yy", "xx,zy",
-    "zy", "xx,xz,zy",
-    NA_character_, "xz"
-  ),
-  reason.x.x. = c(0, 1, 0, 1, 0, 0),
-  reason.yy = c(1, 0, 0, 0, 1, 0),
-  reason.x.z = c(0, 0, 0, 1, 0, 1),
-  reason.zy = c(0, 1, 1, 1, 0, 0),
-  reason_zy = c(NA_character_, "A", "B", "C", NA_character_, NA_character_)
-)
-
-cleaningtools::recreate_parent_column(dataset = test_data, uuid_column = "uuid", sm_seperator = ".") |> head()
-#> Warning in cleaningtools::recreate_parent_column(dataset = test_data,
-#> uuid_column = "uuid", : Column(s) names are renamed as multiple separators are
-#> found in dataset column names. Please see the above table with the new name.
-#> # A tibble: 2 × 2
-#>   old_name    new_name   
-#>   <chr>       <chr>      
-#> 1 reason.x.x. reason.x_x_
-#> 2 reason.x.z  reason.x_z
-#> gender
-#> reason.yy
-#> reason.zy
-#> reason_zy
-#> gender
-#> reason.yy
-#> reason.zy
-#> reason_zy
-#> gender
-#> reason
-#> reason.yy
-#> reason.zy
-#> reason_zy
-#> $data_with_fix_concat
-#> # A tibble: 6 × 8
-#>   uuid   gender reason      reason.x_x_ reason.yy reason.x_z reason.zy reason_zy
-#>   <chr>  <chr>  <chr>             <dbl>     <dbl>      <dbl>     <dbl> <chr>    
-#> 1 uuid_1 male   yy                    0         1          0         0 <NA>     
-#> 2 uuid_2 female x_x_ zy               1         0          0         1 A        
-#> 3 uuid_3 male   zy                    0         0          0         1 B        
-#> 4 uuid_4 female x_x_ x_z zy           1         0          1         1 C        
-#> 5 uuid_5 male   yy                    0         1          0         0 <NA>     
-#> 6 uuid_6 female x_z                   0         0          1         0 <NA>     
-#> 
-#> $change_log
-#>     uuid question_name      change_type   new_value old_value
-#> 1    all   reason.x.x. variable_removed        <NA>      <NA>
-#> 2    all    reason.x.z variable_removed        <NA>      <NA>
-#> 3    all   reason.x_x_   variable_added        <NA>      <NA>
-#> 4    all    reason.x_z   variable_added        <NA>      <NA>
-#> 5 uuid_1        reason  change_response          yy     xx,yy
-#> 6 uuid_2        reason  change_response     x_x_ zy     xx,zy
-#> 7 uuid_4        reason  change_response x_x_ x_z zy  xx,xz,zy
-#> 8 uuid_6        reason  change_response         x_z        xz
-#> 9 uuid_5        reason   change_respose          yy      <NA>
-#>                                           comment
-#> 1         variable removed from the clean dataset
-#> 2         variable removed from the clean dataset
-#> 3             variable added to the clean dataset
-#> 4             variable added to the clean dataset
-#> 5 Parent column changed to match children columns
-#> 6 Parent column changed to match children columns
-#> 7 Parent column changed to match children columns
-#> 8 Parent column changed to match children columns
-#> 9                             NA changed to value
-```
-
-### 2. Review of the cleaning
-
-#### 2.1 Review cleaning log with clean data and raw data
-
-`review_cleaning_log` function takes raw data, clean data and cleaning
-log as inputs, and it first creates the cleaning log by comparing raw
-data and clean data, then compares it with the user-provided cleaning
-log. Finally, flagged the discrepancies between them (if any).
-
-``` r
-compared_df <- review_cleaning_log(
-  raw_dataset = cleaningtools::cleaningtools_raw_data,
-  raw_dataset_uuid_column = "X_uuid",
-  clean_dataset = cleaningtools::cleaningtools_clean_data,
-  clean_dataset_uuid_column = "X_uuid",
-  cleaning_log = cleaning_log2,
-  cleaning_log_uuid_column = "X_uuid",
-  cleaning_log_question_column = "questions",
-  cleaning_log_new_value_column = "new_value",
-  cleaning_log_old_value_column = "old_value",
-  deletion_log = deletaion_log,
-  deletion_log_uuid_column = "X_uuid",
-  check_for_deletion_log = T
-)
-
-compared_df |> head()
-#> # A tibble: 6 × 8
-#>   uuid    df.question_name df.change_type df.new_value cl.new_value df.old_value
-#>   <chr>   <chr>            <chr>          <chr>        <chr>        <chr>       
-#> 1 1a8023… air_coolers_nb   change_respon… <NA>         4            <NA>        
-#> 2 a37512… air_coolers_nb   change_respon… <NA>         2            <NA>        
-#> 3 bdcca6… air_coolers_nb   no_action      <NA>         <NA>         <NA>        
-#> 4 dd3a99… connection_fees… no_action      <NA>         <NA>         <NA>        
-#> 5 9dac8c… connection_fees… no_action      <NA>         <NA>         <NA>        
-#> 6 2b148a… days_available_… no_action      <NA>         <NA>         <NA>        
-#> # ℹ 2 more variables: cl.old_value <chr>, comment <chr>
-```
-
-#### 2.2 Example:: The `review_others()` function reviews discrepancy between kobo relevancies and the dataset
-
-``` r
-review_others(
-  dataset = cleaningtools::cleaningtools_clean_data,
-  uuid_column = "X_uuid", kobo_survey = cleaningtools::cleaningtools_survey
-) |> head()
-#>                                   uuid                 question old_value
-#> 1 f58a7fda-27e8-4003-90b3-479bebbb99ab consent_telephone_number       yes
-#> 2 956b5ed0-5a62-41b7-aec3-af93fbc5b494 consent_telephone_number       yes
-#> 3 3413afd2-8f05-4a6e-8ec7-5d64dc8fea23 consent_telephone_number       yes
-#> 4 630d0067-d84a-4fd0-8c36-029e87913c40 consent_telephone_number       yes
-#> 5 2cd180e8-7f2b-460b-82b5-fb9d163f8e7b consent_telephone_number       yes
-#> 6 929d60f8-ed9c-4c42-9ee1-cb4a67e4ba27 consent_telephone_number       yes
-#>                                                                                   issue
-#> 1 consent_telephone_number is selected but telephone_number is not found in the dataset
-#> 2 consent_telephone_number is selected but telephone_number is not found in the dataset
-#> 3 consent_telephone_number is selected but telephone_number is not found in the dataset
-#> 4 consent_telephone_number is selected but telephone_number is not found in the dataset
-#> 5 consent_telephone_number is selected but telephone_number is not found in the dataset
-#> 6 consent_telephone_number is selected but telephone_number is not found in the dataset
-#>   check_id                                   check_binding
-#> 1   id- 27 id- 27 ~/~ f58a7fda-27e8-4003-90b3-479bebbb99ab
-#> 2   id- 27 id- 27 ~/~ 956b5ed0-5a62-41b7-aec3-af93fbc5b494
-#> 3   id- 27 id- 27 ~/~ 3413afd2-8f05-4a6e-8ec7-5d64dc8fea23
-#> 4   id- 27 id- 27 ~/~ 630d0067-d84a-4fd0-8c36-029e87913c40
-#> 5   id- 27 id- 27 ~/~ 2cd180e8-7f2b-460b-82b5-fb9d163f8e7b
-#> 6   id- 27 id- 27 ~/~ 929d60f8-ed9c-4c42-9ee1-cb4a67e4ba27
-```
-
-#### 2.3 Example:: `review_sample_frame_with_dataset()`
-
-`review_sample_frame_with_dataset()` compares the sample frame with
-dataset and provide the overview of completed and remaining surveys.
-
-``` r
-review_output <- cleaningtools::review_sample_frame_with_dataset(
-  sample_frame = cleaningtools::cleaningtools_sample_frame,
-  sampling_frame_strata_column = "Neighbourhood",
-  sampling_frame_target_survey_column = "Total.no.of.HH",
-  clean_dataset = cleaningtools::cleaningtools_clean_data,
-  clean_dataset_strata_column = "neighbourhood",
-  consent_column = "consent_remote",
-  consent_yes_value = "yes"
-)
-review_output |> head()
-#>   Managed.by Governorate Neighbourhood Total.no.of.HH Collected Remaining
-#> 1   Talafar       Ninewa            A1             22        22         0
-#> 2   Talafar       Ninewa            A2             19        19         0
-#> 3   Talafar       Ninewa            A3              5         5         0
-#> 4   Talafar       Ninewa            A4              6         6         0
-#> 5   Talafar       Ninewa            B1             12        12         0
-#> 6   Talafar       Ninewa            B2             15        15         0
-```
-
-### 3. Checks on the dataset
-
-#### 3.1 Check of PII
+#### 1.1 Check of PII
 
 `check_pii()` function takes raw data (input can be dataframe or list.
 However incase of list, you must specify the element name in
@@ -342,9 +81,9 @@ output_from_list$potential_PII |> head()
 #> 6 all   water_supply_other_neighbourhoods_why Potential PII
 ```
 
-#### 3.2 Check of duration from audits
+#### 1.2 Check of duration from audits
 
-##### 3.2.1 Reading the audits files
+##### 1.2.1 Reading the audits files
 
 It will read only the compressed file.
 
@@ -352,7 +91,7 @@ It will read only the compressed file.
 my_audit_list <- cleaningtools::create_audit_list(audit_zip_path = "audit_for_tests_100.zip")
 ```
 
-##### 3.2.2 Adding the duration to the dataset
+##### 1.2.2 Adding the duration to the dataset
 
 Once you have read your audit file from the zip, you will get a list of
 audit. You can use this list to calculate and add the duration. You have
@@ -440,7 +179,7 @@ cleaningtools::add_duration_from_audit(some_dataset,
 #> 2                        6205                              0.1
 ```
 
-##### 3.2.3 checking the duration of the dataset
+##### 1.2.3 checking the duration of the dataset
 
 Once you have added the duration to the dataset, you can check if
 duration are between the threshold you are looking for.
@@ -542,7 +281,7 @@ testdata %>%
 #> 2 Duration is lower or higher than the thresholds
 ```
 
-#### 3.3 Check outliers
+#### 1.3 Check outliers
 
 `check_outliers()` takes raw data set and look for potential outlines.
 It can both data frame or list. However you must specify the element
@@ -576,7 +315,7 @@ outliers$potential_outliers |> head()
 #> 6 uuid_96 outlier (normal distribution) one_value       100
 ```
 
-#### 3.4 Check for value
+#### 1.4 Check for value
 
 `check_value()` function look for specified value in the given data set
 and return in a cleaning log format. The function can take a data frame
@@ -605,7 +344,7 @@ output$flaged_value |> head()
 #> 6 uuid_99 age      98
 ```
 
-#### 3.5 Check logics
+#### 1.5 Check logics
 
 `check_logical()` takes a regular expression, as it is how it will be
 read from Excel `check_logical_with_list()`.
@@ -735,9 +474,9 @@ cleaningtools::check_logical_with_list(test_data,
 #> 10 10    unable to identify please check this uuid… numb… logical… logical_zz ~…
 ```
 
-#### 3.6 Check for duplicates
+#### 1.6 Check for duplicates
 
-##### 3.6.1 With one or several variables
+##### 1.6.1 With one or several variables
 
 ``` r
 testdata <- data.frame(
@@ -809,7 +548,7 @@ check_duplicate(testdata2, columns_to_check = c("village", "ki_identifier"))
 #> 2 f     ki_identifier xx_3      duplicated village ~/~ ki_identifier
 ```
 
-##### 3.6.2 With the gower distance (soft duplicates)
+##### 1.6.2 With the gower distance (soft duplicates)
 
 To use it with the complete dataset:
 
@@ -894,7 +633,7 @@ soft_per_enum %>%
 #> 6                       22  <NA>    1
 ```
 
-#### 3.7 Check the food consumption score
+#### 1.7 Check the food consumption score
 
 The `check_fcs()` function verifies whether all the food consumption
 components have identical values or not. It will flag the UUIDs where
@@ -947,7 +686,7 @@ cleaningtools::check_fcs(
 #> 6 All the vlaues of of food consumption variables are the same
 ```
 
-#### 3.8 Check others values
+#### 1.8 Check others values
 
 The `check_others()` function generate a log for other follow up
 questions
@@ -973,9 +712,9 @@ output$other_log |> head()
 #> 6 b4588be7-aa42-47de-9d00-e85ec968c1fa problems_water_main_comp… عدم وجود… reco…
 ```
 
-#### 3.9 Check percentage of missing values.
+#### 1.9 Check percentage of missing values.
 
-##### 3.9.1 Add the percentage missing
+##### 1.9.1 Add the percentage missing
 
 The `add_percentage_missing()` adds the percentage of missing values per
 row.
@@ -1004,7 +743,7 @@ data_example |> head()
 #> 3            0              0.000
 ```
 
-##### 3.9.2 add_percentage_missing()
+##### 1.9.2 add_percentage_missing()
 
 The `add_percentage_missing()` function will flag if a survey for its
 missing values. The missing values column can be created with
@@ -1030,7 +769,9 @@ data_example %>%
 #> # ℹ 4 variables: uuid <chr>, issue <chr>, question <chr>, old_value <chr>
 ```
 
-#### 3.10 create_combined_log()
+### 2. Exporting the flags in excel.
+
+#### 2.1 create_combined_log()
 
 The function `create_combined_log()` takes the cleaning logs as input
 and returns a list with two elements: the dataset and the combined
@@ -1056,7 +797,7 @@ list_log$cleaning_log |> head(6)
 #> 6 ac26e24d-12be-4729-bae7-21060e… X_index  <NA>  88        <NA>        <NA>
 ```
 
-#### 3.11 `add_info_to_cleaning_log()`
+#### 2.2 `add_info_to_cleaning_log()`
 
 The function `add_info_to_cleaning_log()` is designed to add information
 from the dataset into the cleaning log.
@@ -1079,6 +820,274 @@ add_with_info$cleaning_log |> head()
 #> 4 Potential PII      <NA>        <NA>      <NA>             NA            <NA>
 #> 5 Potential PII      <NA>        <NA>      <NA>             NA            <NA>
 #> 6 Potential PII      <NA>        <NA>      <NA>             NA            <NA>
+```
+
+#### 2.3 `create_xlsx_cleaning_log()`
+
+The function `add_info_to_cleaning_log()` is designed to add information
+from the dataset into the cleaning log.
+
+``` r
+add_with_info |> 
+  create_xlsx_cleaning_log(kobo_survey = cleaningtools_survey,
+                           kobo_choices = cleaningtools_choices,
+                           use_dropdown = TRUE,
+                           output_path = "mycleaninglog.xlsx")
+```
+
+### 3. Create a clean data
+
+We are creating a dataset and cleaning log for the example
+
+``` r
+test_data <- data.frame(
+  uuid = paste0("uuid", 1:4),
+  age = c(180, 23, 45, 67),
+  gender = c("male", "female", "male", "female"),
+  pop_group = c("idp", "refugee", "host", "idp"),
+  strata = c("a", "b", "c", "d")
+)
+test_data
+#>    uuid age gender pop_group strata
+#> 1 uuid1 180   male       idp      a
+#> 2 uuid2  23 female   refugee      b
+#> 3 uuid3  45   male      host      c
+#> 4 uuid4  67 female       idp      d
+```
+
+``` r
+cleaning_log_test <- data.frame(
+  uuid = paste0("uuid", 1:4),
+  question = c("age", "gender", "pop_group", "strata"),
+  change_type = c("blank_response", "no_change", "Delete", "change_res"),
+  new_value = c(NA_character_, NA_character_, NA_character_, "st-a")
+)
+
+cleaning_log_test
+#>    uuid  question    change_type new_value
+#> 1 uuid1       age blank_response      <NA>
+#> 2 uuid2    gender      no_change      <NA>
+#> 3 uuid3 pop_group         Delete      <NA>
+#> 4 uuid4    strata     change_res      st-a
+```
+
+#### 3.1 Check the cleaning log
+
+After obtaining both the cleaning log and dataset, it is considered good
+practice to utilize the check_cleaning_log() function to ensure the
+consistency between the cleaning log and the dataset. It is highly
+recommended to perform this check on a daily basis, enabling you to
+promptly identify any issues right from the outset.
+
+``` r
+cleaningtools::check_cleaning_log(
+  raw_dataset = test_data,
+  raw_data_uuid_column = "uuid",
+  cleaning_log = cleaning_log_test,
+  cleaning_log_change_type_column = "change_type",
+  change_response_value = "change_res",
+  cleaning_log_question_column = "question",
+  cleaning_log_uuid_column = "uuid",
+  cleaning_log_new_value_column = "new_value"
+)
+#> [1] "no issues in cleaning log found"
+```
+
+#### 3.2 Create the clean data from the raw data and cleaning log
+
+Once you have a perfect cleaning log and the raw dataset, you can create
+clean data by applying`create_clean_data()` function.
+
+``` r
+cleaningtools::create_clean_data(
+  raw_dataset = test_data,
+  raw_data_uuid_column = "uuid",
+  cleaning_log = cleaning_log_test,
+  cleaning_log_change_type_column = "change_type",
+  change_response_value = "change_res",
+  NA_response_value = "blank_response",
+  no_change_value = "no_change",
+  remove_survey_value = "Delete",
+  cleaning_log_question_column = "question",
+  cleaning_log_uuid_column = "uuid",
+  cleaning_log_new_value_column = "new_value"
+)
+#> [1] "age"
+#> [1] "strata"
+#>    uuid age gender pop_group strata
+#> 1 uuid1  NA   male       idp      a
+#> 2 uuid2  23 female   refugee      b
+#> 3 uuid4  67 female       idp   st-a
+```
+
+#### 3.3 Recreate parent column for choice multiple
+
+`recreate_parent_column()` recreates the concerted columns for select
+multiple questions
+
+``` r
+test_data <- dplyr::tibble(
+  uuid = paste0("uuid_", 1:6),
+  gender = rep(c("male", "female"), 3),
+  reason = c(
+    "xx,yy", "xx,zy",
+    "zy", "xx,xz,zy",
+    NA_character_, "xz"
+  ),
+  reason.x.x. = c(0, 1, 0, 1, 0, 0),
+  reason.yy = c(1, 0, 0, 0, 1, 0),
+  reason.x.z = c(0, 0, 0, 1, 0, 1),
+  reason.zy = c(0, 1, 1, 1, 0, 0),
+  reason_zy = c(NA_character_, "A", "B", "C", NA_character_, NA_character_)
+)
+
+cleaningtools::recreate_parent_column(dataset = test_data, uuid_column = "uuid", sm_seperator = ".") |> head()
+#> Warning in cleaningtools::recreate_parent_column(dataset = test_data,
+#> uuid_column = "uuid", : Column(s) names are renamed as multiple separators are
+#> found in dataset column names. Please see the above table with the new name.
+#> # A tibble: 2 × 2
+#>   old_name    new_name   
+#>   <chr>       <chr>      
+#> 1 reason.x.x. reason.x_x_
+#> 2 reason.x.z  reason.x_z
+#> gender
+#> reason.yy
+#> reason.zy
+#> reason_zy
+#> gender
+#> reason.yy
+#> reason.zy
+#> reason_zy
+#> gender
+#> reason
+#> reason.yy
+#> reason.zy
+#> reason_zy
+#> $data_with_fix_concat
+#> # A tibble: 6 × 8
+#>   uuid   gender reason      reason.x_x_ reason.yy reason.x_z reason.zy reason_zy
+#>   <chr>  <chr>  <chr>             <dbl>     <dbl>      <dbl>     <dbl> <chr>    
+#> 1 uuid_1 male   yy                    0         1          0         0 <NA>     
+#> 2 uuid_2 female x_x_ zy               1         0          0         1 A        
+#> 3 uuid_3 male   zy                    0         0          0         1 B        
+#> 4 uuid_4 female x_x_ x_z zy           1         0          1         1 C        
+#> 5 uuid_5 male   yy                    0         1          0         0 <NA>     
+#> 6 uuid_6 female x_z                   0         0          1         0 <NA>     
+#> 
+#> $change_log
+#>     uuid question_name      change_type   new_value old_value
+#> 1    all   reason.x.x. variable_removed        <NA>      <NA>
+#> 2    all    reason.x.z variable_removed        <NA>      <NA>
+#> 3    all   reason.x_x_   variable_added        <NA>      <NA>
+#> 4    all    reason.x_z   variable_added        <NA>      <NA>
+#> 5 uuid_1        reason  change_response          yy     xx,yy
+#> 6 uuid_2        reason  change_response     x_x_ zy     xx,zy
+#> 7 uuid_4        reason  change_response x_x_ x_z zy  xx,xz,zy
+#> 8 uuid_6        reason  change_response         x_z        xz
+#> 9 uuid_5        reason   change_respose          yy      <NA>
+#>                                           comment
+#> 1         variable removed from the clean dataset
+#> 2         variable removed from the clean dataset
+#> 3             variable added to the clean dataset
+#> 4             variable added to the clean dataset
+#> 5 Parent column changed to match children columns
+#> 6 Parent column changed to match children columns
+#> 7 Parent column changed to match children columns
+#> 8 Parent column changed to match children columns
+#> 9                             NA changed to value
+```
+
+### 4. Review of the cleaning
+
+#### 4.1 Review cleaning log with clean data and raw data
+
+`review_cleaning_log` function takes raw data, clean data and cleaning
+log as inputs, and it first creates the cleaning log by comparing raw
+data and clean data, then compares it with the user-provided cleaning
+log. Finally, flagged the discrepancies between them (if any).
+
+``` r
+compared_df <- review_cleaning_log(
+  raw_dataset = cleaningtools::cleaningtools_raw_data,
+  raw_dataset_uuid_column = "X_uuid",
+  clean_dataset = cleaningtools::cleaningtools_clean_data,
+  clean_dataset_uuid_column = "X_uuid",
+  cleaning_log = cleaning_log2,
+  cleaning_log_uuid_column = "X_uuid",
+  cleaning_log_question_column = "questions",
+  cleaning_log_new_value_column = "new_value",
+  cleaning_log_old_value_column = "old_value",
+  deletion_log = deletaion_log,
+  deletion_log_uuid_column = "X_uuid",
+  check_for_deletion_log = T
+)
+
+compared_df |> head()
+#> # A tibble: 6 × 8
+#>   uuid    df.question_name df.change_type df.new_value cl.new_value df.old_value
+#>   <chr>   <chr>            <chr>          <chr>        <chr>        <chr>       
+#> 1 1a8023… air_coolers_nb   change_respon… <NA>         4            <NA>        
+#> 2 a37512… air_coolers_nb   change_respon… <NA>         2            <NA>        
+#> 3 bdcca6… air_coolers_nb   no_action      <NA>         <NA>         <NA>        
+#> 4 dd3a99… connection_fees… no_action      <NA>         <NA>         <NA>        
+#> 5 9dac8c… connection_fees… no_action      <NA>         <NA>         <NA>        
+#> 6 2b148a… days_available_… no_action      <NA>         <NA>         <NA>        
+#> # ℹ 2 more variables: cl.old_value <chr>, comment <chr>
+```
+
+#### 4.2 Example:: The `review_others()` function reviews discrepancy between kobo relevancies and the dataset
+
+``` r
+review_others(
+  dataset = cleaningtools::cleaningtools_clean_data,
+  uuid_column = "X_uuid", kobo_survey = cleaningtools::cleaningtools_survey
+) |> head()
+#>                                   uuid                 question old_value
+#> 1 f58a7fda-27e8-4003-90b3-479bebbb99ab consent_telephone_number       yes
+#> 2 956b5ed0-5a62-41b7-aec3-af93fbc5b494 consent_telephone_number       yes
+#> 3 3413afd2-8f05-4a6e-8ec7-5d64dc8fea23 consent_telephone_number       yes
+#> 4 630d0067-d84a-4fd0-8c36-029e87913c40 consent_telephone_number       yes
+#> 5 2cd180e8-7f2b-460b-82b5-fb9d163f8e7b consent_telephone_number       yes
+#> 6 929d60f8-ed9c-4c42-9ee1-cb4a67e4ba27 consent_telephone_number       yes
+#>                                                                                   issue
+#> 1 consent_telephone_number is selected but telephone_number is not found in the dataset
+#> 2 consent_telephone_number is selected but telephone_number is not found in the dataset
+#> 3 consent_telephone_number is selected but telephone_number is not found in the dataset
+#> 4 consent_telephone_number is selected but telephone_number is not found in the dataset
+#> 5 consent_telephone_number is selected but telephone_number is not found in the dataset
+#> 6 consent_telephone_number is selected but telephone_number is not found in the dataset
+#>   check_id                                   check_binding
+#> 1   id- 27 id- 27 ~/~ f58a7fda-27e8-4003-90b3-479bebbb99ab
+#> 2   id- 27 id- 27 ~/~ 956b5ed0-5a62-41b7-aec3-af93fbc5b494
+#> 3   id- 27 id- 27 ~/~ 3413afd2-8f05-4a6e-8ec7-5d64dc8fea23
+#> 4   id- 27 id- 27 ~/~ 630d0067-d84a-4fd0-8c36-029e87913c40
+#> 5   id- 27 id- 27 ~/~ 2cd180e8-7f2b-460b-82b5-fb9d163f8e7b
+#> 6   id- 27 id- 27 ~/~ 929d60f8-ed9c-4c42-9ee1-cb4a67e4ba27
+```
+
+#### 4.3 Example:: `review_sample_frame_with_dataset()`
+
+`review_sample_frame_with_dataset()` compares the sample frame with
+dataset and provide the overview of completed and remaining surveys.
+
+``` r
+review_output <- cleaningtools::review_sample_frame_with_dataset(
+  sample_frame = cleaningtools::cleaningtools_sample_frame,
+  sampling_frame_strata_column = "Neighbourhood",
+  sampling_frame_target_survey_column = "Total.no.of.HH",
+  clean_dataset = cleaningtools::cleaningtools_clean_data,
+  clean_dataset_strata_column = "neighbourhood",
+  consent_column = "consent_remote",
+  consent_yes_value = "yes"
+)
+review_output |> head()
+#>   Managed.by Governorate Neighbourhood Total.no.of.HH Collected Remaining
+#> 1   Talafar       Ninewa            A1             22        22         0
+#> 2   Talafar       Ninewa            A2             19        19         0
+#> 3   Talafar       Ninewa            A3              5         5         0
+#> 4   Talafar       Ninewa            A4              6         6         0
+#> 5   Talafar       Ninewa            B1             12        12         0
+#> 6   Talafar       Ninewa            B2             15        15         0
 ```
 
 ## Code of Conduct

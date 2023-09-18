@@ -67,8 +67,8 @@ create_logic_for_other <- function(kobo_survey,
             type == "select_one" ~
               paste0(parent, " == \"", other_choice, "\""),
             T ~ paste0(
-              "(", parent, sm_seperator, other_choice, " == TRUE | ",
-              parent, sm_seperator, other_choice, " == 1 ) & !is.na(", parent, sm_seperator, other_choice, ")"
+              "(`", parent, sm_seperator, other_choice, "` == TRUE | `",
+              parent, sm_seperator, other_choice, "` == 1 ) & !is.na(`", parent, sm_seperator, other_choice, "`)"
             )
           )
         ) |>
@@ -137,8 +137,8 @@ create_logic_for_other <- function(kobo_survey,
     list_of_logic[["select_multiple_is_not_na"]] <- kobo_select_multiple |>
       dplyr::mutate(
         logic = paste0(
-          "!is.na(", name, ") & (", parent, sm_seperator, other_choice, "==0 |",
-          parent, sm_seperator, other_choice, "==FALSE | is.na(", parent, sm_seperator, other_choice, "))"
+          "!is.na(", name, ") & (`", parent, sm_seperator, other_choice, "`==0 |`",
+          parent, sm_seperator, other_choice, "`==FALSE | is.na(`", parent, sm_seperator, other_choice, "`))"
         )
       ) |>
       dplyr::mutate(
@@ -152,8 +152,8 @@ create_logic_for_other <- function(kobo_survey,
     list_of_logic[["select_multiple_is_na"]] <- kobo_select_multiple |>
       dplyr::mutate(
         logic = paste0(
-          "is.na(", name, ") & (", parent, sm_seperator, other_choice, "==1 |",
-          parent, sm_seperator, other_choice, "== TRUE)"
+          "is.na(", name, ") & (`", parent, sm_seperator, other_choice, "`==1 |`",
+          parent, sm_seperator, other_choice, "`== TRUE)"
         )
       ) |>
       dplyr::mutate(

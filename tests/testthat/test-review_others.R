@@ -191,3 +191,16 @@ testthat::test_that("expect equal", {
 
   testthat::expect_equal(actual, expected)
 })
+
+testthat::test_that("Test that create_logic_for_others select multiple is correctly picked", {
+  # Test that review_others works correctly with select multiple and / separator
+  test_data <- cleaningtools_clean_data
+  names(test_data) <- gsub("\\.", "/", names(test_data))
+  names(test_data)[1] <- "start"
+  expect_no_error(review_others(test_data,
+    uuid = "X_uuid",
+    kobo_survey = cleaningtools_survey,
+    sm_sep = "/"
+  )) %>%
+    suppressWarnings()
+})
