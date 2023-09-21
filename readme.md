@@ -564,7 +564,24 @@ soft_duplicates <- check_soft_duplicates(
 )
 
 soft_duplicates[["soft_duplicate_log"]] %>% head()
-#>                                 X_uuid num_cols_not_NA total_columns_compared
+#> [1] uuid                     num_cols_not_NA          total_columns_compared  
+#> [4] num_cols_dont_know       id_most_similar_survey   number_different_columns
+#> [7] issue                   
+#> <0 rows> (or 0-length row.names)
+
+soft_duplicates <- check_soft_duplicates(
+  dataset = cleaningtools_raw_data,
+  kobo_survey = cleaningtools_survey,
+  uuid_column = "X_uuid",
+  idnk_value = "dont_know",
+  sm_seperator = ".",
+  log_name = "soft_duplicate_log",
+  threshold = 7, 
+  return_all_results = TRUE
+)
+
+soft_duplicates[["soft_duplicate_log"]] %>% head()
+#>                                   uuid num_cols_not_NA total_columns_compared
 #> 1 3370f726-395a-4675-94fe-9e745e0b36e9              75                    148
 #> 2 93095da3-5291-4d16-a19a-41bf13144bfe              85                    148
 #> 3 db5e05db-94e9-44aa-9206-3e1c17a7a233              85                    148
@@ -600,7 +617,8 @@ soft_per_enum <- group_by_enum_raw_data %>%
     uuid_column = "X_uuid", idnk_value = "dont_know",
     sm_seperator = ".",
     log_name = "soft_duplicate_log",
-    threshold = 7
+    threshold = 7, 
+    return_all_results = TRUE
   ))
 soft_per_enum %>%
   purrr::map(~ .[["soft_duplicate_log"]]) %>%
@@ -610,7 +628,7 @@ soft_per_enum %>%
   ) %>%
   do.call(dplyr::bind_rows, .) %>%
   head()
-#>                                 X_uuid num_cols_not_NA total_columns_compared
+#>                                   uuid num_cols_not_NA total_columns_compared
 #> 1 44614627-c152-4f24-a3ca-87a58b2f2e3f              65                    118
 #> 2 a537a7a3-468c-4661-8b7b-93e43e9b8a3b              63                    118
 #> 3 4cf2c1c2-75a9-4be1-ab1a-09e0b0bec0bd              87                    118
@@ -828,11 +846,13 @@ The function `add_info_to_cleaning_log()` is designed to add information
 from the dataset into the cleaning log.
 
 ``` r
-add_with_info |> 
-  create_xlsx_cleaning_log(kobo_survey = cleaningtools_survey,
-                           kobo_choices = cleaningtools_choices,
-                           use_dropdown = TRUE,
-                           output_path = "mycleaninglog.xlsx")
+add_with_info |>
+  create_xlsx_cleaning_log(
+    kobo_survey = cleaningtools_survey,
+    kobo_choices = cleaningtools_choices,
+    use_dropdown = TRUE,
+    output_path = "mycleaninglog.xlsx"
+  )
 ```
 
 ### 3. Create a clean data
