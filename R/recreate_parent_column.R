@@ -45,12 +45,18 @@ auto_sm_parent_children <- function(dataset, sm_seperator = ".") {
 
 
 
-#' This function recreates the concerted columns for select multiple questions
+#' This function recreates the columns for select multiple questions
+#'
 #' @param dataset data frame
 #' @param uuid_column uuid column in the dataset. Default is "uuid".
 #' @param kobo_survey Kobo survey sheet.
 #' @param kobo_choices Kobo choices sheet.
 #' @param sm_seperator Separator for choice multiple questions. The default is "."
+#' @param cleaning_log_to_append A cleaning log where to add the changes from this functions.
+#' Names of the log from this function are  "uuid", "question", "change_type", "new_value",
+#' "old_value", "comment". If the cleaning_log_to_append names are not matching, the only way is to
+#' create without a cleaning_log_to_append, and rename the columns and then bind.
+#'
 #' @export
 #' @examples
 #' test_data <- dplyr::tibble(
@@ -136,9 +142,6 @@ recreate_parent_column <- function(dataset,
       select_multiple |> dplyr::filter(sm_child %in% names(dataset))
   }
 
-
-
-
   if (nrow(select_multiple) > 0) {
     select_multiple_list <- list()
 
@@ -162,7 +165,8 @@ recreate_parent_column <- function(dataset,
           values_to = "value"
         ) %>%
         dplyr::filter(value == 1 |
-                        value == TRUE | value == "1" | value == "TRUE") %>%
+                        value == TRUE |
+                        value == "1" | value == "TRUE") %>%
         dplyr::group_by(!!rlang::sym(uuid_column)) %>%
         dplyr::summarise(!!rlang::sym(concat_col) := paste0(cols, collapse = " "))
 
@@ -208,16 +212,16 @@ recreate_parent_column <- function(dataset,
         )
     }
 
-    if(!is.null(cleaning_log_to_append)){
-      list_to_return <- list(data_with_fix_concat = data_with_fix_concat,
-                             cleaning_log = dplyr::bind_rows(cleaning_log_to_append,
-                                                             correction_parent_sm_log)
+    if (!is.null(cleaning_log_to_append)) {
+      list_to_return <- list(
+        data_with_fix_concat = data_with_fix_concat,
+        cleaning_log = dplyr::bind_rows(cleaning_log_to_append,
+                                        correction_parent_sm_log)
       )
 
     } else {
       list_to_return <- list(data_with_fix_concat = data_with_fix_concat,
-                             correction_parent_sm_log = correction_parent_sm_log
-                             )
+                             correction_parent_sm_log = correction_parent_sm_log)
     }
   }
 
@@ -225,8 +229,7 @@ recreate_parent_column <- function(dataset,
     correction_parent_sm_log <- data.frame(uuid = "all",
                                            comment = "No choice multiple questions/Nothing has changed")
     list_to_return <- list(data_with_fix_concat = dataset,
-                           correction_parent_sm_log = correction_parent_sm_log
-    )
+                           correction_parent_sm_log = correction_parent_sm_log)
   }
 
   return(list_to_return)

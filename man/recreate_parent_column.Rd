@@ -2,7 +2,7 @@
 % Please edit documentation in R/recreate_parent_column.R
 \name{recreate_parent_column}
 \alias{recreate_parent_column}
-\title{This function recreates the concerted columns for select multiple questions}
+\title{This function recreates the columns for select multiple questions}
 \usage{
 recreate_parent_column(
   dataset,
@@ -23,9 +23,14 @@ recreate_parent_column(
 \item{kobo_choices}{Kobo choices sheet.}
 
 \item{sm_seperator}{Separator for choice multiple questions. The default is "."}
+
+\item{cleaning_log_to_append}{A cleaning log where to add the changes from this functions.
+Names of the log from this function are  "uuid", "question", "change_type", "new_value",
+"old_value", "comment". If the cleaning_log_to_append names are not matching, the only way is to
+create without a cleaning_log_to_append, and rename the columns and then bind.}
 }
 \description{
-This function recreates the concerted columns for select multiple questions
+This function recreates the columns for select multiple questions
 }
 \examples{
 test_data <- dplyr::tibble(

@@ -24,7 +24,7 @@ create_cleaning_log <- function(raw_dataset,
                                 check_for_deletion_log = T,
                                 columns_not_to_check = NULL,
                                 check_for_variable_name = T) {
-  my_bind_row <- get("bind_rows", asNamespace("dplyr"))
+  # my_bind_row <- get("bind_rows", asNamespace("dplyr"))
 
   raw_dataset <- raw_dataset %>%
     dplyr::mutate_all(as.character) %>%
@@ -203,7 +203,7 @@ create_cleaning_log <- function(raw_dataset,
       message(x)
     }, clean_dataset = clean_dataset, raw_dataset = raw_dataset) %>% do.call(rbind, .)
 
-  all_log <- do.call("my_bind_row", log)
+  all_log <- do.call(dplyr::bind_rows, log)
   if (nrow(all_log) > 0) {
     all_log <- all_log |> dplyr::select(dplyr::any_of(
       c(
@@ -308,7 +308,7 @@ review_cleaning_log <- function(raw_dataset,
     stop("Cleaning log old value column is not found")
   }
 
-  my_bind_row <- get("bind_rows", asNamespace("dplyr"))
+  # my_bind_row <- get("bind_rows", asNamespace("dplyr"))
 
   clean_dataset <- clean_dataset %>% dplyr::mutate_all(as.character)
   raw_dataset <- raw_dataset %>% dplyr::mutate_all(as.character)
@@ -619,7 +619,7 @@ review_cleaning_log <- function(raw_dataset,
               cl.new_value = cleaning_log_new_value_column)
 
   cleaning_log_issue <-
-    do.call("my_bind_row", missing_in_cleaning_log) %>%
+    do.call(dplyr::bind_rows, missing_in_cleaning_log) %>%
     dplyr::select(dplyr::any_of(
       c(
         "uuid",

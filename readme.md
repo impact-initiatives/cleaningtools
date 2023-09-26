@@ -984,7 +984,7 @@ cleaningtools::recreate_parent_column(dataset = test_data, uuid_column = "uuid",
 #> 6 uuid_2      reason  change_response     x_x_ zy     xx,zy
 #> 7 uuid_4      reason  change_response x_x_ x_z zy  xx,xz,zy
 #> 8 uuid_6      reason  change_response         x_z        xz
-#> 9 uuid_5      reason   change_respose          yy      <NA>
+#> 9 uuid_5      reason  change_response          yy      <NA>
 #>                                           comment
 #> 1         variable removed from the clean dataset
 #> 2         variable removed from the clean dataset
