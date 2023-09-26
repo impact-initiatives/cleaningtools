@@ -289,6 +289,19 @@ soft_duplicates <- check_soft_duplicates(
 )
 
 soft_duplicates[["soft_duplicate_log"]] %>% head()
+
+soft_duplicates <- check_soft_duplicates(
+  dataset = cleaningtools_raw_data,
+  kobo_survey = cleaningtools_survey,
+  uuid_column = "X_uuid",
+  idnk_value = "dont_know",
+  sm_seperator = ".",
+  log_name = "soft_duplicate_log",
+  threshold = 7, 
+  return_all_results = TRUE
+)
+
+soft_duplicates[["soft_duplicate_log"]] %>% head()
 ```
 
 To use it grouping by enumerator:
@@ -303,7 +316,8 @@ soft_per_enum <- group_by_enum_raw_data %>%
     uuid_column = "X_uuid", idnk_value = "dont_know",
     sm_seperator = ".",
     log_name = "soft_duplicate_log",
-    threshold = 7
+    threshold = 7, 
+    return_all_results = TRUE
   ))
 soft_per_enum %>%
   purrr::map(~ .[["soft_duplicate_log"]]) %>%
@@ -404,11 +418,13 @@ add_with_info$cleaning_log |> head()
 
 The function `add_info_to_cleaning_log()` is designed to add information from the dataset into the cleaning log.
 ```{r eval = FALSE}
-add_with_info |> 
-  create_xlsx_cleaning_log(kobo_survey = cleaningtools_survey,
-                           kobo_choices = cleaningtools_choices,
-                           use_dropdown = TRUE,
-                           output_path = "mycleaninglog.xlsx")
+add_with_info |>
+  create_xlsx_cleaning_log(
+    kobo_survey = cleaningtools_survey,
+    kobo_choices = cleaningtools_choices,
+    use_dropdown = TRUE,
+    output_path = "mycleaninglog.xlsx"
+  )
 ```
 
 ### 3. Create a clean data

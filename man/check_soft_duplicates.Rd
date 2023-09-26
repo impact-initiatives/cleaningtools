@@ -11,7 +11,8 @@ check_soft_duplicates(
   idnk_value = "idnk",
   sm_seperator = ".",
   log_name = "soft_duplicate_log",
-  threshold = 7
+  threshold = 7,
+  return_all_results = FALSE
 )
 }
 \arguments{
@@ -28,7 +29,10 @@ stored as "checked_dataset"}
 
 \item{log_name}{Name of the log dataframe flagged in the end of the function}
 
-\item{threshold}{flag all entries below specified threshold. The default is 7.}
+\item{threshold}{flag all entries less or equal a specified threshold. The default is 7.}
+
+\item{return_all_results}{By default, the function will return only the values that are under the
+threshold. Default is FALSE.}
 }
 \value{
 return a list with the dataset checked stored as checked_dataset and
@@ -47,6 +51,7 @@ soft_duplicates <- check_soft_duplicates(
   log_name = "soft_duplicate_log",
   threshold = 7
 )
+
 group_by_enum_raw_data <- cleaningtools_raw_data \%>\%
   dplyr::group_by(enumerator_num)
 
@@ -58,7 +63,8 @@ soft_per_enum <- group_by_enum_raw_data \%>\%
     uuid_column = "X_uuid", idnk_value = "dont_know",
     sm_seperator = ".",
     log_name = "soft_duplicate_log",
-    threshold = 7
+    threshold = 7,
+    return_all_results = TRUE
   ))
 soft_per_enum \%>\%
   purrr::map(~ .[["soft_duplicate_log"]]) \%>\%

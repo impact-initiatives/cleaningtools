@@ -7,7 +7,9 @@
 #' @param idnk_value String character for the value of the "I don't know" value
 #' @param sm_seperator Separator for choice multiple questions. The default is "."
 #' @param log_name Name of the log dataframe flagged in the end of the function
-#' @param threshold flag all entries below specified threshold. The default is 7.
+#' @param threshold flag all entries less or equal a specified threshold. The default is 7.
+#' @param return_all_results By default, the function will return only the values that are under the
+#' threshold. Default is FALSE.
 #'
 #' @return return a list with the dataset checked stored as checked_dataset and
 #' a dataframe with the soft duplicate log
@@ -23,6 +25,7 @@
 #'   log_name = "soft_duplicate_log",
 #'   threshold = 7
 #' )
+#'
 #' group_by_enum_raw_data <- cleaningtools_raw_data %>%
 #'   dplyr::group_by(enumerator_num)
 #'
@@ -34,7 +37,8 @@
 #'     uuid_column = "X_uuid", idnk_value = "dont_know",
 #'     sm_seperator = ".",
 #'     log_name = "soft_duplicate_log",
-#'     threshold = 7
+#'     threshold = 7,
+#'     return_all_results = TRUE
 #'   ))
 #' soft_per_enum %>%
 #'   purrr::map(~ .[["soft_duplicate_log"]]) %>%
@@ -49,7 +53,8 @@ check_soft_duplicates <- function(dataset,
                                   idnk_value = "idnk",
                                   sm_seperator = ".",
                                   log_name = "soft_duplicate_log",
-                                  threshold = 7) {
+                                  threshold = 7,
+                                  return_all_results = FALSE) {
   if (is.data.frame(dataset)) {
     dataset <- list(checked_dataset = dataset)
   }
@@ -116,7 +121,21 @@ check_soft_duplicates <- function(dataset,
   outdata[["id_most_similar_survey"]] <- uuids[as.numeric(names(r))]
   outdata[["number_different_columns"]] <- as.numeric(r)
   outdata[["issue"]][outdata[["number_different_columns"]] <= threshold] <- glue::glue("Less than ", threshold, " differents options")
-  outdata <- outdata %>% dplyr::arrange(number_different_columns, !!rlang::sym(uuid_column))
+  outdata <- outdata %>%
+    dplyr::arrange(number_different_columns, !!rlang::sym(uuid_column))
+
+  names(outdata)[names(outdata) == uuid_column] <- "uuid"
+
+  if (!return_all_results) {
+    outdata <- outdata %>%
+      dplyr::filter(!is.na(issue))
+  }
+
+  if(nrow(outdata) == 0) {
+    outdata <- outdata %>%
+      dplyr::select(uuid, issue)
+  }
+
   dataset[[log_name]] <- as.data.frame(outdata)
   return(dataset)
 }

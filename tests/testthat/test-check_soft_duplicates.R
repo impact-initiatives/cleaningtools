@@ -21,11 +21,12 @@ testthat::test_that("Exact equals", {
   actual_output <- check_soft_duplicates(
     dataset = cleaningtools::cleaningtools_raw_data,
     kobo_survey = cleaningtools::cleaningtools_survey,
-    uuid_column = "X_uuid", idnk_value = "dont_know"
+    uuid_column = "X_uuid", idnk_value = "dont_know",
+    return_all_results = TRUE
   )[[2]] %>% head()
 
   expected_output <- data.frame(
-    X_uuid = c(
+    uuid = c(
       "3370f726-395a-4675-94fe-9e745e0b36e9",
       "93095da3-5291-4d16-a19a-41bf13144bfe",
       "db5e05db-94e9-44aa-9206-3e1c17a7a233",
@@ -55,10 +56,11 @@ testthat::test_that("Check all uuids", {
   actual_output <- check_soft_duplicates(
     dataset = cleaningtools::cleaningtools_raw_data,
     kobo_survey = cleaningtools::cleaningtools_survey,
-    uuid_column = "X_uuid", idnk_value = "dont_know"
+    uuid_column = "X_uuid", idnk_value = "dont_know",
+    return_all_results = TRUE
   )[[2]] %>%
-    dplyr::arrange(X_uuid) %>%
-    dplyr::select(X_uuid) %>%
+    dplyr::arrange(uuid) %>%
+    dplyr::select(uuid) %>%
     dplyr::pull()
   expected_output <- cleaningtools::cleaningtools_raw_data %>%
     dplyr::arrange(X_uuid) %>%
@@ -75,4 +77,53 @@ testthat::test_that("Returns a list of 2 dataframe", {
   )
   testthat::expect_equal(length(actual_output), 2)
   testthat::expect_equal(names(actual_output), c("checked_dataset", "soft_duplicate_log"))
+})
+
+
+testthat::test_that("Test the argument return_all_results filters correctly", {
+  # default threshold
+  treshold_7_actual_output <- check_soft_duplicates(
+    dataset = cleaningtools::cleaningtools_raw_data,
+    kobo_survey = cleaningtools::cleaningtools_survey,
+    uuid_column = "X_uuid", idnk_value = "dont_know",
+    return_all_results = FALSE,
+  )[[2]]
+
+  treshold_7_expected_output <- data.frame(
+    uuid = character(),
+    issue = character()
+  )
+
+  testthat::expect_equal(treshold_7_actual_output, treshold_7_expected_output)
+
+  # treshold set to 9
+  treshold_9_actual_output <- check_soft_duplicates(
+    dataset = cleaningtools::cleaningtools_raw_data,
+    kobo_survey = cleaningtools::cleaningtools_survey,
+    uuid_column = "X_uuid", idnk_value = "dont_know",
+    threshold = 9,
+    return_all_results = FALSE,
+  )[[2]]
+
+
+  treshold_9_expected_output <- data.frame(
+    uuid = c(
+      "3370f726-395a-4675-94fe-9e745e0b36e9",
+      "93095da3-5291-4d16-a19a-41bf13144bfe",
+      "db5e05db-94e9-44aa-9206-3e1c17a7a233",
+      "dc7bf25b-e18b-4b9e-bb34-5d7a1e762eb2"
+    ),
+    num_cols_not_NA = c(75, 85, 85, 75),
+    total_columns_compared = c(148, 148, 148, 148),
+    num_cols_dont_know = c(0, 0, 0, 0),
+    id_most_similar_survey = c(
+      "dc7bf25b-e18b-4b9e-bb34-5d7a1e762eb2",
+      "db5e05db-94e9-44aa-9206-3e1c17a7a233",
+      "93095da3-5291-4d16-a19a-41bf13144bfe",
+      "3370f726-395a-4675-94fe-9e745e0b36e9"
+    ),
+    number_different_columns = c(9, 9, 9, 9),
+    issue = rep("Less than 9 differents options", 4)
+  )
+  testthat::expect_equal(treshold_9_actual_output, treshold_9_expected_output)
 })
