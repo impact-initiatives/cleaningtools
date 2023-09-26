@@ -14,7 +14,7 @@ Description: The cleaningtools package focuses on cleaning, and has three
     cleaning, such as the cleaning log from the checks, clean data, and
     enumerator performance.  **Review**, which includes a set of functions
     to review the cleaning, such as reviewing the cleaning.
-License: MIT + file LICENSE
+License: MIT
 Depends: 
     R (>= 2.10)
 Imports:
