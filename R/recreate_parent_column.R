@@ -73,7 +73,8 @@ recreate_parent_column <- function(dataset,
                                    uuid_column = "uuid",
                                    kobo_survey = NULL,
                                    kobo_choices = NULL,
-                                   sm_seperator = ".") {
+                                   sm_seperator = ".",
+                                   cleaning_log_to_append = NULL) {
   checked_data <- dataset
 
   initial_order <- names(dataset)
@@ -134,6 +135,8 @@ recreate_parent_column <- function(dataset,
     select_multiple <-
       select_multiple |> dplyr::filter(sm_child %in% names(dataset))
   }
+
+
 
 
   if (nrow(select_multiple) > 0) {
@@ -205,20 +208,27 @@ recreate_parent_column <- function(dataset,
         )
     }
 
-    return(
-      list(
-        data_with_fix_concat = data_with_fix_concat,
-        correction_parent_sm_log = correction_parent_sm_log
+    if(!is.null(cleaning_log_to_append)){
+      list_to_return <- list(data_with_fix_concat = data_with_fix_concat,
+                             cleaning_log = dplyr::bind_rows(cleaning_log_to_append,
+                                                             correction_parent_sm_log)
       )
-    )
+
+    } else {
+      list_to_return <- list(data_with_fix_concat = data_with_fix_concat,
+                             correction_parent_sm_log = correction_parent_sm_log
+                             )
+    }
   }
 
   if (nrow(select_multiple) == 0) {
-    return(
-      list(
-        data_with_fix_concat = checked_data,
-        correction_parent_sm_log = "No choice multiple questions/Nothing has changed"
-      )
+    correction_parent_sm_log <- data.frame(uuid = "all",
+                                           comment = "No choice multiple questions/Nothing has changed")
+    list_to_return <- list(data_with_fix_concat = dataset,
+                           correction_parent_sm_log = correction_parent_sm_log
     )
   }
+
+  return(list_to_return)
+
 }

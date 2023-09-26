@@ -9,7 +9,8 @@ recreate_parent_column(
   uuid_column = "uuid",
   kobo_survey = NULL,
   kobo_choices = NULL,
-  sm_seperator = "."
+  sm_seperator = ".",
+  cleaning_log_to_append = NULL
 )
 }
 \arguments{

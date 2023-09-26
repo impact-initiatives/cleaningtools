@@ -567,7 +567,8 @@ test_that("recreate other columns/with no choice multiple", {
   testthat::expect_equal(length(actual_result), 2)
   testthat::expect_equal(
     actual_result$correction_parent_sm_log,
-    "No choice multiple questions/Nothing has changed"
+    data.frame(uuid = "all",
+               comment = "No choice multiple questions/Nothing has changed")
   )
   testthat::expect_equal(actual_result$data_with_fix_concat, test_data)
 })
@@ -603,5 +604,43 @@ test_that("names of the log matches the cleaning logs", {
   expect_true(all(
     names(actual_output$correction_parent_sm_log) %in% expected_names
   ))
+
+})
+
+test_that("if the argument cleaning_log_to_append is present, the log will be appended", {
+  test_data <- dplyr::tibble(
+    uuid = paste0("uuid_", 1:6),
+    gender = rep(c("male", "female"), 3),
+    reason = c("xx,yy", "xx,zy",
+               "zy", "xx,xz,zy",
+               NA_character_, "xz"),
+    reason.xx = c(0, 1, 0, 1, 0, 0),
+    reason.yy = c(1, 0, 0, 0, 1, 0),
+    reason.xz = c(0, 0, 0, 1, 0, 1),
+    reason.zy = c(0, 1, 1, 1, 0, 0),
+    reason_zy = c(NA_character_, "A", "B", "C", NA_character_, NA_character_)
+  )
+
+  test_log <- data.frame(uuid = "uuid_1",
+                         old_value = "female",
+                         question = "gender",
+                         issue = "test",
+                         change_type = "change_response",
+                         new_value = "male")
+
+  expected_output <- data.frame(uuid = c("uuid_1", "uuid_1", "uuid_2", "uuid_4", "uuid_5"),
+                                old_value = c("female", "xx,yy", "xx,zy", "xx,xz,zy", NA),
+                                question = c("gender", rep("reason", 4)),
+                                issue = c("test", rep(NA,4)),
+                                change_type = rep("change_response", 5),
+                                new_value = c("male", "yy", "xx zy", "xx xz zy", "yy"),
+                                comment = c(NA, rep("Parent column changed to match children columns", 3),"NA changed to value"))
+
+  actual_output <- recreate_parent_column(dataset = test_data,
+                                          uuid_column = "uuid",
+                                          sm_seperator = ".",
+                                          cleaning_log_to_append = test_log)
+
+  expect_equal(actual_output$cleaning_log, expected_output)
 
 })

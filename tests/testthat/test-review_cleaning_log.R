@@ -277,8 +277,8 @@ testthat::test_that("create cleaning log with no deletion survey", {
         "variable_added",
         "change_response",
         "change_response",
-        "change_respose",
-        "change_respose",
+        "change_response",
+        "change_response",
         "blank_response",
         "blank_response"
       ),
@@ -333,8 +333,8 @@ testthat::test_that("create cleaning log with no deletion survey", {
         "variable_added",
         "change_response",
         "change_response",
-        "change_respose",
-        "change_respose",
+        "change_response",
+        "change_response",
         "blank_response",
         "blank_response"
       ),
@@ -805,8 +805,8 @@ testthat::test_that("Test related to deletion and added surveys", {
         "change_response",
         "change_response",
         "change_response",
-        "change_respose",
-        "change_respose"
+        "change_response",
+        "change_response"
       ),
       df.new_value = c(NA, NA, "male", "female",
                        "444", "88", "male", "44"),

@@ -169,7 +169,7 @@ create_cleaning_log <- function(raw_dataset,
         check <- check[index,]
         names(check) <- c("uuid", "new_value", "old_value")
         check$question <- x
-        check$change_type <- "change_respose"
+        check$change_type <- "change_response"
         check$comment <- "NA changed to value"
         return(check)
       }
