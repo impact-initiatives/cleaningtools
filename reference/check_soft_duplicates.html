@@ -49,7 +49,8 @@
 <span>  idnk_value <span class="op">=</span> <span class="st">"idnk"</span>,</span>
 <span>  sm_seperator <span class="op">=</span> <span class="st">"."</span>,</span>
 <span>  log_name <span class="op">=</span> <span class="st">"soft_duplicate_log"</span>,</span>
-<span>  threshold <span class="op">=</span> <span class="fl">7</span></span>
+<span>  threshold <span class="op">=</span> <span class="fl">7</span>,</span>
+<span>  return_all_results <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -81,7 +82,12 @@ stored as "checked_dataset"</p></dd>
 
 
 <dt>threshold</dt>
-<dd><p>flag all entries below specified threshold. The default is 7.</p></dd>
+<dd><p>flag all entries less or equal a specified threshold. The default is 7.</p></dd>
+
+
+<dt>return_all_results</dt>
+<dd><p>By default, the function will return only the values that are under the
+threshold. Default is FALSE.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -103,6 +109,7 @@ a dataframe with the soft duplicate log</p>
 <span class="r-in"><span>  log_name <span class="op">=</span> <span class="st">"soft_duplicate_log"</span>,</span></span>
 <span class="r-in"><span>  threshold <span class="op">=</span> <span class="fl">7</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">group_by_enum_raw_data</span> <span class="op">&lt;-</span> <span class="va">cleaningtools_raw_data</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">enumerator_num</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -114,7 +121,8 @@ a dataframe with the soft duplicate log</p>
 <span class="r-in"><span>    uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>, idnk_value <span class="op">=</span> <span class="st">"dont_know"</span>,</span></span>
 <span class="r-in"><span>    sm_seperator <span class="op">=</span> <span class="st">"."</span>,</span></span>
 <span class="r-in"><span>    log_name <span class="op">=</span> <span class="st">"soft_duplicate_log"</span>,</span></span>
-<span class="r-in"><span>    threshold <span class="op">=</span> <span class="fl">7</span></span></span>
+<span class="r-in"><span>    threshold <span class="op">=</span> <span class="fl">7</span>,</span></span>
+<span class="r-in"><span>    return_all_results <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">soft_per_enum</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="op">~</span> <span class="va">.</span><span class="op">[[</span><span class="st">"soft_duplicate_log"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
@@ -123,7 +131,7 @@ a dataframe with the soft duplicate log</p>
 <span class="r-in"><span>    <span class="op">~</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">.x</span>, enum <span class="op">=</span> <span class="va">.y</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="va"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span>, <span class="va">.</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                   X_uuid num_cols_not_NA total_columns_compared</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                     uuid num_cols_not_NA total_columns_compared</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   44614627-c152-4f24-a3ca-87a58b2f2e3f              65                    118</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   a537a7a3-468c-4661-8b7b-93e43e9b8a3b              63                    118</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3   4cf2c1c2-75a9-4be1-ab1a-09e0b0bec0bd              87                    118</span>

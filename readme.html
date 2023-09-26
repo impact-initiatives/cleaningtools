@@ -538,7 +538,24 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">soft_duplicates</span><span class="op">[[</span><span class="st">"soft_duplicate_log"</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                                 X_uuid num_cols_not_NA total_columns_compared</span></span>
+<span><span class="co">#&gt; [1] uuid                     num_cols_not_NA          total_columns_compared  </span></span>
+<span><span class="co">#&gt; [4] num_cols_dont_know       id_most_similar_survey   number_different_columns</span></span>
+<span><span class="co">#&gt; [7] issue                   </span></span>
+<span><span class="co">#&gt; &lt;0 rows&gt; (or 0-length row.names)</span></span>
+<span></span>
+<span><span class="va">soft_duplicates</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/check_soft_duplicates.html">check_soft_duplicates</a></span><span class="op">(</span></span>
+<span>  dataset <span class="op">=</span> <span class="va">cleaningtools_raw_data</span>,</span>
+<span>  kobo_survey <span class="op">=</span> <span class="va">cleaningtools_survey</span>,</span>
+<span>  uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span>
+<span>  idnk_value <span class="op">=</span> <span class="st">"dont_know"</span>,</span>
+<span>  sm_seperator <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  log_name <span class="op">=</span> <span class="st">"soft_duplicate_log"</span>,</span>
+<span>  threshold <span class="op">=</span> <span class="fl">7</span>, </span>
+<span>  return_all_results <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">soft_duplicates</span><span class="op">[[</span><span class="st">"soft_duplicate_log"</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                                   uuid num_cols_not_NA total_columns_compared</span></span>
 <span><span class="co">#&gt; 1 3370f726-395a-4675-94fe-9e745e0b36e9              75                    148</span></span>
 <span><span class="co">#&gt; 2 93095da3-5291-4d16-a19a-41bf13144bfe              85                    148</span></span>
 <span><span class="co">#&gt; 3 db5e05db-94e9-44aa-9206-3e1c17a7a233              85                    148</span></span>
@@ -571,7 +588,8 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span>    uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>, idnk_value <span class="op">=</span> <span class="st">"dont_know"</span>,</span>
 <span>    sm_seperator <span class="op">=</span> <span class="st">"."</span>,</span>
 <span>    log_name <span class="op">=</span> <span class="st">"soft_duplicate_log"</span>,</span>
-<span>    threshold <span class="op">=</span> <span class="fl">7</span></span>
+<span>    threshold <span class="op">=</span> <span class="fl">7</span>, </span>
+<span>    return_all_results <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">soft_per_enum</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="op">~</span> <span class="va">.</span><span class="op">[[</span><span class="st">"soft_duplicate_log"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
@@ -581,7 +599,7 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span>  <span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="va"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span>, <span class="va">.</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                                 X_uuid num_cols_not_NA total_columns_compared</span></span>
+<span><span class="co">#&gt;                                   uuid num_cols_not_NA total_columns_compared</span></span>
 <span><span class="co">#&gt; 1 44614627-c152-4f24-a3ca-87a58b2f2e3f              65                    118</span></span>
 <span><span class="co">#&gt; 2 a537a7a3-468c-4661-8b7b-93e43e9b8a3b              63                    118</span></span>
 <span><span class="co">#&gt; 3 4cf2c1c2-75a9-4be1-ab1a-09e0b0bec0bd              87                    118</span></span>
@@ -780,11 +798,13 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <a class="anchor" aria-label="anchor" href="#id_23-create_xlsx_cleaning_log"></a></h4>
 <p>The function <code><a href="reference/add_info_to_cleaning_log.html">add_info_to_cleaning_log()</a></code> is designed to add information from the dataset into the cleaning log.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">add_with_info</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="reference/create_xlsx_cleaning_log.html">create_xlsx_cleaning_log</a></span><span class="op">(</span>kobo_survey <span class="op">=</span> <span class="va">cleaningtools_survey</span>,</span>
-<span>                           kobo_choices <span class="op">=</span> <span class="va">cleaningtools_choices</span>,</span>
-<span>                           use_dropdown <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                           output_path <span class="op">=</span> <span class="st">"mycleaninglog.xlsx"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">add_with_info</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/create_xlsx_cleaning_log.html">create_xlsx_cleaning_log</a></span><span class="op">(</span></span>
+<span>    kobo_survey <span class="op">=</span> <span class="va">cleaningtools_survey</span>,</span>
+<span>    kobo_choices <span class="op">=</span> <span class="va">cleaningtools_choices</span>,</span>
+<span>    use_dropdown <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    output_path <span class="op">=</span> <span class="st">"mycleaninglog.xlsx"</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
