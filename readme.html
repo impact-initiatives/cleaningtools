@@ -930,17 +930,17 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="co">#&gt; 5 uuid_5 male   yy                    0         1          0         0 &lt;NA&gt;     </span></span>
 <span><span class="co">#&gt; 6 uuid_6 female x_z                   0         0          1         0 &lt;NA&gt;     </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $change_log</span></span>
-<span><span class="co">#&gt;     uuid question_name      change_type   new_value old_value</span></span>
-<span><span class="co">#&gt; 1    all   reason.x.x. variable_removed        &lt;NA&gt;      &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 2    all    reason.x.z variable_removed        &lt;NA&gt;      &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 3    all   reason.x_x_   variable_added        &lt;NA&gt;      &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 4    all    reason.x_z   variable_added        &lt;NA&gt;      &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 5 uuid_1        reason  change_response          yy     xx,yy</span></span>
-<span><span class="co">#&gt; 6 uuid_2        reason  change_response     x_x_ zy     xx,zy</span></span>
-<span><span class="co">#&gt; 7 uuid_4        reason  change_response x_x_ x_z zy  xx,xz,zy</span></span>
-<span><span class="co">#&gt; 8 uuid_6        reason  change_response         x_z        xz</span></span>
-<span><span class="co">#&gt; 9 uuid_5        reason   change_respose          yy      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; $correction_parent_sm_log</span></span>
+<span><span class="co">#&gt;     uuid    question      change_type   new_value old_value</span></span>
+<span><span class="co">#&gt; 1    all reason.x.x. variable_removed        &lt;NA&gt;      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 2    all  reason.x.z variable_removed        &lt;NA&gt;      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 3    all reason.x_x_   variable_added        &lt;NA&gt;      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 4    all  reason.x_z   variable_added        &lt;NA&gt;      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 5 uuid_1      reason  change_response          yy     xx,yy</span></span>
+<span><span class="co">#&gt; 6 uuid_2      reason  change_response     x_x_ zy     xx,zy</span></span>
+<span><span class="co">#&gt; 7 uuid_4      reason  change_response x_x_ x_z zy  xx,xz,zy</span></span>
+<span><span class="co">#&gt; 8 uuid_6      reason  change_response         x_z        xz</span></span>
+<span><span class="co">#&gt; 9 uuid_5      reason  change_response          yy      &lt;NA&gt;</span></span>
 <span><span class="co">#&gt;                                           comment</span></span>
 <span><span class="co">#&gt; 1         variable removed from the clean dataset</span></span>
 <span><span class="co">#&gt; 2         variable removed from the clean dataset</span></span>
@@ -976,14 +976,14 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span></span>
 <span><span class="va">compared_df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 8</span></span>
-<span><span class="co">#&gt;   uuid    df.question_name df.change_type df.new_value cl.new_value df.old_value</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;            &lt;chr&gt;          &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;       </span></span>
-<span><span class="co">#&gt; 1 1a8023… air_coolers_nb   change_respon… &lt;NA&gt;         4            &lt;NA&gt;        </span></span>
-<span><span class="co">#&gt; 2 a37512… air_coolers_nb   change_respon… &lt;NA&gt;         2            &lt;NA&gt;        </span></span>
-<span><span class="co">#&gt; 3 bdcca6… air_coolers_nb   no_action      &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;        </span></span>
-<span><span class="co">#&gt; 4 dd3a99… connection_fees… no_action      &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;        </span></span>
-<span><span class="co">#&gt; 5 9dac8c… connection_fees… no_action      &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;        </span></span>
-<span><span class="co">#&gt; 6 2b148a… days_available_… no_action      &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;        </span></span>
+<span><span class="co">#&gt;   uuid         df.question df.change_type df.new_value cl.new_value df.old_value</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;        &lt;chr&gt;       &lt;chr&gt;          &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;       </span></span>
+<span><span class="co">#&gt; 1 1a80239e-a8… air_cooler… change_respon… &lt;NA&gt;         4            &lt;NA&gt;        </span></span>
+<span><span class="co">#&gt; 2 a37512fa-f4… air_cooler… change_respon… &lt;NA&gt;         2            &lt;NA&gt;        </span></span>
+<span><span class="co">#&gt; 3 bdcca634-6e… air_cooler… no_action      &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;        </span></span>
+<span><span class="co">#&gt; 4 dd3a9983-0b… connection… no_action      &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;        </span></span>
+<span><span class="co">#&gt; 5 9dac8c9e-a5… connection… no_action      &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;        </span></span>
+<span><span class="co">#&gt; 6 2b148a6e-90… days_avail… no_action      &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;        </span></span>
 <span><span class="co">#&gt; # ℹ 2 more variables: cl.old_value &lt;chr&gt;, comment &lt;chr&gt;</span></span></code></pre></div>
 </div>
 <div class="section level4">
