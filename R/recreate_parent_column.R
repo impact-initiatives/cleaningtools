@@ -9,7 +9,10 @@
 #' @return a list of select multiple parent columns in data set.
 #' @export
 auto_detect_sm_parents <- function(dataset, sm_seperator = ".") {
-  sm_parents <- sub(glue::glue(".[^\\{sm_seperator}]*$"), "", colnames(dataset))
+  sm_parents <-
+    sub(glue::glue(".[^\\{sm_seperator}]*$"),
+        "",
+        colnames(dataset))
   sm_parents <- data.frame(col_names = sm_parents[sm_parents != ""])
   select_multiple_detected <- sm_parents %>%
     dplyr::group_by(col_names) %>%
@@ -36,10 +39,8 @@ auto_sm_parent_children <- function(dataset, sm_seperator = ".") {
   sm_child <- dataset %>%
     dplyr::select(dplyr::starts_with(glue::glue("{sm_parents}{sm_seperator}"))) %>%
     colnames()
-  dplyr::tibble(
-    sm_parent = sub(glue::glue(".[^\\{sm_seperator}]*$"), "", sm_child),
-    sm_child
-  )
+  dplyr::tibble(sm_parent = sub(glue::glue(".[^\\{sm_seperator}]*$"), "", sm_child),
+                sm_child)
 }
 
 
@@ -83,25 +84,29 @@ recreate_parent_column <- function(dataset,
       stringr::str_count(pattern = paste0("\\", sm_seperator)) |>
       max(na.rm = T)
     for (i in 1:number_of_separator) {
-      names(dataset) <- sub(paste0("(\\", sm_seperator, ".*?)\\", sm_seperator), "\\1_", names(dataset))
+      names(dataset) <-
+        sub(paste0("(\\", sm_seperator, ".*?)\\", sm_seperator),
+            "\\1_",
+            names(dataset))
     }
 
     cols_order <- dataset %>% names()
 
 
-    difference_df <- dplyr::tibble(
-      old_name = old_name,
-      new_name = cols_order
-    ) |> dplyr::filter(old_name != new_name)
+    difference_df <- dplyr::tibble(old_name = old_name,
+                                   new_name = cols_order) |> dplyr::filter(old_name != new_name)
 
     if (nrow(difference_df) > 0) {
-      warning("Column(s) names are renamed as multiple separators are found in dataset column names. Please see the above table with the new name.")
+      warning(
+        "Column(s) names are renamed as multiple separators are found in dataset column names. Please see the above table with the new name."
+      )
 
       print(difference_df)
     }
 
 
-    select_multiple <- auto_sm_parent_children(dataset, sm_seperator = sm_seperator)
+    select_multiple <-
+      auto_sm_parent_children(dataset, sm_seperator = sm_seperator)
   }
 
   if (!is.null(kobo_survey)) {
@@ -110,26 +115,24 @@ recreate_parent_column <- function(dataset,
     select_multiple <- kobo_survey |>
       dplyr::filter(grepl("select_multiple", type)) |>
       dplyr::select(type, name) |>
-      dplyr::mutate(
-        type = stringr::str_replace_all(type, "select_multiple ", "")
-      ) |>
-      dplyr::rename(
-        list_name = type,
-        sm_parent = name
-      ) |>
+      dplyr::mutate(type = stringr::str_replace_all(type, "select_multiple ", "")) |>
+      dplyr::rename(list_name = type,
+                    sm_parent = name) |>
       dplyr::left_join(choice_to_join, multiple = "all", by = "list_name") |>
-      dplyr::mutate(
-        sm_child = paste0(sm_parent, sm_seperator, name)
-      ) |>
+      dplyr::mutate(sm_child = paste0(sm_parent, sm_seperator, name)) |>
       dplyr::select(sm_parent, sm_child)
 
-    missing_column <- select_multiple$sm_child[!select_multiple$sm_child %in% names(dataset)]
+    missing_column <-
+      select_multiple$sm_child[!select_multiple$sm_child %in% names(dataset)]
 
     if (length(missing_column) > 0) {
       print(missing_column)
-      warning(paste0("Ignoring the above column(s) as they do not exist in the dataset."))
+      warning(paste0(
+        "Ignoring the above column(s) as they do not exist in the dataset."
+      ))
     }
-    select_multiple <- select_multiple |> dplyr::filter(sm_child %in% names(dataset))
+    select_multiple <-
+      select_multiple |> dplyr::filter(sm_child %in% names(dataset))
   }
 
 
@@ -137,28 +140,37 @@ recreate_parent_column <- function(dataset,
     select_multiple_list <- list()
 
     for (i in select_multiple$sm_parent) {
-      select_multi_single <- select_multiple %>% dplyr::filter(sm_parent == i)
+      select_multi_single <-
+        select_multiple %>% dplyr::filter(sm_parent == i)
       concat_col <- select_multi_single$sm_parent %>% unique()
       choice_cols <- select_multi_single$sm_child %>% unique()
 
-      df_only_cols <- dataset %>% dplyr::select(dplyr::all_of(choice_cols), dplyr::all_of(uuid_column))
+      df_only_cols <-
+        dataset %>% dplyr::select(dplyr::all_of(choice_cols),
+                                  dplyr::all_of(uuid_column))
 
-      pivot_long <- df_only_cols %>% dplyr::mutate_at(names(df_only_cols), as.character)
+      pivot_long <-
+        df_only_cols %>% dplyr::mutate_at(names(df_only_cols), as.character)
 
       final_df <- pivot_long %>%
-        tidyr::pivot_longer(cols = !dplyr::all_of(uuid_column), names_to = "cols", values_to = "value") %>%
-        dplyr::filter(value == 1 | value == TRUE | value == "1" | value == "TRUE") %>%
+        tidyr::pivot_longer(
+          cols = !dplyr::all_of(uuid_column),
+          names_to = "cols",
+          values_to = "value"
+        ) %>%
+        dplyr::filter(value == 1 |
+                        value == TRUE | value == "1" | value == "TRUE") %>%
         dplyr::group_by(!!rlang::sym(uuid_column)) %>%
-        dplyr::summarise(
-          !!rlang::sym(concat_col) := paste0(cols, collapse = " ")
-        )
+        dplyr::summarise(!!rlang::sym(concat_col) := paste0(cols, collapse = " "))
 
-      final_df[[concat_col]] <- final_df[[concat_col]] %>% stringr::str_replace_all(paste0(concat_col, "."), "")
+      final_df[[concat_col]] <-
+        final_df[[concat_col]] %>% stringr::str_replace_all(paste0(concat_col, "."), "")
 
       select_multiple_list[[concat_col]] <- final_df
     }
 
-    final_df_for_export <- purrr::reduce(select_multiple_list, dplyr::full_join, by = uuid_column)
+    final_df_for_export <-
+      purrr::reduce(select_multiple_list, dplyr::full_join, by = uuid_column)
     concat_col_names_from_fina_export <- final_df_for_export %>%
       dplyr::select(!dplyr::all_of(uuid_column)) %>%
       names()
@@ -168,37 +180,45 @@ recreate_parent_column <- function(dataset,
       dplyr::left_join(final_df_for_export, by = uuid_column)
 
     if (is.null(kobo_survey)) {
-      data_with_fix_concat <- data_with_fix_concat %>% dplyr::select(dplyr::all_of(cols_order))
+      data_with_fix_concat <-
+        data_with_fix_concat %>% dplyr::select(dplyr::all_of(cols_order))
     }
     if (!is.null(kobo_survey)) {
-      data_with_fix_concat <- data_with_fix_concat %>% dplyr::select(dplyr::all_of(initial_order))
+      data_with_fix_concat <-
+        data_with_fix_concat %>% dplyr::select(dplyr::all_of(initial_order))
     }
 
-    change_log <- create_cleaning_log(
+    correction_parent_sm_log <- create_cleaning_log(
       raw_dataset = checked_data,
       raw_dataset_uuid_column = uuid_column,
       clean_dataset = data_with_fix_concat,
       clean_dataset_uuid_column = uuid_column
     )
-    if ("comment" %in% names(change_log)) {
-      change_log <- change_log %>%
-        dplyr::mutate(comment = gsub(
-          "An alteration was performed",
-          "Parent column changed to match children columns",
-          comment
-        ))
+    if ("comment" %in% names(correction_parent_sm_log)) {
+      correction_parent_sm_log <- correction_parent_sm_log %>%
+        dplyr::mutate(
+          comment = gsub(
+            "An alteration was performed",
+            "Parent column changed to match children columns",
+            comment
+          )
+        )
     }
 
-    return(list(
-      data_with_fix_concat = data_with_fix_concat,
-      change_log = change_log
-    ))
+    return(
+      list(
+        data_with_fix_concat = data_with_fix_concat,
+        correction_parent_sm_log = correction_parent_sm_log
+      )
+    )
   }
 
   if (nrow(select_multiple) == 0) {
-    return(list(
-      data_with_fix_concat = checked_data,
-      change_log = "No choice multiple questions/Nothing has changed"
-    ))
+    return(
+      list(
+        data_with_fix_concat = checked_data,
+        correction_parent_sm_log = "No choice multiple questions/Nothing has changed"
+      )
+    )
   }
 }

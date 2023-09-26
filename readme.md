@@ -974,17 +974,17 @@ cleaningtools::recreate_parent_column(dataset = test_data, uuid_column = "uuid",
 #> 5 uuid_5 male   yy                    0         1          0         0 <NA>     
 #> 6 uuid_6 female x_z                   0         0          1         0 <NA>     
 #> 
-#> $change_log
-#>     uuid question_name      change_type   new_value old_value
-#> 1    all   reason.x.x. variable_removed        <NA>      <NA>
-#> 2    all    reason.x.z variable_removed        <NA>      <NA>
-#> 3    all   reason.x_x_   variable_added        <NA>      <NA>
-#> 4    all    reason.x_z   variable_added        <NA>      <NA>
-#> 5 uuid_1        reason  change_response          yy     xx,yy
-#> 6 uuid_2        reason  change_response     x_x_ zy     xx,zy
-#> 7 uuid_4        reason  change_response x_x_ x_z zy  xx,xz,zy
-#> 8 uuid_6        reason  change_response         x_z        xz
-#> 9 uuid_5        reason   change_respose          yy      <NA>
+#> $correction_parent_sm_log
+#>     uuid    question      change_type   new_value old_value
+#> 1    all reason.x.x. variable_removed        <NA>      <NA>
+#> 2    all  reason.x.z variable_removed        <NA>      <NA>
+#> 3    all reason.x_x_   variable_added        <NA>      <NA>
+#> 4    all  reason.x_z   variable_added        <NA>      <NA>
+#> 5 uuid_1      reason  change_response          yy     xx,yy
+#> 6 uuid_2      reason  change_response     x_x_ zy     xx,zy
+#> 7 uuid_4      reason  change_response x_x_ x_z zy  xx,xz,zy
+#> 8 uuid_6      reason  change_response         x_z        xz
+#> 9 uuid_5      reason   change_respose          yy      <NA>
 #>                                           comment
 #> 1         variable removed from the clean dataset
 #> 2         variable removed from the clean dataset
@@ -1024,14 +1024,14 @@ compared_df <- review_cleaning_log(
 
 compared_df |> head()
 #> # A tibble: 6 × 8
-#>   uuid    df.question_name df.change_type df.new_value cl.new_value df.old_value
-#>   <chr>   <chr>            <chr>          <chr>        <chr>        <chr>       
-#> 1 1a8023… air_coolers_nb   change_respon… <NA>         4            <NA>        
-#> 2 a37512… air_coolers_nb   change_respon… <NA>         2            <NA>        
-#> 3 bdcca6… air_coolers_nb   no_action      <NA>         <NA>         <NA>        
-#> 4 dd3a99… connection_fees… no_action      <NA>         <NA>         <NA>        
-#> 5 9dac8c… connection_fees… no_action      <NA>         <NA>         <NA>        
-#> 6 2b148a… days_available_… no_action      <NA>         <NA>         <NA>        
+#>   uuid         df.question df.change_type df.new_value cl.new_value df.old_value
+#>   <chr>        <chr>       <chr>          <chr>        <chr>        <chr>       
+#> 1 1a80239e-a8… air_cooler… change_respon… <NA>         4            <NA>        
+#> 2 a37512fa-f4… air_cooler… change_respon… <NA>         2            <NA>        
+#> 3 bdcca634-6e… air_cooler… no_action      <NA>         <NA>         <NA>        
+#> 4 dd3a9983-0b… connection… no_action      <NA>         <NA>         <NA>        
+#> 5 9dac8c9e-a5… connection… no_action      <NA>         <NA>         <NA>        
+#> 6 2b148a6e-90… days_avail… no_action      <NA>         <NA>         <NA>        
 #> # ℹ 2 more variables: cl.old_value <chr>, comment <chr>
 ```
 
