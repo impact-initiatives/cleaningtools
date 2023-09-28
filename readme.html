@@ -319,15 +319,15 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="fu"><a href="reference/check_value.html">check_value</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">df</span>, uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>, element_name <span class="op">=</span> <span class="st">"checked_dataset"</span>, values_to_look <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">99</span>, <span class="fl">98</span>, <span class="fl">88</span>, <span class="fl">888</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">output</span><span class="op">$</span><span class="va">flaged_value</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 6 × 3</span></span>
-<span><span class="co">#&gt;   uuid    question old_value</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;    &lt;chr&gt;    </span></span>
-<span><span class="co">#&gt; 1 uuid_1  gender   99       </span></span>
-<span><span class="co">#&gt; 2 uuid_97 age      99       </span></span>
-<span><span class="co">#&gt; 3 uuid_97 gender   98       </span></span>
-<span><span class="co">#&gt; 4 uuid_98 age      99       </span></span>
-<span><span class="co">#&gt; 5 uuid_98 gender   98       </span></span>
-<span><span class="co">#&gt; 6 uuid_99 age      98</span></span></code></pre></div>
+<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
+<span><span class="co">#&gt;   uuid    question old_value issue                             </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;                             </span></span>
+<span><span class="co">#&gt; 1 uuid_1  gender   99        Possible value to be changed to NA</span></span>
+<span><span class="co">#&gt; 2 uuid_97 age      99        Possible value to be changed to NA</span></span>
+<span><span class="co">#&gt; 3 uuid_97 gender   98        Possible value to be changed to NA</span></span>
+<span><span class="co">#&gt; 4 uuid_98 age      99        Possible value to be changed to NA</span></span>
+<span><span class="co">#&gt; 5 uuid_98 gender   98        Possible value to be changed to NA</span></span>
+<span><span class="co">#&gt; 6 uuid_99 age      98        Possible value to be changed to NA</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="id_15-check-logics">1.5 Check logics<a class="anchor" aria-label="anchor" href="#id_15-check-logics"></a></h4>
@@ -538,9 +538,7 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">soft_duplicates</span><span class="op">[[</span><span class="st">"soft_duplicate_log"</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] uuid                     num_cols_not_NA          total_columns_compared  </span></span>
-<span><span class="co">#&gt; [4] num_cols_dont_know       id_most_similar_survey   number_different_columns</span></span>
-<span><span class="co">#&gt; [7] issue                   </span></span>
+<span><span class="co">#&gt; [1] uuid  issue</span></span>
 <span><span class="co">#&gt; &lt;0 rows&gt; (or 0-length row.names)</span></span>
 <span></span>
 <span><span class="va">soft_duplicates</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/check_soft_duplicates.html">check_soft_duplicates</a></span><span class="op">(</span></span>
@@ -768,7 +766,7 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="co">#&gt; 3 all                             water_s… Pote… &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;     </span></span>
 <span><span class="co">#&gt; 4 all                             water_s… Pote… &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;     </span></span>
 <span><span class="co">#&gt; 5 all                             consent… Pote… &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;     </span></span>
-<span><span class="co">#&gt; 6 ac26e24d-12be-4729-bae7-21060e… X_index  &lt;NA&gt;  88        &lt;NA&gt;        &lt;NA&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; 6 ac26e24d-12be-4729-bae7-21060e… X_index  Poss… 88        &lt;NA&gt;        &lt;NA&gt;</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="id_22-add_info_to_cleaning_log">2.2 <code>add_info_to_cleaning_log()</code>
@@ -785,13 +783,20 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="co">#&gt; 4                                  all     water_supply_other_neighbourhoods</span></span>
 <span><span class="co">#&gt; 5                                  all water_supply_other_neighbourhoods_why</span></span>
 <span><span class="co">#&gt; 6                                  all              consent_telephone_number</span></span>
-<span><span class="co">#&gt;           issue old_value change_type new_value enumerator_num date_assessment</span></span>
-<span><span class="co">#&gt; 1          &lt;NA&gt;        88        &lt;NA&gt;      &lt;NA&gt;             13      2021-07-06</span></span>
-<span><span class="co">#&gt; 2 Potential PII      &lt;NA&gt;        &lt;NA&gt;      &lt;NA&gt;             NA            &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 3 Potential PII      &lt;NA&gt;        &lt;NA&gt;      &lt;NA&gt;             NA            &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 4 Potential PII      &lt;NA&gt;        &lt;NA&gt;      &lt;NA&gt;             NA            &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 5 Potential PII      &lt;NA&gt;        &lt;NA&gt;      &lt;NA&gt;             NA            &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 6 Potential PII      &lt;NA&gt;        &lt;NA&gt;      &lt;NA&gt;             NA            &lt;NA&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt;                                issue old_value change_type new_value</span></span>
+<span><span class="co">#&gt; 1 Possible value to be changed to NA        88        &lt;NA&gt;      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 2                      Potential PII      &lt;NA&gt;        &lt;NA&gt;      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 3                      Potential PII      &lt;NA&gt;        &lt;NA&gt;      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 4                      Potential PII      &lt;NA&gt;        &lt;NA&gt;      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 5                      Potential PII      &lt;NA&gt;        &lt;NA&gt;      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 6                      Potential PII      &lt;NA&gt;        &lt;NA&gt;      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt;   enumerator_num date_assessment</span></span>
+<span><span class="co">#&gt; 1             13      2021-07-06</span></span>
+<span><span class="co">#&gt; 2             NA            &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 3             NA            &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 4             NA            &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 5             NA            &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 6             NA            &lt;NA&gt;</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="id_23-create_xlsx_cleaning_log">2.3 <code>create_xlsx_cleaning_log()</code>
