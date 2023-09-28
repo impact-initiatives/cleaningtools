@@ -63,7 +63,8 @@ check_value <- function(dataset,
     dplyr::rename(
       question = name,
       old_value = value
-    )
+    ) |>
+    dplyr::mutate(issue = "Possible value to be changed to NA")
 
   ## create output
   if (is.data.frame(checked_dataset)) {

@@ -58,7 +58,7 @@ testthat::test_that("expect equal ", {
         "water_supply_other_neighbourhoods", "water_supply_other_neighbourhoods_why",
         "consent_telephone_number", "X_index"
       ),
-      issue = c(NA, "Potential PII", "Potential PII", "Potential PII", "Potential PII", "Potential PII", NA),
+      issue = c("Possible value to be changed to NA", "Potential PII", "Potential PII", "Potential PII", "Potential PII", "Potential PII", "Possible value to be changed to NA"),
       old_value = c("88", NA, NA, NA, NA, NA, "99"),
       change_type = c(NA_character_, NA_character_, NA_character_, NA_character_, NA_character_, NA_character_, NA_character_),
       new_value = c(NA_character_, NA_character_, NA_character_, NA_character_, NA_character_, NA_character_, NA_character_),
@@ -179,7 +179,7 @@ testthat::test_that("expect equal ", {
         "water_supply_other_neighbourhoods", "water_supply_other_neighbourhoods_why",
         "consent_telephone_number", "X_index"
       ),
-      issue = c(NA, "Potential PII", "Potential PII", "Potential PII", "Potential PII", "Potential PII", NA),
+      issue = c("Possible value to be changed to NA", "Potential PII", "Potential PII", "Potential PII", "Potential PII", "Potential PII", "Possible value to be changed to NA"),
       old_value = c("88", NA, NA, NA, NA, NA, "99"),
       change_type = c(NA_character_, NA_character_, NA_character_, NA_character_, NA_character_, NA_character_, NA_character_),
       new_value = c(NA_character_, NA_character_, NA_character_, NA_character_, NA_character_, NA_character_, NA_character_),

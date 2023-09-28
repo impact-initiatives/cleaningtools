@@ -18,7 +18,8 @@ test_that("values are correctly flagged", {
       "gender", "age", "gender", "age", "gender", "age", "gender",
       "age", "gender"
     ),
-    old_value = c("99", "99", "98", "99", "98", "98", "88", "88", "888")
+    old_value = c("99", "99", "98", "99", "98", "98", "88", "88", "888"),
+    issue = rep("Possible value to be changed to NA", 9)
   )
 
   expect_equal(as.data.frame(output$flaged_value), expected_output)

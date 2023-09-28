@@ -333,15 +333,15 @@ df <- data.frame(
 output <- cleaningtools::check_value(dataset = df, uuid_column = "X_uuid", element_name = "checked_dataset", values_to_look = c(99, 98, 88, 888))
 
 output$flaged_value |> head()
-#> # A tibble: 6 × 3
-#>   uuid    question old_value
-#>   <chr>   <chr>    <chr>    
-#> 1 uuid_1  gender   99       
-#> 2 uuid_97 age      99       
-#> 3 uuid_97 gender   98       
-#> 4 uuid_98 age      99       
-#> 5 uuid_98 gender   98       
-#> 6 uuid_99 age      98
+#> # A tibble: 6 × 4
+#>   uuid    question old_value issue                             
+#>   <chr>   <chr>    <chr>     <chr>                             
+#> 1 uuid_1  gender   99        Possible value to be changed to NA
+#> 2 uuid_97 age      99        Possible value to be changed to NA
+#> 3 uuid_97 gender   98        Possible value to be changed to NA
+#> 4 uuid_98 age      99        Possible value to be changed to NA
+#> 5 uuid_98 gender   98        Possible value to be changed to NA
+#> 6 uuid_99 age      98        Possible value to be changed to NA
 ```
 
 #### 1.5 Check logics
@@ -564,9 +564,7 @@ soft_duplicates <- check_soft_duplicates(
 )
 
 soft_duplicates[["soft_duplicate_log"]] %>% head()
-#> [1] uuid                     num_cols_not_NA          total_columns_compared  
-#> [4] num_cols_dont_know       id_most_similar_survey   number_different_columns
-#> [7] issue                   
+#> [1] uuid  issue
 #> <0 rows> (or 0-length row.names)
 
 soft_duplicates <- check_soft_duplicates(
@@ -812,7 +810,7 @@ list_log$cleaning_log |> head(6)
 #> 3 all                             water_s… Pote… <NA>      <NA>        <NA>     
 #> 4 all                             water_s… Pote… <NA>      <NA>        <NA>     
 #> 5 all                             consent… Pote… <NA>      <NA>        <NA>     
-#> 6 ac26e24d-12be-4729-bae7-21060e… X_index  <NA>  88        <NA>        <NA>
+#> 6 ac26e24d-12be-4729-bae7-21060e… X_index  Poss… 88        <NA>        <NA>
 ```
 
 #### 2.2 `add_info_to_cleaning_log()`
@@ -831,13 +829,20 @@ add_with_info$cleaning_log |> head()
 #> 4                                  all     water_supply_other_neighbourhoods
 #> 5                                  all water_supply_other_neighbourhoods_why
 #> 6                                  all              consent_telephone_number
-#>           issue old_value change_type new_value enumerator_num date_assessment
-#> 1          <NA>        88        <NA>      <NA>             13      2021-07-06
-#> 2 Potential PII      <NA>        <NA>      <NA>             NA            <NA>
-#> 3 Potential PII      <NA>        <NA>      <NA>             NA            <NA>
-#> 4 Potential PII      <NA>        <NA>      <NA>             NA            <NA>
-#> 5 Potential PII      <NA>        <NA>      <NA>             NA            <NA>
-#> 6 Potential PII      <NA>        <NA>      <NA>             NA            <NA>
+#>                                issue old_value change_type new_value
+#> 1 Possible value to be changed to NA        88        <NA>      <NA>
+#> 2                      Potential PII      <NA>        <NA>      <NA>
+#> 3                      Potential PII      <NA>        <NA>      <NA>
+#> 4                      Potential PII      <NA>        <NA>      <NA>
+#> 5                      Potential PII      <NA>        <NA>      <NA>
+#> 6                      Potential PII      <NA>        <NA>      <NA>
+#>   enumerator_num date_assessment
+#> 1             13      2021-07-06
+#> 2             NA            <NA>
+#> 3             NA            <NA>
+#> 4             NA            <NA>
+#> 5             NA            <NA>
+#> 6             NA            <NA>
 ```
 
 #### 2.3 `create_xlsx_cleaning_log()`

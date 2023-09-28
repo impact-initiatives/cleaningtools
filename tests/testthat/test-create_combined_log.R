@@ -55,7 +55,7 @@ test_that("expect equal", {
         "water_supply_other_neighbourhoods_why", "consent_telephone_number",
         "X_index", "X_index"
       ),
-      issue = structure(c("Potential PII", "Potential PII", "Potential PII", "Potential PII", "Potential PII", NA, NA),
+      issue = structure(c("Potential PII", "Potential PII", "Potential PII", "Potential PII", "Potential PII", "Possible value to be changed to NA", "Possible value to be changed to NA"),
         class = c("glue", "character")
       ),
       old_value = c(NA, NA, NA, NA, NA, "88", "99"),
