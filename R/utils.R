@@ -96,7 +96,8 @@ verify_valid_survey <- function(kobo_survey) {
 #' verify_valid_choices(df_valid_choices) # should return TRUE
 #'
 #' # Assume df_invalid_choices lacks the required columns
-#' df_invalid_choices <- data.frame(column1 = c("ChoiceA", "ChoiceB"), column2 = c("Option1", "Option2"))
+#' df_invalid_choices <- data.frame(column1 = c("ChoiceA", "ChoiceB"),
+#'                                  column2 = c("Option1", "Option2"))
 #' verify_valid_choices(df_invalid_choices) # should return FALSE
 verify_valid_choices <- function(kobo_choices) {
   if (!is.data.frame(kobo_choices)) {

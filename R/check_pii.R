@@ -5,18 +5,18 @@
 #' @param words_to_look Specify the words that might be the PIIs
 #' @return dataset with potential PII
 #' @export
+#'
+#' @examples
+#' check_pii(cleaningtools_raw_data, uuid_column = "X_uuid")
+#'
 
-check_pii <- function(dataset, element_name = NULL, uuid_column = "uuid", words_to_look = NULL) {
-  dataframe <- dataset
-
-  if (is.data.frame(dataset) & !is.null(element_name)) {
-    warning("Input is a dataframe, ignoring element_name")
-  }
+check_pii <- function(dataset,
+                      element_name = "checked_dataset",
+                      uuid_column = "uuid",
+                      words_to_look = NULL) {
+  inputed_element <- dataset
 
   if (!is.data.frame(dataset) & is.list(dataset)) {
-    if (is.null(element_name)) {
-      stop("element_name is missing")
-    }
     if (!element_name %in% names(dataset)) {
       stop("element_name not found")
     }
@@ -58,7 +58,7 @@ check_pii <- function(dataset, element_name = NULL, uuid_column = "uuid", words_
     ) %>%
     dplyr::select(-snkae_case_cols)
   ## Append the list
-  if (is.data.frame(dataframe)) {
+  if (is.data.frame(inputed_element)) {
     checked_dataset <- dataset
     return(list(
       checked_dataset = checked_dataset,
@@ -66,9 +66,9 @@ check_pii <- function(dataset, element_name = NULL, uuid_column = "uuid", words_
     ))
   }
 
-  if (!is.data.frame(dataframe)) {
+  if (!is.data.frame(inputed_element)) {
     list_Df <- list(potential_PII = potential_PII)
 
-    return(append(dataframe, list_Df))
+    return(append(inputed_element, list_Df))
   }
 }
