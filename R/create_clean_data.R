@@ -30,10 +30,14 @@
 #'
 #'
 #' check_cleaning_log(
-#'   raw_dataset = test_data, raw_data_uuid_column = "uuid", cleaning_log = cleaning_log_test,
+#'   raw_dataset = test_data,
+#'   raw_data_uuid_column = "uuid",
+#'   cleaning_log = cleaning_log_test,
 #'   cleaning_log_change_type_column = "change_type",
 #'   change_response_value = "change_res",
-#'   cleaning_log_question_column = "question", cleaning_log_uuid_column = "uuid", cleaning_log_new_value_column = "new_value"
+#'   cleaning_log_question_column = "question",
+#'   cleaning_log_uuid_column = "uuid",
+#'   cleaning_log_new_value_column = "new_value"
 #' )
 #'
 #' create_clean_data(

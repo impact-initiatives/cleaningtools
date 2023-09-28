@@ -28,12 +28,10 @@ Imports:
     randomcoloR,
     rlang,
     snakecase,
-    stats,
     stringi,
     stringr,
     tibble,
     tidyr,
-    utils,
     data.table
 Suggests: 
     testthat (>= 3.0.0),

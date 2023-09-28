@@ -6,7 +6,7 @@
 \usage{
 check_pii(
   dataset,
-  element_name = NULL,
+  element_name = "checked_dataset",
   uuid_column = "uuid",
   words_to_look = NULL
 )
@@ -25,4 +25,8 @@ dataset with potential PII
 }
 \description{
 Checks for potential PII
+}
+\examples{
+check_pii(cleaningtools_raw_data, uuid_column = "X_uuid")
+
 }
