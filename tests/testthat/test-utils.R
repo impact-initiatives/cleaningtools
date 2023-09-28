@@ -15,3 +15,10 @@ test_that("detect_variable works", {
   )
   expect_equal(detect_variable(string_to_check), string_to_find)
 })
+
+test_that("coerce_to_character coerce correctly", {
+  expect_equal(coerce_to_character(c("a", NA)), c("a", NA_character_))
+  expect_equal(coerce_to_character(c(1, 10000000, NA)), c("1", "10000000", NA_character_))
+
+})
+

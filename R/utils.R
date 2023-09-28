@@ -255,3 +255,20 @@ create_col_range <- function(variable, data.val) {
   value <- paste(value.sheet, range, sep = "", collapse = "")
   return(value)
 }
+
+#' Coerce numeric values to character, without scientific noting and NA are kept as NA.
+#'
+#' @param x a value to convert
+#'
+#' @return x as character
+#' @export
+#'
+#' @examples
+#'
+#' coerce_to_character(c("a", NA))
+#' coerce_to_character(c(1, 10000000, NA))
+#'
+coerce_to_character <- function(x) {
+  format(x, scientific = F, justify = "none", trim = T) %>%
+    dplyr::na_if("NA")
+}

@@ -29,7 +29,7 @@
 #' )
 #'
 #'
-#' check_cleaning_log(
+#' review_cleaning_log(
 #'   raw_dataset = test_data,
 #'   raw_data_uuid_column = "uuid",
 #'   cleaning_log = cleaning_log_test,
@@ -184,7 +184,7 @@ create_clean_data <- function(raw_dataset,
 #' @export
 
 
-check_cleaning_log <- function(raw_dataset,
+review_cleaning_log <- function(raw_dataset,
                                raw_data_uuid_column = "uuid",
                                cleaning_log,
                                cleaning_log_uuid_column = "uuid",

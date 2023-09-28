@@ -24,15 +24,15 @@ create_cleaning_log <- function(raw_dataset,
                                 check_for_deletion_log = T,
                                 columns_not_to_check = NULL,
                                 check_for_variable_name = T) {
-  # my_bind_row <- get("bind_rows", asNamespace("dplyr"))
 
   raw_dataset <- raw_dataset %>%
-    dplyr::mutate_all(as.character) %>%
-    dplyr::mutate_all(trimws)
+    dplyr::mutate(dplyr::across(
+      .cols = tidyselect::everything(),
+      .fns = ~coerce_to_character(.x)))
   clean_dataset <- clean_dataset %>%
-    dplyr::mutate_all(as.character) %>%
-    dplyr::mutate_all(trimws)
-
+    dplyr::mutate(dplyr::across(
+      .cols = tidyselect::everything(),
+      .fns = ~coerce_to_character(.x)))
   raw_dataset$uuid <- raw_dataset[[raw_dataset_uuid_column]]
   clean_dataset$uuid <- clean_dataset[[clean_dataset_uuid_column]]
 
@@ -51,7 +51,7 @@ create_cleaning_log <- function(raw_dataset,
                                          comment = "No matching uuid in the cleaned dataset")
   }
 
-  # create deletaion log [number of clean data is grater than number of row data]  ---------------------------------------------------
+  # create deletion log [number of clean data is grater than number of row data]  ---------------------------------------------------
   if (check_for_deletion_log == T &
       !all(unique(clean_dataset[[clean_dataset_uuid_column]]) %in% raw_dataset[[raw_dataset_uuid_column]])) {
     deleted_uuid <-
@@ -176,11 +176,6 @@ create_cleaning_log <- function(raw_dataset,
       message(x)
     }, clean_dataset = clean_dataset, raw_dataset = raw_dataset) %>% do.call(rbind, .)
 
-
-
-
-
-
   ############################# blank_response ############################################
   log[["blank_response"]] <-
     lapply(varlist, function(x, clean_dataset, raw_dataset) {
@@ -243,10 +238,12 @@ create_cleaning_log <- function(raw_dataset,
 #' @export
 #' @examples
 #' \dontrun{
-#' deletaion_log <- cleaningtools::cleaning_log |> dplyr::filter(change_type == "remove_survey")
-#' cleaning_log2 <- cleaningtools::cleaning_log |> dplyr::filter(change_type != "remove_survey")
+#' deletion_log<- cleaningtools::cleaningtools_cleaning_log |>
+#'   dplyr::filter(change_type == "remove_survey")
+#' cleaning_log <- cleaningtools::cleaningtools_cleaning_log |>
+#'   dplyr::filter(change_type != "remove_survey")
 #'
-#' review_cleaning_log(
+#' review_cleaning(
 #'   raw_dataset = cleaningtools::raw_dataset, raw_dataset_uuid_column = "X_uuid",
 #'   clean_dataset = cleaningtools::clean_dataset, clean_dataset_uuid_column = "X_uuid",
 #'   cleaning_log = cleaning_log2, cleaning_log_uuid_column = "X_uuid",
@@ -258,7 +255,7 @@ create_cleaning_log <- function(raw_dataset,
 #'   check_for_deletion_log = T
 #' )
 #' }
-review_cleaning_log <- function(raw_dataset,
+review_cleaning <- function(raw_dataset,
                                 raw_dataset_uuid_column = "uuid",
                                 clean_dataset,
                                 clean_dataset_uuid_column = "uuid",
@@ -308,15 +305,20 @@ review_cleaning_log <- function(raw_dataset,
     stop("Cleaning log old value column is not found")
   }
 
-  # my_bind_row <- get("bind_rows", asNamespace("dplyr"))
-
-  clean_dataset <- clean_dataset %>% dplyr::mutate_all(as.character)
-  raw_dataset <- raw_dataset %>% dplyr::mutate_all(as.character)
+  clean_dataset <- clean_dataset %>%
+    dplyr::mutate(dplyr::across(
+      .cols = tidyselect::everything(),
+      .fns = ~ coerce_to_character(.x)))
+  raw_dataset <- raw_dataset %>%
+    dplyr::mutate(dplyr::across(
+      .cols = tidyselect::everything(),
+      .fns = ~ coerce_to_character(.x)))
 
   ### unifying cleaning and deletation log
   cleaning_log <- cleaning_log %>%
-    dplyr::mutate_all(as.character) %>%
-    dplyr::mutate_all(trimws)
+    dplyr::mutate(dplyr::across(
+      .cols = tidyselect::everything(),
+      .fns = ~ coerce_to_character(.x)))
   cleaning_log <- cleaning_log %>% dplyr::rename(uuid = !!rlang::sym(cleaning_log_uuid_column))
   cleaning_log$uniqe_row_id <-
     paste0(cleaning_log$uuid, "_", cleaning_log[[cleaning_log_question_column]])
@@ -325,10 +327,10 @@ review_cleaning_log <- function(raw_dataset,
 
   if (check_for_deletion_log == T) {
     deletion_log <- deletion_log %>%
-      dplyr::mutate_all(as.character) %>%
-      dplyr::mutate_all(trimws)
+      dplyr::mutate(dplyr::across(
+        .cols = tidyselect::everything(),
+        .fns = ~ coerce_to_character(.x)))
     deletion_log <- deletion_log %>% dplyr::rename(uuid = !!rlang::sym(deletion_log_uuid_column))
-
 
     to_remove_from_cl_uuid <-
       cleaning_log$uuid[cleaning_log$uuid %in% deletion_log$uuid] |> unique()
@@ -393,9 +395,6 @@ review_cleaning_log <- function(raw_dataset,
       dplyr::filter(!(!!rlang::sym(cleaning_log_change_type_column)) %in% cleaning_log_no_change_value)
   }
 
-
-
-
   ### generating cleaning log from clean and raw data
   cleaning_log_create <- create_cleaning_log(
     raw_dataset = raw_dataset,
@@ -408,9 +407,6 @@ review_cleaning_log <- function(raw_dataset,
     names(cleaning_log_create) <-
       paste0("df.", names(cleaning_log_create))
   }
-
-
-
 
   #########################################################################################################
   ##################### Starts changes not applied ########################################################
@@ -427,7 +423,6 @@ review_cleaning_log <- function(raw_dataset,
   clean_data_to_join$uniqe_row_id <-
     clean_data_to_join$uniqe_row_id %>% tolower()
 
-
   raw_data_to_join <- raw_dataset %>%
     tidyr::pivot_longer(
       cols = !dplyr::all_of(raw_dataset_uuid_column),
@@ -438,7 +433,6 @@ review_cleaning_log <- function(raw_dataset,
     dplyr::select("uniqe_row_id", "df.old_value")
   raw_data_to_join$uniqe_row_id <-
     raw_data_to_join$uniqe_row_id %>% tolower()
-
 
   missing_in_cleaning_log[["cleaning_log_no_applied"]] <-
     cleaning_log %>%
@@ -459,9 +453,6 @@ review_cleaning_log <- function(raw_dataset,
       df.change_type = !!rlang::sym(cleaning_log_change_type_column),
     ) %>%
     dplyr::select(-"uniqe_row_id")
-
-
-
 
   ######################################################################################################
   #################### end:: changes not applied ########################################################
@@ -528,8 +519,6 @@ review_cleaning_log <- function(raw_dataset,
     }
   }
 
-
-
   ## checking duplicate entry in cleaning log
   cleaning_log_short <-
     cleaning_log[, c("uniqe_row_id", cleaning_log_new_value_column)]
@@ -537,7 +526,6 @@ review_cleaning_log <- function(raw_dataset,
     apply(cleaning_log_short, MARGIN = c(1, 2), tolower) %>% as.data.frame() ### make everything to lower to compare the new_value
   duplicate_id_long_list <-
     cleaning_log_short$uniqe_row_id[duplicated(cleaning_log_short$uniqe_row_id)]
-
 
   duplicate_entry_in_cleaning_log <-
     cleaning_log_short[cleaning_log_short$uniqe_row_id %in% duplicate_id_long_list,]
@@ -550,14 +538,10 @@ review_cleaning_log <- function(raw_dataset,
                    fromLast = TRUE)
     ),]
 
-
-
-
   final_duplicate_df <-
     cleaning_log[cleaning_log$uniqe_row_id %in% final_duplicated$uniqe_row_id,] |> dplyr::mutate(comment = "Duplicated entry with different value, please recheck and keep one")
   final_duplicate_df$df.question <-
     final_duplicate_df[[cleaning_log_question_column]]
-
 
   if (nrow(final_duplicate_df) > 0) {
     missing_in_cleaning_log[["duplicated_entry_with_different_value"]] <-
@@ -569,8 +553,6 @@ review_cleaning_log <- function(raw_dataset,
         "comment"
       )]
   }
-
-
 
   ## check for change log
   if (nrow(cleaning_log_create) > 0) {
@@ -614,7 +596,6 @@ review_cleaning_log <- function(raw_dataset,
     }
   }
 
-  ###
   lookup <- c(cl.old_value = cleaning_log_old_value_column,
               cl.new_value = cleaning_log_new_value_column)
 
@@ -633,7 +614,6 @@ review_cleaning_log <- function(raw_dataset,
       )
     )) %>%
     dplyr::rename(dplyr::any_of(lookup))
-
 
   return(cleaning_log_issue |> dplyr::mutate(
     comment = dplyr::case_when(

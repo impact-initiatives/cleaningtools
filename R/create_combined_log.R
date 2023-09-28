@@ -50,7 +50,7 @@ create_combined_log <- function(list_of_log,
 
   list_of_log_only <- list_of_log_only %>%
     purrr::map(.f = ~ dplyr::mutate(., dplyr::across(
-      .cols = everything(),
+      .cols = tidyselect::everything(),
       .fns = ~ format(., scientific = F, justify = "none", trim = T)
     )))
 

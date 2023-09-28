@@ -901,13 +901,13 @@ cleaning_log_test
 #### 3.1 Check the cleaning log
 
 After obtaining both the cleaning log and dataset, it is considered good
-practice to utilize the check_cleaning_log() function to ensure the
+practice to utilize the review_cleaning_log() function to ensure the
 consistency between the cleaning log and the dataset. It is highly
 recommended to perform this check on a daily basis, enabling you to
 promptly identify any issues right from the outset.
 
 ``` r
-cleaningtools::check_cleaning_log(
+cleaningtools::review_cleaning_log(
   raw_dataset = test_data,
   raw_data_uuid_column = "uuid",
   cleaning_log = cleaning_log_test,
@@ -1028,13 +1028,13 @@ cleaningtools::recreate_parent_column(dataset = test_data, uuid_column = "uuid",
 
 #### 4.1 Review cleaning log with clean data and raw data
 
-`review_cleaning_log` function takes raw data, clean data and cleaning
-log as inputs, and it first creates the cleaning log by comparing raw
-data and clean data, then compares it with the user-provided cleaning
-log. Finally, flagged the discrepancies between them (if any).
+`review_cleaning` function takes raw data, clean data and cleaning log
+as inputs, and it first creates the cleaning log by comparing raw data
+and clean data, then compares it with the user-provided cleaning log.
+Finally, flagged the discrepancies between them (if any).
 
 ``` r
-compared_df <- review_cleaning_log(
+compared_df <- review_cleaning(
   raw_dataset = cleaningtools::cleaningtools_raw_data,
   raw_dataset_uuid_column = "X_uuid",
   clean_dataset = cleaningtools::cleaningtools_clean_data,
