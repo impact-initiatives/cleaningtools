@@ -10,7 +10,7 @@
 #' @param strongness_factor Strongness factor define how strong your outliers will be. The default is 3.
 #' @param columns_not_to_check Columns to exclude from the checks even if they are numeric values.
 #' @param remove_choice_multiple TRUE (default) will remove choice multiple questions from the output.
-#' @param sm_seperator Separator for choice multiple questions. The default is "."
+#' @param sm_separator Separator for choice multiple questions. The default is "."
 #' @param minimum_unique_value_of_variable Default is NULL, mean this parameter won't be considered. For example 10 means for any variable where number of unique value is less than 10, then the variable won't be considered for outlier checking.
 #' @return return a list with the dataset checked stored as checked_dataset and a dataframe with
 #' the outliers log
@@ -34,7 +34,7 @@ check_outliers <- function(dataset,
                            strongness_factor = 3,
                            minimum_unique_value_of_variable = NULL,
                            remove_choice_multiple = TRUE,
-                           sm_seperator = ".",
+                           sm_separator = ".",
                            columns_not_to_check = NULL) {
   if (!is.list(dataset)) {
     stop("Input must be a dataframe or list.")
@@ -76,7 +76,7 @@ check_outliers <- function(dataset,
 
 
   if (remove_choice_multiple == T) {
-    all_select_multiple_parent <- auto_sm_parent_children(dataset, sm_seperator = sm_seperator)
+    all_select_multiple_parent <- auto_sm_parent_children(dataset, sm_separator = sm_separator)
     all_select_multiple_cols <- all_select_multiple_parent$sm_child
   }
 

@@ -8,7 +8,7 @@ review_others(
   dataset,
   uuid_column = "uuid",
   kobo_survey,
-  sm_seperator = ".",
+  sm_separator = ".",
   information_to_add = NULL,
   columns_not_to_check = NULL
 )
@@ -20,7 +20,7 @@ review_others(
 
 \item{kobo_survey}{Kobo survey sheet.}
 
-\item{sm_seperator}{Separator for choice multiple questions. The default is "."}
+\item{sm_separator}{Separator for choice multiple questions. The default is "."}
 
 \item{information_to_add}{string vector optional, if to add some information to the log (today,village etc.)}
 

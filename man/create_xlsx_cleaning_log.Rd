@@ -8,7 +8,7 @@ create_xlsx_cleaning_log(
   write_list,
   cleaning_log_name = "cleaning_log",
   change_type_col = "change_type",
-  cols_for_color = NULL,
+  column_for_color = "check_binding",
   header_front_size = 12,
   header_front_color = "#FFFFFF",
   header_fill_color = "#ee5859",
@@ -29,7 +29,7 @@ create_xlsx_cleaning_log(
 
 \item{change_type_col}{Change type column name in the cleaning log}
 
-\item{cols_for_color}{Column name in the dataframe which should be used for colorizing the cell. The default is null.}
+\item{column_for_color}{Column name in the dataframe which should be used for colorizing the cell. The default is null.}
 
 \item{header_front_size}{Header front size (default is 12)}
 
@@ -61,12 +61,12 @@ Creates formatted excel for cleaning log
 }
 \examples{
 \dontrun{
-list <- cleaningtools::cleaningtools_raw_data |>
-  check_pii(uuid_column = "X_uuid") |>
-  cleaningtools::check_duplicate(uuid_column = "X_uuid") |>
-  cleaningtools::check_value(uuid_column = "X_uuid")
 
-create_combined_log(list_of_log = list) |>
+checks_list <- cleaningtools::cleaningtools_raw_data |>
+  check_pii(uuid_column = "X_uuid") |>
+  check_duplicate(uuid_column = "X_uuid") |>
+  check_value(uuid_column = "X_uuid")
+create_combined_log(list_of_log = checks_list) |>
   create_xlsx_cleaning_log()
 
 logical_check_example <- cleaningtools::cleaningtools_raw_data |>
@@ -75,11 +75,10 @@ logical_check_example <- cleaningtools::cleaningtools_raw_data |>
     uuid_column = "X_uuid",
     description = "description",
     check_id = "check_4",
-    columns_to_clean = "rental_contract"
+    columns_to_clean = "treat_cook_water"
   )
 create_combined_log(logical_check_example) |>
   create_xlsx_cleaning_log(
-    cols_for_color = "question",
     output_path = paste0(tempdir(check = TRUE), "/cleaning_log.xlsx"),
     cleaning_log_name = "cleaning_log",
     change_type_col = "change_type",

@@ -7,21 +7,21 @@
 #' @param header_front Front name for header (default is Arial Narrow)
 #' @param body_front Front name for body (default is Arial Narrow)
 #' @param body_front_size Front size for body (default is 11)
-#' @param cols_for_color Column name in the dataframe which should be used for colorizing the cell. The default is null.
+#' @param column_for_color Column name in the dataframe which should be used for colorizing the cell. The default is null.
 #'
 #' @return A workbook
 #' @export
 #'
 #' @examples
-#' list <- cleaningtools::cleaningtools_raw_data |>
+#' checks_list <- cleaningtools::cleaningtools_raw_data |>
 #'   check_pii(uuid_column = "X_uuid") |>
-#'   cleaningtools::check_duplicate(uuid_column = "X_uuid") |>
-#'   cleaningtools::check_value(uuid_column = "X_uuid")
+#'   check_duplicate(uuid_column = "X_uuid") |>
+#'   check_value(uuid_column = "X_uuid")
 #'
-#' create_combined_log(list_of_log = list) |>
+#' create_combined_log(list_of_log = checks_list) |>
 #'   create_formated_wb()
 create_formated_wb <- function(write_list,
-                               cols_for_color = NULL,
+                               column_for_color = NULL,
                                header_front_size = 12,
                                header_front_color = "#FFFFFF",
                                header_fill_color = "#ee5859",
@@ -50,18 +50,13 @@ create_formated_wb <- function(write_list,
     halign = "left"
   )
 
-
-
-
   wb <- openxlsx::createWorkbook()
-
 
   number_of_sheet <- length(write_list)
 
   for (i in 1:number_of_sheet) {
     dataset_name <- names(write_list[i])
     dataset <- write_list[[dataset_name]] |> as.data.frame()
-
 
     openxlsx::addWorksheet(wb, dataset_name)
     openxlsx::writeData(wb, sheet = i, dataset, rowNames = F)
@@ -72,15 +67,13 @@ create_formated_wb <- function(write_list,
     openxlsx::setColWidths(wb, i, cols = 1:ncol(dataset), widths = 25)
     openxlsx::setRowHeights(wb, i, 1, 20)
 
-    if (!is.null(cols_for_color)) {
-      u <- unique(dataset[[cols_for_color]])
+    if (!is.null(column_for_color)) {
+      u <- unique(dataset[[column_for_color]])
 
       for (x in u) {
-        y <- which(dataset[[cols_for_color]] == x)
+        y <- which(dataset[[column_for_color]] == x)
 
-        ### to be fixed see issue #62
-        # random.color <- randomcoloR::randomColor(1, luminosity = "light")
-        random.color <- NULL
+        random.color <- randomcoloR::randomColor(1, luminosity = "light")
 
         style <- openxlsx::createStyle(
           fgFill = random.color,
@@ -114,7 +107,7 @@ create_formated_wb <- function(write_list,
 #' @param header_front Front name for header (default is Arial Narrow)
 #' @param body_front Front name for body (default is Arial Narrow)
 #' @param body_front_size Front size for body (default is 11)
-#' @param cols_for_color Column name in the dataframe which should be used for colorizing the cell. The default is null.
+#' @param column_for_color Column name in the dataframe which should be used for colorizing the cell. The default is null.
 #' @param use_dropdown Use drop down lists for data validation in the cleaning log output (default is FALSE)
 #' @param sm_dropdown_type Dropdown list options for select multiple questions: numerical (1/0) or logical (TRUE/FALSE) - default is logical
 #' @param kobo_survey Kobo survey dataframe
@@ -126,12 +119,12 @@ create_formated_wb <- function(write_list,
 #'
 #' @examples
 #' \dontrun{
-#' list <- cleaningtools::cleaningtools_raw_data |>
-#'   check_pii(uuid_column = "X_uuid") |>
-#'   cleaningtools::check_duplicate(uuid_column = "X_uuid") |>
-#'   cleaningtools::check_value(uuid_column = "X_uuid")
 #'
-#' create_combined_log(list_of_log = list) |>
+#' checks_list <- cleaningtools::cleaningtools_raw_data |>
+#'   check_pii(uuid_column = "X_uuid") |>
+#'   check_duplicate(uuid_column = "X_uuid") |>
+#'   check_value(uuid_column = "X_uuid")
+#' create_combined_log(list_of_log = checks_list) |>
 #'   create_xlsx_cleaning_log()
 #'
 #' logical_check_example <- cleaningtools::cleaningtools_raw_data |>
@@ -140,11 +133,10 @@ create_formated_wb <- function(write_list,
 #'     uuid_column = "X_uuid",
 #'     description = "description",
 #'     check_id = "check_4",
-#'     columns_to_clean = "rental_contract"
+#'     columns_to_clean = "treat_cook_water"
 #'   )
 #' create_combined_log(logical_check_example) |>
 #'   create_xlsx_cleaning_log(
-#'     cols_for_color = "question",
 #'     output_path = paste0(tempdir(check = TRUE), "/cleaning_log.xlsx"),
 #'     cleaning_log_name = "cleaning_log",
 #'     change_type_col = "change_type",
@@ -157,7 +149,7 @@ create_formated_wb <- function(write_list,
 create_xlsx_cleaning_log <- function(write_list,
                                      cleaning_log_name = "cleaning_log",
                                      change_type_col = "change_type",
-                                     cols_for_color = NULL,
+                                     column_for_color = "check_binding",
                                      header_front_size = 12,
                                      header_front_color = "#FFFFFF",
                                      header_fill_color = "#ee5859",
@@ -221,7 +213,7 @@ create_xlsx_cleaning_log <- function(write_list,
   )
 
   workbook <- write_list |> create_formated_wb(
-    cols_for_color = cols_for_color,
+    column_for_color = column_for_color,
     header_front_size = header_front_size,
     header_front_color = header_front_color,
     header_fill_color = header_fill_color,
@@ -249,7 +241,8 @@ create_xlsx_cleaning_log <- function(write_list,
           sheet = cleaning_log_name, cols = which(colnames(cl) == "new_value"),
           rows = r + 1, type = "list",
           value = create_col_range(as.character(cl[r, "question"]), data.val)
-        )
+        ) %>%
+          suppressWarnings()
       } else if ((stringr::str_detect(string = as.character(cl[r, "question"]), pattern = "\\.") |
         (stringr::str_detect(string = as.character(cl[r, "question"]), pattern = "\\/") &
           (stringr::str_detect(string = as.character(cl[r, "question"]), pattern = "/") == 1))) &
@@ -274,13 +267,15 @@ create_xlsx_cleaning_log <- function(write_list,
       sheet = cleaning_log_name, cols = col_number,
       rows = row_numbers, type = "list",
       value = create_col_range("change_type_validation", data.val)
-    )
+    ) %>%
+      suppressWarnings()
   } else {
     openxlsx::dataValidation(workbook,
       sheet = cleaning_log_name, cols = col_number,
       rows = row_numbers, type = "list",
       value = "'validation_rules'!$A$2:$A$5"
-    )
+    ) %>%
+      suppressWarnings()
   }
 
   if (is.null(output_path)) {

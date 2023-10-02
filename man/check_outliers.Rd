@@ -14,7 +14,7 @@ check_outliers(
   strongness_factor = 3,
   minimum_unique_value_of_variable = NULL,
   remove_choice_multiple = TRUE,
-  sm_seperator = ".",
+  sm_separator = ".",
   columns_not_to_check = NULL
 )
 }
@@ -38,7 +38,7 @@ check_outliers(
 
 \item{remove_choice_multiple}{TRUE (default) will remove choice multiple questions from the output.}
 
-\item{sm_seperator}{Separator for choice multiple questions. The default is "."}
+\item{sm_separator}{Separator for choice multiple questions. The default is "."}
 
 \item{columns_not_to_check}{Columns to exclude from the checks even if they are numeric values.}
 }

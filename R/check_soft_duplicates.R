@@ -5,7 +5,7 @@
 #' @param kobo_survey Kobo survey sheet.
 #' @param uuid_column uuid column in the dataset. Default is "uuid".
 #' @param idnk_value String character for the value of the "I don't know" value
-#' @param sm_seperator Separator for choice multiple questions. The default is "."
+#' @param sm_separator Separator for choice multiple questions. The default is "."
 #' @param log_name Name of the log dataframe flagged in the end of the function
 #' @param threshold flag all entries less or equal a specified threshold. The default is 7.
 #' @param return_all_results By default, the function will return only the values that are under the
@@ -21,7 +21,7 @@
 #'   kobo_survey = cleaningtools_survey,
 #'   uuid_column = "X_uuid",
 #'   idnk_value = "dont_know",
-#'   sm_seperator = ".",
+#'   sm_separator = ".",
 #'   log_name = "soft_duplicate_log",
 #'   threshold = 7
 #' )
@@ -35,7 +35,7 @@
 #'     dataset = .,
 #'     kobo_survey = cleaningtools_survey,
 #'     uuid_column = "X_uuid", idnk_value = "dont_know",
-#'     sm_seperator = ".",
+#'     sm_separator = ".",
 #'     log_name = "soft_duplicate_log",
 #'     threshold = 7,
 #'     return_all_results = TRUE
@@ -51,7 +51,7 @@ check_soft_duplicates <- function(dataset,
                                   kobo_survey,
                                   uuid_column = "uuid",
                                   idnk_value = "idnk",
-                                  sm_seperator = ".",
+                                  sm_separator = ".",
                                   log_name = "soft_duplicate_log",
                                   threshold = 7,
                                   return_all_results = FALSE) {
@@ -85,9 +85,9 @@ check_soft_duplicates <- function(dataset,
     "start", "end", "today", "deviceid", "date", "geopoint", "audit",
     "note", "calculate", "begin_group", "end_group"
   )
-  sm_parents <- auto_detect_sm_parents(df, sm_seperator)
+  sm_parents <- auto_detect_sm_parents(df, sm_separator)
   sm_columns <- df %>%
-    dplyr::select(dplyr::starts_with(glue::glue("{sm_parents}{sm_seperator}"))) %>%
+    dplyr::select(dplyr::starts_with(glue::glue("{sm_parents}{sm_separator}"))) %>%
     colnames()
   cols_to_keep <- data.frame(column = colnames(df)) %>%
     dplyr::left_join(dplyr::select(kobo_survey, name, type), by = c("column" = "name")) %>%

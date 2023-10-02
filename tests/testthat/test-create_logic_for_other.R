@@ -1,7 +1,7 @@
 test_that("create logic for other", {
   logic_df <- create_logic_for_other(
     kobo_survey = cleaningtools::cleaningtools_survey,
-    sm_seperator = ".",
+    sm_separator = ".",
     dataset = cleaningtools::cleaningtools_clean_data,
     compare_with_dataset = T
   ) %>%
@@ -9,13 +9,13 @@ test_that("create logic for other", {
 
   testthat::expect_warning(create_logic_for_other(
     kobo_survey = cleaningtools::cleaningtools_survey,
-    sm_seperator = ".",
+    sm_separator = ".",
     dataset = cleaningtools::cleaningtools_clean_data,
     compare_with_dataset = T
   ))
   testthat::expect_error(create_logic_for_other(
     kobo_survey = cleaningtools::cleaningtools_survey,
-    sm_seperator = ".",
+    sm_separator = ".",
     compare_with_dataset = T
   ))
 
@@ -74,7 +74,7 @@ test_that("create logic for other", {
 test_that("check with compare with dataset is FALSE", {
   logic_df <- create_logic_for_other(
     kobo_survey = cleaningtools::cleaningtools_survey,
-    sm_seperator = "."
+    sm_separator = "."
   )
   testthat::expect_false("water_sources.other is selected but water_sources_other is not found in the dataset" %in% logic_df$description)
 })
@@ -82,7 +82,7 @@ test_that("check with compare with dataset is FALSE", {
 test_that("check sm_spe", {
   logic_df <- create_logic_for_other(
     kobo_survey = cleaningtools::cleaningtools_survey,
-    sm_seperator = "/"
+    sm_separator = "/"
   )
   testthat::expect_false("water_sources.other is selected but water_sources_other is not found in the dataset" %in% logic_df$description)
 
@@ -130,7 +130,7 @@ test_that("check sm_spe", {
 test_that("expect equal", {
   logic_df <- create_logic_for_other(
     kobo_survey = cleaningtools::cleaningtools_survey,
-    sm_seperator = ".",
+    sm_separator = ".",
     dataset = cleaningtools::cleaningtools_clean_data,
     compare_with_dataset = T
   ) %>%

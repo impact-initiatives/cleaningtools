@@ -284,7 +284,7 @@ soft_duplicates <- check_soft_duplicates(
   kobo_survey = cleaningtools_survey,
   uuid_column = "X_uuid",
   idnk_value = "dont_know",
-  sm_seperator = ".",
+  sm_separator = ".",
   log_name = "soft_duplicate_log",
   threshold = 7
 )
@@ -296,7 +296,7 @@ soft_duplicates <- check_soft_duplicates(
   kobo_survey = cleaningtools_survey,
   uuid_column = "X_uuid",
   idnk_value = "dont_know",
-  sm_seperator = ".",
+  sm_separator = ".",
   log_name = "soft_duplicate_log",
   threshold = 7, 
   return_all_results = TRUE
@@ -315,7 +315,7 @@ soft_per_enum <- group_by_enum_raw_data %>%
     dataset = .,
     kobo_survey = cleaningtools_survey,
     uuid_column = "X_uuid", idnk_value = "dont_know",
-    sm_seperator = ".",
+    sm_separator = ".",
     log_name = "soft_duplicate_log",
     threshold = 7, 
     return_all_results = TRUE
@@ -508,7 +508,7 @@ test_data <- dplyr::tibble(
   reason_zy = c(NA_character_, "A", "B", "C", NA_character_, NA_character_)
 )
 
-cleaningtools::recreate_parent_column(dataset = test_data, uuid_column = "uuid", sm_seperator = ".") |> head()
+cleaningtools::recreate_parent_column(dataset = test_data, uuid_column = "uuid", sm_separator = ".") |> head()
 ```
 
 ### 4. Review of the cleaning
