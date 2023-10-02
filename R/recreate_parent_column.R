@@ -4,13 +4,13 @@
 #' @description `auto_detect_sm_parents` is mean to detect select multiple parent columns in a way that does
 #' not rely on the XLSForm as the input
 #' @param dataset dataset to correct
-#' @param sm_seperator Separator for choice multiple questions. The default is "."
+#' @param sm_separator Separator for choice multiple questions. The default is "."
 #'  If using read_csv to read in data the separator will most likely be '/' where as if using read.csv it will likely be '.'
 #' @return a list of select multiple parent columns in data set.
 #' @export
-auto_detect_sm_parents <- function(dataset, sm_seperator = ".") {
+auto_detect_sm_parents <- function(dataset, sm_separator = ".") {
   sm_parents <-
-    sub(glue::glue(".[^\\{sm_seperator}]*$"),
+    sub(glue::glue(".[^\\{sm_separator}]*$"),
         "",
         colnames(dataset))
   sm_parents <- data.frame(col_names = sm_parents[sm_parents != ""])
@@ -27,19 +27,19 @@ auto_detect_sm_parents <- function(dataset, sm_seperator = ".") {
 #' @description `auto_sm_parent_children` is mean to detect select multiple parent columns & children columns in a way that does
 #' not rely on the XLSForm as the input
 #' @param dataset dataset to correct
-#' @param sm_seperator Separator for choice multiple questions. The default is "."
+#' @param sm_separator Separator for choice multiple questions. The default is "."
 #'  If using read_csv to read in data the separator will most likely be '/' where as if using read.csv it will likely be '.'
 #' @return a data frame containing the the child select multiple columns alongside there parents and
 #' a log with all changes recorded.
 #' @export
 
 
-auto_sm_parent_children <- function(dataset, sm_seperator = ".") {
-  sm_parents <- auto_detect_sm_parents(dataset, sm_seperator)
+auto_sm_parent_children <- function(dataset, sm_separator = ".") {
+  sm_parents <- auto_detect_sm_parents(dataset, sm_separator)
   sm_child <- dataset %>%
-    dplyr::select(dplyr::starts_with(glue::glue("{sm_parents}{sm_seperator}"))) %>%
+    dplyr::select(dplyr::starts_with(glue::glue("{sm_parents}{sm_separator}"))) %>%
     colnames()
-  dplyr::tibble(sm_parent = sub(glue::glue(".[^\\{sm_seperator}]*$"), "", sm_child),
+  dplyr::tibble(sm_parent = sub(glue::glue(".[^\\{sm_separator}]*$"), "", sm_child),
                 sm_child)
 }
 
@@ -51,7 +51,7 @@ auto_sm_parent_children <- function(dataset, sm_seperator = ".") {
 #' @param uuid_column uuid column in the dataset. Default is "uuid".
 #' @param kobo_survey Kobo survey sheet.
 #' @param kobo_choices Kobo choices sheet.
-#' @param sm_seperator Separator for choice multiple questions. The default is "."
+#' @param sm_separator Separator for choice multiple questions. The default is "."
 #' @param cleaning_log_to_append A cleaning log where to add the changes from this functions.
 #' Names of the log from this function are  "uuid", "question", "change_type", "new_value",
 #' "old_value", "comment". If the cleaning_log_to_append names are not matching, the only way is to
@@ -73,13 +73,13 @@ auto_sm_parent_children <- function(dataset, sm_seperator = ".") {
 #'   reason.zy = c(0, 1, 1, 1, 0, 0),
 #'   reason_zy = c(NA_character_, "A", "B", "C", NA_character_, NA_character_)
 #' )
-#' recreate_parent_column(dataset = test_data, uuid_column = "uuid", sm_seperator = ".")
+#' recreate_parent_column(dataset = test_data, uuid_column = "uuid", sm_separator = ".")
 #'
 recreate_parent_column <- function(dataset,
                                    uuid_column = "uuid",
                                    kobo_survey = NULL,
                                    kobo_choices = NULL,
-                                   sm_seperator = ".",
+                                   sm_separator = ".",
                                    cleaning_log_to_append = NULL) {
   checked_data <- dataset
 
@@ -88,11 +88,11 @@ recreate_parent_column <- function(dataset,
   if (is.null(kobo_survey)) {
     old_name <- names(dataset)
     number_of_separator <- names(dataset) |>
-      stringr::str_count(pattern = paste0("\\", sm_seperator)) |>
+      stringr::str_count(pattern = paste0("\\", sm_separator)) |>
       max(na.rm = T)
     for (i in 1:number_of_separator) {
       names(dataset) <-
-        sub(paste0("(\\", sm_seperator, ".*?)\\", sm_seperator),
+        sub(paste0("(\\", sm_separator, ".*?)\\", sm_separator),
             "\\1_",
             names(dataset))
     }
@@ -113,7 +113,7 @@ recreate_parent_column <- function(dataset,
 
 
     select_multiple <-
-      auto_sm_parent_children(dataset, sm_seperator = sm_seperator)
+      auto_sm_parent_children(dataset, sm_separator = sm_separator)
   }
 
   if (!is.null(kobo_survey)) {
@@ -126,7 +126,7 @@ recreate_parent_column <- function(dataset,
       dplyr::rename(list_name = type,
                     sm_parent = name) |>
       dplyr::left_join(choice_to_join, multiple = "all", by = "list_name") |>
-      dplyr::mutate(sm_child = paste0(sm_parent, sm_seperator, name)) |>
+      dplyr::mutate(sm_child = paste0(sm_parent, sm_separator, name)) |>
       dplyr::select(sm_parent, sm_child)
 
     missing_column <-

@@ -3,7 +3,7 @@
 #' @param dataset dataset to be check
 #' @param uuid_column uuid column in the dataset. Default is "uuid".
 #' @param kobo_survey Kobo survey sheet.
-#' @param sm_seperator Separator for choice multiple questions. The default is "."
+#' @param sm_separator Separator for choice multiple questions. The default is "."
 #' @param information_to_add string vector optional, if to add some information to the log (today,village etc.)
 #' @param columns_not_to_check Columns to exclude from the checks
 #' @return Any discrepancy between kobo relevancies and the dataset.
@@ -18,7 +18,7 @@
 review_others <- function(dataset,
                           uuid_column = "uuid",
                           kobo_survey,
-                          sm_seperator = ".",
+                          sm_separator = ".",
                           information_to_add = NULL,
                           columns_not_to_check = NULL) {
   ### variables to add not found
@@ -54,7 +54,7 @@ review_others <- function(dataset,
     kobo_survey = kobo_survey,
     compare_with_dataset = TRUE,
     dataset = dataset,
-    sm_seperator = sm_seperator
+    sm_separator = sm_separator
   )
 
 

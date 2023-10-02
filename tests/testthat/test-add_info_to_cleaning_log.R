@@ -53,7 +53,8 @@ testthat::test_that("expect equal ", {
 
   expected <- structure(
     list(
-      uuid = c("ac26e24d-12be-4729-bae7-21060ee00a28", "all", "all", "all", "all", "all", "e8b1ba82-59df-4910-b9c8-29bc3fd516ab"), question = c(
+      uuid = c("ac26e24d-12be-4729-bae7-21060ee00a28", "all", "all", "all", "all", "all", "e8b1ba82-59df-4910-b9c8-29bc3fd516ab"),
+      question = c(
         "X_index", "neighbourhood", "water_supply_rest_neighbourhood",
         "water_supply_other_neighbourhoods", "water_supply_other_neighbourhoods_why",
         "consent_telephone_number", "X_index"
@@ -62,6 +63,15 @@ testthat::test_that("expect equal ", {
       old_value = c("88", NA, NA, NA, NA, NA, "99"),
       change_type = c(NA_character_, NA_character_, NA_character_, NA_character_, NA_character_, NA_character_, NA_character_),
       new_value = c(NA_character_, NA_character_, NA_character_, NA_character_, NA_character_, NA_character_, NA_character_),
+      check_binding = c(
+        "X_index ~/~ ac26e24d-12be-4729-bae7-21060ee00a28",
+        "neighbourhood ~/~ all",
+        "water_supply_rest_neighbourhood ~/~ all",
+        "water_supply_other_neighbourhoods ~/~ all",
+        "water_supply_other_neighbourhoods_why ~/~ all",
+        "consent_telephone_number ~/~ all",
+        "X_index ~/~ e8b1ba82-59df-4910-b9c8-29bc3fd516ab"
+      ),
       enumerator_num = c(13L, NA, NA, NA, NA, NA, 9L),
       date_assessment = c("2021-07-06", NA, NA, NA, NA, NA, "2021-07-07")
     ),
@@ -183,6 +193,15 @@ testthat::test_that("expect equal ", {
       old_value = c("88", NA, NA, NA, NA, NA, "99"),
       change_type = c(NA_character_, NA_character_, NA_character_, NA_character_, NA_character_, NA_character_, NA_character_),
       new_value = c(NA_character_, NA_character_, NA_character_, NA_character_, NA_character_, NA_character_, NA_character_),
+      check_binding = c(
+        "X_index ~/~ ac26e24d-12be-4729-bae7-21060ee00a28",
+        "neighbourhood ~/~ all",
+        "water_supply_rest_neighbourhood ~/~ all",
+        "water_supply_other_neighbourhoods ~/~ all",
+        "water_supply_other_neighbourhoods_why ~/~ all",
+        "consent_telephone_number ~/~ all",
+        "X_index ~/~ e8b1ba82-59df-4910-b9c8-29bc3fd516ab"
+      ),
       enumerator_num = c(13L, NA, NA, NA, NA, NA, 9L),
       date_assessment = c("2021-07-06", NA, NA, NA, NA, NA, "2021-07-07")
     ),

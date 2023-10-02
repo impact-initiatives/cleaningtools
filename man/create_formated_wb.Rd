@@ -6,7 +6,7 @@
 \usage{
 create_formated_wb(
   write_list,
-  cols_for_color = NULL,
+  column_for_color = NULL,
   header_front_size = 12,
   header_front_color = "#FFFFFF",
   header_fill_color = "#ee5859",
@@ -18,7 +18,7 @@ create_formated_wb(
 \arguments{
 \item{write_list}{List of dataframe}
 
-\item{cols_for_color}{Column name in the dataframe which should be used for colorizing the cell. The default is null.}
+\item{column_for_color}{Column name in the dataframe which should be used for colorizing the cell. The default is null.}
 
 \item{header_front_size}{Header front size (default is 12)}
 
@@ -39,11 +39,11 @@ A workbook
 Creates formatted workbook with openxlsx
 }
 \examples{
-list <- cleaningtools::cleaningtools_raw_data |>
+checks_list <- cleaningtools::cleaningtools_raw_data |>
   check_pii(uuid_column = "X_uuid") |>
-  cleaningtools::check_duplicate(uuid_column = "X_uuid") |>
-  cleaningtools::check_value(uuid_column = "X_uuid")
+  check_duplicate(uuid_column = "X_uuid") |>
+  check_value(uuid_column = "X_uuid")
 
-create_combined_log(list_of_log = list) |>
+create_combined_log(list_of_log = checks_list) |>
   create_formated_wb()
 }

@@ -9,7 +9,7 @@ recreate_parent_column(
   uuid_column = "uuid",
   kobo_survey = NULL,
   kobo_choices = NULL,
-  sm_seperator = ".",
+  sm_separator = ".",
   cleaning_log_to_append = NULL
 )
 }
@@ -22,7 +22,7 @@ recreate_parent_column(
 
 \item{kobo_choices}{Kobo choices sheet.}
 
-\item{sm_seperator}{Separator for choice multiple questions. The default is "."}
+\item{sm_separator}{Separator for choice multiple questions. The default is "."}
 
 \item{cleaning_log_to_append}{A cleaning log where to add the changes from this functions.
 Names of the log from this function are  "uuid", "question", "change_type", "new_value",
@@ -47,6 +47,6 @@ test_data <- dplyr::tibble(
   reason.zy = c(0, 1, 1, 1, 0, 0),
   reason_zy = c(NA_character_, "A", "B", "C", NA_character_, NA_character_)
 )
-recreate_parent_column(dataset = test_data, uuid_column = "uuid", sm_seperator = ".")
+recreate_parent_column(dataset = test_data, uuid_column = "uuid", sm_separator = ".")
 
 }

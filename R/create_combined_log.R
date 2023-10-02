@@ -56,10 +56,25 @@ create_combined_log <- function(list_of_log,
 
   print(names(list_of_log) |> glue::glue_collapse(", ") %>% glue::glue("List of element to combine- ", .))
 
-  output[["cleaning_log"]] <- dplyr::bind_rows(list_of_log_only) |> dplyr::mutate(
-    change_type = NA_character_,
-    new_value = NA_character_
-  )
+  output[["cleaning_log"]] <- dplyr::bind_rows(list_of_log_only) |>
+    dplyr::mutate(
+      change_type = NA_character_,
+      new_value = NA_character_
+      )
+
+  if(is.null(output[["cleaning_log"]][["check_binding"]])) {
+    output[["cleaning_log"]] <- output[["cleaning_log"]] |>
+      dplyr::mutate(
+        check_binding = paste(question, uuid, sep = " ~/~ ")
+      )
+  } else {
+    output[["cleaning_log"]] <- output[["cleaning_log"]] |>
+      dplyr::mutate(
+        check_binding = dplyr::case_when(is.na(check_binding) ~ paste(question, uuid, sep = " ~/~ "),
+                                         TRUE ~  check_binding)
+      )
+
+  }
 
   output
 }

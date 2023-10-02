@@ -560,7 +560,7 @@ soft_duplicates <- check_soft_duplicates(
   kobo_survey = cleaningtools_survey,
   uuid_column = "X_uuid",
   idnk_value = "dont_know",
-  sm_seperator = ".",
+  sm_separator = ".",
   log_name = "soft_duplicate_log",
   threshold = 7
 )
@@ -574,7 +574,7 @@ soft_duplicates <- check_soft_duplicates(
   kobo_survey = cleaningtools_survey,
   uuid_column = "X_uuid",
   idnk_value = "dont_know",
-  sm_seperator = ".",
+  sm_separator = ".",
   log_name = "soft_duplicate_log",
   threshold = 7, 
   return_all_results = TRUE
@@ -615,7 +615,7 @@ soft_per_enum <- group_by_enum_raw_data %>%
     dataset = .,
     kobo_survey = cleaningtools_survey,
     uuid_column = "X_uuid", idnk_value = "dont_know",
-    sm_seperator = ".",
+    sm_separator = ".",
     log_name = "soft_duplicate_log",
     threshold = 7, 
     return_all_results = TRUE
@@ -804,15 +804,15 @@ list_log <- cleaningtools::cleaningtools_raw_data |>
 #> List of element to combine- checked_dataset, potential_PII, duplicate_log, flaged_value
 
 list_log$cleaning_log |> head(6)
-#> # A tibble: 6 × 6
-#>   uuid                            question issue old_value change_type new_value
-#>   <chr>                           <chr>    <chr> <chr>     <chr>       <chr>    
-#> 1 all                             neighbo… Pote… <NA>      <NA>        <NA>     
-#> 2 all                             water_s… Pote… <NA>      <NA>        <NA>     
-#> 3 all                             water_s… Pote… <NA>      <NA>        <NA>     
-#> 4 all                             water_s… Pote… <NA>      <NA>        <NA>     
-#> 5 all                             consent… Pote… <NA>      <NA>        <NA>     
-#> 6 ac26e24d-12be-4729-bae7-21060e… X_index  Poss… 88        <NA>        <NA>
+#> # A tibble: 6 × 7
+#>   uuid              question issue old_value change_type new_value check_binding
+#>   <chr>             <chr>    <chr> <chr>     <chr>       <chr>     <chr>        
+#> 1 all               neighbo… Pote… <NA>      <NA>        <NA>      neighbourhoo…
+#> 2 all               water_s… Pote… <NA>      <NA>        <NA>      water_supply…
+#> 3 all               water_s… Pote… <NA>      <NA>        <NA>      water_supply…
+#> 4 all               water_s… Pote… <NA>      <NA>        <NA>      water_supply…
+#> 5 all               consent… Pote… <NA>      <NA>        <NA>      consent_tele…
+#> 6 ac26e24d-12be-47… X_index  Poss… 88        <NA>        <NA>      X_index ~/~ …
 ```
 
 #### 2.2 `add_info_to_cleaning_log()`
@@ -838,13 +838,20 @@ add_with_info$cleaning_log |> head()
 #> 4                      Potential PII      <NA>        <NA>      <NA>
 #> 5                      Potential PII      <NA>        <NA>      <NA>
 #> 6                      Potential PII      <NA>        <NA>      <NA>
-#>   enumerator_num date_assessment
-#> 1             13      2021-07-06
-#> 2             NA            <NA>
-#> 3             NA            <NA>
-#> 4             NA            <NA>
-#> 5             NA            <NA>
-#> 6             NA            <NA>
+#>                                      check_binding enumerator_num
+#> 1 X_index ~/~ ac26e24d-12be-4729-bae7-21060ee00a28             13
+#> 2                            neighbourhood ~/~ all             NA
+#> 3          water_supply_rest_neighbourhood ~/~ all             NA
+#> 4        water_supply_other_neighbourhoods ~/~ all             NA
+#> 5    water_supply_other_neighbourhoods_why ~/~ all             NA
+#> 6                 consent_telephone_number ~/~ all             NA
+#>   date_assessment
+#> 1      2021-07-06
+#> 2            <NA>
+#> 3            <NA>
+#> 4            <NA>
+#> 5            <NA>
+#> 6            <NA>
 ```
 
 #### 2.3 `create_xlsx_cleaning_log()`
@@ -968,7 +975,7 @@ test_data <- dplyr::tibble(
   reason_zy = c(NA_character_, "A", "B", "C", NA_character_, NA_character_)
 )
 
-cleaningtools::recreate_parent_column(dataset = test_data, uuid_column = "uuid", sm_seperator = ".") |> head()
+cleaningtools::recreate_parent_column(dataset = test_data, uuid_column = "uuid", sm_separator = ".") |> head()
 #> Warning in cleaningtools::recreate_parent_column(dataset = test_data,
 #> uuid_column = "uuid", : Column(s) names are renamed as multiple separators are
 #> found in dataset column names. Please see the above table with the new name.

@@ -60,7 +60,14 @@ test_that("expect equal", {
       ),
       old_value = c(NA, NA, NA, NA, NA, "88", "99"),
       change_type = c(NA_character_, NA_character_, NA_character_, NA_character_, NA_character_, NA_character_, NA_character_),
-      new_value = c(NA_character_, NA_character_, NA_character_, NA_character_, NA_character_, NA_character_, NA_character_)
+      new_value = c(NA_character_, NA_character_, NA_character_, NA_character_, NA_character_, NA_character_, NA_character_),
+      check_binding = c("neighbourhood ~/~ all",
+                        "water_supply_rest_neighbourhood ~/~ all",
+                        "water_supply_other_neighbourhoods ~/~ all",
+                        "water_supply_other_neighbourhoods_why ~/~ all",
+                        "consent_telephone_number ~/~ all",
+                        "X_index ~/~ ac26e24d-12be-4729-bae7-21060ee00a28",
+                        "X_index ~/~ e8b1ba82-59df-4910-b9c8-29bc3fd516ab")
     ),
     row.names = c(NA, -7L),
     class = c("data.frame")

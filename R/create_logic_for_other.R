@@ -1,7 +1,7 @@
 #' Create logical checks for "other" values.
 #'
 #' @param kobo_survey Kobo survey sheet.
-#' @param sm_seperator Separator for choice multiple questions. The default is "."
+#' @param sm_separator Separator for choice multiple questions. The default is "."
 #' @param compare_with_dataset Default FALSE will not compare the applicability of logics with the
 #' dataset whereas TRUE will check the applicability of logics.
 #' @param dataset dataset to be checked.
@@ -11,13 +11,13 @@
 #' @examples
 #' create_logic_for_other(
 #'   kobo_survey = cleaningtools::cleaningtools_survey,
-#'   sm_seperator = ".",
+#'   sm_separator = ".",
 #'   dataset = cleaningtools::cleaningtools_clean_data,
 #'   compare_with_dataset = TRUE
 #' )
 #'
 create_logic_for_other <- function(kobo_survey,
-                                   sm_seperator = ".",
+                                   sm_separator = ".",
                                    compare_with_dataset = FALSE,
                                    dataset = NULL) {
   my_bind_row <- get("bind_rows", asNamespace("dplyr"))
@@ -67,19 +67,19 @@ create_logic_for_other <- function(kobo_survey,
             type == "select_one" ~
               paste0(parent, " == \"", other_choice, "\""),
             T ~ paste0(
-              "(`", parent, sm_seperator, other_choice, "` == TRUE | `",
-              parent, sm_seperator, other_choice, "` == 1 ) & !is.na(`", parent, sm_seperator, other_choice, "`)"
+              "(`", parent, sm_separator, other_choice, "` == TRUE | `",
+              parent, sm_separator, other_choice, "` == 1 ) & !is.na(`", parent, sm_separator, other_choice, "`)"
             )
           )
         ) |>
         dplyr::mutate(
           description = dplyr::case_when(
             type == "select_one" ~ paste0(parent, " is selected but ", name, " is not found in the dataset"),
-            T ~ paste0(parent, sm_seperator, other_choice, " is selected but ", name, " is not found in the dataset")
+            T ~ paste0(parent, sm_separator, other_choice, " is selected but ", name, " is not found in the dataset")
           ),
           variables_to_clean_column = dplyr::case_when(
             type == "select_one" ~ paste0(parent), # ",",name),
-            T ~ paste0(parent, sm_seperator, other_choice) # ,",",name))
+            T ~ paste0(parent, sm_separator, other_choice) # ,",",name))
           ),
           associate_column_not_found = name
         ) |>
@@ -137,13 +137,13 @@ create_logic_for_other <- function(kobo_survey,
     list_of_logic[["select_multiple_is_not_na"]] <- kobo_select_multiple |>
       dplyr::mutate(
         logic = paste0(
-          "!is.na(", name, ") & (`", parent, sm_seperator, other_choice, "`==0 |`",
-          parent, sm_seperator, other_choice, "`==FALSE | is.na(`", parent, sm_seperator, other_choice, "`))"
+          "!is.na(", name, ") & (`", parent, sm_separator, other_choice, "`==0 |`",
+          parent, sm_separator, other_choice, "`==FALSE | is.na(`", parent, sm_separator, other_choice, "`))"
         )
       ) |>
       dplyr::mutate(
-        description = paste0(name, " is NOT NA but the binary column ( ", parent, sm_seperator, other_choice, ") is selected as FALSE/0/NA"),
-        variables_to_clean_column = paste0(name, ",", parent, sm_seperator, other_choice)
+        description = paste0(name, " is NOT NA but the binary column ( ", parent, sm_separator, other_choice, ") is selected as FALSE/0/NA"),
+        variables_to_clean_column = paste0(name, ",", parent, sm_separator, other_choice)
       ) |>
       dplyr::distinct()
 
@@ -152,13 +152,13 @@ create_logic_for_other <- function(kobo_survey,
     list_of_logic[["select_multiple_is_na"]] <- kobo_select_multiple |>
       dplyr::mutate(
         logic = paste0(
-          "is.na(", name, ") & (`", parent, sm_seperator, other_choice, "`==1 |`",
-          parent, sm_seperator, other_choice, "`== TRUE)"
+          "is.na(", name, ") & (`", parent, sm_separator, other_choice, "`==1 |`",
+          parent, sm_separator, other_choice, "`== TRUE)"
         )
       ) |>
       dplyr::mutate(
-        description = paste0(name, " is NA but the binary column (", parent, sm_seperator, other_choice, ")is selected as TRUE/1"),
-        variables_to_clean_column = paste0(name, ",", parent, sm_seperator, other_choice)
+        description = paste0(name, " is NA but the binary column (", parent, sm_separator, other_choice, ")is selected as TRUE/1"),
+        variables_to_clean_column = paste0(name, ",", parent, sm_separator, other_choice)
       ) |>
       dplyr::distinct()
   }

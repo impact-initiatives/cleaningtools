@@ -9,7 +9,7 @@ check_soft_duplicates(
   kobo_survey,
   uuid_column = "uuid",
   idnk_value = "idnk",
-  sm_seperator = ".",
+  sm_separator = ".",
   log_name = "soft_duplicate_log",
   threshold = 7,
   return_all_results = FALSE
@@ -25,7 +25,7 @@ stored as "checked_dataset"}
 
 \item{idnk_value}{String character for the value of the "I don't know" value}
 
-\item{sm_seperator}{Separator for choice multiple questions. The default is "."}
+\item{sm_separator}{Separator for choice multiple questions. The default is "."}
 
 \item{log_name}{Name of the log dataframe flagged in the end of the function}
 
@@ -47,7 +47,7 @@ soft_duplicates <- check_soft_duplicates(
   kobo_survey = cleaningtools_survey,
   uuid_column = "X_uuid",
   idnk_value = "dont_know",
-  sm_seperator = ".",
+  sm_separator = ".",
   log_name = "soft_duplicate_log",
   threshold = 7
 )
@@ -61,7 +61,7 @@ soft_per_enum <- group_by_enum_raw_data \%>\%
     dataset = .,
     kobo_survey = cleaningtools_survey,
     uuid_column = "X_uuid", idnk_value = "dont_know",
-    sm_seperator = ".",
+    sm_separator = ".",
     log_name = "soft_duplicate_log",
     threshold = 7,
     return_all_results = TRUE

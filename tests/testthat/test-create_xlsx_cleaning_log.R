@@ -12,7 +12,7 @@ testthat::test_that("Error messege test", {
 
 
   workbook <- cleaning_log_combined |> create_xlsx_cleaning_log(
-    cols_for_color = "question", output_path = NULL,
+    column_for_color = "question", output_path = NULL,
     cleaning_log_name = "cleaning_log",
     change_type_col = "change_type"
   )
@@ -24,7 +24,7 @@ testthat::test_that("Error messege test", {
 
   ### expected outcome
   cleaning_log_combined |> create_xlsx_cleaning_log(
-    cols_for_color = "question",
+    column_for_color = "question",
     output_path = paste0(temp_dir_to_test, "/testing_cleaning_log.xlsx"),
     cleaning_log_name = "cleaning_log",
     change_type_col = "change_type"
@@ -47,7 +47,7 @@ testthat::test_that("Error messege test", {
 
   testthat::expect_error(
     cleaning_log_combined |> create_xlsx_cleaning_log(
-      cols_for_color = "question",
+      column_for_color = "question",
       output_path = paste0(temp_dir_to_test, "/testing_cleaning_log.xlsx"),
       cleaning_log_name = "cleaning_log2",
       change_type_col = "change_type"
@@ -58,7 +58,7 @@ testthat::test_that("Error messege test", {
 
   testthat::expect_error(
     cleaning_log_combined |> create_xlsx_cleaning_log(
-      cols_for_color = "question",
+      column_for_color = "question",
       output_path = paste0(temp_dir_to_test, "/testing_cleaning_log.xlsx"),
       cleaning_log_name = "cleaning_log",
       change_type_col = "change_type2"
@@ -69,7 +69,7 @@ testthat::test_that("Error messege test", {
   cleaning_log_combined[["validation_rules"]] <- data.frame()
   testthat::expect_error(
     cleaning_log_combined |> create_xlsx_cleaning_log(
-      cols_for_color = "question",
+      column_for_color = "question",
       output_path = paste0(temp_dir_to_test, "/testing_cleaning_log.xlsx"),
       cleaning_log_name = "cleaning_log",
       change_type_col = "change_type"
@@ -81,7 +81,7 @@ testthat::test_that("Error messege test", {
 
 testthat::expect_error(
   cleaning_log_combined |> create_xlsx_cleaning_log(
-    cols_for_color = "question",
+    column_for_color = "question",
     output_path = paste0(temp_dir_to_test, "/testing_cleaning_log.xlsx"),
     cleaning_log_name = "cleaning_log",
     change_type_col = "change_type",
@@ -92,7 +92,7 @@ testthat::expect_error(
 
 testthat::expect_error(
   cleaning_log_combined |> create_xlsx_cleaning_log(
-    cols_for_color = "question",
+    column_for_color = "question",
     output_path = paste0(temp_dir_to_test, "/testing_cleaning_log.xlsx"),
     cleaning_log_name = "cleaning_log",
     change_type_col = "change_type",
@@ -104,7 +104,7 @@ testthat::expect_error(
 
 testthat::expect_error(
   cleaning_log_combined |> create_xlsx_cleaning_log(
-    cols_for_color = "question",
+    column_for_color = "question",
     output_path = paste0(temp_dir_to_test, "/testing_cleaning_log.xlsx"),
     cleaning_log_name = "cleaning_log",
     change_type_col = "change_type",
@@ -117,7 +117,7 @@ testthat::expect_error(
 
 testthat::expect_error(
   cleaning_log_combined |> create_xlsx_cleaning_log(
-    cols_for_color = "question",
+    column_for_color = "question",
     output_path = paste0(temp_dir_to_test, "/testing_cleaning_log.xlsx"),
     cleaning_log_name = "cleaning_log",
     change_type_col = "change_type",
@@ -130,7 +130,7 @@ testthat::expect_error(
 
 testthat::expect_error(
   cleaning_log_combined |> create_xlsx_cleaning_log(
-    cols_for_color = "question",
+    column_for_color = "question",
     output_path = paste0(temp_dir_to_test, "/testing_cleaning_log.xlsx"),
     cleaning_log_name = "cleaning_log",
     change_type_col = "change_type",
@@ -152,7 +152,7 @@ testthat::test_that("Testing the function is working as expected", {
     )
 
     create_combined_log(clog_test) |> create_xlsx_cleaning_log(
-      cols_for_color = "question",
+      column_for_color = "question",
       output_path = NULL,
       cleaning_log_name = "cleaning_log",
       change_type_col = "change_type",
@@ -189,7 +189,7 @@ testthat::test_that("Testing the function is working as expected", {
 
 
   create_combined_log(clog_test) |> create_xlsx_cleaning_log(
-    cols_for_color = "question",
+    column_for_color = "question",
     output_path = tmp_file,
     cleaning_log_name = "cleaning_log",
     change_type_col = "change_type",

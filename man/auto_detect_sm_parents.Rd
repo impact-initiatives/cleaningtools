@@ -4,12 +4,12 @@
 \alias{auto_detect_sm_parents}
 \title{Detect select multiple parent columns}
 \usage{
-auto_detect_sm_parents(dataset, sm_seperator = ".")
+auto_detect_sm_parents(dataset, sm_separator = ".")
 }
 \arguments{
 \item{dataset}{dataset to correct}
 
-\item{sm_seperator}{Separator for choice multiple questions. The default is "."
+\item{sm_separator}{Separator for choice multiple questions. The default is "."
 If using read_csv to read in data the separator will most likely be '/' where as if using read.csv it will likely be '.'}
 }
 \value{

@@ -6,7 +6,7 @@
 \usage{
 create_logic_for_other(
   kobo_survey,
-  sm_seperator = ".",
+  sm_separator = ".",
   compare_with_dataset = FALSE,
   dataset = NULL
 )
@@ -14,7 +14,7 @@ create_logic_for_other(
 \arguments{
 \item{kobo_survey}{Kobo survey sheet.}
 
-\item{sm_seperator}{Separator for choice multiple questions. The default is "."}
+\item{sm_separator}{Separator for choice multiple questions. The default is "."}
 
 \item{compare_with_dataset}{Default FALSE will not compare the applicability of logics with the
 dataset whereas TRUE will check the applicability of logics.}
@@ -31,7 +31,7 @@ Create logical checks for "other" values.
 \examples{
 create_logic_for_other(
   kobo_survey = cleaningtools::cleaningtools_survey,
-  sm_seperator = ".",
+  sm_separator = ".",
   dataset = cleaningtools::cleaningtools_clean_data,
   compare_with_dataset = TRUE
 )
