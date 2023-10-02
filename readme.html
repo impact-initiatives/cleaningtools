@@ -532,7 +532,7 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span>  kobo_survey <span class="op">=</span> <span class="va">cleaningtools_survey</span>,</span>
 <span>  uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span>
 <span>  idnk_value <span class="op">=</span> <span class="st">"dont_know"</span>,</span>
-<span>  sm_seperator <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  sm_separator <span class="op">=</span> <span class="st">"."</span>,</span>
 <span>  log_name <span class="op">=</span> <span class="st">"soft_duplicate_log"</span>,</span>
 <span>  threshold <span class="op">=</span> <span class="fl">7</span></span>
 <span><span class="op">)</span></span>
@@ -546,7 +546,7 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span>  kobo_survey <span class="op">=</span> <span class="va">cleaningtools_survey</span>,</span>
 <span>  uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span>
 <span>  idnk_value <span class="op">=</span> <span class="st">"dont_know"</span>,</span>
-<span>  sm_seperator <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  sm_separator <span class="op">=</span> <span class="st">"."</span>,</span>
 <span>  log_name <span class="op">=</span> <span class="st">"soft_duplicate_log"</span>,</span>
 <span>  threshold <span class="op">=</span> <span class="fl">7</span>, </span>
 <span>  return_all_results <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -584,7 +584,7 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span>    dataset <span class="op">=</span> <span class="va">.</span>,</span>
 <span>    kobo_survey <span class="op">=</span> <span class="va">cleaningtools_survey</span>,</span>
 <span>    uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>, idnk_value <span class="op">=</span> <span class="st">"dont_know"</span>,</span>
-<span>    sm_seperator <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>    sm_separator <span class="op">=</span> <span class="st">"."</span>,</span>
 <span>    log_name <span class="op">=</span> <span class="st">"soft_duplicate_log"</span>,</span>
 <span>    threshold <span class="op">=</span> <span class="fl">7</span>, </span>
 <span>    return_all_results <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -758,15 +758,15 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="co">#&gt; List of element to combine- checked_dataset, potential_PII, duplicate_log, flaged_value</span></span>
 <span></span>
 <span><span class="va">list_log</span><span class="op">$</span><span class="va">cleaning_log</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">6</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 6 × 6</span></span>
-<span><span class="co">#&gt;   uuid                            question issue old_value change_type new_value</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;                           &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;       &lt;chr&gt;    </span></span>
-<span><span class="co">#&gt; 1 all                             neighbo… Pote… &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;     </span></span>
-<span><span class="co">#&gt; 2 all                             water_s… Pote… &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;     </span></span>
-<span><span class="co">#&gt; 3 all                             water_s… Pote… &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;     </span></span>
-<span><span class="co">#&gt; 4 all                             water_s… Pote… &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;     </span></span>
-<span><span class="co">#&gt; 5 all                             consent… Pote… &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;     </span></span>
-<span><span class="co">#&gt; 6 ac26e24d-12be-4729-bae7-21060e… X_index  Poss… 88        &lt;NA&gt;        &lt;NA&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; # A tibble: 6 × 7</span></span>
+<span><span class="co">#&gt;   uuid              question issue old_value change_type new_value check_binding</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;             &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;        </span></span>
+<span><span class="co">#&gt; 1 all               neighbo… Pote… &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;      neighbourhoo…</span></span>
+<span><span class="co">#&gt; 2 all               water_s… Pote… &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;      water_supply…</span></span>
+<span><span class="co">#&gt; 3 all               water_s… Pote… &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;      water_supply…</span></span>
+<span><span class="co">#&gt; 4 all               water_s… Pote… &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;      water_supply…</span></span>
+<span><span class="co">#&gt; 5 all               consent… Pote… &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;      consent_tele…</span></span>
+<span><span class="co">#&gt; 6 ac26e24d-12be-47… X_index  Poss… 88        &lt;NA&gt;        &lt;NA&gt;      X_index ~/~ …</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="id_22-add_info_to_cleaning_log">2.2 <code>add_info_to_cleaning_log()</code>
@@ -790,13 +790,20 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="co">#&gt; 4                      Potential PII      &lt;NA&gt;        &lt;NA&gt;      &lt;NA&gt;</span></span>
 <span><span class="co">#&gt; 5                      Potential PII      &lt;NA&gt;        &lt;NA&gt;      &lt;NA&gt;</span></span>
 <span><span class="co">#&gt; 6                      Potential PII      &lt;NA&gt;        &lt;NA&gt;      &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;   enumerator_num date_assessment</span></span>
-<span><span class="co">#&gt; 1             13      2021-07-06</span></span>
-<span><span class="co">#&gt; 2             NA            &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 3             NA            &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 4             NA            &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 5             NA            &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 6             NA            &lt;NA&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt;                                      check_binding enumerator_num</span></span>
+<span><span class="co">#&gt; 1 X_index ~/~ ac26e24d-12be-4729-bae7-21060ee00a28             13</span></span>
+<span><span class="co">#&gt; 2                            neighbourhood ~/~ all             NA</span></span>
+<span><span class="co">#&gt; 3          water_supply_rest_neighbourhood ~/~ all             NA</span></span>
+<span><span class="co">#&gt; 4        water_supply_other_neighbourhoods ~/~ all             NA</span></span>
+<span><span class="co">#&gt; 5    water_supply_other_neighbourhoods_why ~/~ all             NA</span></span>
+<span><span class="co">#&gt; 6                 consent_telephone_number ~/~ all             NA</span></span>
+<span><span class="co">#&gt;   date_assessment</span></span>
+<span><span class="co">#&gt; 1      2021-07-06</span></span>
+<span><span class="co">#&gt; 2            &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 3            &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 4            &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 5            &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 6            &lt;NA&gt;</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="id_23-create_xlsx_cleaning_log">2.3 <code>create_xlsx_cleaning_log()</code>
@@ -902,7 +909,7 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span>  reason_zy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA_character_</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="cn">NA_character_</span>, <span class="cn">NA_character_</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">cleaningtools</span><span class="fu">::</span><span class="fu"><a href="reference/recreate_parent_column.html">recreate_parent_column</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">test_data</span>, uuid_column <span class="op">=</span> <span class="st">"uuid"</span>, sm_seperator <span class="op">=</span> <span class="st">"."</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">cleaningtools</span><span class="fu">::</span><span class="fu"><a href="reference/recreate_parent_column.html">recreate_parent_column</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">test_data</span>, uuid_column <span class="op">=</span> <span class="st">"uuid"</span>, sm_separator <span class="op">=</span> <span class="st">"."</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in cleaningtools::recreate_parent_column(dataset = test_data,</span></span>
 <span><span class="co">#&gt; uuid_column = "uuid", : Column(s) names are renamed as multiple separators are</span></span>
 <span><span class="co">#&gt; found in dataset column names. Please see the above table with the new name.</span></span>

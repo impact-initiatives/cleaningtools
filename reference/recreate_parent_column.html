@@ -47,7 +47,7 @@
 <span>  uuid_column <span class="op">=</span> <span class="st">"uuid"</span>,</span>
 <span>  kobo_survey <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  kobo_choices <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  sm_seperator <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  sm_separator <span class="op">=</span> <span class="st">"."</span>,</span>
 <span>  cleaning_log_to_append <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -70,7 +70,7 @@
 <dd><p>Kobo choices sheet.</p></dd>
 
 
-<dt>sm_seperator</dt>
+<dt>sm_separator</dt>
 <dd><p>Separator for choice multiple questions. The default is "."</p></dd>
 
 
@@ -98,7 +98,7 @@ create without a cleaning_log_to_append, and rename the columns and then bind.</
 <span class="r-in"><span>  reason.zy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  reason_zy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA_character_</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="cn">NA_character_</span>, <span class="cn">NA_character_</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">recreate_parent_column</span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">test_data</span>, uuid_column <span class="op">=</span> <span class="st">"uuid"</span>, sm_seperator <span class="op">=</span> <span class="st">"."</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">recreate_parent_column</span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">test_data</span>, uuid_column <span class="op">=</span> <span class="st">"uuid"</span>, sm_separator <span class="op">=</span> <span class="st">"."</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> gender</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> reason.xx</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> reason.yy</span>
