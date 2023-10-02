@@ -63,7 +63,7 @@ test_data <- data.frame(
 )
 
 
-check_cleaning_log(
+review_cleaning_log(
   raw_dataset = test_data,
   raw_data_uuid_column = "uuid",
   cleaning_log = cleaning_log_test,

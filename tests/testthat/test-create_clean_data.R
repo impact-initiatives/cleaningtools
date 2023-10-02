@@ -36,7 +36,7 @@ testthat::test_that("implement cleaning log", {
   deletation_log <- cleaning_log_1 |> dplyr::filter(change_type %in% c("remove_survey", "delete"))
 
 
-  expect_equal(nrow(review_cleaning_log(
+  expect_equal(nrow(review_cleaning(
     raw_dataset = cleaningtools::cleaningtools_raw_data,
     raw_dataset_uuid_column = "X_uuid",
     clean_dataset = cleaningtools_clean_data_multiple,
@@ -90,7 +90,7 @@ testthat::test_that("implement cleaning log", {
     cleaning_log_uuid_column = "X_uuid"
   ), "Missing values in change_type")
 
-  expect_equal(nrow(check_cleaning_log(
+  expect_equal(nrow(review_cleaning_log(
     raw_dataset = cleaningtools::cleaningtools_raw_data, raw_data_uuid_column = "X_uuid",
     cleaning_log = cleaning_log_na,
     cleaning_log_change_type_column = "change_type",
@@ -113,7 +113,7 @@ testthat::test_that("implement cleaning log", {
   ), "Make sure all names in cleaning_log_question_column values in the cleaning log are in dataset")
 
 
-  expect_equal(nrow(check_cleaning_log(
+  expect_equal(nrow(review_cleaning_log(
     raw_dataset = cleaningtools::cleaningtools_raw_data, raw_data_uuid_column = "X_uuid",
     cleaning_log = cleaning_log_wrong,
     change_response_value = "change_response",
@@ -123,7 +123,7 @@ testthat::test_that("implement cleaning log", {
   )), 4)
 
 
-  expect_output(check_cleaning_log(
+  expect_output(review_cleaning_log(
     raw_dataset = cleaningtools::cleaningtools_raw_data, raw_data_uuid_column = "X_uuid",
     cleaning_log = cleaning_log_wrong,
     change_response_value = "change_response",
@@ -153,7 +153,7 @@ testthat::test_that("implement cleaning log", {
 
 
 testthat::test_that("check cleaning log", {
-  expect_no_error(check_cleaning_log(
+  expect_no_error(review_cleaning_log(
     raw_dataset = cleaningtools::cleaningtools_raw_data,
     raw_data_uuid_column = "X_uuid",
     cleaning_log = cleaningtools::cleaningtools_cleaning_log,
@@ -164,7 +164,7 @@ testthat::test_that("check cleaning log", {
     cleaning_log_new_value_column = "new_value"
   ))
 
-  expect_error(check_cleaning_log(
+  expect_error(review_cleaning_log(
     raw_dataset = cleaningtools::cleaningtools_raw_data,
     raw_data_uuid_column = "X_uuid",
     cleaning_log = cleaningtools::cleaningtools_cleaning_log,
@@ -173,7 +173,7 @@ testthat::test_that("check cleaning log", {
     cleaning_log_uuid_column = "X_uuid", cleaning_log_new_value_column = "new_value"
   ), "Value in change_response_value not found")
 
-  expect_error(check_cleaning_log(
+  expect_error(review_cleaning_log(
     raw_dataset = cleaningtools::cleaningtools_raw_data,
     raw_data_uuid_column = "X_uuid",
     cleaning_log = cleaningtools::cleaningtools_cleaning_log,

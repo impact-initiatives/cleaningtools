@@ -9,10 +9,10 @@ testthat::test_that("Checking with test data", {
   )
 
   test_cleaning_log <- tibble::tibble(
-    uuid = c("uuid1", "uuid3"),
+    uuid = c("uuid1", "uuid4"),
     question = c("gender", "expenditure"),
     change_type = c("change_response", "blank_response"),
-    old_value = c("male", "240"),
+    old_value = c("male", "44444"),
     new_value = c("female", NA_character_),
     comment = c("An alteration was performed", "changed to NA")
   )
@@ -28,7 +28,7 @@ testthat::test_that("Checking with test data", {
   test_clean_data <- tibble::tibble(
     uuid = paste0("uuid", 1:5),
     gender = c("female", "female", "male", "female", "male"),
-    expenditure = c(200, 300, NA_real_, 44444, 300)
+    expenditure = c(200, 300, 240, NA_real_, 300)
   )
 
   cleaning_log_actual <- create_cleaning_log(
@@ -45,7 +45,7 @@ testthat::test_that("Checking with test data", {
   ## check review cleaning log
 
   testthat::expect_equal(nrow(
-    review_cleaning_log(
+    review_cleaning(
       raw_dataset = test_raw_data,
       raw_dataset_uuid_column = "uuid",
       clean_dataset = test_clean_data,
@@ -62,10 +62,10 @@ testthat::test_that("Checking with test data", {
   ), 0)
 
   test_clean_data_faulty <- test_clean_data
-  test_clean_data_faulty[4, "expenditure"] <- 444
+  test_clean_data_faulty[3, "expenditure"] <- 444
   test_clean_data_faulty[1, "gender"] <- "male"
 
-  actual <- review_cleaning_log(
+  actual <- review_cleaning(
     raw_dataset = test_raw_data,
     raw_dataset_uuid_column = "uuid",
     clean_dataset = test_clean_data_faulty,
@@ -82,19 +82,17 @@ testthat::test_that("Checking with test data", {
 
 
   expected_output <- data.frame(
-    uuid = c("uuid1", "uuid4"),
+    uuid = c("uuid1", "uuid3"),
     df.question = c("gender", "expenditure"),
     df.change_type = c("change_response", "change_response"),
     df.new_value = c("male", "444"),
     cl.new_value = c("female", NA_character_),
-    df.old_value = c("male", "44444"),
+    df.old_value = c("male", "240"),
     cl.old_value = c("male", NA_character_),
     comment = c("Changes were not applied", "Entry missing in cleaning log")
   )
 
   testthat::expect_equal(actual, expected_output)
-
-
 
   ########## check with different uuid name/no issue
 
@@ -131,7 +129,7 @@ testthat::test_that("Checking with test data", {
     expenditure = c(200, 300, NA_real_, 44444, 300)
   )
 
-  cleaing_log_actual <- create_cleaning_log(
+  cleaning_log_actual <- create_cleaning_log(
     raw_dataset = test_raw_data,
     raw_dataset_uuid_column = "X_uuid",
     clean_dataset = test_clean_data,
@@ -140,12 +138,12 @@ testthat::test_that("Checking with test data", {
     check_for_variable_name = F
   ) |> dplyr::select(dplyr::all_of(names(expected_cleaning_log)))
   ### check create cleaning log
-  testthat::expect_equal(cleaing_log_actual, expected_cleaning_log)
+  testthat::expect_equal(cleaning_log_actual, expected_cleaning_log)
 
   ## check review cleaning log
 
   testthat::expect_equal(nrow(
-    review_cleaning_log(
+    review_cleaning(
       raw_dataset = test_raw_data,
       raw_dataset_uuid_column = "X_uuid",
       clean_dataset = test_clean_data,
@@ -172,7 +170,7 @@ testthat::test_that("Checking with test data", {
   test_cleaning_log <-
     test_cleaning_log |> dplyr::rename(question_name = question)
 
-  actual_output <- review_cleaning_log(
+  actual_output <- review_cleaning(
     raw_dataset = test_raw_data,
     raw_dataset_uuid_column = "X_uuid",
     clean_dataset = test_clean_data_faulty,
@@ -215,13 +213,13 @@ testthat::test_that("Checking with real data", {
     )
   )
 
-  deletaion_log <-
+  deletion_log <-
     cleaningtools::cleaningtools_cleaning_log |> dplyr::filter(change_type == "remove_survey")
   cleaning_log2 <-
     cleaningtools::cleaningtools_cleaning_log |> dplyr::filter(change_type != "remove_survey")
 
   expect_no_error(
-    review_cleaning_log(
+    review_cleaning(
       raw_dataset = cleaningtools::cleaningtools_raw_data,
       raw_dataset_uuid_column = "X_uuid",
       clean_dataset = cleaningtools::cleaningtools_clean_data,
@@ -231,7 +229,7 @@ testthat::test_that("Checking with real data", {
       cleaning_log_question_column = "questions",
       cleaning_log_new_value_column = "new_value",
       cleaning_log_old_value_column = "old_value",
-      deletion_log = deletaion_log,
+      deletion_log = deletion_log,
       deletion_log_uuid_column = "X_uuid",
       check_for_deletion_log = T
     )
@@ -407,7 +405,7 @@ testthat::test_that("create cleaning log with no deletion survey", {
     comment = c("No matching uuid in the cleaned dataset", "c")
   )
 
-  output <- review_cleaning_log(
+  output <- review_cleaning(
     raw_dataset = test_raw_data,
     raw_dataset_uuid_column = "uuid",
     clean_dataset = test_raw_data,
@@ -508,7 +506,7 @@ testthat::test_that("Test related to deletion and added surveys", {
     cleaning_log_test |> dplyr::filter(change_type == "remove_survey")
 
   testthat::expect_equal(nrow(
-    review_cleaning_log(
+    review_cleaning(
       raw_dataset = me_raw_data,
       raw_dataset_uuid_column = "uuid",
       clean_dataset = me_clean_data,
@@ -527,7 +525,7 @@ testthat::test_that("Test related to deletion and added surveys", {
   ), 0)
 
   testthat::expect_no_error(
-    review_cleaning_log(
+    review_cleaning(
       raw_dataset = me_raw_data,
       raw_dataset_uuid_column = "uuid",
       clean_dataset = me_clean_data,
@@ -569,7 +567,7 @@ testthat::test_that("Test related to deletion and added surveys", {
     class = "data.frame"
   )
 
-  actual <- review_cleaning_log(
+  actual <- review_cleaning(
     raw_dataset = me_raw_data,
     raw_dataset_uuid_column = "uuid",
     clean_dataset = me_clean_data,
@@ -624,7 +622,7 @@ testthat::test_that("Test related to deletion and added surveys", {
   )
 
   #
-  actual <- review_cleaning_log(
+  actual <- review_cleaning(
     raw_dataset = me_raw_data,
     raw_dataset_uuid_column = "uuid",
     clean_dataset = me_raw_data,
@@ -694,7 +692,7 @@ testthat::test_that("Test related to deletion and added surveys", {
     expenditure = c(200, 300, NA_real_, 44444, 300)
   )
 
-  output <- review_cleaning_log(
+  output <- review_cleaning(
     raw_dataset = test_raw_data,
     raw_dataset_uuid_column = "uuid",
     clean_dataset = test_clean_data,
@@ -734,7 +732,7 @@ testthat::test_that("Test related to deletion and added surveys", {
   )
 
 
-  output2 <- review_cleaning_log(
+  output2 <- review_cleaning(
     raw_dataset = test_raw_data,
     raw_dataset_uuid_column = "uuid",
     clean_dataset = test_clean_data,
@@ -848,7 +846,7 @@ testthat::test_that("Test related to deletion and added surveys", {
   )
 
 
-  output3 <- review_cleaning_log(
+  output3 <- review_cleaning(
     raw_dataset = test_raw_data,
     raw_dataset_uuid_column = "uuid",
     clean_dataset = test_clean_data,
@@ -869,7 +867,7 @@ testthat::test_that("Test related to deletion and added surveys", {
   ################ END::12: deletion: in deleted log, in clean data ####################
   ## error msg check
   testthat::expect_error(
-    review_cleaning_log(
+    review_cleaning(
       raw_dataset = test_raw_data,
       raw_dataset_uuid_column = "uuid",
       clean_dataset = test_clean_data,
@@ -887,7 +885,7 @@ testthat::test_that("Test related to deletion and added surveys", {
   )
 
   testthat::expect_error(
-    review_cleaning_log(
+    review_cleaning(
       raw_dataset = test_raw_data,
       raw_dataset_uuid_column = "uuid",
       clean_dataset = test_clean_data,
@@ -938,7 +936,7 @@ testthat::test_that("Change not applied", {
     old_value = c("male", "44444", NA_character_, 300),
     new_value = c("female", "444", "250", NA_character_)
   )
-  output4 <- review_cleaning_log(
+  output4 <- review_cleaning(
     raw_dataset = test_raw_data,
     raw_dataset_uuid_column = "uuid",
     clean_dataset = test_clean_data,
@@ -1009,7 +1007,7 @@ testthat::test_that("Change applied", {
 
 
   testthat::expect_equal(nrow(
-    review_cleaning_log(
+    review_cleaning(
       raw_dataset = test_raw_data,
       raw_dataset_uuid_column = "uuid",
       clean_dataset = test_clean_data,
@@ -1059,7 +1057,7 @@ testthat::test_that("entry both in deletion log and cleaning log", {
   test_deletion_log <- tibble::tibble(uuid = "uuid5")
 
 
-  output6 <- review_cleaning_log(
+  output6 <- review_cleaning(
     raw_dataset = test_raw_data,
     raw_dataset_uuid_column = "uuid",
     clean_dataset = test_clean_data,
@@ -1114,7 +1112,7 @@ testthat::test_that("Test no change", {
   )
 
 
-  output7 <- review_cleaning_log(
+  output7 <- review_cleaning(
     raw_dataset = test_raw_data,
     raw_dataset_uuid_column = "uuid",
     clean_dataset = test_clean_data,
