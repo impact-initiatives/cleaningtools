@@ -40,9 +40,6 @@
     <loc>https://impact-initiatives.github.io/cleaningtools/reference/auto_sm_parent_child.html</loc>
   </url>
   <url>
-    <loc>https://impact-initiatives.github.io/cleaningtools/reference/check_cleaning_log.html</loc>
-  </url>
-  <url>
     <loc>https://impact-initiatives.github.io/cleaningtools/reference/check_duplicate.html</loc>
   </url>
   <url>
@@ -109,6 +106,9 @@
     <loc>https://impact-initiatives.github.io/cleaningtools/reference/cleaningtools_survey.html</loc>
   </url>
   <url>
+    <loc>https://impact-initiatives.github.io/cleaningtools/reference/coerce_to_character.html</loc>
+  </url>
+  <url>
     <loc>https://impact-initiatives.github.io/cleaningtools/reference/create_audit_list.html</loc>
   </url>
   <url>
@@ -155,6 +155,9 @@
   </url>
   <url>
     <loc>https://impact-initiatives.github.io/cleaningtools/reference/recreate_parent_column.html</loc>
+  </url>
+  <url>
+    <loc>https://impact-initiatives.github.io/cleaningtools/reference/review_cleaning.html</loc>
   </url>
   <url>
     <loc>https://impact-initiatives.github.io/cleaningtools/reference/review_cleaning_log.html</loc>

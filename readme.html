@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="index.html">cleaningtools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9002</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -845,9 +845,9 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span><span class="co">#&gt; 4 uuid4    strata     change_res      st-a</span></span></code></pre></div>
 <div class="section level4">
 <h4 id="id_31-check-the-cleaning-log">3.1 Check the cleaning log<a class="anchor" aria-label="anchor" href="#id_31-check-the-cleaning-log"></a></h4>
-<p>After obtaining both the cleaning log and dataset, it is considered good practice to utilize the check_cleaning_log() function to ensure the consistency between the cleaning log and the dataset. It is highly recommended to perform this check on a daily basis, enabling you to promptly identify any issues right from the outset.</p>
+<p>After obtaining both the cleaning log and dataset, it is considered good practice to utilize the review_cleaning_log() function to ensure the consistency between the cleaning log and the dataset. It is highly recommended to perform this check on a daily basis, enabling you to promptly identify any issues right from the outset.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">cleaningtools</span><span class="fu">::</span><span class="fu"><a href="reference/check_cleaning_log.html">check_cleaning_log</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu">cleaningtools</span><span class="fu">::</span><span class="fu"><a href="reference/review_cleaning_log.html">review_cleaning_log</a></span><span class="op">(</span></span>
 <span>  raw_dataset <span class="op">=</span> <span class="va">test_data</span>,</span>
 <span>  raw_data_uuid_column <span class="op">=</span> <span class="st">"uuid"</span>,</span>
 <span>  cleaning_log <span class="op">=</span> <span class="va">cleaning_log_test</span>,</span>
@@ -962,9 +962,9 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <h3 id="id_4-review-of-the-cleaning">4. Review of the cleaning<a class="anchor" aria-label="anchor" href="#id_4-review-of-the-cleaning"></a></h3>
 <div class="section level4">
 <h4 id="id_41-review-cleaning-log-with-clean-data-and-raw-data">4.1 Review cleaning log with clean data and raw data<a class="anchor" aria-label="anchor" href="#id_41-review-cleaning-log-with-clean-data-and-raw-data"></a></h4>
-<p><code>review_cleaning_log</code> function takes raw data, clean data and cleaning log as inputs, and it first creates the cleaning log by comparing raw data and clean data, then compares it with the user-provided cleaning log. Finally, flagged the discrepancies between them (if any).</p>
+<p><code>review_cleaning</code> function takes raw data, clean data and cleaning log as inputs, and it first creates the cleaning log by comparing raw data and clean data, then compares it with the user-provided cleaning log. Finally, flagged the discrepancies between them (if any).</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">compared_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/review_cleaning_log.html">review_cleaning_log</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">compared_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/review_cleaning.html">review_cleaning</a></span><span class="op">(</span></span>
 <span>  raw_dataset <span class="op">=</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va"><a href="reference/cleaningtools_raw_data.html">cleaningtools_raw_data</a></span>,</span>
 <span>  raw_dataset_uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span>
 <span>  clean_dataset <span class="op">=</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va"><a href="reference/cleaningtools_clean_data.html">cleaningtools_clean_data</a></span>,</span>
