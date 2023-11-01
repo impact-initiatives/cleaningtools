@@ -1,222 +1,4 @@
-#' Generates cleaning log
-#' @param raw_dataset Raw dataset
-#' @param raw_dataset_uuid_column uuid column in the raw dataset. Default is "uuid".
-#' @param clean_dataset Clean dataset
-#' @param clean_dataset_uuid_column uuid column in the raw dataset. Default is "uuid".
-#' @param check_for_deletion_log TRUE to flag the removed survey
-#' @param check_for_variable_name TRUE to flag the removed variables
-#' @param  columns_not_to_check Columns to exclude from the checks
-#' @return Cleaning log
-#' @export
-#' @examples
-#' \dontrun{
-#' create_cleaning_log(
-#'   raw_dataset = cleaningtools::cleaningtools_raw_data, raw_dataset_uuid_column = "X_uuid",
-#'   clean_dataset = cleaningtools::cleaningtools_clean_data, clean_dataset_uuid_column = "X_uuid",
-#'   check_for_deletion_log = TRUE, check_for_variable_name = TRUE
-#' )
-#' }
-# generate cleaning log ---------------------------------------------------
-create_cleaning_log <- function(raw_dataset,
-                                raw_dataset_uuid_column = "uuid",
-                                clean_dataset = clean_dataset,
-                                clean_dataset_uuid_column = "uuid",
-                                check_for_deletion_log = T,
-                                columns_not_to_check = NULL,
-                                check_for_variable_name = T) {
-
-  raw_dataset <- raw_dataset %>%
-    dplyr::mutate(dplyr::across(
-      .cols = tidyselect::everything(),
-      .fns = ~coerce_to_character(.x)))
-  clean_dataset <- clean_dataset %>%
-    dplyr::mutate(dplyr::across(
-      .cols = tidyselect::everything(),
-      .fns = ~coerce_to_character(.x)))
-  raw_dataset$uuid <- raw_dataset[[raw_dataset_uuid_column]]
-  clean_dataset$uuid <- clean_dataset[[clean_dataset_uuid_column]]
-
-  # log list
-  log <- list()
-
-
-
-  # create deletion log  ---------------------------------------------------
-  if (check_for_deletion_log == T &
-      !all(unique(raw_dataset[[raw_dataset_uuid_column]]) %in% clean_dataset[[clean_dataset_uuid_column]])) {
-    deleted_uuid <-
-      raw_dataset$uuid[!raw_dataset$uuid %in% clean_dataset$uuid]
-    log[["deletaion_log"]] <- data.frame(uuid = deleted_uuid,
-                                         change_type = "remove_survey",
-                                         comment = "No matching uuid in the cleaned dataset")
-  }
-
-  # create deletion log [number of clean data is grater than number of row data]  ---------------------------------------------------
-  if (check_for_deletion_log == T &
-      !all(unique(clean_dataset[[clean_dataset_uuid_column]]) %in% raw_dataset[[raw_dataset_uuid_column]])) {
-    deleted_uuid <-
-      clean_dataset$uuid[!clean_dataset$uuid %in% raw_dataset$uuid]
-    log[["added_survey"]] <- data.frame(uuid = deleted_uuid,
-                                        change_type = "added_survey",
-                                        comment = "Survey added to the clean dataset.")
-  }
-
-
-
-  # check variable name [removed from clean data] ---------------------------
-
-  if (check_for_variable_name == T) {
-    ## variable removed
-
-    removed_variable_name <-
-      names(raw_dataset)[!names(raw_dataset) %in% names(clean_dataset)]
-
-    if (length(removed_variable_name) > 0) {
-      log[["variable_removed"]] <- data.frame(
-        uuid = "all",
-        question = removed_variable_name,
-        change_type = "variable_removed",
-        comment = "variable removed from the clean dataset"
-      )
-    }
-
-
-    ## variable added
-
-    added_variable_name <-
-      names(clean_dataset)[!names(clean_dataset) %in% names(raw_dataset)]
-
-    if (length(added_variable_name) > 0) {
-      log[["variable_added"]] <- data.frame(
-        uuid = "all",
-        question = added_variable_name,
-        change_type = "variable_added",
-        comment = "variable added to the clean dataset"
-      )
-    }
-  } # end check for variable
-
-
-  # create log for change_response ------------------------------------------
-
-  uuidlist <-
-    clean_dataset$uuid[clean_dataset$uuid %in% raw_dataset$uuid]
-
-  varlist <-
-    names(raw_dataset)[names(raw_dataset) %in% names(clean_dataset)]
-
-  varlist <- varlist[!varlist %in% unique(
-    c(
-      "uuid",
-      "start",
-      "end",
-      "X_index",
-      "_index",
-      "index",
-      "X_status",
-      "_status",
-      "status",
-      "today",
-      "X_submitted_by",
-      "_submitted_by",
-      "submitted_by",
-      "X_submission_time",
-      "_submission_time",
-      "submission_time",
-      raw_dataset_uuid_column,
-      columns_not_to_check
-    )
-  )]
-
-
-  ############################# change_response ############################################
-  log[["change_response"]] <-
-    lapply(varlist, function(x, clean_dataset, raw_dataset) {
-      check <-
-        merge(clean_dataset[c("uuid", x)],
-              raw_dataset[c("uuid", x)],
-              by = "uuid",
-              all.x = T)
-
-      index <- which(check[, 2] != check[, 3])
-
-      if (length(index) != 0) {
-        check <- check[index,]
-        names(check) <- c("uuid", "new_value", "old_value")
-        check$question <- x
-        check$change_type <- "change_response"
-        check$comment <- "An alteration was performed"
-        return(check)
-      }
-      message(x)
-    }, clean_dataset = clean_dataset, raw_dataset = raw_dataset) %>% do.call(rbind, .)
-
-
-
-  ############################# NA_to_change_response ############################################
-
-  log[["NA_to change_response"]] <-
-    lapply(varlist, function(x, clean_dataset, raw_dataset) {
-      check <-
-        merge(clean_dataset[c("uuid", x)],
-              raw_dataset[c("uuid", x)],
-              by = "uuid",
-              all.x = T)
-
-      index <- which(!is.na(check[, 2]) & is.na(check[, 3]))
-
-      if (length(index) != 0) {
-        check <- check[index,]
-        names(check) <- c("uuid", "new_value", "old_value")
-        check$question <- x
-        check$change_type <- "change_response"
-        check$comment <- "NA changed to value"
-        return(check)
-      }
-      message(x)
-    }, clean_dataset = clean_dataset, raw_dataset = raw_dataset) %>% do.call(rbind, .)
-
-  ############################# blank_response ############################################
-  log[["blank_response"]] <-
-    lapply(varlist, function(x, clean_dataset, raw_dataset) {
-      check <-
-        merge(clean_dataset[c("uuid", x)],
-              raw_dataset[c("uuid", x)],
-              by = "uuid",
-              all.x = T)
-
-      index <- which(is.na(check[, 2]) & !is.na(check[, 3]))
-
-      if (length(index) != 0) {
-        check <- check[index,]
-        names(check) <- c("uuid", "new_value", "old_value")
-        check$question <- x
-        check$change_type <- "blank_response"
-        check$comment <- "changed to NA"
-        return(check)
-      }
-      message(x)
-    }, clean_dataset = clean_dataset, raw_dataset = raw_dataset) %>% do.call(rbind, .)
-
-  all_log <- do.call(dplyr::bind_rows, log)
-  if (nrow(all_log) > 0) {
-    all_log <- all_log |> dplyr::select(dplyr::any_of(
-      c(
-        "uuid",
-        "question",
-        "change_type",
-        "new_value",
-        "old_value",
-        "comment"
-      )
-    ))
-  }
-
-  return(all_log)
-}
-
-
-# Review cleaning logs ---------------------------------------------------
+# WARNING - Generated by {fusen} from dev/function_documentation.Rmd: do not edit by hand
 
 #' Review cleaning logs
 #' @param raw_dataset Raw dataset
@@ -237,24 +19,28 @@ create_cleaning_log <- function(raw_dataset,
 #' @return Discrepancy in cleaning log
 #' @export
 #' @examples
-#' \dontrun{
+#'  
 #' deletion_log<- cleaningtools::cleaningtools_cleaning_log |>
 #'   dplyr::filter(change_type == "remove_survey")
+#'
 #' cleaning_log <- cleaningtools::cleaningtools_cleaning_log |>
 #'   dplyr::filter(change_type != "remove_survey")
-#'
-#' review_cleaning(
-#'   raw_dataset = cleaningtools::raw_dataset, raw_dataset_uuid_column = "X_uuid",
-#'   clean_dataset = cleaningtools::clean_dataset, clean_dataset_uuid_column = "X_uuid",
-#'   cleaning_log = cleaning_log2, cleaning_log_uuid_column = "X_uuid",
-#'   cleaning_log_question_column = "questions",
-#'   cleaning_log_new_value_column = "new_value",
-#'   cleaning_log_old_value_column = "old_value",
-#'   deletion_log = deletaion_log,
-#'   deletion_log_uuid_column = "X_uuid",
-#'   check_for_deletion_log = T
-#' )
-#' }
+#'  
+#' # review_cleaning(  raw_dataset = cleaningtools::raw_dataset, 
+#' #                   raw_dataset_uuid_column = "X_uuid",
+#' #                   clean_dataset = cleaningtools::clean_dataset, 
+#' #                   clean_dataset_uuid_column = "X_uuid",
+#' #                   cleaning_log = cleaning_log2, 
+#' #                   cleaning_log_uuid_column = "X_uuid",
+#' #                   cleaning_log_question_column = "questions",
+#' #                   cleaning_log_new_value_column = "new_value",
+#' #                   cleaning_log_old_value_column = "old_value",
+#' #                   deletion_log = deletaion_log,
+#' #                   deletion_log_uuid_column = "X_uuid",
+#' #                   check_for_deletion_log = T) |>
+#' #   knitr::kable()
+#'  
+
 review_cleaning <- function(raw_dataset,
                                 raw_dataset_uuid_column = "uuid",
                                 clean_dataset,

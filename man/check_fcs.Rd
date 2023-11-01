@@ -44,3 +44,6 @@ dataset with potential issues
 \description{
 FCS component checks
 }
+\examples{
+#check_fcs()
+}

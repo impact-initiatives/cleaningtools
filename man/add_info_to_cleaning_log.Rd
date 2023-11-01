@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_info_to_cleaning_log.R
 \name{add_info_to_cleaning_log}
 \alias{add_info_to_cleaning_log}
-\title{Add information to the cleaning log}
+\title{add_info_to_cleaning_log}
 \usage{
 add_info_to_cleaning_log(
   list_of_log = NULL,
@@ -37,10 +37,13 @@ A list with cleaning log with added info and the dataset.
 Add information to the cleaning log
 }
 \examples{
+ ## An example of pipeline
 cleaningtools::cleaningtools_raw_data |>
   check_pii(uuid_column = "X_uuid") |>
   check_duplicate(uuid_column = "X_uuid") |>
   check_value(uuid_column = "X_uuid") |>
+  ## After the check creating the log
   create_combined_log() |>
-  add_info_to_cleaning_log(dataset_uuid_column = "X_uuid")
+  add_info_to_cleaning_log(dataset_uuid_column = "X_uuid") |>
+  knitr::kable()  
 }

@@ -40,28 +40,28 @@ a column added with the check_id  and a dataframe with the logical check log.
 Check a logical test
 }
 \examples{
+
 test_data <- data.frame(
   uuid = c(1:10) \%>\% as.character(),
   today = rep("2023-01-01", 10),
   location = rep(c("villageA", "villageB"), 5),
   distance_to_market = c(rep("less_30", 5), rep("more_30", 5)),
   access_to_market = c(rep("yes", 4), rep("no", 6)),
-  number_children_05 = c(rep(c(0, 1), 4), 5, 6)
-)
-
+  number_children_05 = c(rep(c(0, 1), 4), 5, 6) )
+ 
 check_logical(test_data,
   uuid_column = "uuid",
   check_id = "my_test",
   check_to_perform = "distance_to_market == \"less_30\" & access_to_market == \"no\"",
   columns_to_clean = "distance_to_market, access_to_market",
-  description = "distance to market less than 30 and no access"
-)
-
+  description = "distance to market less than 30 and no access") |>
+  knitr::kable()  
+ 
 check_logical(test_data,
   uuid_column = "uuid",
   information_to_add = c("today", "location"),
   check_to_perform = "distance_to_market == \"less_30\" & access_to_market == \"no\"",
   columns_to_clean = "distance_to_market, access_to_market",
-  description = "distance to market less than 30 and no access"
-)
+  description = "distance to market less than 30 and no access")|>
+  knitr::kable()  
 }

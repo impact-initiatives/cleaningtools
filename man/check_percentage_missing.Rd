@@ -34,6 +34,7 @@ The function will flag if a survey for its missing values. The missing values co
 with add_percentage_missing and the values are flagged with check_outliers.
 }
 \examples{
+ 
 # Adding the percentage missing first
 data_example <- data.frame(
   uuid = letters[1:3],
@@ -45,9 +46,14 @@ data_example <- data.frame(
   col_4.health = c(1, NA, 0),
   col_4.school = c(1, NA, 0)
 )
+
 data_example <- data_example \%>\%
-  add_percentage_missing()
-data_example \%>\% check_percentage_missing()
+    add_percentage_missing()
+
+data_example \%>\% 
+  check_percentage_missing() |>
+  knitr::kable()
+
 
 # With a dataset that already has a percentage missing
 data_example2 <- data.frame(
@@ -56,8 +62,10 @@ data_example2 <- data.frame(
   any_number = 1:26,
   percentage_missing = c(rep(.05, 25), .99)
 )
-data_example2 \%>\% check_percentage_missing()
 
+data_example2 \%>\% 
+  check_percentage_missing() |>
+  knitr::kable()
 }
 \seealso{
 \code{\link[=add_percentage_missing]{add_percentage_missing()}}, \code{\link[=check_outliers]{check_outliers()}}

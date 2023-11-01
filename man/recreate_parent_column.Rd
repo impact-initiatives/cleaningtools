@@ -33,6 +33,7 @@ create without a cleaning_log_to_append, and rename the columns and then bind.}
 This function recreates the columns for select multiple questions
 }
 \examples{
+ 
 test_data <- dplyr::tibble(
   uuid = paste0("uuid_", 1:6),
   gender = rep(c("male", "female"), 3),

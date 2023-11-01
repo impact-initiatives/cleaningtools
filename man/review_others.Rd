@@ -33,9 +33,10 @@ Any discrepancy between kobo relevancies and the dataset.
 Review discrepancy between kobo relevancies and the dataset.
 }
 \examples{
+ 
 review_others(
   dataset = cleaningtools::cleaningtools_clean_data,
   uuid_column = "X_uuid", kobo_survey = cleaningtools_survey
 )
-
+ 
 }

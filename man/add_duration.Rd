@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_duration.R
 \name{add_duration}
 \alias{add_duration}
-\title{Creates a duration variable using the start and end time of the survey}
+\title{add_duration}
 \usage{
 add_duration(
   dataset,
@@ -30,6 +30,7 @@ the clean dataset with 6 new columns: duration, start_date, start_time, end_date
 Creates a duration variable using the start and end time of the survey
 }
 \examples{
+
 test_data <- data.frame(
   start = c(
     "2021/07/13 11:25:49", "2021/07/13 12:36:16",
@@ -42,9 +43,13 @@ test_data <- data.frame(
   uuid = 1:5
 )
 
-test_data_w_duration <- test_data \%>\%
-  add_duration()
+test_data_w_duration <- test_data |>
+  add_duration() 
 
+test_data_w_duration |>
+  knitr::kable()  
+  
+## Second test
 test_data_kobo_time <- data.frame(
   `X.U.FEFF.start` = c(
     "2021-07-13T11:25:49.543+03:00",
@@ -60,8 +65,13 @@ test_data_kobo_time <- data.frame(
     "2021-07-13T11:28:58.295+03:00",
     "2021-07-13T11:55:24.366+03:00"
   ),
-  uuid_column = 1:5
-)
-test_data_kobo_time_w_duration <- test_data_kobo_time \%>\%
-  add_duration(start_column = "X.U.FEFF.start")
+  uuid_column = 1:5)
+
+
+test_data_kobo_time_w_duration <- test_data_kobo_time |>
+                   add_duration(start_column = "X.U.FEFF.start")
+
+
+test_data_kobo_time_w_duration |>
+  knitr::kable()  
 }

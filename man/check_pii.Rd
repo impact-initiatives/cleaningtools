@@ -27,6 +27,8 @@ dataset with potential PII
 Checks for potential PII
 }
 \examples{
-check_pii(cleaningtools_raw_data, uuid_column = "X_uuid")
 
+check_pii(cleaningtools_raw_data, uuid_column = "X_uuid") |>
+  knitr::kable()
+ 
 }

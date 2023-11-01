@@ -60,12 +60,12 @@ save a .xlsx file or return a workbook object
 Creates formatted excel for cleaning log
 }
 \examples{
-\dontrun{
-
+ 
 checks_list <- cleaningtools::cleaningtools_raw_data |>
   check_pii(uuid_column = "X_uuid") |>
   check_duplicate(uuid_column = "X_uuid") |>
   check_value(uuid_column = "X_uuid")
+
 create_combined_log(list_of_log = checks_list) |>
   create_xlsx_cleaning_log()
 
@@ -75,8 +75,8 @@ logical_check_example <- cleaningtools::cleaningtools_raw_data |>
     uuid_column = "X_uuid",
     description = "description",
     check_id = "check_4",
-    columns_to_clean = "treat_cook_water"
-  )
+    columns_to_clean = "treat_cook_water"  )
+
 create_combined_log(logical_check_example) |>
   create_xlsx_cleaning_log(
     output_path = paste0(tempdir(check = TRUE), "/cleaning_log.xlsx"),
@@ -87,5 +87,5 @@ create_combined_log(logical_check_example) |>
     use_dropdown = TRUE,
     sm_dropdown_type = "logical"
   )
-}
+ 
 }

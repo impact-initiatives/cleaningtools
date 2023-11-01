@@ -27,6 +27,7 @@ A dataframe as cleaning log format
 Check for value(s) in the dataset
 }
 \examples{
+ 
 df <- data.frame(
   X_uuid = paste0("uuid_", 1:100),
   age = c(sample(18:80, replace = TRUE, size = 96), 99, 99, 98, 88),
@@ -34,10 +35,11 @@ df <- data.frame(
     replace = TRUE, size = 95
   ), "98", "98", "88", "888")
 )
-check_value(
-  dataset = df, uuid_column = "X_uuid",
-  element_name = "checked_dataset",
-  values_to_look = c(99, 98, 88, 888)
-)
 
+
+check_value(  dataset = df, uuid_column = "X_uuid",
+              element_name = "checked_dataset",
+              values_to_look = c(99, 98, 88, 888))  |>
+  knitr::kable()
+ 
 }

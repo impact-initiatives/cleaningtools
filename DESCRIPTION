@@ -13,7 +13,7 @@ Description: The cleaningtools package focuses on cleaning, and has three
     includes a set of functions to create different items for use in
     cleaning, such as the cleaning log from the checks, clean data, and
     enumerator performance.  **Review**, which includes a set of functions
-    to review the cleaning, such as reviewing the cleaning.
+    to review the cleaning.
 License: MIT + file LICENSE
 URL: https://impact-initiatives.github.io/cleaningtools/
 Depends: 
@@ -36,10 +36,15 @@ Imports:
     tidyr,
     tidyselect
 Suggests: 
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0),
-    withr
+    tidyverse
+VignetteBuilder: 
+    knitr
+Config/fusen/version: 0.5.2
 Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.2.3.9000

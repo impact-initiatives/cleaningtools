@@ -20,12 +20,17 @@ a log with all the values that may require recoding
 Generate a log for other follow up questions
 }
 \examples{
-check_others(
+ 
+check_others.this <- check_others(
   dataset = cleaningtools::cleaningtools_clean_data,
   uuid_column = "X_uuid",
   columns_to_check = names(cleaningtools::cleaningtools_clean_data |>
     dplyr::select(ends_with("_other")) |>
     dplyr::select(-contains(".")))
-)
+) 
 
+check_others.this 
+
+check_others.this |>
+  knitr::kable()  
 }

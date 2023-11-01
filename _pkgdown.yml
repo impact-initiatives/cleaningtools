@@ -2,3 +2,44 @@ url: https://impact-initiatives.github.io/cleaningtools/
 template:
   bootstrap: 5
 
+reference:
+- title: check
+  desc: functions that flag values
+- contents:
+  - starts_with("check_")
+- title: create
+  desc: functions that create different items for use in cleaning
+- contents:
+  - starts_with("create_")
+- title: review
+  desc: functions that help reviewing the cleaning
+- contents:
+  - starts_with("review_")
+- title: cleaning
+  desc: functions building cleaning
+- contents:
+  - starts_with("cleaning")
+- title: Add
+  desc: functions building cleaning
+- contents:
+  - starts_with("add_")
+- title: detect
+  desc: functions building cleaning
+- contents:
+  - starts_with("detect_")
+- title: verify
+  desc: functions building cleaning
+- contents:
+  - starts_with("verify_")
+- title: auto
+  desc: functions building cleaning
+- contents:
+  - starts_with("auto_")
+- title: recreate
+  desc: functions building cleaning
+- contents:
+  - starts_with("recreate_")
+- title: coerce
+  desc: functions building cleaning
+- contents:
+  - starts_with("coerce_")
