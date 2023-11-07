@@ -76,7 +76,7 @@ check_outliers <- function(dataset,
   #######################
 
 
-  dataset <- type.convert(dataset, as.is = TRUE, na.string = c("", " ")) |>
+  dataset <- utils::type.convert(dataset, as.is = TRUE, na.string = c("", " ")) |>
     dplyr::rename(
       uuid = !!rlang::sym(uuid_column)
     ) |>
@@ -154,13 +154,13 @@ check_outliers <- function(dataset,
     variable_value <- variable_value[!is.na(variable_value) & !is.null(variable_value) & !is.infinite(variable_value)]
 
     if (!is.null(minimum_unique_value_of_variable)) {
-      outliers_tf_nr <- (abs(variable_value - mean(variable_value)) > strongness_factor * sd(variable_value)) &
+      outliers_tf_nr <- (abs(variable_value - mean(variable_value)) > strongness_factor * stats::sd(variable_value)) &
         (length(unique(variable_value)) > minimum_unique_value_of_variable)
     }
 
 
     if (is.null(minimum_unique_value_of_variable)) {
-      outliers_tf_nr <- abs(variable_value - mean(variable_value)) > strongness_factor * sd(variable_value)
+      outliers_tf_nr <- abs(variable_value - mean(variable_value)) > strongness_factor * stats::sd(variable_value)
     }
 
 
@@ -188,12 +188,12 @@ check_outliers <- function(dataset,
     log_variable <- log_variable[!is.na(log_variable) & !is.null(log_variable) & !is.infinite(log_variable)]
 
     if (!is.null(minimum_unique_value_of_variable)) {
-      outliers_tf <- abs(log_variable - mean(log_variable)) > strongness_factor * sd(log_variable) &
+      outliers_tf <- abs(log_variable - mean(log_variable)) > strongness_factor * stats::sd(log_variable) &
         length(unique(log_variable)) > minimum_unique_value_of_variable
     }
 
     if (is.null(minimum_unique_value_of_variable)) {
-      outliers_tf <- abs(log_variable - mean(log_variable)) > strongness_factor * sd(log_variable)
+      outliers_tf <- abs(log_variable - mean(log_variable)) > strongness_factor * stats::sd(log_variable)
     }
 
 

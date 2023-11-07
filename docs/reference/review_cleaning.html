@@ -24,6 +24,8 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/function_documentation.html">function_documentation</a>
+    <a class="dropdown-item" href="../articles/report_template.html">Data cleaning check and review</a>
     <a class="dropdown-item" href="../articles/tuto.html">Tutorial</a>
   </div>
 </li>
@@ -141,24 +143,27 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span> </span></span>
 <span class="r-in"><span><span class="va">deletion_log</span><span class="op">&lt;-</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va"><a href="cleaningtools_cleaning_log.html">cleaningtools_cleaning_log</a></span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">change_type</span> <span class="op">==</span> <span class="st">"remove_survey"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">cleaning_log</span> <span class="op">&lt;-</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va"><a href="cleaningtools_cleaning_log.html">cleaningtools_cleaning_log</a></span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">change_type</span> <span class="op">!=</span> <span class="st">"remove_survey"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">review_cleaning</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  raw_dataset <span class="op">=</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va">raw_dataset</span>, raw_dataset_uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span></span>
-<span class="r-in"><span>  clean_dataset <span class="op">=</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va">clean_dataset</span>, clean_dataset_uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span></span>
-<span class="r-in"><span>  cleaning_log <span class="op">=</span> <span class="va">cleaning_log2</span>, cleaning_log_uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span></span>
-<span class="r-in"><span>  cleaning_log_question_column <span class="op">=</span> <span class="st">"questions"</span>,</span></span>
-<span class="r-in"><span>  cleaning_log_new_value_column <span class="op">=</span> <span class="st">"new_value"</span>,</span></span>
-<span class="r-in"><span>  cleaning_log_old_value_column <span class="op">=</span> <span class="st">"old_value"</span>,</span></span>
-<span class="r-in"><span>  deletion_log <span class="op">=</span> <span class="va">deletaion_log</span>,</span></span>
-<span class="r-in"><span>  deletion_log_uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span></span>
-<span class="r-in"><span>  check_for_deletion_log <span class="op">=</span> <span class="cn">T</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span> </span></span>
+<span class="r-in"><span><span class="co"># review_cleaning(  raw_dataset = cleaningtools::raw_dataset, </span></span></span>
+<span class="r-in"><span><span class="co">#                   raw_dataset_uuid_column = "X_uuid",</span></span></span>
+<span class="r-in"><span><span class="co">#                   clean_dataset = cleaningtools::clean_dataset, </span></span></span>
+<span class="r-in"><span><span class="co">#                   clean_dataset_uuid_column = "X_uuid",</span></span></span>
+<span class="r-in"><span><span class="co">#                   cleaning_log = cleaning_log2, </span></span></span>
+<span class="r-in"><span><span class="co">#                   cleaning_log_uuid_column = "X_uuid",</span></span></span>
+<span class="r-in"><span><span class="co">#                   cleaning_log_question_column = "questions",</span></span></span>
+<span class="r-in"><span><span class="co">#                   cleaning_log_new_value_column = "new_value",</span></span></span>
+<span class="r-in"><span><span class="co">#                   cleaning_log_old_value_column = "old_value",</span></span></span>
+<span class="r-in"><span><span class="co">#                   deletion_log = deletaion_log,</span></span></span>
+<span class="r-in"><span><span class="co">#                   deletion_log_uuid_column = "X_uuid",</span></span></span>
+<span class="r-in"><span><span class="co">#                   check_for_deletion_log = T) |&gt;</span></span></span>
+<span class="r-in"><span><span class="co">#   knitr::kable()</span></span></span>
+<span class="r-in"><span> </span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

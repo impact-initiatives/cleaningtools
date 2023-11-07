@@ -29,7 +29,7 @@ create_validation_list <- function(choices, tool) {
   ) %>%
     do.call(rbind, .) %>%
     as.data.frame() %>%
-    setNames(c("name", "choices"))
+    stats::setNames(c("name", "choices"))
 
   choicelist <- new_lists %>%
     dplyr::bind_rows(create_formatted_choices(choices, tool) %>%
@@ -38,7 +38,7 @@ create_validation_list <- function(choices, tool) {
   choice_validation <- choicelist %>%
     unique() %>%
     data.table::transpose() %>%
-    setNames(.[1, ]) %>%
+    stats::setNames(.[1, ]) %>%
     dplyr::slice(-1) %>%
     dplyr::mutate_all(~ stringr::str_split(., ";\n"))
 

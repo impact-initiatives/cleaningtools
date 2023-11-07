@@ -24,6 +24,8 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/function_documentation.html">function_documentation</a>
+    <a class="dropdown-item" href="../articles/report_template.html">Data cleaning check and review</a>
     <a class="dropdown-item" href="../articles/tuto.html">Tutorial</a>
   </div>
 </li>
@@ -121,12 +123,14 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">cleaning_log_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">cleaning_log_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  uuid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"uuid"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  question <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"age"</span>, <span class="st">"gender"</span>, <span class="st">"pop_group"</span>, <span class="st">"strata"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  change_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blank_response"</span>, <span class="st">"no_change"</span>, <span class="st">"Delete"</span>, <span class="st">"change_res"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  new_value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA_character_</span>, <span class="cn">NA_character_</span>, <span class="cn">NA_character_</span>, <span class="st">"st-a"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  uuid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"uuid"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">180</span>, <span class="fl">23</span>, <span class="fl">45</span>, <span class="fl">67</span><span class="op">)</span>,</span></span>
@@ -134,8 +138,7 @@
 <span class="r-in"><span>  pop_group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"idp"</span>, <span class="st">"refugee"</span>, <span class="st">"host"</span>, <span class="st">"idp"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  strata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"d"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span> </span></span>
 <span class="r-in"><span><span class="fu"><a href="review_cleaning_log.html">review_cleaning_log</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  raw_dataset <span class="op">=</span> <span class="va">test_data</span>,</span></span>
 <span class="r-in"><span>  raw_data_uuid_column <span class="op">=</span> <span class="st">"uuid"</span>,</span></span>
@@ -144,27 +147,29 @@
 <span class="r-in"><span>  change_response_value <span class="op">=</span> <span class="st">"change_res"</span>,</span></span>
 <span class="r-in"><span>  cleaning_log_question_column <span class="op">=</span> <span class="st">"question"</span>,</span></span>
 <span class="r-in"><span>  cleaning_log_uuid_column <span class="op">=</span> <span class="st">"uuid"</span>,</span></span>
-<span class="r-in"><span>  cleaning_log_new_value_column <span class="op">=</span> <span class="st">"new_value"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span>  cleaning_log_new_value_column <span class="op">=</span> <span class="st">"new_value"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "no issues in cleaning log found"</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">create_clean_data</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  raw_dataset <span class="op">=</span> <span class="va">test_data</span>, raw_data_uuid_column <span class="op">=</span> <span class="st">"uuid"</span>, cleaning_log <span class="op">=</span> <span class="va">cleaning_log_test</span>,</span></span>
-<span class="r-in"><span>  cleaning_log_change_type_column <span class="op">=</span> <span class="st">"change_type"</span>,</span></span>
-<span class="r-in"><span>  change_response_value <span class="op">=</span> <span class="st">"change_res"</span>,</span></span>
-<span class="r-in"><span>  NA_response_value <span class="op">=</span> <span class="st">"blank_response"</span>,</span></span>
-<span class="r-in"><span>  no_change_value <span class="op">=</span> <span class="st">"no_change"</span>,</span></span>
-<span class="r-in"><span>  remove_survey_value <span class="op">=</span> <span class="st">"Delete"</span>,</span></span>
-<span class="r-in"><span>  cleaning_log_question_column <span class="op">=</span> <span class="st">"question"</span>,</span></span>
-<span class="r-in"><span>  cleaning_log_uuid_column <span class="op">=</span> <span class="st">"uuid"</span>,</span></span>
-<span class="r-in"><span>  cleaning_log_new_value_column <span class="op">=</span> <span class="st">"new_value"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span> </span></span>
+<span class="r-in"><span><span class="fu">create_clean_data</span><span class="op">(</span>  raw_dataset <span class="op">=</span> <span class="va">test_data</span>, raw_data_uuid_column <span class="op">=</span> <span class="st">"uuid"</span>, </span></span>
+<span class="r-in"><span>                    cleaning_log <span class="op">=</span> <span class="va">cleaning_log_test</span>,</span></span>
+<span class="r-in"><span>                    cleaning_log_change_type_column <span class="op">=</span> <span class="st">"change_type"</span>,</span></span>
+<span class="r-in"><span>                    change_response_value <span class="op">=</span> <span class="st">"change_res"</span>,</span></span>
+<span class="r-in"><span>                    NA_response_value <span class="op">=</span> <span class="st">"blank_response"</span>,</span></span>
+<span class="r-in"><span>                    no_change_value <span class="op">=</span> <span class="st">"no_change"</span>,</span></span>
+<span class="r-in"><span>                    remove_survey_value <span class="op">=</span> <span class="st">"Delete"</span>,</span></span>
+<span class="r-in"><span>                    cleaning_log_question_column <span class="op">=</span> <span class="st">"question"</span>,</span></span>
+<span class="r-in"><span>                    cleaning_log_uuid_column <span class="op">=</span> <span class="st">"uuid"</span>,</span></span>
+<span class="r-in"><span>                    cleaning_log_new_value_column <span class="op">=</span> <span class="st">"new_value"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "age"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "strata"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    uuid age gender pop_group strata</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 uuid1  NA   male       idp      a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 uuid2  23 female   refugee      b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 uuid4  67 female       idp   st-a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid  | age|gender |pop_group |strata |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |:-----|---:|:------|:---------|:------|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid1 |  NA|male   |idp       |a      |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid2 |  23|female |refugee   |b      |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid4 |  67|female |idp       |st-a   |</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

@@ -26,6 +26,8 @@ with add_percentage_missing and the values are flagged with check_outliers."><!-
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/function_documentation.html">function_documentation</a>
+    <a class="dropdown-item" href="../articles/report_template.html">Data cleaning check and review</a>
     <a class="dropdown-item" href="../articles/tuto.html">Tutorial</a>
   </div>
 </li>
@@ -101,7 +103,8 @@ a dataframe with the flagged values log</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Adding the percentage missing first</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span> </span></span>
+<span class="r-in"><span><span class="co"># Adding the percentage missing first</span></span></span>
 <span class="r-in"><span><span class="va">data_example</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  uuid <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>,</span></span>
 <span class="r-in"><span>  col_1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,</span></span>
@@ -112,24 +115,25 @@ a dataframe with the flagged values log</p>
 <span class="r-in"><span>  col_4.health <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="cn">NA</span>, <span class="fl">0</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  col_4.school <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="cn">NA</span>, <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">data_example</span> <span class="op">&lt;-</span> <span class="va">data_example</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="add_percentage_missing.html">add_percentage_missing</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">data_example</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">check_percentage_missing</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="add_percentage_missing.html">add_percentage_missing</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">data_example</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> </span></span>
+<span class="r-in"><span>  <span class="fu">check_percentage_missing</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "checking_percentage_missing"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $checked_dataset</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   uuid col_1        col_2     col_3              col_4 col_4.food col_4.health</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    a     1         &lt;NA&gt; with need food health school          1            1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    b     2         &lt;NA&gt;      &lt;NA&gt;               &lt;NA&gt;         NA           NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    c     3 expenditures with need               food          1            0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   col_4.school percentage_missing</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1            1              0.125</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2           NA              0.750</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3            0              0.000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $percentage_missing_log</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 0 × 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 4 variables: uuid &lt;chr&gt;, issue &lt;chr&gt;, question &lt;chr&gt;, old_value &lt;chr&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid | col_1|col_2        |col_3     |col_4              | col_4.food| col_4.health| col_4.school| percentage_missing|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |:----|-----:|:------------|:---------|:------------------|----------:|------------:|------------:|------------------:|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |a    |     1|NA           |with need |food health school |          1|            1|            1|              0.125|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |b    |     2|NA           |NA        |NA                 |         NA|           NA|           NA|              0.750|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |c    |     3|expenditures |with need |food               |          1|            0|            0|              0.000|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid |issue |question |old_value |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |:----|:-----|:--------|:---------|</span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># With a dataset that already has a percentage missing</span></span></span>
 <span class="r-in"><span><span class="va">data_example2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
@@ -138,44 +142,45 @@ a dataframe with the flagged values log</p>
 <span class="r-in"><span>  any_number <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">26</span>,</span></span>
 <span class="r-in"><span>  percentage_missing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">.05</span>, <span class="fl">25</span><span class="op">)</span>, <span class="fl">.99</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">data_example2</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">check_percentage_missing</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "checking_percentage_missing"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $checked_dataset</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    uuid any_cols any_number percentage_missing</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     a        A          1               0.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     b        B          2               0.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     c        C          3               0.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     d        D          4               0.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     e        E          5               0.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6     f        F          6               0.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7     g        G          7               0.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8     h        H          8               0.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9     i        I          9               0.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10    j        J         10               0.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11    k        K         11               0.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12    l        L         12               0.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13    m        M         13               0.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14    n        N         14               0.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15    o        O         15               0.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16    p        P         16               0.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17    q        Q         17               0.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18    r        R         18               0.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19    s        S         19               0.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20    t        T         20               0.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21    u        U         21               0.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22    v        V         22               0.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23    w        W         23               0.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24    x        X         24               0.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25    y        Y         25               0.05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26    z        Z         26               0.99</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $percentage_missing_log</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   uuid  issue                                                 question old_value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> z     Percentages of missing values from this survey is di… percent… 0.99     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">data_example2</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> </span></span>
+<span class="r-in"><span>  <span class="fu">check_percentage_missing</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "checking_percentage_missing"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid |any_cols | any_number| percentage_missing|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |:----|:--------|----------:|------------------:|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |a    |A        |          1|               0.05|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |b    |B        |          2|               0.05|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |c    |C        |          3|               0.05|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |d    |D        |          4|               0.05|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |e    |E        |          5|               0.05|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |f    |F        |          6|               0.05|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |g    |G        |          7|               0.05|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |h    |H        |          8|               0.05|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |i    |I        |          9|               0.05|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |j    |J        |         10|               0.05|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |k    |K        |         11|               0.05|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |l    |L        |         12|               0.05|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |m    |M        |         13|               0.05|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |n    |N        |         14|               0.05|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |o    |O        |         15|               0.05|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |p    |P        |         16|               0.05|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |q    |Q        |         17|               0.05|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |r    |R        |         18|               0.05|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |s    |S        |         19|               0.05|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |t    |T        |         20|               0.05|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |u    |U        |         21|               0.05|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |v    |V        |         22|               0.05|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |w    |W        |         23|               0.05|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |x    |X        |         24|               0.05|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |y    |Y        |         25|               0.05|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |z    |Z        |         26|               0.99|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid |issue                                                                   |question           |old_value |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |:----|:-----------------------------------------------------------------------|:------------------|:---------|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |z    |Percentages of missing values from this survey is different from others |percentage_missing |0.99      |</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

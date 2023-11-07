@@ -9,6 +9,8 @@
 #'  If there is 0 or 2 or more possible ansers, it will
 #' give an error.
 #' 
+#' @keywords internal
+#' 
 #' @export
 #' @examples
 #' test1_df <- data.frame(uuid = letters,

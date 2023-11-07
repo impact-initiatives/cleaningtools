@@ -13,7 +13,13 @@
     <loc>https://impact-initiatives.github.io/cleaningtools/LICENSE.html</loc>
   </url>
   <url>
+    <loc>https://impact-initiatives.github.io/cleaningtools/articles/function_documentation.html</loc>
+  </url>
+  <url>
     <loc>https://impact-initiatives.github.io/cleaningtools/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://impact-initiatives.github.io/cleaningtools/articles/report_template.html</loc>
   </url>
   <url>
     <loc>https://impact-initiatives.github.io/cleaningtools/articles/tuto.html</loc>
@@ -154,13 +160,22 @@
     <loc>https://impact-initiatives.github.io/cleaningtools/reference/create_xlsx_cleaning_log.html</loc>
   </url>
   <url>
+    <loc>https://impact-initiatives.github.io/cleaningtools/reference/detect_uuid.html</loc>
+  </url>
+  <url>
     <loc>https://impact-initiatives.github.io/cleaningtools/reference/detect_variable.html</loc>
   </url>
   <url>
     <loc>https://impact-initiatives.github.io/cleaningtools/reference/index.html</loc>
   </url>
   <url>
+    <loc>https://impact-initiatives.github.io/cleaningtools/reference/knit_big_table.html</loc>
+  </url>
+  <url>
     <loc>https://impact-initiatives.github.io/cleaningtools/reference/pipe.html</loc>
+  </url>
+  <url>
+    <loc>https://impact-initiatives.github.io/cleaningtools/reference/print_log.html</loc>
   </url>
   <url>
     <loc>https://impact-initiatives.github.io/cleaningtools/reference/recreate_parent_column.html</loc>

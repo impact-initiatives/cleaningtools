@@ -4,6 +4,12 @@
 ^LICENSE\.md$
 ^\.github$
 ^_pkgdown\.yml$
+^codecov\.yml$
+^README\.Rmd$
+^setting_testthat\.R$
 ^docs$
+^data-raw$
+^dev$
 ^pkgdown$
 ^CODE_OF_CONDUCT\.md$
+^cleaningtools_ed\.Rproj$

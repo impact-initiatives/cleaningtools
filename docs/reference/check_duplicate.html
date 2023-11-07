@@ -24,6 +24,8 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/function_documentation.html">function_documentation</a>
+    <a class="dropdown-item" href="../articles/report_template.html">Data cleaning check and review</a>
     <a class="dropdown-item" href="../articles/tuto.html">Tutorial</a>
   </div>
 </li>
@@ -89,75 +91,81 @@ a dataframe with the duplicate log</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">testdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">testdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  uuid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  col_a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">7</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  col_b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">7</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">check_duplicate</span><span class="op">(</span><span class="va">testdata</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $checked_dataset</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   uuid       col_a      col_b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    a 0.520460478 0.63328808</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    b 0.366994467 0.02894884</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    c 0.378517466 0.71338964</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    d 0.009598029 0.80876490</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    a 0.201266882 0.90740056</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    b 0.969065770 0.81620059</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    c 0.250015459 0.25613155</span>
+<span class="r-in"><span> </span></span>
+<span class="r-in"><span><span class="fu">check_duplicate</span><span class="op">(</span><span class="va">testdata</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span>  </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $duplicate_log</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   uuid old_value question           issue</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    a         a     uuid duplicated uuid</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    b         b     uuid duplicated uuid</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    c         c     uuid duplicated uuid</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid |     col_a|     col_b|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |:----|---------:|---------:|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |a    | 0.3222719| 0.9909162|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |b    | 0.5563649| 0.0330257|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |c    | 0.1960217| 0.1265647|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |d    | 0.7399905| 0.0303769|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |a    | 0.6730578| 0.2685460|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |b    | 0.3523261| 0.5072056|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |c    | 0.9220887| 0.0841481|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid |old_value |question |issue           |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |:----|:---------|:--------|:---------------|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |a    |a         |uuid     |duplicated uuid |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |b    |b         |uuid     |duplicated uuid |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |c    |c         |uuid     |duplicated uuid |</span>
+<span class="r-in"><span> </span></span>
 <span class="r-in"><span><span class="va">testdata2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  uuid <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">7</span><span class="op">)</span><span class="op">]</span>,</span></span>
 <span class="r-in"><span>  village <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"village"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  ki_identifier <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"xx_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">check_duplicate</span><span class="op">(</span><span class="va">testdata2</span>, columns_to_check <span class="op">=</span> <span class="st">"village"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $checked_dataset</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   uuid   village ki_identifier</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    a village 1          xx_1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    b village 2          xx_2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    c village 3          xx_3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    d village 1          xx_4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    e village 2          xx_5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    f village 3          xx_3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    g village 4          xx_4</span>
+<span class="r-in"><span> </span></span>
+<span class="r-in"><span><span class="fu">check_duplicate</span><span class="op">(</span><span class="va">testdata2</span>, </span></span>
+<span class="r-in"><span>                columns_to_check <span class="op">=</span> <span class="st">"village"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span>  </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $duplicate_log</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   uuid  question old_value issue             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span>            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> d     village  village 1 duplicated village</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> e     village  village 2 duplicated village</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> f     village  village 3 duplicated village</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">check_duplicate</span><span class="op">(</span><span class="va">testdata2</span>, columns_to_check <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"village"</span>, <span class="st">"ki_identifier"</span><span class="op">)</span>, uuid <span class="op">=</span> <span class="st">"uuid"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $checked_dataset</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   uuid   village ki_identifier</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    a village 1          xx_1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    b village 2          xx_2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    c village 3          xx_3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    d village 1          xx_4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    e village 2          xx_5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    f village 3          xx_3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    g village 4          xx_4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid |village   |ki_identifier |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |:----|:---------|:-------------|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |a    |village 1 |xx_1          |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |b    |village 2 |xx_2          |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |c    |village 3 |xx_3          |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |d    |village 1 |xx_4          |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |e    |village 2 |xx_5          |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |f    |village 3 |xx_3          |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |g    |village 4 |xx_4          |</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $duplicate_log</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   uuid  question      old_value issue                               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span>                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> f     village       village 3 duplicated village ~/~ ki_identifier</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> f     ki_identifier xx_3      duplicated village ~/~ ki_identifier</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid |question |old_value |issue              |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |:----|:--------|:---------|:------------------|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |d    |village  |village 1 |duplicated village |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |e    |village  |village 2 |duplicated village |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |f    |village  |village 3 |duplicated village |</span>
+<span class="r-in"><span> </span></span>
+<span class="r-in"><span><span class="fu">check_duplicate</span><span class="op">(</span><span class="va">testdata2</span>, </span></span>
+<span class="r-in"><span>                columns_to_check <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"village"</span>, <span class="st">"ki_identifier"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                uuid <span class="op">=</span> <span class="st">"uuid"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span>  </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid |village   |ki_identifier |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |:----|:---------|:-------------|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |a    |village 1 |xx_1          |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |b    |village 2 |xx_2          |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |c    |village 3 |xx_3          |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |d    |village 1 |xx_4          |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |e    |village 2 |xx_5          |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |f    |village 3 |xx_3          |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |g    |village 4 |xx_4          |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid |question      |old_value |issue                                |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |:----|:-------------|:---------|:------------------------------------|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |f    |village       |village 3 |duplicated village ~/~ ki_identifier |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |f    |ki_identifier |xx_3      |duplicated village ~/~ ki_identifier |</span>
+<span class="r-in"><span> </span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

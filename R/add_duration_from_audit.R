@@ -151,12 +151,12 @@ add_duration_from_audit <- function(dataset,
 
   if (exists("duration_with_sum_all")) {
     dataset <- dataset %>%
-      dplyr::left_join(duration_with_sum_all, by = setNames("uuid", uuid_column))
+      dplyr::left_join(duration_with_sum_all, by = stats::setNames("uuid", uuid_column))
   }
 
   if (exists("duration_with_start_end")) {
     dataset <- dataset %>%
-      dplyr::left_join(duration_with_start_end, by = setNames("uuid", uuid_column))
+      dplyr::left_join(duration_with_start_end, by = stats::setNames("uuid", uuid_column))
   }
 
   return(dataset)

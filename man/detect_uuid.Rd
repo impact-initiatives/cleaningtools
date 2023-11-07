@@ -25,3 +25,4 @@ test1_df <- data.frame(uuid = letters,
                           hello = LETTERS)
 detect_uuid(test1_df)
 }
+\keyword{internal}

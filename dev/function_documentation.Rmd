@@ -452,12 +452,12 @@ add_duration_from_audit <- function(dataset,
 
   if (exists("duration_with_sum_all")) {
     dataset <- dataset %>%
-      dplyr::left_join(duration_with_sum_all, by = setNames("uuid", uuid_column))
+      dplyr::left_join(duration_with_sum_all, by = stats::setNames("uuid", uuid_column))
   }
 
   if (exists("duration_with_start_end")) {
     dataset <- dataset %>%
-      dplyr::left_join(duration_with_start_end, by = setNames("uuid", uuid_column))
+      dplyr::left_join(duration_with_start_end, by = stats::setNames("uuid", uuid_column))
   }
 
   return(dataset)
@@ -553,7 +553,7 @@ test_that("add_duration_from_audit works", {
 create_audit_list <- function(audit_zip_path,
                               dataset = NULL,
                               uuid_column = "uuid") {
-  list_of_files <- unzip(audit_zip_path, list = TRUE) %>%
+  list_of_files <- utils::unzip(audit_zip_path, list = TRUE) %>%
     dplyr::rename(path = Name) %>%
     dplyr::filter(stringr::str_detect(path, pattern = "audit.csv"))
 
@@ -561,7 +561,7 @@ create_audit_list <- function(audit_zip_path,
     dplyr::pull(path) %>%
     stringr::str_split("/") %>%
     purrr::set_names(list_of_files$path) %>%
-    purrr:::map_dbl(~ which(stringr::str_detect(.x, "audit.csv"))) %>%
+    purrr::map_dbl(~ which(stringr::str_detect(.x, "audit.csv"))) %>%
     unique()
 
   if (length(locatation_audit) != 1) {
@@ -1460,7 +1460,7 @@ check_outliers <- function(dataset,
   #######################
 
 
-  dataset <- type.convert(dataset, as.is = TRUE, na.string = c("", " ")) |>
+  dataset <- utils::type.convert(dataset, as.is = TRUE, na.string = c("", " ")) |>
     dplyr::rename(
       uuid = !!rlang::sym(uuid_column)
     ) |>
@@ -1538,13 +1538,13 @@ check_outliers <- function(dataset,
     variable_value <- variable_value[!is.na(variable_value) & !is.null(variable_value) & !is.infinite(variable_value)]
 
     if (!is.null(minimum_unique_value_of_variable)) {
-      outliers_tf_nr <- (abs(variable_value - mean(variable_value)) > strongness_factor * sd(variable_value)) &
+      outliers_tf_nr <- (abs(variable_value - mean(variable_value)) > strongness_factor * stats::sd(variable_value)) &
         (length(unique(variable_value)) > minimum_unique_value_of_variable)
     }
 
 
     if (is.null(minimum_unique_value_of_variable)) {
-      outliers_tf_nr <- abs(variable_value - mean(variable_value)) > strongness_factor * sd(variable_value)
+      outliers_tf_nr <- abs(variable_value - mean(variable_value)) > strongness_factor * stats::sd(variable_value)
     }
 
 
@@ -1572,12 +1572,12 @@ check_outliers <- function(dataset,
     log_variable <- log_variable[!is.na(log_variable) & !is.null(log_variable) & !is.infinite(log_variable)]
 
     if (!is.null(minimum_unique_value_of_variable)) {
-      outliers_tf <- abs(log_variable - mean(log_variable)) > strongness_factor * sd(log_variable) &
+      outliers_tf <- abs(log_variable - mean(log_variable)) > strongness_factor * stats::sd(log_variable) &
         length(unique(log_variable)) > minimum_unique_value_of_variable
     }
 
     if (is.null(minimum_unique_value_of_variable)) {
-      outliers_tf <- abs(log_variable - mean(log_variable)) > strongness_factor * sd(log_variable)
+      outliers_tf <- abs(log_variable - mean(log_variable)) > strongness_factor * stats::sd(log_variable)
     }
 
 
@@ -2231,7 +2231,7 @@ create_clean_data <- function(raw_dataset,
     print("no surveys to remove in log")
   }
 
-  return(raw_dataset %>% type.convert(as.is = T))
+  return(raw_dataset %>% utils::type.convert(as.is = T))
 }
 ```
   
@@ -3774,7 +3774,7 @@ review_sample_frame_with_dataset <- function(sample_frame,
 
   sample_frame |>
     dplyr::select(-dplyr::any_of(c("Collected", "Remaining"))) |>
-    dplyr::left_join(actual_df, by = setNames(clean_dataset_strata_column, sampling_frame_strata_column)) |>
+    dplyr::left_join(actual_df, by = stats::setNames(clean_dataset_strata_column, sampling_frame_strata_column)) |>
     dplyr::mutate(Collected = dplyr::case_when(is.na(Collected) ~ 0, T ~ Collected)) |>
     dplyr::mutate(
       Remaining = !!rlang::sym(sampling_frame_target_survey_column) - Collected
@@ -4270,7 +4270,7 @@ create_validation_list <- function(choices, tool) {
   ) %>%
     do.call(rbind, .) %>%
     as.data.frame() %>%
-    setNames(c("name", "choices"))
+    stats::setNames(c("name", "choices"))
 
   choicelist <- new_lists %>%
     dplyr::bind_rows(create_formatted_choices(choices, tool) %>%
@@ -4279,7 +4279,7 @@ create_validation_list <- function(choices, tool) {
   choice_validation <- choicelist %>%
     unique() %>%
     data.table::transpose() %>%
-    setNames(.[1, ]) %>%
+    stats::setNames(.[1, ]) %>%
     dplyr::slice(-1) %>%
     dplyr::mutate_all(~ stringr::str_split(., ";\n"))
 
@@ -4455,6 +4455,8 @@ test_that("coerce_to_character works", {
 #'  If there is 0 or 2 or more possible ansers, it will
 #' give an error.
 #' 
+#' @keywords internal
+#' 
 #' @export
  
 
@@ -4497,6 +4499,8 @@ test_that("detect_uuid works", {
 #' @param .height Height in the html output
 #'
 #' @return Table with some features for quarto html output
+#' 
+#' @keywords internal
 #' @export
  
 knit_big_table <- function(table_to_print, .height = "500px") {
@@ -4526,7 +4530,10 @@ test_that("knit_big_table works", {
 #' @param log_to_print A data frame to print
 #' @param message A message to print if the data frame is empty
 #'
-#' @return The data frame to print or an alternative message if the dataframe is empty
+#' @return The data frame to print or an alternative message 
+#' if the dataframe is empty
+#' 
+#' @keywords internal
 #' @export
  
 print_log <- function(log_to_print, message) {

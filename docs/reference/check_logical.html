@@ -24,6 +24,8 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/function_documentation.html">function_documentation</a>
+    <a class="dropdown-item" href="../articles/report_template.html">Data cleaning check and review</a>
     <a class="dropdown-item" href="../articles/tuto.html">Tutorial</a>
   </div>
 </li>
@@ -105,92 +107,68 @@ a column added with the check_id  and a dataframe with the logical check log.</p
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  uuid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  today <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"2023-01-01"</span>, <span class="fl">10</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  location <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"villageA"</span>, <span class="st">"villageB"</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  distance_to_market <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"less_30"</span>, <span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"more_30"</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  access_to_market <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"yes"</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"no"</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  number_children_05 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span>  number_children_05 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span> <span class="op">)</span></span></span>
+<span class="r-in"><span> </span></span>
 <span class="r-in"><span><span class="fu">check_logical</span><span class="op">(</span><span class="va">test_data</span>,</span></span>
 <span class="r-in"><span>  uuid_column <span class="op">=</span> <span class="st">"uuid"</span>,</span></span>
 <span class="r-in"><span>  check_id <span class="op">=</span> <span class="st">"my_test"</span>,</span></span>
 <span class="r-in"><span>  check_to_perform <span class="op">=</span> <span class="st">"distance_to_market == \"less_30\" &amp; access_to_market == \"no\""</span>,</span></span>
 <span class="r-in"><span>  columns_to_clean <span class="op">=</span> <span class="st">"distance_to_market, access_to_market"</span>,</span></span>
-<span class="r-in"><span>  description <span class="op">=</span> <span class="st">"distance to market less than 30 and no access"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $checked_dataset</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    uuid      today location distance_to_market access_to_market</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     1 2023-01-01 villageA            less_30              yes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     2 2023-01-01 villageB            less_30              yes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     3 2023-01-01 villageA            less_30              yes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     4 2023-01-01 villageB            less_30              yes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     5 2023-01-01 villageA            less_30               no</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6     6 2023-01-01 villageB            more_30               no</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7     7 2023-01-01 villageA            more_30               no</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8     8 2023-01-01 villageB            more_30               no</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9     9 2023-01-01 villageA            more_30               no</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10   10 2023-01-01 villageB            more_30               no</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    number_children_05 my_test</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                   0   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                   1   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                   0   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                   1   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                   0    TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                   1   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7                   0   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8                   1   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9                   5   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10                  6   FALSE</span>
+<span class="r-in"><span>  description <span class="op">=</span> <span class="st">"distance to market less than 30 and no access"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span>  </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $my_test</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 6</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   uuid  question           old_value issue                check_id check_binding</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 5     distance_to_market less_30   distance to market … my_test  my_test ~/~ 5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 5     access_to_market   no        distance to market … my_test  my_test ~/~ 5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid |today      |location |distance_to_market |access_to_market | number_children_05|my_test |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |:----|:----------|:--------|:------------------|:----------------|------------------:|:-------|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |1    |2023-01-01 |villageA |less_30            |yes              |                  0|FALSE   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |2    |2023-01-01 |villageB |less_30            |yes              |                  1|FALSE   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |3    |2023-01-01 |villageA |less_30            |yes              |                  0|FALSE   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |4    |2023-01-01 |villageB |less_30            |yes              |                  1|FALSE   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |5    |2023-01-01 |villageA |less_30            |no               |                  0|TRUE    |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |6    |2023-01-01 |villageB |more_30            |no               |                  1|FALSE   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |7    |2023-01-01 |villageA |more_30            |no               |                  0|FALSE   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |8    |2023-01-01 |villageB |more_30            |no               |                  1|FALSE   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |9    |2023-01-01 |villageA |more_30            |no               |                  5|FALSE   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |10   |2023-01-01 |villageB |more_30            |no               |                  6|FALSE   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid |question           |old_value |issue                                         |check_id |check_binding |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |:----|:------------------|:---------|:---------------------------------------------|:--------|:-------------|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |5    |distance_to_market |less_30   |distance to market less than 30 and no access |my_test  |my_test ~/~ 5 |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |5    |access_to_market   |no        |distance to market less than 30 and no access |my_test  |my_test ~/~ 5 |</span>
+<span class="r-in"><span> </span></span>
 <span class="r-in"><span><span class="fu">check_logical</span><span class="op">(</span><span class="va">test_data</span>,</span></span>
 <span class="r-in"><span>  uuid_column <span class="op">=</span> <span class="st">"uuid"</span>,</span></span>
 <span class="r-in"><span>  information_to_add <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"today"</span>, <span class="st">"location"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  check_to_perform <span class="op">=</span> <span class="st">"distance_to_market == \"less_30\" &amp; access_to_market == \"no\""</span>,</span></span>
 <span class="r-in"><span>  columns_to_clean <span class="op">=</span> <span class="st">"distance_to_market, access_to_market"</span>,</span></span>
-<span class="r-in"><span>  description <span class="op">=</span> <span class="st">"distance to market less than 30 and no access"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $checked_dataset</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    uuid      today location distance_to_market access_to_market</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     1 2023-01-01 villageA            less_30              yes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     2 2023-01-01 villageB            less_30              yes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     3 2023-01-01 villageA            less_30              yes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     4 2023-01-01 villageB            less_30              yes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     5 2023-01-01 villageA            less_30               no</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6     6 2023-01-01 villageB            more_30               no</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7     7 2023-01-01 villageA            more_30               no</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8     8 2023-01-01 villageB            more_30               no</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9     9 2023-01-01 villageA            more_30               no</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10   10 2023-01-01 villageB            more_30               no</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    number_children_05 logical_xx</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                   0      FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                   1      FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                   0      FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                   1      FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                   0       TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                   1      FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7                   0      FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8                   1      FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9                   5      FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10                  6      FALSE</span>
+<span class="r-in"><span>  description <span class="op">=</span> <span class="st">"distance to market less than 30 and no access"</span><span class="op">)</span><span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span>  </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $logical_xx</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   uuid  today      location question      old_value issue check_id check_binding</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 5     2023-01-01 villageA distance_to_… less_30   dist… logical… logical_xx ~…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 5     2023-01-01 villageA access_to_ma… no        dist… logical… logical_xx ~…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid |today      |location |distance_to_market |access_to_market | number_children_05|logical_xx |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |:----|:----------|:--------|:------------------|:----------------|------------------:|:----------|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |1    |2023-01-01 |villageA |less_30            |yes              |                  0|FALSE      |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |2    |2023-01-01 |villageB |less_30            |yes              |                  1|FALSE      |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |3    |2023-01-01 |villageA |less_30            |yes              |                  0|FALSE      |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |4    |2023-01-01 |villageB |less_30            |yes              |                  1|FALSE      |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |5    |2023-01-01 |villageA |less_30            |no               |                  0|TRUE       |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |6    |2023-01-01 |villageB |more_30            |no               |                  1|FALSE      |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |7    |2023-01-01 |villageA |more_30            |no               |                  0|FALSE      |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |8    |2023-01-01 |villageB |more_30            |no               |                  1|FALSE      |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |9    |2023-01-01 |villageA |more_30            |no               |                  5|FALSE      |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |10   |2023-01-01 |villageB |more_30            |no               |                  6|FALSE      |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid |today      |location |question           |old_value |issue                                         |check_id   |check_binding    |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |:----|:----------|:--------|:------------------|:---------|:---------------------------------------------|:----------|:----------------|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |5    |2023-01-01 |villageA |distance_to_market |less_30   |distance to market less than 30 and no access |logical_xx |logical_xx ~/~ 5 |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |5    |2023-01-01 |villageA |access_to_market   |no        |distance to market less than 30 and no access |logical_xx |logical_xx ~/~ 5 |</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

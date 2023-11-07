@@ -6,6 +6,8 @@
 #' @param .height Height in the html output
 #'
 #' @return Table with some features for quarto html output
+#' 
+#' @keywords internal
 #' @export
 #' @examples
 #' #knit_big_table(table_to_print)

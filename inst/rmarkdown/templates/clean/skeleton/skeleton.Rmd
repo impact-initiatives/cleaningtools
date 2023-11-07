@@ -1,7 +1,10 @@
 ---
 title: "Data cleaning check and review"
 date: "`r format(Sys.Date(),  '%d %B %Y')`"
-output: html_document
+output: 
+  html_document: 
+    toc: yes
+    toc_depth: 2
 params:
   datafolder: "data-raw"
   form: "form.xlsx" ## name of the xlsform
@@ -571,6 +574,6 @@ The datasets with added values, the checks and the reviews can be found in outpu
 all_logs <- create_combined_log(list_log) |>
   append(review_log)
 
-openxlsx2::write_xlsx(all_logs, file = "review.xlsx", overwrite = T, na.strings = "")
+openxlsx2::write_xlsx(all_logs, file = here::here(params$datafolder , "review.xlsx") , overwrite = T, na.strings = "")
 ```
  

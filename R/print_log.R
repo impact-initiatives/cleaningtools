@@ -5,7 +5,10 @@
 #' @param log_to_print A data frame to print
 #' @param message A message to print if the data frame is empty
 #'
-#' @return The data frame to print or an alternative message if the dataframe is empty
+#' @return The data frame to print or an alternative message 
+#' if the dataframe is empty
+#' 
+#' @keywords internal
 #' @export
 #' @examples
 #' #print_log(log_to_print, "No values flagged")

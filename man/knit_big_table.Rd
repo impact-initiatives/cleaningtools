@@ -20,3 +20,4 @@ Format table for quarto html output
 \examples{
 #knit_big_table(table_to_print)
 }
+\keyword{internal}

@@ -24,6 +24,8 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/function_documentation.html">function_documentation</a>
+    <a class="dropdown-item" href="../articles/report_template.html">Data cleaning check and review</a>
     <a class="dropdown-item" href="../articles/tuto.html">Tutorial</a>
   </div>
 </li>
@@ -86,136 +88,137 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span> </span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  X_uuid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"uuid_"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">18</span><span class="op">:</span><span class="fl">80</span>, replace <span class="op">=</span> <span class="cn">TRUE</span>, size <span class="op">=</span> <span class="fl">96</span><span class="op">)</span>, <span class="fl">99</span>, <span class="fl">99</span>, <span class="fl">98</span>, <span class="fl">88</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  gender <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"99"</span>, <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    replace <span class="op">=</span> <span class="cn">TRUE</span>, size <span class="op">=</span> <span class="fl">95</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span>, <span class="st">"98"</span>, <span class="st">"98"</span>, <span class="st">"88"</span>, <span class="st">"888"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">check_value</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  dataset <span class="op">=</span> <span class="va">df</span>, uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span></span>
-<span class="r-in"><span>  element_name <span class="op">=</span> <span class="st">"checked_dataset"</span>,</span></span>
-<span class="r-in"><span>  values_to_look <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">99</span>, <span class="fl">98</span>, <span class="fl">88</span>, <span class="fl">888</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $checked_dataset</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       X_uuid age gender</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     uuid_1  61     99</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     uuid_2  68   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     uuid_3  63   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     uuid_4  48 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     uuid_5  76   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6     uuid_6  21 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7     uuid_7  69   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8     uuid_8  40 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9     uuid_9  55   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10   uuid_10  71   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11   uuid_11  65 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12   uuid_12  23   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13   uuid_13  60 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14   uuid_14  70 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15   uuid_15  46 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16   uuid_16  29   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17   uuid_17  25   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18   uuid_18  21 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19   uuid_19  49 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20   uuid_20  80 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21   uuid_21  31 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22   uuid_22  58 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23   uuid_23  24 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24   uuid_24  34   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25   uuid_25  21 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26   uuid_26  31   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27   uuid_27  19   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28   uuid_28  20   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29   uuid_29  31 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30   uuid_30  29   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31   uuid_31  52 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32   uuid_32  24 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33   uuid_33  49 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34   uuid_34  70 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35   uuid_35  19 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36   uuid_36  20   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37   uuid_37  74 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38   uuid_38  25 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39   uuid_39  48   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40   uuid_40  41 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41   uuid_41  61 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42   uuid_42  41 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43   uuid_43  65   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44   uuid_44  50   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45   uuid_45  58 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 46   uuid_46  59 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47   uuid_47  74   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48   uuid_48  55   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49   uuid_49  23   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 50   uuid_50  53 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51   uuid_51  73   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 52   uuid_52  29 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 53   uuid_53  34   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 54   uuid_54  51 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 55   uuid_55  36 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 56   uuid_56  70   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 57   uuid_57  37   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 58   uuid_58  64 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 59   uuid_59  75   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 60   uuid_60  66   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 61   uuid_61  33   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 62   uuid_62  45   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 63   uuid_63  78   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 64   uuid_64  27 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 65   uuid_65  57 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 66   uuid_66  19   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 67   uuid_67  66 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 68   uuid_68  54   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 69   uuid_69  50   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 70   uuid_70  57   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 71   uuid_71  73 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 72   uuid_72  55   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 73   uuid_73  73 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 74   uuid_74  40 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 75   uuid_75  31 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 76   uuid_76  35   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 77   uuid_77  42 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 78   uuid_78  53 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 79   uuid_79  47   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 80   uuid_80  37   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 81   uuid_81  40 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 82   uuid_82  20   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 83   uuid_83  63   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 84   uuid_84  61 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 85   uuid_85  78 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 86   uuid_86  38 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 87   uuid_87  54 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 88   uuid_88  51   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 89   uuid_89  21   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 90   uuid_90  28   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 91   uuid_91  58   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 92   uuid_92  80   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 93   uuid_93  48 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 94   uuid_94  76 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 95   uuid_95  41 female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 96   uuid_96  64   male</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 97   uuid_97  99     98</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 98   uuid_98  99     98</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 99   uuid_99  98     88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 100 uuid_100  88    888</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $flaged_value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 9 × 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   uuid     question old_value issue                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> uuid_1   gender   99        Possible value to be changed to NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> uuid_97  age      99        Possible value to be changed to NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> uuid_97  gender   98        Possible value to be changed to NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> uuid_98  age      99        Possible value to be changed to NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> uuid_98  gender   98        Possible value to be changed to NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> uuid_99  age      98        Possible value to be changed to NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> uuid_99  gender   88        Possible value to be changed to NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span> uuid_100 age      88        Possible value to be changed to NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">9</span> uuid_100 gender   888       Possible value to be changed to NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">check_value</span><span class="op">(</span>  dataset <span class="op">=</span> <span class="va">df</span>, uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span></span>
+<span class="r-in"><span>              element_name <span class="op">=</span> <span class="st">"checked_dataset"</span>,</span></span>
+<span class="r-in"><span>              values_to_look <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">99</span>, <span class="fl">98</span>, <span class="fl">88</span>, <span class="fl">888</span><span class="op">)</span><span class="op">)</span>  <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |X_uuid   | age|gender |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |:--------|---:|:------|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_1   |  29|99     |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_2   |  44|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_3   |  60|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_4   |  34|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_5   |  66|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_6   |  67|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_7   |  21|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_8   |  47|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_9   |  37|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_10  |  23|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_11  |  47|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_12  |  57|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_13  |  59|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_14  |  19|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_15  |  25|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_16  |  68|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_17  |  51|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_18  |  36|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_19  |  20|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_20  |  54|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_21  |  36|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_22  |  35|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_23  |  42|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_24  |  34|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_25  |  53|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_26  |  67|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_27  |  67|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_28  |  44|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_29  |  78|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_30  |  33|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_31  |  52|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_32  |  52|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_33  |  33|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_34  |  70|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_35  |  55|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_36  |  63|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_37  |  49|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_38  |  69|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_39  |  53|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_40  |  36|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_41  |  25|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_42  |  34|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_43  |  56|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_44  |  48|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_45  |  46|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_46  |  49|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_47  |  49|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_48  |  41|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_49  |  39|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_50  |  44|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_51  |  62|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_52  |  62|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_53  |  24|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_54  |  23|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_55  |  72|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_56  |  23|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_57  |  70|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_58  |  74|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_59  |  33|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_60  |  61|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_61  |  80|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_62  |  25|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_63  |  76|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_64  |  46|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_65  |  52|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_66  |  38|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_67  |  67|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_68  |  53|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_69  |  53|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_70  |  44|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_71  |  50|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_72  |  51|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_73  |  79|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_74  |  36|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_75  |  53|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_76  |  53|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_77  |  58|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_78  |  35|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_79  |  24|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_80  |  35|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_81  |  62|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_82  |  62|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_83  |  24|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_84  |  80|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_85  |  67|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_86  |  76|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_87  |  68|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_88  |  20|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_89  |  70|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_90  |  56|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_91  |  68|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_92  |  58|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_93  |  60|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_94  |  54|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_95  |  71|female |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_96  |  64|male   |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_97  |  99|98     |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_98  |  99|98     |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_99  |  98|88     |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_100 |  88|888    |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid     |question |old_value |issue                              |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |:--------|:--------|:---------|:----------------------------------|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_1   |gender   |99        |Possible value to be changed to NA |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_97  |age      |99        |Possible value to be changed to NA |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_97  |gender   |98        |Possible value to be changed to NA |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_98  |age      |99        |Possible value to be changed to NA |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_98  |gender   |98        |Possible value to be changed to NA |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_99  |age      |98        |Possible value to be changed to NA |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_99  |gender   |88        |Possible value to be changed to NA |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_100 |age      |88        |Possible value to be changed to NA |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid_100 |gender   |888       |Possible value to be changed to NA |</span>
+<span class="r-in"><span> </span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

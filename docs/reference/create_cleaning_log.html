@@ -24,6 +24,8 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/function_documentation.html">function_documentation</a>
+    <a class="dropdown-item" href="../articles/report_template.html">Data cleaning check and review</a>
     <a class="dropdown-item" href="../articles/tuto.html">Tutorial</a>
   </div>
 </li>
@@ -101,13 +103,1143 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu">create_cleaning_log</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  raw_dataset <span class="op">=</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va"><a href="cleaningtools_raw_data.html">cleaningtools_raw_data</a></span>, raw_dataset_uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span></span>
-<span class="r-in"><span>  clean_dataset <span class="op">=</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va"><a href="cleaningtools_clean_data.html">cleaningtools_clean_data</a></span>, clean_dataset_uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span></span>
-<span class="r-in"><span>  check_for_deletion_log <span class="op">=</span> <span class="cn">TRUE</span>, check_for_variable_name <span class="op">=</span> <span class="cn">TRUE</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span> </span></span>
+<span class="r-in"><span><span class="va">log</span> <span class="op">&lt;-</span> <span class="fu">create_cleaning_log</span><span class="op">(</span> raw_dataset <span class="op">=</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va"><a href="cleaningtools_raw_data.html">cleaningtools_raw_data</a></span>, </span></span>
+<span class="r-in"><span>                            raw_dataset_uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span></span>
+<span class="r-in"><span>                            clean_dataset <span class="op">=</span> <span class="fu">cleaningtools</span><span class="fu">::</span><span class="va"><a href="cleaningtools_clean_data.html">cleaningtools_clean_data</a></span>, </span></span>
+<span class="r-in"><span>                            clean_dataset_uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span></span>
+<span class="r-in"><span>                            check_for_deletion_log <span class="op">=</span> <span class="cn">TRUE</span>, </span></span>
+<span class="r-in"><span>                            check_for_variable_name <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> X.U.FEFF.start</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> date_assessment</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> deviceid</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> enumerator_num</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> neighbourhood</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> consent_remote</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> hhh_r</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> will_to_response_r</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> age_respondent_r</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> age_hoh</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> gender_hoh</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> displace_status</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> displace_status_returnee</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> num_hh_member</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> hh_hosting</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> hh_hosted</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> shelter_occupation</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> shelter_occupation_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> property_title</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> rental_contract</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> inc_employment_pension</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.savings</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.employment</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.remittences</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.retirement_fund</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.income_renting</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.selling_assets</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.selling_assisantance</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.loans</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.modm</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.support</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.ngo</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.social_service</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.illegal</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.zakat</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.own_business</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> type_employment</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.piped</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.tap</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.well</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.bottled</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.trucking</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.spring</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.rainwater</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.surface</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_source_drinking</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_drink_water_how</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_drink_water_how.boil</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_drink_water_how.let_stand</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_drink_water_how.use_chlorine</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_drink_water_how.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_drink_water_how.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_source_cook</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water_how</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water_how.boil</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water_how.let_stand</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water_how.expose_sunlight</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water_how.use_chlorine</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water_how.filter</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water_how.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water_how.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> piped_quality</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> piped_quality.acceptable</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> piped_quality.unacceptable_taste</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> piped_quality.unacceptable_colour</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> piped_quality.unacceptable_smell</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> piped_quality.materials</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> piped_quality.no_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> piped_quality.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tap_quality</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tap_quality.acceptable</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tap_quality.unacceptable_taste</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tap_quality.unacceptable_colour</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tap_quality.unacceptable_smell</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tap_quality.materials</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tap_quality.no_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tap_quality.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> borehole_quality</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> borehole_quality.acceptable</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> borehole_quality.unacceptable_taste</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> borehole_quality.unacceptable_colour</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> borehole_quality.unacceptable_smell</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> borehole_quality.materials</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> borehole_quality.no_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> borehole_quality.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trucking_quality</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trucking_quality.acceptable</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trucking_quality.unacceptable_taste</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trucking_quality.unacceptable_colour</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trucking_quality.unacceptable_smell</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trucking_quality.materials</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trucking_quality.no_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trucking_quality.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_source_bath</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_source_clothes</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_source_house</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_animals</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_source_animals</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> cultivate_crops</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_source_crops</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> days_available_piped</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> days_available_tap</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> days_available_borehole</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> days_available_trucking</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> hours_available_piped</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> hours_available_tap</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> hours_available_borehole</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> hours_available_trucking</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> satisfaction_piped</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> satisfaction_tap</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> satisfaction_borehole</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> satisfaction_bottled</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> satisfaction_trucking</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> spend_piped</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> spend_borehole</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> spend_bottled</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> spend_trucking</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_tank</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_tank_nb_sharing</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_tank_litres</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_tank_consent</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_tank_shape</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_tank_height</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_tank_diameter</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_tank_obs_number</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_store_piped</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_store_tap</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_store_borehole</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_store_trucking</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_fill_piped</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_fill_tap</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_fill_borehole</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_fill_trucking</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_emptied</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> bottle_volume</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> bottles_per_week</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pump_horsepower</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pump_days</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pump_hours</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pump_connection_piped_sys</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> responsible_collect_water</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> seasonal_variation</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> air_coolers</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> air_coolers_hours</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.not_enough_hours</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.amount_not_enough</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.inconvenient_hours</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.supply_inconsistent</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.too_expensive</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.quality_poor</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.water_pressure</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.sources_closed</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.not_available_shops</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.tank_capacity</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.points_difficult_reach</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.some_groups_no_access</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> money_coping_strategy_water</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_system_connection</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> connection_fees</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pay_water_charges_when</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pay_water_charges_last</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pay_water_charges_method</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pay_water_charges_prefer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pay_water_charges_why_not</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pay_water_charges_why_not_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> value_water_service</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pay_more_water_service</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_meter_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_meter_willing</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.cannot_afford</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.legal_status_property</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.legal_status_hh</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.paperwork</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.not_worth</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.government_responsibility</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.civil_docs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.staff_refused</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.cannot_afford</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.legal_status_property</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.legal_status_hh</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.paperwork</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.not_worth</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.government_responsibility</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.civil_docs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.staff_refused</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_want</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist_type</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist_type.paperwork</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist_type.legalising_property</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist_type.civil_docs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist_type.dealing_staff</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist_type.paying</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist_type.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist_type.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.nobody</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.water_office</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.municipal_staff</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.community_rep</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.ninewa_dow</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.ngo</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.plumber</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr_not</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr_not_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_action</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_time</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.nobody</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.water_office</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.municipal_staff</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.community_rep</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.ninewa_dow</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.ngo</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.plumber</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_main_complaint</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_main_complaint_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> leaks</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> leaks_reported</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> level_service</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> level_service_why_poor</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> level_service_why_poor_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> regularity_supply</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_office_receptiveness</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_before_2014</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_rest_neighbourhood</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.less_hours_days</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.smaller_quantity</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.hours_less_inconvenient</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.charges_higher</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.quality_poorer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.pressure_lower</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.infrastructure_poorer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.less_infrastructure</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_why</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> majority_pay</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_office_fixes_leaks</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_office_maintains</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> received_outreach</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trust_water_office</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trust_water_office_why_not</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> users_build_trust</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> users_build_trust.nothing</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> users_build_trust.pay_bills</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> users_build_trust.report_leaks</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> users_build_trust.conserve_water</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> users_build_trust.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> users_build_trust.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> users_build_trust.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.increase_hours</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.hours_more_convenient</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.improve_quality</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.reduce_price</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.increase_pressure</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.improve_infrastructure</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.new_infrastructure</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.extend_network</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.repair_leaks</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> help_office_improve</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> help_office_improve.cannot_help</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> help_office_improve.pay_bills</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> help_office_improve.report_leaks</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> help_office_improve.conserve_water</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> help_office_improve.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> help_office_improve.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> help_office_improve.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.prefer_not_engaged</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.face_to_face_home</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.face_to_face_office</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.community_rep</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.phone</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.sms</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.email</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.letter</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.twitter</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.facebook</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.whatsapp</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.complaints_box</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.billboards</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.posters</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.leaflets</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> prefer_not_engage</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> prefer_not_engage_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> consent_telephone_number</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> consent_share_location</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> X_id</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> X_notes</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> X.U.FEFF.start</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> date_assessment</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> deviceid</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> enumerator_num</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> neighbourhood</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> consent_remote</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> hhh_r</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> will_to_response_r</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> age_respondent_r</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> age_hoh</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> gender_hoh</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> displace_status</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> displace_status_returnee</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> return_date</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> num_hh_member</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> hh_hosting</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> num_hh_hosting</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> hh_hosted</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> shelter_occupation</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> shelter_occupation_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> property_title</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> rental_contract</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> inc_employment_pension</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tot_expenses</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.savings</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.employment</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.remittences</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.retirement_fund</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.income_renting</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.selling_assets</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.selling_assisantance</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.loans</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.modm</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.support</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.ngo</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.social_service</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.illegal</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.zakat</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.own_business</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> type_employment</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.piped</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.tap</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.borehole</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.well</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.bottled</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.trucking</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.spring</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.rainwater</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.surface</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_source_drinking</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_drink_water</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_drink_water_how</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_drink_water_how.boil</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_drink_water_how.let_stand</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_drink_water_how.expose_sunlight</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_drink_water_how.use_chlorine</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_drink_water_how.filter</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_drink_water_how.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_drink_water_how.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_source_cook</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water_how</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water_how.boil</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water_how.let_stand</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water_how.expose_sunlight</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water_how.use_chlorine</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water_how.filter</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water_how.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water_how.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> piped_quality</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> piped_quality.acceptable</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> piped_quality.unacceptable_taste</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> piped_quality.unacceptable_colour</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> piped_quality.unacceptable_smell</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> piped_quality.materials</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> piped_quality.no_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> piped_quality.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tap_quality</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tap_quality.acceptable</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tap_quality.unacceptable_taste</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tap_quality.unacceptable_colour</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tap_quality.unacceptable_smell</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tap_quality.materials</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tap_quality.no_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tap_quality.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> borehole_quality</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> borehole_quality.acceptable</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> borehole_quality.unacceptable_taste</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> borehole_quality.unacceptable_colour</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> borehole_quality.unacceptable_smell</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> borehole_quality.materials</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> borehole_quality.no_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> borehole_quality.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trucking_quality</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trucking_quality.acceptable</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trucking_quality.unacceptable_taste</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trucking_quality.unacceptable_colour</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trucking_quality.unacceptable_smell</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trucking_quality.materials</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trucking_quality.no_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trucking_quality.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_source_bath</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_source_clothes</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_source_house</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_animals</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_source_animals</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> cultivate_crops</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_source_crops</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> days_available_piped</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> days_available_tap</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> days_available_borehole</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> days_available_trucking</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> hours_available_piped</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> hours_available_tap</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> hours_available_borehole</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> hours_available_trucking</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> satisfaction_piped</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> satisfaction_tap</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> satisfaction_borehole</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> satisfaction_bottled</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> satisfaction_trucking</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> spend_piped</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> spend_tap</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> spend_borehole</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> spend_bottled</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> spend_trucking</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_tank</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_tank_nb_sharing</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_tank_litres</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_tank_litres_nb</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_tank_consent</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_tank_shape</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_tank_height</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_tank_diameter</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_tank_obs_number</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_store_piped</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_store_tap</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_store_borehole</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_store_trucking</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_fill_piped</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_fill_tap</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_fill_borehole</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_fill_trucking</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_emptied</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> bottle_volume</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> bottles_per_week</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> number_pumps</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pump_horsepower</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pump_days</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pump_hours</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pump_connection_piped_sys</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> responsible_collect_water</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> seasonal_variation</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> air_coolers</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> air_coolers_nb</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> air_coolers_hours</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.not_enough_hours</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.amount_not_enough</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.inconvenient_hours</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.supply_inconsistent</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.too_expensive</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.quality_poor</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.water_pressure</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.sources_closed</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.not_available_shops</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.tank_capacity</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.points_difficult_reach</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.some_groups_no_access</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> money_coping_strategy_water</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_system_connection</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> connection_fees</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> connection_fees_amount</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pay_water_charges_when</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pay_water_charges_last</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pay_water_charges_amount</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pay_water_charges_method</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pay_water_charges_prefer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pay_water_charges_why_not</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pay_water_charges_why_not_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> value_water_service</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pay_more_water_service</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_meter_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_meter_willing</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.cannot_afford</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.legal_status_property</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.legal_status_hh</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.paperwork</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.not_worth</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.government_responsibility</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.civil_docs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.staff_refused</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.cannot_afford</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.legal_status_property</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.legal_status_hh</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.paperwork</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.not_worth</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.government_responsibility</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.civil_docs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.staff_refused</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_want</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist_type</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist_type.paperwork</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist_type.legalising_property</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist_type.civil_docs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist_type.dealing_staff</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist_type.paying</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist_type.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist_type.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.nobody</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.water_office</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.municipal_staff</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.community_rep</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.ninewa_dow</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.ngo</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.plumber</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr_not</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr_not_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_action</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_time</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.nobody</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.water_office</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.municipal_staff</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.community_rep</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.ninewa_dow</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.ngo</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.plumber</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_main_complaint</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_main_complaint_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> leaks</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> leaks_reported</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> level_service</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> level_service_why_poor</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> level_service_why_poor_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> regularity_supply</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_office_receptiveness</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_before_2014</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_rest_neighbourhood</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.less_hours_days</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.smaller_quantity</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.hours_less_inconvenient</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.charges_higher</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.quality_poorer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.pressure_lower</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.infrastructure_poorer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.less_infrastructure</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_why</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> majority_pay</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_office_fixes_leaks</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_office_maintains</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> received_outreach</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trust_water_office</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trust_water_office_why_not</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> users_build_trust</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> users_build_trust.nothing</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> users_build_trust.pay_bills</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> users_build_trust.report_leaks</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> users_build_trust.conserve_water</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> users_build_trust.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> users_build_trust.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> users_build_trust.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.increase_hours</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.hours_more_convenient</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.improve_quality</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.reduce_price</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.increase_pressure</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.improve_infrastructure</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.new_infrastructure</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.extend_network</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.repair_leaks</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> help_office_improve</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> help_office_improve.cannot_help</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> help_office_improve.pay_bills</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> help_office_improve.report_leaks</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> help_office_improve.conserve_water</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> help_office_improve.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> help_office_improve.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> help_office_improve.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.prefer_not_engaged</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.face_to_face_home</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.face_to_face_office</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.community_rep</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.phone</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.sms</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.email</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.letter</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.twitter</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.facebook</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.whatsapp</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.complaints_box</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.billboards</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.posters</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.leaflets</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> prefer_not_engage</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> prefer_not_engage_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> consent_telephone_number</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> consent_share_location</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> X_id</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> X_notes</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> X.U.FEFF.start</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> date_assessment</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> deviceid</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> enumerator_num</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> neighbourhood</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> consent_remote</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> hhh_r</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> will_to_response_r</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> age_respondent_r</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> age_hoh</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> gender_hoh</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> displace_status</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> displace_status_returnee</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> num_hh_member</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> hh_hosting</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> num_hh_hosting</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> hh_hosted</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> shelter_occupation</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> shelter_occupation_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> property_title</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> rental_contract</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> inc_employment_pension</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tot_expenses</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.savings</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.employment</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.remittences</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.retirement_fund</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.income_renting</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.selling_assets</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.selling_assisantance</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.loans</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.modm</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.support</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.ngo</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.social_service</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.illegal</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.zakat</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood.own_business</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> primary_livelihood_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> type_employment</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.piped</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.tap</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.borehole</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.well</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.bottled</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.trucking</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.spring</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.rainwater</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.surface</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_sources.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_source_drinking</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_drink_water</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_drink_water_how</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_drink_water_how.boil</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_drink_water_how.let_stand</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_drink_water_how.expose_sunlight</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_drink_water_how.use_chlorine</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_drink_water_how.filter</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_drink_water_how.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_drink_water_how.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_source_cook</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water_how</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water_how.boil</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water_how.let_stand</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water_how.expose_sunlight</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water_how.use_chlorine</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water_how.filter</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water_how.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> treat_cook_water_how.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> piped_quality</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> piped_quality.acceptable</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> piped_quality.unacceptable_taste</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> piped_quality.unacceptable_colour</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> piped_quality.unacceptable_smell</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> piped_quality.materials</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> piped_quality.no_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> piped_quality.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tap_quality</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tap_quality.acceptable</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tap_quality.unacceptable_taste</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tap_quality.unacceptable_colour</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tap_quality.unacceptable_smell</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tap_quality.materials</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tap_quality.no_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tap_quality.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> borehole_quality</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> borehole_quality.acceptable</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> borehole_quality.unacceptable_taste</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> borehole_quality.unacceptable_colour</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> borehole_quality.unacceptable_smell</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> borehole_quality.materials</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> borehole_quality.no_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> borehole_quality.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trucking_quality</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trucking_quality.acceptable</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trucking_quality.unacceptable_taste</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trucking_quality.unacceptable_colour</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trucking_quality.unacceptable_smell</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trucking_quality.materials</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trucking_quality.no_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trucking_quality.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_source_bath</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_source_clothes</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_source_house</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_animals</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_source_animals</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> cultivate_crops</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_source_crops</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> days_available_piped</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> days_available_tap</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> days_available_borehole</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> days_available_trucking</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> hours_available_piped</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> hours_available_tap</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> hours_available_borehole</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> hours_available_trucking</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> satisfaction_piped</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> satisfaction_tap</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> satisfaction_borehole</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> satisfaction_bottled</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> satisfaction_trucking</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> spend_piped</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> spend_tap</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> spend_borehole</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> spend_bottled</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> spend_trucking</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_tank</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_tank_nb_sharing</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_tank_litres</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_tank_litres_nb</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_tank_consent</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_tank_shape</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_tank_height</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_tank_diameter</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_tank_obs_number</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_store_piped</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_store_tap</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_store_borehole</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_store_trucking</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_fill_piped</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_fill_tap</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_fill_borehole</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_fill_trucking</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> tank_emptied</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> bottle_volume</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> bottles_per_week</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> number_pumps</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pump_horsepower</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pump_days</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pump_hours</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pump_connection_piped_sys</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> responsible_collect_water</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> seasonal_variation</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> air_coolers</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> air_coolers_nb</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> air_coolers_hours</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.not_enough_hours</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.amount_not_enough</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.inconvenient_hours</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.supply_inconsistent</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.too_expensive</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.quality_poor</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.water_pressure</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.sources_closed</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.not_available_shops</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.tank_capacity</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.points_difficult_reach</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.some_groups_no_access</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> access_water_enough_why_not_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> money_coping_strategy_water</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_system_connection</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> connection_fees</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> connection_fees_amount</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pay_water_charges_when</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pay_water_charges_last</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pay_water_charges_amount</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pay_water_charges_method</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pay_water_charges_prefer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pay_water_charges_why_not</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pay_water_charges_why_not_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> value_water_service</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pay_more_water_service</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_meter_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_meter_willing</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.cannot_afford</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.legal_status_property</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.legal_status_hh</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.paperwork</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.not_worth</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.government_responsibility</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.civil_docs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.staff_refused</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_share_connection.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.cannot_afford</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.legal_status_property</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.legal_status_hh</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.paperwork</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.not_worth</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.government_responsibility</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.civil_docs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.staff_refused</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> why_no_subscription.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_want</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist_type</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist_type.paperwork</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist_type.legalising_property</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist_type.civil_docs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist_type.dealing_staff</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist_type.paying</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist_type.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> own_subscription_assist_type.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.nobody</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.water_office</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.municipal_staff</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.community_rep</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.ninewa_dow</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.ngo</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.plumber</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr_not</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_appr_not_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_action</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_time</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.nobody</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.water_office</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.municipal_staff</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.community_rep</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.ninewa_dow</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.ngo</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.plumber</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_who_attend.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_main_complaint</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> problems_water_main_complaint_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> leaks</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> leaks_reported</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> level_service</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> level_service_why_poor</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> level_service_why_poor_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> regularity_supply</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_office_receptiveness</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_before_2014</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_rest_neighbourhood</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.less_hours_days</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.smaller_quantity</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.hours_less_inconvenient</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.charges_higher</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.quality_poorer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.pressure_lower</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.infrastructure_poorer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.less_infrastructure</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_how.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_supply_other_neighbourhoods_why</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> majority_pay</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_office_fixes_leaks</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> water_office_maintains</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> received_outreach</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trust_water_office</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> trust_water_office_why_not</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> users_build_trust</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> users_build_trust.nothing</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> users_build_trust.pay_bills</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> users_build_trust.report_leaks</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> users_build_trust.conserve_water</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> users_build_trust.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> users_build_trust.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> users_build_trust.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.increase_hours</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.hours_more_convenient</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.improve_quality</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.reduce_price</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.increase_pressure</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.improve_infrastructure</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.new_infrastructure</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.extend_network</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.repair_leaks</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> suggestions_improve_services_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> help_office_improve</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> help_office_improve.cannot_help</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> help_office_improve.pay_bills</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> help_office_improve.report_leaks</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> help_office_improve.conserve_water</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> help_office_improve.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> help_office_improve.dont_know</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> help_office_improve.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.prefer_not_engaged</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.face_to_face_home</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.face_to_face_office</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.community_rep</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.phone</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.sms</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.email</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.letter</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.twitter</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.facebook</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.whatsapp</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.complaints_box</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.billboards</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.posters</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.leaflets</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> how_engaged_by_office.prefer_not_answer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> prefer_not_engage</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> prefer_not_engage_other</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> consent_telephone_number</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> consent_share_location</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> X_id</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> X_notes</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">log</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |       |uuid                                 |question                              |change_type     |new_value   |old_value    |comment                                 |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |:------|:------------------------------------|:-------------------------------------|:---------------|:-----------|:------------|:---------------------------------------|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...1   |dcf2753a-6ea2-40f5-b493-3527931ef96c |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...2   |8790ce5c-1c35-41a2-b3c0-538f937d5397 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...3   |bb818e04-9c40-408e-919f-6b40ff1fdbb3 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...4   |28b90cbb-2cf0-41c5-9ee1-1c719c0d4c02 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...5   |7f2a0c6a-529b-481f-963f-a96dca2ec034 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...6   |b4f92064-12ea-4970-b0f5-fd309de1dda3 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...7   |f5ce0576-bfe5-4d1b-a247-26d31c7e7a86 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...8   |6c9e9356-5810-43d2-bf5c-a2044ecef219 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...9   |0b74b52d-d221-4b81-a5e6-9f9db48b1f86 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...10  |67e7482b-a543-40f5-856d-29d5b1c60f9a |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...11  |a8d89047-792f-4d95-9adf-25e2e42ff66d |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...12  |a52c231b-20c5-4520-bf73-d86410b0f26c |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...13  |987dbeee-d809-4a62-b2ed-15a1673f4f18 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...14  |8c7568cb-0815-4b9a-a19e-89b3db792441 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...15  |248f7774-319a-4368-91d2-a1f8dec9972d |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...16  |2777683b-aa86-40b7-8da1-77dcc2e4d553 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...17  |f1175d29-ce1f-43a7-b3d1-ee26cd1b8cdb |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...18  |3438f313-24e6-46fc-9597-cec440a737ce |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...19  |e9f8b44c-c507-45a1-8d76-66d886437b8f |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...20  |d7714f1e-0ed2-46ea-a94d-54a6c6423e39 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...21  |2498556b-4165-4a85-a7d9-c6ce75032747 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...22  |d75a0458-16bc-4b0c-af7a-5b22ab73dfb7 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...23  |50be30c5-86b8-4fd1-bd59-be31d8bd128c |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...24  |31742119-37a2-4a4c-a688-15efa7914aff |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...25  |683e97a1-a6df-4442-b1ba-effe04612b86 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...26  |3fbf82e7-8009-44b7-bb09-eabd9e38b18c |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...27  |a25896b2-49e6-4187-972a-519101968647 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...28  |994a60b8-e640-425c-9774-160651d7af04 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...29  |d9ff616f-b3ac-4eae-88dc-601946260d82 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...30  |c3a52fa9-63f5-4d02-b2b0-6eebbef944a7 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...31  |17bad766-fc25-49fe-a041-c6503e05941d |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...32  |308b7de7-7f09-4578-8373-8c81f74480f4 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...33  |bd2a7c9f-4eed-4943-b39a-659d5c1d9a31 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...34  |7f7a6714-a334-4079-bfe4-e590667f4aee |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...35  |1a80239e-a815-4fcd-8549-294fb190c27f |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...36  |bcd16469-8f6e-4d88-94c9-6fd700e352fa |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...37  |bdcca634-6e9d-434a-bac0-5d17540848e8 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...38  |6cb6e1dc-3d68-4d49-9d4a-29e3cb992f37 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...39  |dd3a9983-0bcd-4fcd-933b-6c2dea5ea0ca |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...40  |90e8ef05-9604-471e-8c1a-94fa5592cc46 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...41  |f0fd8ae4-a149-45a7-9cfa-d51e30e7a55c |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...42  |9dac8c9e-a5a5-435d-b28c-82d5f43b2f7f |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...43  |a37512fa-f4ea-4c6c-a873-851f69df6c93 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...44  |1b473a2c-71bd-4bcc-8040-621dde1475dc |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...45  |f45d4ca7-adce-416d-b096-04ab6ff79d12 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...46  |2b148a6e-90fc-496b-9d03-061377df2290 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...47  |5205540c-6019-4137-9c18-fb597d5af35c |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...48  |1f97f421-40a5-4c4d-9ec5-569d58718c5f |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...49  |c928be0f-0f0e-4a56-8603-501f533f2fc6 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...50  |bb7cb050-5b65-43c9-b7bb-2de4f56ecdda |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...51  |cc73c878-71e9-44b1-9156-49c33d86731b |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...52  |5c80617f-88b4-441d-8990-cdb3c33559e0 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...53  |2b49e747-84e8-429a-95a0-8d25f6448aa0 |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...54  |c1c69337-eb3e-4427-a578-26f94bf3aeaf |NA                                    |remove_survey   |NA          |NA           |No matching uuid in the cleaned dataset |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...55  |all                                  |socio_eco_division                    |variable_added  |NA          |NA           |variable added to the clean dataset     |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...56  |all                                  |water_sector                          |variable_added  |NA          |NA           |variable added to the clean dataset     |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |7      |0349b616-aeb9-49e4-a3dc-e8e7ca9ac9cf |return_date                           |change_response |2017-01-01  |2021-07-10   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |10     |03f9bc62-8a14-49eb-8b24-02992fc4dc31 |return_date                           |change_response |2018-07-01  |2021-07-14   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |38     |0d4fafd8-9243-4a05-be2a-2100c2e60185 |return_date                           |change_response |2018-03-01  |2021-07-11   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |42     |101e7fa9-eacd-40a8-bab0-4630488b8e1d |return_date                           |change_response |2017-01-01  |2021-07-09   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |43     |11067dc4-45b5-4b35-8d43-5dec9f7276c5 |return_date                           |change_response |2018-03-01  |2021-07-14   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |52     |1475ab22-557c-4c93-ba46-68427f29375a |return_date                           |change_response |2018-03-01  |2021-07-08   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |78     |1fcf8417-5cd9-4c65-9090-83e828881939 |return_date                           |change_response |2019-01-20  |2021-07-13   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |84     |222d5a7f-1962-4516-9127-6f5c2e574f96 |return_date                           |change_response |2019-07-15  |2021-07-14   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |114    |34cba4d1-371e-425b-a189-cb1cb3519ade |return_date                           |change_response |2018-03-01  |2021-07-13   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |216    |5f5b64bc-c53b-40fb-98cd-a615205b5954 |return_date                           |change_response |2018-04-19  |2021-07-07   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |250    |6c7176cc-dfcf-495e-bc45-90c9e1be5b85 |return_date                           |change_response |2019-05-01  |2021-07-06   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |260    |6fb6b60c-70cf-4940-8f3d-603cf7d7c6c2 |return_date                           |change_response |2017-12-10  |2021-07-08   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |269    |7309b048-b6d5-4250-bf12-c7648dee943e |return_date                           |change_response |2018-08-01  |2021-07-12   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |287    |7c71081a-1ba9-43fd-8ba7-eb46c43dc79f |return_date                           |change_response |2018-07-12  |2021-07-07   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |300    |81ae2bfd-6c29-4846-b171-9512ec8eda41 |return_date                           |change_response |2018-04-06  |2021-07-07   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |302    |842b1321-7ab5-4494-b98b-29ae93fc654e |return_date                           |change_response |2018-01-26  |2021-07-06   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |309    |87d64595-1a2f-4cd2-99b3-723134f45ff6 |return_date                           |change_response |2021-03-01  |2021-07-12   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |349    |9ea03a5e-aad9-46b3-99bc-7c0786d1abce |return_date                           |change_response |2018-01-01  |2021-07-14   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |355    |a11f3cee-428d-4cbd-8c9b-41fd9a5d2697 |return_date                           |change_response |2018-10-01  |2021-07-11   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |380    |ab5f789b-a3a4-4ee6-a781-53b3366bbd62 |return_date                           |change_response |2018-01-01  |2021-07-11   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |402    |b427827c-949b-4524-a802-7432285b5ced |return_date                           |change_response |2017-12-21  |2021-07-14   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |410    |b67bf5ec-a2b3-4c34-8bb3-25410ee92082 |return_date                           |change_response |2018-10-18  |2021-07-06   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |433    |c50e380e-64a4-4cee-84f2-daaebdbb78db |return_date                           |change_response |2018-11-11  |2021-07-08   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |436    |c746e682-cb56-4604-95df-b200a98d3a8e |return_date                           |change_response |2018-02-17  |2021-07-07   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |446    |c9b3a3df-4775-4ba3-bc1c-1b8237f714c4 |return_date                           |change_response |2018-06-09  |2021-07-06   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |458    |cfb721ab-e7b5-4b01-ac3a-c536c5fe8517 |return_date                           |change_response |2018-02-01  |2021-07-09   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |471    |d4142ede-2082-4091-accc-0989c34d6516 |return_date                           |change_response |2018-01-01  |2021-07-06   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |495    |dc499548-3308-4207-ac8f-3a14fc92baf0 |return_date                           |change_response |2020-03-01  |2021-07-14   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |519    |eb3b9935-fa0b-4d54-8058-3b629f1421ad |return_date                           |change_response |2018-02-27  |2021-07-08   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |569    |fcc6b9e8-c72a-4228-8dc0-6e803114b6d6 |return_date                           |change_response |2018-02-01  |2021-07-06   |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |4581   |cfb721ab-e7b5-4b01-ac3a-c536c5fe8517 |num_hh_hosting                        |change_response |7           |10           |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |135    |3dbe6df8-c2d7-449d-8082-c2b92738ce4d |tot_expenses                          |change_response |350000      |35000        |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |185    |51324001-970c-4fb5-bacf-de696e1b7eaa |water_sources.borehole                |change_response |TRUE        |FALSE        |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |477    |d5d26992-388b-4c71-a461-18a63cac8738 |water_sources.borehole                |change_response |TRUE        |FALSE        |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |130    |3b9732e2-a0d7-4dc3-962d-12efcd2ded15 |treat_drink_water                     |change_response |never_treat |always_treat |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |268    |728e4de0-7356-4bb5-9db4-9479b3ffe098 |treat_drink_water                     |change_response |never_treat |always_treat |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |1301   |3b9732e2-a0d7-4dc3-962d-12efcd2ded15 |treat_drink_water_how.expose_sunlight |change_response |FALSE       |TRUE         |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |2681   |728e4de0-7356-4bb5-9db4-9479b3ffe098 |treat_drink_water_how.filter          |change_response |FALSE       |TRUE         |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |14     |04e28a1d-fc2a-4384-b889-e56c498bc485 |spend_tap                             |change_response |FALSE       |0            |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |45     |1238747b-6616-4c8e-9a1f-571c2927d66d |spend_tap                             |change_response |FALSE       |0            |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |145    |40d8ee6f-8e47-497a-9005-fde107b209b8 |spend_tap                             |change_response |FALSE       |0            |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |205    |5a2d6c59-3675-4da0-8af5-eeeda3142981 |spend_tap                             |change_response |FALSE       |0            |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |275    |745ce148-192b-42bf-9dc1-63d6860fed81 |spend_tap                             |change_response |FALSE       |0            |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |324    |90e04250-0e94-42a2-8a3d-676df3dd7edb |spend_tap                             |change_response |FALSE       |0            |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |462    |d04074f2-cbbe-48be-9837-ccf3dc8e186e |spend_tap                             |change_response |FALSE       |0            |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |542    |f28e9f8d-f9a4-4039-9ddf-2491518d2af3 |spend_tap                             |change_response |FALSE       |0            |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |5691   |fcc6b9e8-c72a-4228-8dc0-6e803114b6d6 |water_tank_litres_nb                  |change_response |7000        |70000        |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |238    |686846a0-5733-420f-99d5-b690233045d6 |number_pumps                          |change_response |1           |7            |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |351    |9eeec67f-6bf7-4948-900e-2101b6346fc1 |air_coolers_nb                        |change_response |2           |18           |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |139    |3ef4cdde-bdce-4378-8e12-b7488ff68180 |connection_fees_amount                |change_response |45000       |45           |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |470    |d3a9b6cb-fb33-46f0-b140-308331a1fa7e |connection_fees_amount                |change_response |50000       |50           |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |4      |03183d24-0275-43fe-8976-d076f29de590 |pay_water_charges_amount              |change_response |10000       |10           |An alteration was performed             |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...109 |407984dd-075f-49b9-b808-2772fc5399ec |return_date                           |blank_response  |NA          |2021-07-08   |changed to NA                           |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...110 |489b4d13-7eaf-4732-af22-28d6cfd77466 |return_date                           |blank_response  |NA          |2021-07-13   |changed to NA                           |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |...111 |d752c413-dce7-48aa-a2b2-3de90c1bb218 |return_date                           |blank_response  |NA          |2021-07-13   |changed to NA                           |</span>
+<span class="r-in"><span> </span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

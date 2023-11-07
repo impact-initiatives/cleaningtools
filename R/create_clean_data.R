@@ -170,5 +170,5 @@ create_clean_data <- function(raw_dataset,
     print("no surveys to remove in log")
   }
 
-  return(raw_dataset %>% type.convert(as.is = T))
+  return(raw_dataset %>% utils::type.convert(as.is = T))
 }

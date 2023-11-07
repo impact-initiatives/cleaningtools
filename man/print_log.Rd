@@ -12,7 +12,8 @@ print_log(log_to_print, message)
 \item{message}{A message to print if the data frame is empty}
 }
 \value{
-The data frame to print or an alternative message if the dataframe is empty
+The data frame to print or an alternative message
+if the dataframe is empty
 }
 \description{
 Help to print log or message for the template
@@ -20,3 +21,4 @@ Help to print log or message for the template
 \examples{
 #print_log(log_to_print, "No values flagged")
 }
+\keyword{internal}

@@ -43,3 +43,7 @@ reference:
   desc: functions building cleaning
 - contents:
   - starts_with("coerce_")
+- title: checks
+  desc: functions building cleaning
+- contents:
+  - starts_with("check_")

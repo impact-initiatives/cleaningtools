@@ -26,6 +26,8 @@ superior of the higher threshold."><!-- mathjax --><script src="https://cdnjs.cl
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/function_documentation.html">function_documentation</a>
+    <a class="dropdown-item" href="../articles/report_template.html">Data cleaning check and review</a>
     <a class="dropdown-item" href="../articles/tuto.html">Tutorial</a>
   </div>
 </li>
@@ -101,7 +103,8 @@ a dataframe with the duration log</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">testdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">testdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  uuid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">7</span><span class="op">]</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  duration_audit_start_end_ms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="fl">2475353</span>, <span class="fl">375491</span>, <span class="fl">2654267</span>, <span class="fl">311585</span>, <span class="fl">817270</span>,</span></span>
@@ -109,96 +112,81 @@ a dataframe with the duration log</p>
 <span class="r-in"><span>  <span class="op">)</span>,</span></span>
 <span class="r-in"><span>  duration_audit_start_end_minutes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">41</span>, <span class="fl">6</span>, <span class="fl">44</span>, <span class="fl">5</span>, <span class="fl">14</span>, <span class="fl">46</span>, <span class="fl">144</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span> </span></span>
 <span class="r-in"><span><span class="fu">check_duration</span><span class="op">(</span><span class="va">testdata</span>,</span></span>
-<span class="r-in"><span>  column_to_check <span class="op">=</span> <span class="st">"duration_audit_start_end_minutes"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $checked_dataset</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   uuid duration_audit_start_end_ms duration_audit_start_end_minutes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    a                     2475353                               41</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    b                      375491                                6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    c                     2654267                               44</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    d                      311585                                5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    e                      817270                               14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    f                     2789505                               46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    g                     8642007                              144</span>
+<span class="r-in"><span>                column_to_check <span class="op">=</span> <span class="st">"duration_audit_start_end_minutes"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span>  </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $duration_log</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   uuid old_value                         question</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    b         6 duration_audit_start_end_minutes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    d         5 duration_audit_start_end_minutes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    e        14 duration_audit_start_end_minutes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    g       144 duration_audit_start_end_minutes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                             issue</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Duration is lower or higher than the thresholds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Duration is lower or higher than the thresholds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Duration is lower or higher than the thresholds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Duration is lower or higher than the thresholds</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">check_duration</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">testdata</span>,</span></span>
-<span class="r-in"><span>  column_to_check <span class="op">=</span> <span class="st">"duration_audit_start_end_ms"</span>,</span></span>
-<span class="r-in"><span>  lower_bound <span class="op">=</span> <span class="fl">375490</span>,</span></span>
-<span class="r-in"><span>  higher_bound <span class="op">=</span> <span class="fl">8642000</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $checked_dataset</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   uuid duration_audit_start_end_ms duration_audit_start_end_minutes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    a                     2475353                               41</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    b                      375491                                6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    c                     2654267                               44</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    d                      311585                                5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    e                      817270                               14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    f                     2789505                               46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    g                     8642007                              144</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid | duration_audit_start_end_ms| duration_audit_start_end_minutes|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |:----|---------------------------:|--------------------------------:|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |a    |                     2475353|                               41|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |b    |                      375491|                                6|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |c    |                     2654267|                               44|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |d    |                      311585|                                5|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |e    |                      817270|                               14|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |f    |                     2789505|                               46|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |g    |                     8642007|                              144|</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $duration_log</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   uuid old_value                    question</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    d    311585 duration_audit_start_end_ms</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    g   8642007 duration_audit_start_end_ms</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                             issue</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Duration is lower or higher than the thresholds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Duration is lower or higher than the thresholds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid | old_value|question                         |issue                                           |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |:----|---------:|:--------------------------------|:-----------------------------------------------|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |b    |         6|duration_audit_start_end_minutes |Duration is lower or higher than the thresholds |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |d    |         5|duration_audit_start_end_minutes |Duration is lower or higher than the thresholds |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |e    |        14|duration_audit_start_end_minutes |Duration is lower or higher than the thresholds |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |g    |       144|duration_audit_start_end_minutes |Duration is lower or higher than the thresholds |</span>
+<span class="r-in"><span> </span></span>
+<span class="r-in"><span><span class="fu">check_duration</span><span class="op">(</span> <span class="va">testdata</span>,</span></span>
+<span class="r-in"><span>                column_to_check <span class="op">=</span> <span class="st">"duration_audit_start_end_ms"</span>,</span></span>
+<span class="r-in"><span>                lower_bound <span class="op">=</span> <span class="fl">375490</span>,</span></span>
+<span class="r-in"><span>                higher_bound <span class="op">=</span> <span class="fl">8642000</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span>  </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid | duration_audit_start_end_ms| duration_audit_start_end_minutes|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |:----|---------------------------:|--------------------------------:|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |a    |                     2475353|                               41|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |b    |                      375491|                                6|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |c    |                     2654267|                               44|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |d    |                      311585|                                5|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |e    |                      817270|                               14|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |f    |                     2789505|                               46|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |g    |                     8642007|                              144|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid | old_value|question                    |issue                                           |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |:----|---------:|:---------------------------|:-----------------------------------------------|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |d    |    311585|duration_audit_start_end_ms |Duration is lower or higher than the thresholds |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |g    |   8642007|duration_audit_start_end_ms |Duration is lower or higher than the thresholds |</span>
+<span class="r-in"><span> </span></span>
 <span class="r-in"><span><span class="va">testdata</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">check_duration</span><span class="op">(</span>column_to_check <span class="op">=</span> <span class="st">"duration_audit_start_end_minutes"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">check_duration</span><span class="op">(</span></span></span>
-<span class="r-in"><span>    column_to_check <span class="op">=</span> <span class="st">"duration_audit_start_end_ms"</span>,</span></span>
-<span class="r-in"><span>    log_name <span class="op">=</span> <span class="st">"duration_in_ms"</span>,</span></span>
-<span class="r-in"><span>    lower_bound <span class="op">=</span> <span class="fl">375490</span>,</span></span>
-<span class="r-in"><span>    higher_bound <span class="op">=</span> <span class="fl">8642000</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $checked_dataset</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   uuid duration_audit_start_end_ms duration_audit_start_end_minutes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    a                     2475353                               41</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    b                      375491                                6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    c                     2654267                               44</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    d                      311585                                5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    e                      817270                               14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    f                     2789505                               46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    g                     8642007                              144</span>
+<span class="r-in"><span>  <span class="fu">check_duration</span><span class="op">(</span> column_to_check <span class="op">=</span> <span class="st">"duration_audit_start_end_ms"</span>,</span></span>
+<span class="r-in"><span>                  log_name <span class="op">=</span> <span class="st">"duration_in_ms"</span>,</span></span>
+<span class="r-in"><span>                  lower_bound <span class="op">=</span> <span class="fl">375490</span>,</span></span>
+<span class="r-in"><span>                  higher_bound <span class="op">=</span> <span class="fl">8642000</span>  <span class="op">)</span><span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span>  </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $duration_log</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   uuid old_value                         question</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    b         6 duration_audit_start_end_minutes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    d         5 duration_audit_start_end_minutes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    e        14 duration_audit_start_end_minutes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    g       144 duration_audit_start_end_minutes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                             issue</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Duration is lower or higher than the thresholds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Duration is lower or higher than the thresholds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Duration is lower or higher than the thresholds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Duration is lower or higher than the thresholds</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $duration_in_ms</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   uuid old_value                    question</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    d    311585 duration_audit_start_end_ms</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    g   8642007 duration_audit_start_end_ms</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                             issue</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Duration is lower or higher than the thresholds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Duration is lower or higher than the thresholds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid | duration_audit_start_end_ms| duration_audit_start_end_minutes|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |:----|---------------------------:|--------------------------------:|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |a    |                     2475353|                               41|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |b    |                      375491|                                6|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |c    |                     2654267|                               44|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |d    |                      311585|                                5|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |e    |                      817270|                               14|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |f    |                     2789505|                               46|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |g    |                     8642007|                              144|</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid | old_value|question                         |issue                                           |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |:----|---------:|:--------------------------------|:-----------------------------------------------|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |b    |         6|duration_audit_start_end_minutes |Duration is lower or higher than the thresholds |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |d    |         5|duration_audit_start_end_minutes |Duration is lower or higher than the thresholds |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |e    |        14|duration_audit_start_end_minutes |Duration is lower or higher than the thresholds |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |g    |       144|duration_audit_start_end_minutes |Duration is lower or higher than the thresholds |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |uuid | old_value|question                    |issue                                           |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |:----|---------:|:---------------------------|:-----------------------------------------------|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |d    |    311585|duration_audit_start_end_ms |Duration is lower or higher than the thresholds |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |g    |   8642007|duration_audit_start_end_ms |Duration is lower or higher than the thresholds |</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
