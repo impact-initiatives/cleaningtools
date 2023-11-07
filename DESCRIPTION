@@ -24,6 +24,8 @@ Imports:
     data.table,
     dplyr,
     glue,
+    kableExtra,
+    knitr,
     magrittr,
     openxlsx,
     purrr,
@@ -36,7 +38,6 @@ Imports:
     tidyr,
     tidyselect
 Suggests: 
-    knitr,
     rmarkdown,
     testthat (>= 3.0.0),
     tidyverse

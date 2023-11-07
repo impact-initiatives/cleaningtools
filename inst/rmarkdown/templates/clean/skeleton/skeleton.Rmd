@@ -1,0 +1,576 @@
+---
+title: "Data cleaning check and review"
+date: "`r format(Sys.Date(),  '%d %B %Y')`"
+output: html_document
+params:
+  datafolder: "data-raw"
+  form: "form.xlsx" ## name of the xlsform
+  rawwl: "data.xlsx" ## Name of the  raw data file
+  cleannl: "clean_data.xlsx"
+  loggl: "cleaning_log.xlsx"
+  logical_check_list: "logical_check_list.xlsx"
+  sampling_frame: "sampling_frame.xlsx"
+  var_logg: "questions"
+  old_value_logg: "old_value"
+  new_value_logg: "new_value"
+  change_type_column: "change_type"
+  no_action_value: "no_action"
+  sm_separator: "."
+  check_id_column: "check_id"
+  description_column: "description"
+  check_to_perform_column: "check_to_perform"
+  columns_to_clean_column: "columns_to_clean"
+  sample_frame_strata_column: "Neighbourhood"
+  sample_frame_target_survey_column: "Total.no.of.HH"
+  clean_data_strata_column: "neighbourhood"
+  clean_data_consent_column: "consent_remote"
+  clean_data_consent_yes_value: "yes"
+  lower_treshold:  15
+  higher_threshold: 100
+  start_column: "X.U.FEFF.start"
+  end_column: "end"
+  check_for_duplicates: "TRUE"
+  check_for_soft_duplicates: "TRUE"
+  check_for_PII: "TRUE"
+  check_for_time: "TRUE"
+  check_for_shortest_path: "TRUE"
+  check_for_outliers: "TRUE"
+  check_for_logical: "TRUE"
+  check_for_others: "TRUE"
+  check_for_NA_values: "TRUE"
+  check_for_deletions: "TRUE"
+  check_for_etc: "TRUE"
+  review_the_cleaning_log: "TRUE"
+  review_the_others_recoding: "TRUE"
+  review_the_sampling_frame: "TRUE"
+  ridl: "rms_v4" ## Name of the ridl project where you data is documented and archived
+  publish: "yes" 
+---  
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, 
+                      message = FALSE,
+                      warning = FALSE)
+
+
+library(tidyverse)
+library(cleaningtools)
+
+```
+ 
+# Read me 
+
+This review is separated into two parts *Data checks* and *Cleaning log*:  
+- The first part will performed different check on the dataset, depending on the information available 
+(time, outliers, shortest path, etc.).  
+- The second part will look at how the cleaning was performed. It will first look if the values from the
+cleaning log are correctly changed in the clean data, and then it will look at differences between the 
+raw data and clean data and see if anything was not logged into the cleaning log.  
+
+
+
+```{r reading config file}
+#| message: false
+#| warning: false
+#The only section that should be changed.
+
+# Datasets and logs
+#raww <- cleaningtools::cleaningtools_raw_data
+raww <- readxl::read_excel(here::here(params$datafolder ,params$rawwl))
+
+#cleann <- cleaningtools::cleaningtools_clean_data
+cleann <- readxl::read_excel(here::here(params$datafolder ,params$cleann))
+
+#logg <- cleaningtools::cleaningtools_cleaning_log |>
+logg <- readxl::read_excel(here::here(params$datafolder ,params$loggl)) |>
+  dplyr::filter(change_type != "remove_survey")
+
+#dell <- cleaningtools::cleaningtools_cleaning_log |>
+dell <- readxl::read_excel(here::here(params$datafolder ,params$loggl)) |>
+  dplyr::filter(change_type == "remove_survey")
+
+# uuid for the different datasets
+uuid_raww <- detect_uuid(raww)
+uuid_cleann <- detect_uuid(cleann)
+uuid_logg <- detect_uuid(logg)
+uuid_dell <- detect_uuid(dell)
+
+# names from the cleaning log
+var_logg <- params$var_logg #"questions"
+old_value_logg <- params$old_value_logg # "old_value"
+new_value_logg <- params$new_value_logg # "new_value"
+change_type_column <- params$change_type_column # "change_type"
+no_action_value <- params$no_action_value # "no_action"
+
+# KOBO survey and choices
+#questions <- cleaningtools::cleaningtools_survey
+#choices <- cleaningtools::cleaningtools_choices
+
+questions <- readxl::read_excel(here::here(params$datafolder ,params$form), sheet = "survey")
+choices <- readxl::read_excel(here::here(params$datafolder ,params$form), sheet = "choices")
+
+
+
+# select multiple separator
+sm_separator <-  params$sm_separator # "."
+
+# Logical checks list
+# logical_check_list <- data.frame(
+#   check_id = c("check_exp", "check_2"), 
+#   description = c("primary_livelihood is rented but expenses less than 500000", 
+# "acces water and tank emptied"), 
+# check_to_perform = c("primary_livelihood == \"employment\" & tot_expenses < 500000", 
+#                      "access_water_enough == \"totally_insufficient\" & tank_emptied == \"about_half\""),
+# columns_to_clean = c("primary_livelihood, tot_expenses",
+#                      "access_water_enough, tank_emptied"
+# ))
+logical_check_list <- readxl::read_excel(here::here(params$datafolder ,params$logical_check_list))
+
+# Logical checks list information
+check_id_column <- params$check_id_column # "check_id"
+description_column <- params$description_column # "description"
+check_to_perform_column <- params$check_to_perform_column # "check_to_perform"
+columns_to_clean_column <- params$columns_to_clean_column # "columns_to_clean"
+
+# Sampling frame
+#sampling_frame <- cleaningtools::cleaningtools_sample_frame
+sampling_frame <- readxl::read_excel(here::here(params$datafolder ,params$sampling_frame))
+# sampling frame information
+sample_frame_strata_column <-  params$sample_frame_strata_column #"Neighbourhood"
+sample_frame_target_survey_column <-  params$sample_frame_target_survey_column # "Total.no.of.HH"
+clean_data_strata_column  <-  params$clean_data_strata_column #"neighbourhood"
+clean_data_consent_column  <-  params$clean_data_consent_column #"consent_remote"
+clean_data_consent_yes_value  <- params$clean_data_consent_yes_value # "yes"
+
+```
+
+
+```{r load datasets and parameters}
+#| message: false
+#| warning: false
+# tests to include  TRUE / FALSE
+check_for_duplicates <-params$check_for_duplicates # TRUE
+check_for_soft_duplicates <- params$check_for_soft_duplicates #TRUE
+check_for_PII <- params$check_for_PII #TRUE
+check_for_time <- params$check_for_time #TRUE
+check_for_shortest_path <- params$check_for_shortest_path #TRUE
+check_for_outliers <- params$check_for_outliers #TRUE
+check_for_logical <- params$check_for_logical #TRUE
+check_for_others <- params$check_for_others #TRUE
+check_for_NA_values <- params$check_for_NA_values #TRUE
+check_for_deletions <- params$check_for_deletions #TRUE
+check_for_etc <- params$check_for_etc #TRUE
+review_the_cleaning_log <- params$review_the_cleaning_log #TRUE
+review_the_others_recoding <- params$review_the_others_recoding #TRUE
+review_the_sampling_frame <- params$review_the_sampling_frame #TRUE
+```
+
+```{r}
+# modifying the cleaning log to create xx
+if (!change_type_column %in% names(logg)) {
+  logg <- logg |>
+    dplyr::mutate(!!dplyr::sym(change_type_column) := dplyr::case_when(
+      is.na(!!dplyr::sym(new_value_logg)) | !!(dplyr::sym(new_value_logg) == "NA") ~ "blank_response",
+      !!dplyr::sym(new_value_logg) == !!dplyr::sym(old_value_logg) ~ "no_action",
+      !!dplyr::sym(new_value_logg) != !!dplyr::sym(old_value_logg) ~ "change_response",
+      TRUE ~ "cannot identify the action"
+    ))
+}
+
+# logg[logg == "NA"] <- NA_character_
+
+# possible fix for start&end
+# cleann$new_start = lubridate::ymd_hms(cleann[["start"]])
+# cleann$new_time = lubridate::ymd_hms(cleann[["end"]])
+
+list_log <- cleann
+review_log <- list()
+```
+
+
+# 1. Data checks
+
+## Checks for duplicates 
+
+```{r check duplicates} 
+if (check_for_duplicates) {
+  list_log <- check_duplicate(dataset = list_log, uuid_column = uuid_cleann)
+
+  print_log(list_log$duplicate_log, "No duplicates found")
+}
+```
+ 
+
+## Checks for soft duplicates
+
+```{r check soft duplicates}
+if (check_for_soft_duplicates) {
+  list_log <- check_soft_duplicates(
+    dataset = list_log,
+    kobo_survey = questions,
+    uuid_column = uuid_cleann,
+    idnk_value = "idnk",
+    sm_separator = sm_separator,
+    threshold = 7
+  )
+  list_log$soft_duplicate_log <- list_log$soft_duplicate_log
+
+  print_log(list_log$soft_duplicate_log, "No soft duplicates found")
+}
+```
+
+## Checks for PII
+
+*NOTE*:   
+- Only looks for some keywords in the names of the dataset.  
+- It does not check the value in those columns
+
+```{r check pii}
+#| message: false
+#| warning: false
+
+if (check_for_PII) {
+  list_log <- list_log |>
+    check_pii(uuid_column = uuid_cleann)
+  
+  print_log(list_log$potential_PII, "No sensitive columns found")
+  
+  cleann %>% 
+    select(any_of(list_log$potential_PII$question)) %>% 
+    lapply(unique)
+}
+```
+
+```{r}
+  cleann %>% 
+    select(any_of(list_log$potential_PII$question)) %>% 
+    lapply(unique)
+```
+
+## Check for time
+
+```{r check time}
+#| warning: false
+lower_treshold <- params$lower_treshold #15
+higher_threshold <- params$higher_threshold #100
+
+if (check_for_time) {
+  list_log$checked_dataset <- list_log$checked_dataset |>
+    add_duration(uuid_column  = uuid_cleann, 
+                 start_column = params$start_column, #"X.U.FEFF.start", 
+                 end_column = params$end_column) # "end")
+  list_log <- list_log |>
+    check_duration(
+      column_to_check = "duration",
+      uuid_column  = uuid_cleann,
+      lower_bound = lower_treshold,
+      higher_bound = higher_threshold
+    )
+
+  print_log(list_log$duration_log, "No time sensitive interviews found")
+}
+```
+
+**Note**:  
+- Check time for lower threshold as `r lower_treshold` minutes and higher threshold as `r higher_threshold` minutes.
+
+## Check for shortest path
+
+```{r check shortest path}
+# take only select and integer to look at NA (removing text, dummies, notes, etc.)
+if (check_for_shortest_path) {
+  if (exists("questions")) {
+    list_log$checked_dataset <- list_log$checked_dataset |>
+      add_percentage_missing(
+        kobo_survey = questions,
+        type_to_include = c(
+          "integer",
+          # "date",
+          "text",
+          "select_one",
+          "select_multiple"
+        )
+      )
+  } else {
+    list_log$checked_dataset <- list_log$checked_dataset |>
+      add_percentage_missing()
+  }
+  list_log <- list_log |>
+    check_percentage_missing(uuid_column = uuid_cleann)
+  print_log(list_log$percentage_missing_log, "No survey with outstanding blanks found")
+}
+```
+
+## Check for outliers
+
+```{r check outliers}
+#| warning: false
+#| message: false
+#| output: false
+
+if (check_for_outliers) {
+  list_log <- cleaningtools::check_outliers(dataset = list_log,
+    uuid_column  = uuid_cleann,
+    kobo_survey = questions,
+    kobo_choices = choices,
+    sm_separator = sm_separator
+  )
+}
+```
+
+
+```{r print check outliers}
+if (check_for_outliers) {
+  print_log(list_log$potential_outliers, "No outlier found")
+}
+```
+
+## Logical check 
+
+```{r, warning = F, message = F}
+if (check_for_logical) {
+  list_log <- list_log |>
+    check_logical_with_list(
+      uuid_column  = uuid_cleann,
+      list_of_check = logical_check_list, 
+      check_id_column = check_id_column, 
+      description_column = description_column,
+      check_to_perform_column = check_to_perform_column,
+      columns_to_clean_column = columns_to_clean_column
+    )
+
+  list_log$checked_dataset %>% 
+    summarise(across(.cols = any_of(logical_check_list[[check_id_column]]), .fns = ~mean(.x, na.rm = T) *100)) %>% 
+    pivot_longer(cols = everything()) %>% 
+    arrange(desc(value)) %>% 
+    rename(logical_checks = name, 
+           percent_of_dataset = value)
+
+}
+```
+
+Details can be see here
+
+```{r, warning = F, message = F}
+
+  print_log(list_log$logical_all, "No logical checks found")
+
+```
+
+## Other and translation
+
+If a KOBO tool is provided, it will check all text columns. If there is no KOBO tools, it will check columns ending with "_oth, _other,_autre".
+
+```{r check other}
+if (check_for_others) {
+  if (exists("questions")) {
+    text_oth <- questions |>
+      dplyr::filter(type == "text", name %in% names(cleann)) |>
+      dplyr::pull(name)
+  } else {
+    text_oth <- grep(pattern = "_oth|_other|_autre", x = names(cleann), value = T)
+  }
+  list_log <- list_log |>
+    check_others(
+      uuid_column = uuid_cleann,
+      columns_to_check = text_oth
+    )
+}
+```
+
+This is all the values from text questions.  
+
+```{r check other print}
+if (check_for_others) {
+  list_log$other_log |>
+    dplyr::arrange(question, old_value) |>
+    knit_big_table()
+}
+```
+
+This is how many interviews per text question. 
+
+```{r check other per question}
+if (check_for_others) {
+  list_log$other_log |>
+    dplyr::group_by(question) |>
+    dplyr::tally(sort = T) |>
+    knit_big_table()
+}
+```
+
+The values which are identicals. 
+
+```{r check other per values}
+if (check_for_others) {
+  list_log$other_log |>
+    dplyr::group_by(old_value) |>
+    dplyr::tally(sort = T) |>
+    knit_big_table()
+}
+```
+
+## Check for NAs values
+
+```{r check for values}
+if (check_for_NA_values) {
+  values_to_check <- c(99, 999, 999, 88, 888, 888)
+
+  list_log <- list_log |>
+    check_value( 
+      uuid_column = uuid_cleann,
+      values_to_look = values_to_check
+    )
+
+  # fix for check not adding issue
+  list_log$flaged_value$issue <- "Possible value to be changed to NA"
+
+  print_log(list_log$flaged_value, "No values found")
+}
+```
+
+This checks looks for the following values: `r values_to_check`
+
+## Deletions
+
+Verify the number of uuids that are common in clean dataset and deletion log.
+
+```{r check deletions}
+number_cleann_in_dell <- "Check not performed"
+number_dell_in_cleann <- "Check not performed"
+number_difference_raw_clean_del <- "Check not performed"
+
+if (check_for_deletions) {
+  data.frame(
+    n_raw = nrow(raww),
+    n_clean = nrow(cleann),
+    n_deleted = nrow(dell),
+    sum_clean_del = nrow(cleann) + nrow(dell)
+  )
+
+  number_cleann_in_dell <- cleann[[uuid_cleann]] %in% dell[[uuid_dell]] |> sum()
+  number_dell_in_cleann <- dell[[uuid_dell]] %in% cleann[[uuid_cleann]] |> sum()
+  number_difference_raw_clean_del <- abs(nrow(raww) - nrow(cleann) - nrow(dell))
+}
+```
+
+Difference between of rows between the raw, clean and deletion log:  `r number_difference_raw_clean_del`  
+Number of uuid of clean in deleted : `r number_cleann_in_dell`  
+Number of uuid of deleted in clean : `r number_dell_in_cleann`  
+ 
+## Miscellaneous
+
+```{r checks miscellaneous}
+```
+ 
+
+# 2. Review of the cleaning 
+ 
+
+## Review the cleaning
+
+The change_response column can only take the following values:
+
+|value|Definition|
+|-----|----------|
+|change_response|Change the response to new.value|
+|blank_response|Remove and NA the response|
+|remove_survey|Delete the survey|
+|`r no_action_value`|No action to take|
+
+
+```{r review cleaning}
+#| echo: false
+#| warning: false
+#| message: false
+
+if (review_the_cleaning_log) {
+  review_log$review_cleaning <- review_cleaning(
+    raw_dataset = raww,
+    raw_dataset_uuid_column = uuid_raww,
+    clean_dataset = cleann,
+    clean_dataset_uuid_column = uuid_cleann,
+    cleaning_log = logg,
+    cleaning_log_uuid_column = uuid_logg,
+    cleaning_log_change_type_column = change_type_column,
+    cleaning_log_question_column = var_logg,
+    cleaning_log_new_value_column = new_value_logg,
+    cleaning_log_old_value_column = old_value_logg,
+    cleaning_log_added_survey_value = "added_survey",
+    cleaning_log_no_change_value = no_action_value,
+    deletion_log = dell,
+    deletion_log_uuid_column = uuid_dell,
+    check_for_deletion_log = T
+  )
+}
+```
+
+This is the summary of the review of the cleaning.
+
+```{r print review cleaning}
+if (review_the_cleaning_log) {
+  review_log$review_cleaning |>
+    dplyr::group_by(comment) |>
+    dplyr::tally()
+}
+```
+
+## Review of others re-coding
+
+```{r Review of others re-coding}
+if (review_the_others_recoding) {
+  review_log$review_the_others_log <- review_others(dataset = cleann,
+    uuid_column = uuid_cleann,
+    kobo_survey = questions,
+    sm_separator = sm_separator
+  )
+}
+```
+
+This is the summary of the review of the text correction.
+
+```{r print review cleaning log}
+if (review_the_others_recoding) {
+  review_log$review_the_others_log |>
+    dplyr::group_by(issue) |>
+    dplyr::tally()
+}
+```
+
+## Review of the data and sampling frame
+
+```{r Review of the data and sampling frame}
+if (review_the_sampling_frame) {
+  review_log$review_sf <- review_sample_frame_with_dataset(
+    sample_frame = sampling_frame,
+    sampling_frame_strata_column = sample_frame_strata_column,
+    sampling_frame_target_survey_column = sample_frame_target_survey_column,
+    clean_dataset = cleann,
+    clean_dataset_strata_column = clean_data_strata_column,
+    consent_column = clean_data_consent_column,
+    consent_yes_value = clean_data_consent_yes_value
+  )
+
+  review_log$review_sf
+}
+```
+
+## Miscellaneous
+
+```{r review miscellaneous}
+```
+
+ 
+
+# 3. Wrap-up
+
+The datasets with added values, the checks and the reviews can be found in output folder.
+
+```{r wrap-up}
+all_logs <- create_combined_log(list_log) |>
+  append(review_log)
+
+openxlsx2::write_xlsx(all_logs, file = "review.xlsx", overwrite = T, na.strings = "")
+```
+ 

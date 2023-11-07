@@ -1071,7 +1071,7 @@ verify_valid_choices(df_invalid_choices) # should return FALSE
 
   
 
-# create_formatted_choices
+## create_formatted_choices
 
     
 
@@ -1099,7 +1099,7 @@ verify_valid_choices(df_invalid_choices) # should return FALSE
 
   
 
-# coerce_to_character
+## coerce_to_character
 
     
 
@@ -1113,6 +1113,48 @@ coerce_to_character(c(1, 10000000, NA))
   
 
   
-  
+
+## detect_uuid
+
     
+
+  
+
+```{r example-detect_uuid}
+test1_df <- data.frame(uuid = letters,
+                          x = runif(26),
+                          hello = LETTERS)
+detect_uuid(test1_df)
+```
+
+  
+
+## knit_big_table
+
+    
+
+  
+
+```{r example-knit_big_table}
+#knit_big_table(table_to_print)
+```
+
+  
+
+  
+
+## print_log
+
+    
+
+  
+
+```{r example-print_log}
+#print_log(log_to_print, "No values flagged")
+```
+
+  
+
+  
+
 

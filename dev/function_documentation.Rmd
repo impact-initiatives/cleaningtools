@@ -4309,7 +4309,7 @@ test_that("create_validation_list works", {
 })
 ```
   
-# create_formatted_choices
+## create_formatted_choices
     
 ```{r function-create_formatted_choices}
 #' Format and filter Choices for 'select_one' Questions
@@ -4415,7 +4415,7 @@ test_that("create_col_range works", {
 ```
 
 
-# coerce_to_character
+## coerce_to_character
     
 ```{r function-coerce_to_character}
 #' Coerce numeric values to character, without scientific noting and NA are kept as NA.
@@ -4443,8 +4443,112 @@ test_that("coerce_to_character works", {
 })
 ```
   
-  
+## detect_uuid
     
+```{r function-detect_uuid}
+#' Helper to look to guess uuid name
+#'
+#' @param dataset dataset to look from
+#' @param name_to_search pattern to search, default is "uuid"
+#'
+#' @return text vector with the name to search.
+#'  If there is 0 or 2 or more possible ansers, it will
+#' give an error.
+#' 
+#' @export
+ 
+
+detect_uuid <- function(dataset, name_to_search = "uuid") {
+  name_to_return <- grep(name_to_search, names(dataset), value = T)
+
+  if(length(name_to_return) != 1) {
+    msg <- glue::glue("Cannot identify a column with the pattern \"", 
+                      name_to_search, 
+                      "\". There are ",
+                      length(name_to_return), 
+                      " results from grep")
+    stop(msg)
+  }
+
+  return(name_to_return)
+}
+```
+  
+```{r example-detect_uuid}
+test1_df <- data.frame(uuid = letters,
+                          x = runif(26),
+                          hello = LETTERS)
+detect_uuid(test1_df)
+```
+  
+```{r tests-detect_uuid}
+test_that("detect_uuid works", {
+  expect_true(inherits(detect_uuid, "function")) 
+})
+```
+
+
+## knit_big_table
+    
+```{r function-knit_big_table}
+#' Format table for quarto html output
+#'
+#' @param table_to_print A data frame to print
+#' @param .height Height in the html output
+#'
+#' @return Table with some features for quarto html output
+#' @export
+ 
+knit_big_table <- function(table_to_print, .height = "500px") {
+  table_to_print |>
+    knitr::kable() |>
+    kableExtra::kable_paper() |>
+    kableExtra::scroll_box(height = .height)
+}
+
+```
+  
+```{r example-knit_big_table}
+#knit_big_table(table_to_print)
+```
+  
+```{r tests-knit_big_table}
+test_that("knit_big_table works", {
+  expect_true(inherits(knit_big_table, "function")) 
+})
+```
+  
+## print_log
+    
+```{r function-print_log}
+#' Help to print log or message for the template
+#'
+#' @param log_to_print A data frame to print
+#' @param message A message to print if the data frame is empty
+#'
+#' @return The data frame to print or an alternative message if the dataframe is empty
+#' @export
+ 
+print_log <- function(log_to_print, message) {
+  if(nrow(log_to_print) == 0) {
+    cat(message)
+  } else {
+    log_to_print |> knit_big_table()
+  }
+}
+```
+  
+```{r example-print_log}
+#print_log(log_to_print, "No values flagged")
+```
+  
+```{r tests-print_log}
+test_that("print_log works", {
+  expect_true(inherits(print_log, "function")) 
+})
+```
+  
+
 ```{r development-inflate, eval=FALSE}
 # Run but keep eval=FALSE to avoid infinite loop
 # Execute in the console directly
