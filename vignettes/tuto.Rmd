@@ -413,7 +413,7 @@ data_example %>%
  head() |> knitr::kable()
 ```
 
-### 2. Exporting the flags in excel
+### 2. Creation of the cleanng log
 
 #### 2.1 create_combined_log() 
 
@@ -454,7 +454,7 @@ add_with_info |>
   )
 ```
 
-### 3. Create a clean data
+### 3. Clean the data using the cleaning log
 
 We are creating a dataset and cleaning log for the example
 

@@ -38,7 +38,7 @@
     
     <a class="navbar-brand me-2" href="index.html">cleaningtools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9003</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,7 +54,6 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="articles/function_documentation.html">function_documentation</a>
-    <a class="dropdown-item" href="articles/report_template.html">Data cleaning check and review</a>
     <a class="dropdown-item" href="articles/tuto.html">Tutorial</a>
   </div>
 </li>
@@ -78,24 +77,68 @@
 </h2>
 <!-- badges: start -->
 
-<!-- badges: end -->
-<p>The <code>cleaningtools</code> package focuses on cleaning, and has three components:</p>
-<p><strong>1. Check</strong>, which includes a set of functions that flag values, such as check_outliers and check_logical.</p>
-<p><strong>2. Create</strong>, which includes a set of functions to create different items for use in cleaning, such as the cleaning log from the checks, clean data, and enumerator performance.</p>
-<p><strong>3. Review</strong>, which includes a set of functions to review the cleaning.</p>
+<p>The <a href="https://impact-initiatives.github.io/cleaningtools/">cleaningtools</a> package focuses on survey data cleaning process. It allow to have a fully documented and reproducible cleaning process, based on the generation of a standardized <code>cleaning and deletion log</code>. With such type of process, Quality Assurance and Auditing can be easily performed.</p>
+<p>This tool support the implementation of IMPACT Initiatives / REACH guidance: <a href="https://www.reachresourcecentre.info/wp-content/uploads/2022/05/IMPACT_Data-Cleaning-Guidelines_FINAL_To-share-11.pdf" class="external-link">Data Cleaning Guidelines for Structured Data</a> &amp; <a href="https://www.reachresourcecentre.info/wp-content/uploads/2020/03/IMPACT_Memo_Data-Cleaning-Min-Standards-Checklist_28012020-1.pdf" class="external-link">Data Cleaning Minimum Standards Checklist</a>.</p>
+<p>The workflow supported by the tool includes:</p>
+<ol style="list-style-type: decimal">
+<li><p>Get your raw data and your form from your Kobo/ODK/ONA server.</p></li>
+<li><p>Define a <strong>list of logical checks</strong> based on the specific content of your form. This is basically an excel spreadsheet defining checks describing incompatible responses (<code>check_id</code>, <code>description</code>, <code>check_to_perform</code>, <code>columns_to_clean</code>) - such as “<em>primary_livelihood is rented but expenses less than 500000</em>” or “<em>access water and tank emptied</em>”.</p></li>
+<li><p>Pipe a list of <strong>systematic checks</strong> to apply on the data (<em>outliers, shortest path, personally identifiable information, duration…</em>), including the logical checks previously defined - each of the check will produce a specific log.</p></li>
+<li><p>Assemble and export the <strong><code>cleaning log</code></strong> together in a dedicated excel spreadsheet (<code><a href="reference/create_xlsx_cleaning_log.html">create_xlsx_cleaning_log()</a></code>) so that the person responsible for the cleaning can manually make the decision on the cleaning action to perform among the following values:</p></li>
+</ol>
+<table class="table">
+<thead><tr class="header">
+<th>value</th>
+<th>Definition</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>change_response</code></td>
+<td>Change the response to new.value</td>
+</tr>
+<tr class="even">
+<td><code>blank_response</code></td>
+<td>Remove and NA the response</td>
+</tr>
+<tr class="odd">
+<td><code>remove_survey</code></td>
+<td>Delete the survey</td>
+</tr>
+<tr class="even">
+<td><code>no_action_value</code></td>
+<td>No action to take</td>
+</tr>
+</tbody>
+</table>
+<ol start="5" style="list-style-type: decimal">
+<li><p>Apply the manually review <code>cleaning log</code> on the raw data to obtain the <strong>cleaned data</strong>, aka <code>checked_dataset</code></p></li>
+<li><p>Then <strong>review</strong> how the cleaning was applied through dedicated report <code><a href="reference/review_cleaning.html">review_cleaning()</a></code> , <code>review_the_others_log</code>, <code>review_sf</code> for the sampling frame</p></li>
+</ol>
+<p>Please check the package vignette tuto to review the content with more details.</p>
 </div>
 <div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+<h2 id="installation--usage">Installation &amp; Usage<a class="anchor" aria-label="anchor" href="#installation--usage"></a>
 </h2>
 <p>You can install the development version from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"impact-initiatives/cleaningtools"</span><span class="op">)</span></span></code></pre></div>
+<p>The package comes with a parameterised report template to ease and speed-up the full process.</p>
+<p>Once users have a good understanding of the process above, create an Rstudio projects, install the package, download your data and your form within a dedicated sub-folder for instance <code>data-raw</code>, create an excel file to add your <code>logical checks</code>, add if any the file defining your <code>sampling plan</code>.</p>
+<p>Then create a notebook using the <code>clean</code> notebook template included in the package and start documenting all the parameters.</p>
+<p>Once done you can run each of the code chunck one after the other. After the first chapter, you should have the <code>cleaning log</code> file created within your the same <code>data-raw</code> folder. Open it and manually set up the cleaning action for each of the check.</p>
+<p>Run then the last few chunks to apply the log and review the results…</p>
+<p>Et Voila, you should have then the <code>cleaned_data</code> in your <code>data-raw</code> folder</p>
+</div>
+<div class="section level2">
+<h2 id="current-limitation">Current Limitation<a class="anchor" aria-label="anchor" href="#current-limitation"></a>
+</h2>
+<p>The package assumes that the survey data is a single frame, it does not work out of the box with datalist, aka survey dataset that have more than one dataframe</p>
 </div>
 <div class="section level2">
 <h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
 </h2>
-<p>Please note that the cleaningtools project is released with a <a href="https://impact-initiatives.github.io/cleaningtools/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
+<p>Please note that the {cleaningtools} project is released with a <a href="https://impact-initiatives.github.io/cleaningtools/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms. For developpers, check the <code>dev/function_documentation.Rmd</code> notebook created with <a href="https://thinkr-open.github.io/fusen/index.html" class="external-link">{fusen}</a></p>
 </div>
 
   </main><aside class="col-md-3"><div class="license">
@@ -125,6 +168,7 @@
 <ul class="list-unstyled">
 <li>Mehedi Khan <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-4276-4485" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Yann Say <br><small class="roles"> Maintainer, author </small> <a href="https://orcid.org/0000-0002-7390-4209" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 

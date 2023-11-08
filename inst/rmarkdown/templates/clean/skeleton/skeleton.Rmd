@@ -164,6 +164,7 @@ check_for_others <- params$check_for_others #TRUE
 check_for_NA_values <- params$check_for_NA_values #TRUE
 check_for_deletions <- params$check_for_deletions #TRUE
 check_for_etc <- params$check_for_etc #TRUE
+
 review_the_cleaning_log <- params$review_the_cleaning_log #TRUE
 review_the_others_recoding <- params$review_the_others_recoding #TRUE
 review_the_sampling_frame <- params$review_the_sampling_frame #TRUE
