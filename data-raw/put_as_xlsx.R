@@ -40,4 +40,38 @@ writexl::write_xlsx(list(survey = questions,
                          choices = choices),
                     here::here("data-raw","form.xlsx"))
 
+clogg1 <- readxl::read_excel(here::here(params$datafolder ,"cleaning_log2.xlsx"),
+                            sheet = "Sheet1") #|>
+          # dplyr::recode(change_type,
+          #               "blank_response"
+          #               "change_response"
+          #               "no_action"
+          #               "remove_survey" )
 
+clogg2 <- readxl::read_excel(here::here(params$datafolder , "cleaning_log_to_rev.xlsx"),
+                            sheet = "cleaning_log") |>
+          dplyr::select(uuid, old_value, question,  issue, enumerator_num, X.U.FEFF.start)
+
+
+
+names(clogg1)
+levels(as.factor(clogg1$issue))
+levels(as.factor(clogg1$change_type))
+
+names(clogg2)
+levels(as.factor(clogg2$issue))
+
+clogg3 <- clogg2 |>
+    dplyr::left_join(clogg1, by = c("uuid", "old_value", "question","issue"))
+
+
+clogg3 <- clogg2 |>
+  dplyr::left_join(clogg1, by = c("uuid", "question", "old_value")) |>
+  dplyr::filter( ! is.na(change_type))
+
+
+clogg3 <- clogg2 |>
+  dplyr::left_join(clogg1, by = c("uuid")) |>
+  dplyr::filter( ! is.na(change_type))
+
+writexl::write_xlsx(clogg3, here::here(params$datafolder,"clogg3.xlsx"))

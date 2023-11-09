@@ -32,7 +32,7 @@ The workflow supported by the tool includes:
     “*primary_livelihood is rented but expenses less than 500000*” or
     “*access water and tank emptied*”.
 
-3.  Pipe a list of **systematic checks** to apply on the data
+3.  Pipe a list of **systematic checks** functions to apply on the data
     (*outliers, shortest path, personally identifiable information,
     duration…*), including the logical checks previously defined - each
     of the check will produce a specific log.
@@ -81,10 +81,10 @@ file to add your `logical checks`, add if any the file defining your
 Then create a notebook using the `clean` notebook template included in
 the package and start documenting all the parameters.
 
-Once done you can run each of the code chunck one after the other. After
-the first chapter, you should have the `cleaning log` file created
-within your the same `data-raw` folder. Open it and manually set up the
-cleaning action for each of the check.
+Once done you can run each of the code chunk one after the other. After
+the first chapter, you should have a `cleaning log` file created within
+your the same `data-raw` folder. Open it and manually set up the
+cleaning actions for each of the checks.
 
 Run then the last few chunks to apply the log and review the results…
 
