@@ -37,6 +37,8 @@ The workflow supported by the tool includes:
     duration…*), including the logical checks previously defined - each
     of the check will produce a specific log.
 
+![](https://raw.githubusercontent.com/Edouard-Legoupil/cleaningtools/master/inst/clean_log.png)
+
 4.  Assemble and export the **`cleaning log`** together in a dedicated
     excel spreadsheet (`create_xlsx_cleaning_log()`) so that the person
     responsible for the cleaning can manually make the decision on the
@@ -65,8 +67,8 @@ You can install the development version from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("impact-initiatives/cleaningtools")
+install.packages("pak")  
+pak::pkg_install("edouard-legoupil/cleaningtools")
 ```
 
 The package comes with a parameterised report template to ease and

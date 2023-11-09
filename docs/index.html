@@ -84,7 +84,10 @@
 <li><p>Get your raw data and your form from your Kobo/ODK/ONA server.</p></li>
 <li><p>Define a <strong>list of logical checks</strong> based on the specific content of your form. This is basically an excel spreadsheet defining checks describing incompatible responses (<code>check_id</code>, <code>description</code>, <code>check_to_perform</code>, <code>columns_to_clean</code>) - such as “<em>primary_livelihood is rented but expenses less than 500000</em>” or “<em>access water and tank emptied</em>”.</p></li>
 <li><p>Pipe a list of <strong>systematic checks</strong> functions to apply on the data (<em>outliers, shortest path, personally identifiable information, duration…</em>), including the logical checks previously defined - each of the check will produce a specific log.</p></li>
-<li><p>Assemble and export the <strong><code>cleaning log</code></strong> together in a dedicated excel spreadsheet (<code><a href="reference/create_xlsx_cleaning_log.html">create_xlsx_cleaning_log()</a></code>) so that the person responsible for the cleaning can manually make the decision on the cleaning action to perform among the following values:</p></li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/Edouard-Legoupil/cleaningtools/master/inst/clean_log.png"></p>
+<ol start="4" style="list-style-type: decimal">
+<li>Assemble and export the <strong><code>cleaning log</code></strong> together in a dedicated excel spreadsheet (<code><a href="reference/create_xlsx_cleaning_log.html">create_xlsx_cleaning_log()</a></code>) so that the person responsible for the cleaning can manually make the decision on the cleaning action to perform among the following values:</li>
 </ol>
 <table class="table">
 <thead><tr class="header">
@@ -121,8 +124,8 @@
 </h2>
 <p>You can install the development version from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"impact-initiatives/cleaningtools"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span>  </span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html" class="external-link">pkg_install</a></span><span class="op">(</span><span class="st">"edouard-legoupil/cleaningtools"</span><span class="op">)</span></span></code></pre></div>
 <p>The package comes with a parameterised report template to ease and speed-up the full process.</p>
 <p>Once users have a good understanding of the process above, create an Rstudio projects, install the package, download your data and your form within a dedicated sub-folder for instance <code>data-raw</code>, create an excel file to add your <code>logical checks</code>, add if any the file defining your <code>sampling plan</code>.</p>
 <p>Then create a notebook using the <code>clean</code> notebook template included in the package and start documenting all the parameters.</p>

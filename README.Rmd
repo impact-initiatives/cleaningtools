@@ -35,6 +35,9 @@ The workflow supported by the tool includes:
  
  3. Pipe a list of __systematic checks__ functions to apply on the data (_outliers, shortest path, personally identifiable information, duration..._), including the logical checks previously defined - each of the check will produce a specific log.
  
+ ![](https://raw.githubusercontent.com/Edouard-Legoupil/cleaningtools/master/inst/clean_log.png)
+ 
+ 
  4. Assemble and export the __`cleaning log`__ together in a dedicated excel spreadsheet (`create_xlsx_cleaning_log()`) so that the person responsible for the cleaning can manually make the decision on the cleaning action to perform among the following values:
 
 |value|Definition|
@@ -57,8 +60,8 @@ Please check the package vignette tuto to review the content with more details.
 You can install the development version from [GitHub](https://github.com/) with:
 
 ``` {r, eval=FALSE}
-# install.packages("devtools")
-devtools::install_github("impact-initiatives/cleaningtools")
+install.packages("pak")  
+pak::pkg_install("edouard-legoupil/cleaningtools")
 ```
 
 The package comes with a parameterised report template to ease and speed-up the full process. 
