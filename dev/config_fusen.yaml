@@ -6,6 +6,7 @@ function_documentation.Rmd:
   - R/add_duration_from_audit.R
   - R/add_info_to_cleaning_log.R
   - R/add_percentage_missing.R
+  - R/add_ridl.R
   - R/auto_detect_sm_parents.R
   - R/auto_sm_parent_child.R
   - R/check_duplicate.R
@@ -49,6 +50,7 @@ function_documentation.Rmd:
   - tests/testthat/test-add_duration.R
   - tests/testthat/test-add_info_to_cleaning_log.R
   - tests/testthat/test-add_duration_from_audit.R
+  - tests/testthat/test-add_ridl.R
   - tests/testthat/test-check_duration.R
   - tests/testthat/test-check_duplicate.R
   - tests/testthat/test-check_fcs.R

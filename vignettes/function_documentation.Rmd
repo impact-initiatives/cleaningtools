@@ -213,7 +213,29 @@ add_duration_from_audit(some_dataset,
 
   
 
+## Archive files in RIDL
+
+    
+
   
+
+```{r example-add_ridl}
+
+### Example used for each template 
+## Time to archive your work once done!!
+# namethisfile = basename(rstudioapi::getSourceEditorContext()$path )  
+# if( params$publish == "yes"){
+#   add_ridl(ridl = params$ridl,
+#             datafolder = params$datafolder,
+#             form = params$form,
+#             namethisfile =  namethisfile ) }
+
+ 
+```
+
+  
+
+    
 
 
 # CHECKS Functions  

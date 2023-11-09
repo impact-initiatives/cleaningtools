@@ -533,7 +533,338 @@ test_that("add_duration_from_audit works", {
   expect_true(inherits(add_duration_from_audit, "function")) 
 })
 ```
+
+
+## Archive files in RIDL
+
+    
+```{r function-add_ridl}
+#' Archive all crunching files in RIDL
+#'
+#' RIDL is UNHCR instance of a CKAN server and is accessible for UNHCR staff at
+#' https://ridl.unhcr.org . It is designed to keep track and
+#' document dataset within an organisation.
+#'
+#' You conveniently archive there your generated cleaning report and save
+#' the work you did on a notebook: As you have been working on the data, you want
+#' to keep track of it and save your work in a place where it can be useful for
+#' other people and available for peer review and quality assessment.
+#'
+#'
+#' The function saves within the  the RIDL container you used to get the data
+#'  from the following resources:
+#'   * the source notebook
+#'   * the cleaning log
+#'   * the cleaned data
+#'
+#' The function behavior is the following -
+#'   1. Get metadata from the RIDL dataset
+#'   2. check if the resources to be uploaded is already shared based on the name
+#'   3. if already there update, if not create
+#'
+#'  The function relies on   # install.packages("pak")
+#'                           # pak::pkg_install("edouard-legoupil/riddle")
+#'
+#' @param ridl ridl container where the resources should be added
+#' @param datafolder folder where the data used by the notebook are stored
+#' @param cleaned_data names of the file with the cleaned data
+#' @param cleaning_log names of the file with the cleaning_log 
+#' @param namethisfile all files are archived based on the name of notebook you created.
+#'     The function automatically get the name of the notebook where it is run from,
+#'     using
+#'      basename(rstudioapi::getSourceEditorContext()$path )
+#'
+#'
+#' @importFrom riddle dataset_show resource_metadata resource_create resource_update
+#'
+#' @return nothing all analysis files are added as a resources
+#'
+#' @export
+
+# prefixer::import_from(fun = add_ridl)
+
+add_ridl <- function(ridl,
+                      datafolder,
+                      cleaned_data,
+                      cleaning_log,
+                      namethisfile){
   
+ ### name of the file...
+# retrieving path from getSourceEditorContext()
+# using $ operator
+## Enter below the name you used to save this file - without extension
+#    namethisfile <- rstudioapi::getSourceEditorContext()$path
+
+### Remove file name extension
+name <-  substr(namethisfile,1, nchar(namethisfile) -4)
+#
+#    ## Now just the name of the file
+#    name1 <-   basename(rstudioapi::getSourceEditorContext()$path )
+#    ## Remove file name extension
+#   name <-  substr(name1,1, nchar(name1) -4)
+#
+#     ### Time to archive your work once done!!
+
+time <- format(Sys.Date(),  '%d%b%y')
+
+# ### Uncomment and Run this only once you have knitted your file in order to quickly upload this to RIDL -
+# install.packages("pak")
+# pak::pkg_install("edouard-legoupil/riddle")
+
+# First let's get the dataset metadata
+p <- riddle::dataset_show(ridl)
+list_of_resources <- p[["resources"]][[1]]
+#names(list_of_resources)
+#   "description"
+# "file_type"        questionnaire microdata report script
+# "format"
+# "id"    "name"
+# "type"                "url"
+# "visibility"
+# "identifiability"
+# "version"
+# "script_dependencies"
+# "script_instructions"
+#  "script_software"
+# "source_code_repo"
+
+### 1.  Publish the cleaned_data #######
+namecleaned_data = paste0("cleaned_data" )
+### Check if the name is already in the resources
+if(namecleaned_data %in% list_of_resources$name) {
+  ## get the resource id
+  resourceid <- list_of_resources |>
+    dplyr::filter ( name == namecleaned_data) |>
+    dplyr::pull(id)
+  ## get the new resource version
+  curversion <- list_of_resources |>
+    dplyr::filter ( name == namecleaned_data) |>
+    dplyr::pull(version)
+  
+  ##  Build resource metadata
+  metadatacleaned_data <- riddle::resource_metadata(
+    type = "data",
+    url = paste0("cleaned_data.xlsx"),
+    name = namecleaned_data,
+    description = paste0("Cleaned version of the data in relation with standard cleaning log. Built using cleaningtools "),
+    format = ".xlsx",
+    version = (curversion + 1),
+    date_range_end = list_of_resources |>
+      dplyr::filter ( file_type == "microdata") |>
+      dplyr::select(date_range_end) |>
+      dplyr::distinct() |>
+      dplyr::pull(),
+    date_range_start =  list_of_resources |>
+      dplyr::filter ( file_type == "microdata") |>
+      dplyr::select(date_range_start) |>
+      dplyr::distinct() |>
+      dplyr::pull(),
+    identifiability =  "personally_identifiable", 
+    visibility =  "restricted",
+    process_status = "cleaned",
+    # file_type = "other",
+    file_type = "microdata",
+    script_dependencies= "cleaningtools",
+    script_instructions= "This excel file contains cleaned version of the data in line with the cleaning log ",
+    script_software= "R",
+    source_code_repo= "https://edouard-legoupil.github.io/cleaningtools",
+    ## Revise here based on the name from your crunching report
+    upload =  httr::upload_file(here::here(datafolder, cleanned_data))
+  )
+  riddle::resource_update(id = resourceid,
+                          res_metadata = metadatacleaned_data)
+} else {
+  
+  metadatacleaned_data <- riddle::resource_metadata(
+              type = "data",
+              url = paste0("cleaned_data.xlsx"),
+              name = namecleaned_data,
+              description = paste0("Cleaned version of the data in relation with standard cleaning log. Built using cleaningtools"),
+              format = ".xlsx",
+              version =   1 ,
+              date_range_end = list_of_resources |>
+                                  dplyr::filter ( file_type == "microdata") |>
+                                  dplyr::select(date_range_end) |>
+                                  dplyr::distinct() |>
+                                  dplyr::pull(),
+              date_range_start =  list_of_resources |>
+                                    dplyr::filter ( file_type == "microdata") |>
+                                    dplyr::select(date_range_start) |>
+                                    dplyr::distinct() |>
+                                    dplyr::pull(),
+              identifiability =  "personally_identifiable", 
+              visibility =  "restricted",
+              process_status = "cleaned",
+              #  file_type = "other",
+              file_type = "microdata",
+              script_dependencies= "cleaningtools",
+              script_instructions= "This excel file contains all specific metedata
+                       to relabel the original data, to group variable for automatic data
+                        exploration and to create calculated variables ",
+              script_software= "R",
+              source_code_repo= "https://edouard-legoupil.github.io/cleaningtools",
+              ## Revise here based on the name from your crunching report
+              upload =  httr::upload_file(here::here(datafolder,cleanned_data))
+            )
+  riddle::resource_create(package_id = p$id,
+                          res_metadata = metadatacleaned_data)
+}
+
+
+### 2.  Now publish the current notebook #######
+namenotebook = paste0("notebook_cleaning")
+### Check if the name is already in the resources
+if(namenotebook %in% list_of_resources$name) {
+  ## get the resource id
+  resourceid <- list_of_resources |>
+    dplyr::filter ( name == namenotebook) |>
+    dplyr::pull(id)
+  ## get the new resource version
+  curversion <- list_of_resources |>
+    dplyr::filter ( name == namenotebook) |>
+    dplyr::pull(version)
+  metadatanamenotebook <- riddle::resource_metadata(type = "script",
+                                                      url = paste0("notebook_cleaning.Rmd"),
+                                                      name = namenotebook,
+                                                      description = paste0("Notebook for cleaning report. Built using cleanningtools "),
+                                                      format = "rmd",
+                                                      version = (curversion + 1),
+                                                      visibility =  "public",
+                                                      #             file_type = "other",
+                                                      file_type = "script",
+                                                      script_dependencies= "cleaningtools",
+                                                      script_instructions= "Use the raw data data and the cleaning log to rebuild the cleaned data ",
+                                                      script_software= "R",
+                                                      source_code_repo= "https://edouard-legoupil.github.io/cleaningtools",
+                                                      # Revise here based on the name from your crunching report
+                                                      upload = httr::upload_file(here::here(namethisfile))
+  )
+  
+  riddle::resource_update(id = resourceid,
+                          res_metadata =  metadatanamenotebook)
+} else {
+  metadatanamenotebook <- riddle::resource_metadata(type = "script",
+                                                      url = paste0("notebook_cleaning.Rmd"),
+                                                      name = namenotebook,
+                                                      description = paste0("Notebook for cleaning report. Built using cleanningtools  "),
+                                                      format = "Rmd",
+                                                      visibility =  "public",
+                                                      #            file_type = "other",
+                                                      file_type = "script",
+                                                      script_dependencies= "cleaningtools",
+                                                      script_instructions= "Use the data and the analysis
+                                           plan documented in the report parameters and
+                                           available within this RIDL dataset ",
+                                                      script_software= "R",
+                                                      source_code_repo= "https://edouard-legoupil.github.io/cleaningtools",
+                                                      ## Revise here based on the name from your crunching report
+                                                      upload = httr::upload_file(here::here(namethisfile))
+  )
+  riddle::resource_create(package_id = p$id,
+                          res_metadata = metadatanamenotebook)
+}
+
+## 3.  and now the cleanning log
+namelog = paste0("Cleaning_log")
+### Check if the name is already in the resources
+if(namelog %in% list_of_resources$name) {
+  ## get the resource id
+  resourceid <- list_of_resources |>
+    dplyr::filter ( name == namelog) |>
+    dplyr::pull(id)
+  ## get the new resource version
+  curversion <- list_of_resources |>
+    dplyr::filter ( name == namelog) |>
+    dplyr::pull(version)
+  metadatalog <- riddle::resource_metadata(
+    type = "attachment",
+    url = paste0("cleaning_log.xlsx"),
+    name = namelog,
+    description = paste0("Systematic cleaning log. Built using cleaningtools "),
+    format = ".xlsx",
+    version = (curversion + 1),
+    identifiability =  "personally_identifiable", 
+    visibility =  "restricted",
+    file_type = "other",
+    script_dependencies= "cleaningtools",
+    script_instructions= "This excel file contains cleaned version of the data in line with the cleaning log ",
+    script_software= "R",
+    source_code_repo= "https://edouard-legoupil.github.io/cleaningtools",
+    ## Revise here based on the name from your crunching report
+    upload =  httr::upload_file(here::here(datafolder, cleaning_log))
+  )
+  
+  riddle::resource_update(id = resourceid,
+                          res_metadata = metadatalog)
+} else {
+  metadatalog <- riddle::resource_metadata(
+    type = "attachment",
+    url = paste0("cleaning_log.xlsx"),
+    name = namelog,
+    description = paste0("Systematic cleaning log. Built using cleaningtools "),
+    format = ".xlsx",
+    version =  1,
+    identifiability =  "personally_identifiable", 
+    visibility =  "restricted",
+    file_type = "other",
+    script_dependencies= "cleaningtools",
+    script_instructions= "This excel file contains cleaned version of the data in line with the cleaning log ",
+    script_software= "R",
+    source_code_repo= "https://edouard-legoupil.github.io/cleaningtools",
+    ## Revise here based on the name from your crunching report
+    upload =  httr::upload_file(here::here(datafolder, cleaning_log))
+  ) 
+  riddle::resource_create(package_id = p$id,
+                          res_metadata = metadatalog)
+}
+
+
+## Once all of it done, let's the user know about it...
+return( cat(paste0("Congrat! The Cleaned data, the cleaning log and the Notebook have been published on RIDL")))
+}
+
+
+
+
+```
+  
+```{r example-add_ridl}
+
+### Example used for each template 
+## Time to archive your work once done!!
+# namethisfile = basename(rstudioapi::getSourceEditorContext()$path )  
+# if( params$publish == "yes"){
+#   add_ridl(ridl = params$ridl,
+#             datafolder = params$datafolder,
+#             form = params$form,
+#             namethisfile =  namethisfile ) }
+
+ 
+```
+  
+```{r tests-add_ridl}
+
+
+# Unit test for add_ridl() using testthat
+# 
+# context("add_ridl()")
+# 
+# # Create mock objects to use in the test
+# ridl <- "testRidl"
+# datafolder <- "data"
+# form <- "form.xlsx"
+# namethisfile <- "testFile"
+# visibility <- "public"
+# stage <- "explo_initial"
+# 
+# # Create test for function
+# test_that("add_ridl() creates the right resources", {
+#   expect_true(add_ridl(ridl, datafolder, form, namethisfile, visibility, stage))
+# })
+
+# test_that("add_ridl works", {   expect_true(inherits(add_ridl, "function")) })
+```
+    
 
 # CHECKS Functions  
 

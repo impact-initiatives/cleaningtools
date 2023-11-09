@@ -42,7 +42,7 @@ params:
   review_the_others_recoding: FALSE
   review_the_sampling_frame: FALSE
   ridl: "test" ## RIDL id so that cleaning log, cleaned data, this report and notebook can be recorded
-  ridlpublish: FALSE
+  publish: FALSE ## Set to yes once ready to archive your work
 ---  
 
 
@@ -682,7 +682,14 @@ openxlsx2::write_xlsx(all_logs,
                       na.strings = "")
 
 ## Publish to RIDL if set so...
-
+## Publish to RIDL if set so...
+if( params$publish == "yes"){
+  namethisfile = basename(rstudioapi::getSourceEditorContext()$path )  
+  add_ridl(ridl = params$ridl,
+            datafolder = params$datafolder,
+            cleanned_data = params$cleann,
+            cleaning_log = params$loggl,
+            namethisfile =  namethisfile  ) }
 
 
 ```

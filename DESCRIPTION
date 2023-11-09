@@ -25,12 +25,15 @@ Imports:
     data.table,
     dplyr,
     glue,
+    here,
+    httr,
     kableExtra,
     knitr,
     magrittr,
     openxlsx,
     purrr,
     randomcoloR,
+    riddle,
     rlang,
     snakecase,
     stats,
@@ -44,6 +47,8 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0),
     tidyverse
+Remotes: 
+    edouard-legoupil/riddle
 VignetteBuilder: 
     knitr
 Config/fusen/version: 0.5.2
