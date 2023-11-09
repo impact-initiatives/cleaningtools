@@ -83,7 +83,7 @@
 <ol style="list-style-type: decimal">
 <li><p>Get your raw data and your form from your Kobo/ODK/ONA server.</p></li>
 <li><p>Define a <strong>list of logical checks</strong> based on the specific content of your form. This is basically an excel spreadsheet defining checks describing incompatible responses (<code>check_id</code>, <code>description</code>, <code>check_to_perform</code>, <code>columns_to_clean</code>) - such as “<em>primary_livelihood is rented but expenses less than 500000</em>” or “<em>access water and tank emptied</em>”.</p></li>
-<li><p>Pipe a list of <strong>systematic checks</strong> to apply on the data (<em>outliers, shortest path, personally identifiable information, duration…</em>), including the logical checks previously defined - each of the check will produce a specific log.</p></li>
+<li><p>Pipe a list of <strong>systematic checks</strong> functions to apply on the data (<em>outliers, shortest path, personally identifiable information, duration…</em>), including the logical checks previously defined - each of the check will produce a specific log.</p></li>
 <li><p>Assemble and export the <strong><code>cleaning log</code></strong> together in a dedicated excel spreadsheet (<code><a href="reference/create_xlsx_cleaning_log.html">create_xlsx_cleaning_log()</a></code>) so that the person responsible for the cleaning can manually make the decision on the cleaning action to perform among the following values:</p></li>
 </ol>
 <table class="table">
@@ -126,7 +126,7 @@
 <p>The package comes with a parameterised report template to ease and speed-up the full process.</p>
 <p>Once users have a good understanding of the process above, create an Rstudio projects, install the package, download your data and your form within a dedicated sub-folder for instance <code>data-raw</code>, create an excel file to add your <code>logical checks</code>, add if any the file defining your <code>sampling plan</code>.</p>
 <p>Then create a notebook using the <code>clean</code> notebook template included in the package and start documenting all the parameters.</p>
-<p>Once done you can run each of the code chunck one after the other. After the first chapter, you should have the <code>cleaning log</code> file created within your the same <code>data-raw</code> folder. Open it and manually set up the cleaning action for each of the check.</p>
+<p>Once done you can run each of the code chunk one after the other. After the first chapter, you should have a <code>cleaning log</code> file created within your the same <code>data-raw</code> folder. Open it and manually set up the cleaning actions for each of the checks.</p>
 <p>Run then the last few chunks to apply the log and review the results…</p>
 <p>Et Voila, you should have then the <code>cleaned_data</code> in your <code>data-raw</code> folder</p>
 </div>

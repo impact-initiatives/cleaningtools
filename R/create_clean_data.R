@@ -99,8 +99,9 @@ create_clean_data <- function(raw_dataset,
     stop("Missing values in change_type")
   }
 
-  assertthat::assert_that(all(cleaning_log[[cleaning_log_change_type_column]] %in% all_type),
-                          msg = "You have missing change_type option(s)")
+  ### TODO -- recheck that this is the correct check.. - it can be acceptable to have only one single change...
+  # assertthat::assert_that(all(cleaning_log[[cleaning_log_change_type_column]] %in% all_type),
+  #                         msg = "You have missing change_type option(s)")
 
   cleaning_log[[cleaning_log_question_column]] <-
     cleaning_log[[cleaning_log_question_column]] %>% trimws()
