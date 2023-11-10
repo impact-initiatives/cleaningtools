@@ -47,10 +47,10 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0),
     tidyverse
-Remotes: 
-    edouard-legoupil/riddle
 VignetteBuilder: 
     knitr
+Remotes: 
+    edouard-legoupil/riddle
 Config/fusen/version: 0.5.2
 Config/testthat/edition: 3
 Encoding: UTF-8

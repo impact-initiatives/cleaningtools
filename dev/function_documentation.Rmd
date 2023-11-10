@@ -534,338 +534,6 @@ test_that("add_duration_from_audit works", {
 })
 ```
 
-
-## Archive files in RIDL
-
-    
-```{r function-add_ridl}
-#' Archive all crunching files in RIDL
-#'
-#' RIDL is UNHCR instance of a CKAN server and is accessible for UNHCR staff at
-#' https://ridl.unhcr.org . It is designed to keep track and
-#' document dataset within an organisation.
-#'
-#' You conveniently archive there your generated cleaning report and save
-#' the work you did on a notebook: As you have been working on the data, you want
-#' to keep track of it and save your work in a place where it can be useful for
-#' other people and available for peer review and quality assessment.
-#'
-#'
-#' The function saves within the  the RIDL container you used to get the data
-#'  from the following resources:
-#'   * the source notebook
-#'   * the cleaning log
-#'   * the cleaned data
-#'
-#' The function behavior is the following -
-#'   1. Get metadata from the RIDL dataset
-#'   2. check if the resources to be uploaded is already shared based on the name
-#'   3. if already there update, if not create
-#'
-#'  The function relies on   # install.packages("pak")
-#'                           # pak::pkg_install("edouard-legoupil/riddle")
-#'
-#' @param ridl ridl container where the resources should be added
-#' @param datafolder folder where the data used by the notebook are stored
-#' @param cleaned_data names of the file with the cleaned data
-#' @param cleaning_log names of the file with the cleaning_log 
-#' @param namethisfile all files are archived based on the name of notebook you created.
-#'     The function automatically get the name of the notebook where it is run from,
-#'     using
-#'      basename(rstudioapi::getSourceEditorContext()$path )
-#'
-#'
-#' @importFrom riddle dataset_show resource_metadata resource_create resource_update
-#'
-#' @return nothing all analysis files are added as a resources
-#'
-#' @export
-
-# prefixer::import_from(fun = add_ridl)
-
-add_ridl <- function(ridl,
-                      datafolder,
-                      cleaned_data,
-                      cleaning_log,
-                      namethisfile){
-  
- ### name of the file...
-# retrieving path from getSourceEditorContext()
-# using $ operator
-## Enter below the name you used to save this file - without extension
-#    namethisfile <- rstudioapi::getSourceEditorContext()$path
-
-### Remove file name extension
-name <-  substr(namethisfile,1, nchar(namethisfile) -4)
-#
-#    ## Now just the name of the file
-#    name1 <-   basename(rstudioapi::getSourceEditorContext()$path )
-#    ## Remove file name extension
-#   name <-  substr(name1,1, nchar(name1) -4)
-#
-#     ### Time to archive your work once done!!
-
-time <- format(Sys.Date(),  '%d%b%y')
-
-# ### Uncomment and Run this only once you have knitted your file in order to quickly upload this to RIDL -
-# install.packages("pak")
-# pak::pkg_install("edouard-legoupil/riddle")
-
-# First let's get the dataset metadata
-p <- riddle::dataset_show(ridl)
-list_of_resources <- p[["resources"]][[1]]
-#names(list_of_resources)
-#   "description"
-# "file_type"        questionnaire microdata report script
-# "format"
-# "id"    "name"
-# "type"                "url"
-# "visibility"
-# "identifiability"
-# "version"
-# "script_dependencies"
-# "script_instructions"
-#  "script_software"
-# "source_code_repo"
-
-### 1.  Publish the cleaned_data #######
-namecleaned_data = paste0("cleaned_data" )
-### Check if the name is already in the resources
-if(namecleaned_data %in% list_of_resources$name) {
-  ## get the resource id
-  resourceid <- list_of_resources |>
-    dplyr::filter ( name == namecleaned_data) |>
-    dplyr::pull(id)
-  ## get the new resource version
-  curversion <- list_of_resources |>
-    dplyr::filter ( name == namecleaned_data) |>
-    dplyr::pull(version)
-  
-  ##  Build resource metadata
-  metadatacleaned_data <- riddle::resource_metadata(
-    type = "data",
-    url = paste0("cleaned_data.xlsx"),
-    name = namecleaned_data,
-    description = paste0("Cleaned version of the data in relation with standard cleaning log. Built using cleaningtools "),
-    format = ".xlsx",
-    version = (curversion + 1),
-    date_range_end = list_of_resources |>
-      dplyr::filter ( file_type == "microdata") |>
-      dplyr::select(date_range_end) |>
-      dplyr::distinct() |>
-      dplyr::pull(),
-    date_range_start =  list_of_resources |>
-      dplyr::filter ( file_type == "microdata") |>
-      dplyr::select(date_range_start) |>
-      dplyr::distinct() |>
-      dplyr::pull(),
-    identifiability =  "personally_identifiable", 
-    visibility =  "restricted",
-    process_status = "cleaned",
-    # file_type = "other",
-    file_type = "microdata",
-    script_dependencies= "cleaningtools",
-    script_instructions= "This excel file contains cleaned version of the data in line with the cleaning log ",
-    script_software= "R",
-    source_code_repo= "https://edouard-legoupil.github.io/cleaningtools",
-    ## Revise here based on the name from your crunching report
-    upload =  httr::upload_file(here::here(datafolder, cleanned_data))
-  )
-  riddle::resource_update(id = resourceid,
-                          res_metadata = metadatacleaned_data)
-} else {
-  
-  metadatacleaned_data <- riddle::resource_metadata(
-              type = "data",
-              url = paste0("cleaned_data.xlsx"),
-              name = namecleaned_data,
-              description = paste0("Cleaned version of the data in relation with standard cleaning log. Built using cleaningtools"),
-              format = ".xlsx",
-              version =   1 ,
-              date_range_end = list_of_resources |>
-                                  dplyr::filter ( file_type == "microdata") |>
-                                  dplyr::select(date_range_end) |>
-                                  dplyr::distinct() |>
-                                  dplyr::pull(),
-              date_range_start =  list_of_resources |>
-                                    dplyr::filter ( file_type == "microdata") |>
-                                    dplyr::select(date_range_start) |>
-                                    dplyr::distinct() |>
-                                    dplyr::pull(),
-              identifiability =  "personally_identifiable", 
-              visibility =  "restricted",
-              process_status = "cleaned",
-              #  file_type = "other",
-              file_type = "microdata",
-              script_dependencies= "cleaningtools",
-              script_instructions= "This excel file contains all specific metedata
-                       to relabel the original data, to group variable for automatic data
-                        exploration and to create calculated variables ",
-              script_software= "R",
-              source_code_repo= "https://edouard-legoupil.github.io/cleaningtools",
-              ## Revise here based on the name from your crunching report
-              upload =  httr::upload_file(here::here(datafolder,cleanned_data))
-            )
-  riddle::resource_create(package_id = p$id,
-                          res_metadata = metadatacleaned_data)
-}
-
-
-### 2.  Now publish the current notebook #######
-namenotebook = paste0("notebook_cleaning")
-### Check if the name is already in the resources
-if(namenotebook %in% list_of_resources$name) {
-  ## get the resource id
-  resourceid <- list_of_resources |>
-    dplyr::filter ( name == namenotebook) |>
-    dplyr::pull(id)
-  ## get the new resource version
-  curversion <- list_of_resources |>
-    dplyr::filter ( name == namenotebook) |>
-    dplyr::pull(version)
-  metadatanamenotebook <- riddle::resource_metadata(type = "script",
-                                                      url = paste0("notebook_cleaning.Rmd"),
-                                                      name = namenotebook,
-                                                      description = paste0("Notebook for cleaning report. Built using cleanningtools "),
-                                                      format = "rmd",
-                                                      version = (curversion + 1),
-                                                      visibility =  "public",
-                                                      #             file_type = "other",
-                                                      file_type = "script",
-                                                      script_dependencies= "cleaningtools",
-                                                      script_instructions= "Use the raw data data and the cleaning log to rebuild the cleaned data ",
-                                                      script_software= "R",
-                                                      source_code_repo= "https://edouard-legoupil.github.io/cleaningtools",
-                                                      # Revise here based on the name from your crunching report
-                                                      upload = httr::upload_file(here::here(namethisfile))
-  )
-  
-  riddle::resource_update(id = resourceid,
-                          res_metadata =  metadatanamenotebook)
-} else {
-  metadatanamenotebook <- riddle::resource_metadata(type = "script",
-                                                      url = paste0("notebook_cleaning.Rmd"),
-                                                      name = namenotebook,
-                                                      description = paste0("Notebook for cleaning report. Built using cleanningtools  "),
-                                                      format = "Rmd",
-                                                      visibility =  "public",
-                                                      #            file_type = "other",
-                                                      file_type = "script",
-                                                      script_dependencies= "cleaningtools",
-                                                      script_instructions= "Use the data and the analysis
-                                           plan documented in the report parameters and
-                                           available within this RIDL dataset ",
-                                                      script_software= "R",
-                                                      source_code_repo= "https://edouard-legoupil.github.io/cleaningtools",
-                                                      ## Revise here based on the name from your crunching report
-                                                      upload = httr::upload_file(here::here(namethisfile))
-  )
-  riddle::resource_create(package_id = p$id,
-                          res_metadata = metadatanamenotebook)
-}
-
-## 3.  and now the cleanning log
-namelog = paste0("Cleaning_log")
-### Check if the name is already in the resources
-if(namelog %in% list_of_resources$name) {
-  ## get the resource id
-  resourceid <- list_of_resources |>
-    dplyr::filter ( name == namelog) |>
-    dplyr::pull(id)
-  ## get the new resource version
-  curversion <- list_of_resources |>
-    dplyr::filter ( name == namelog) |>
-    dplyr::pull(version)
-  metadatalog <- riddle::resource_metadata(
-    type = "attachment",
-    url = paste0("cleaning_log.xlsx"),
-    name = namelog,
-    description = paste0("Systematic cleaning log. Built using cleaningtools "),
-    format = ".xlsx",
-    version = (curversion + 1),
-    identifiability =  "personally_identifiable", 
-    visibility =  "restricted",
-    file_type = "other",
-    script_dependencies= "cleaningtools",
-    script_instructions= "This excel file contains cleaned version of the data in line with the cleaning log ",
-    script_software= "R",
-    source_code_repo= "https://edouard-legoupil.github.io/cleaningtools",
-    ## Revise here based on the name from your crunching report
-    upload =  httr::upload_file(here::here(datafolder, cleaning_log))
-  )
-  
-  riddle::resource_update(id = resourceid,
-                          res_metadata = metadatalog)
-} else {
-  metadatalog <- riddle::resource_metadata(
-    type = "attachment",
-    url = paste0("cleaning_log.xlsx"),
-    name = namelog,
-    description = paste0("Systematic cleaning log. Built using cleaningtools "),
-    format = ".xlsx",
-    version =  1,
-    identifiability =  "personally_identifiable", 
-    visibility =  "restricted",
-    file_type = "other",
-    script_dependencies= "cleaningtools",
-    script_instructions= "This excel file contains cleaned version of the data in line with the cleaning log ",
-    script_software= "R",
-    source_code_repo= "https://edouard-legoupil.github.io/cleaningtools",
-    ## Revise here based on the name from your crunching report
-    upload =  httr::upload_file(here::here(datafolder, cleaning_log))
-  ) 
-  riddle::resource_create(package_id = p$id,
-                          res_metadata = metadatalog)
-}
-
-
-## Once all of it done, let's the user know about it...
-return( cat(paste0("Congrat! The Cleaned data, the cleaning log and the Notebook have been published on RIDL")))
-}
-
-
-
-
-```
-  
-```{r example-add_ridl}
-
-### Example used for each template 
-## Time to archive your work once done!!
-# namethisfile = basename(rstudioapi::getSourceEditorContext()$path )  
-# if( params$publish == "yes"){
-#   add_ridl(ridl = params$ridl,
-#             datafolder = params$datafolder,
-#             form = params$form,
-#             namethisfile =  namethisfile ) }
-
- 
-```
-  
-```{r tests-add_ridl}
-
-
-# Unit test for add_ridl() using testthat
-# 
-# context("add_ridl()")
-# 
-# # Create mock objects to use in the test
-# ridl <- "testRidl"
-# datafolder <- "data"
-# form <- "form.xlsx"
-# namethisfile <- "testFile"
-# visibility <- "public"
-# stage <- "explo_initial"
-# 
-# # Create test for function
-# test_that("add_ridl() creates the right resources", {
-#   expect_true(add_ridl(ridl, datafolder, form, namethisfile, visibility, stage))
-# })
-
-# test_that("add_ridl works", {   expect_true(inherits(add_ridl, "function")) })
-```
-    
-
 # CHECKS Functions  
 
 ## check_duration
@@ -2425,192 +2093,6 @@ test_that("create_duration_from_audit_sum_all works", {
 ```
 
 
-## create_clean_data
-    
-```{r function-create_clean_data}
-#' implement cleaning log on raw data set.
-#' @param raw_dataset Raw dataset
-#' @param raw_data_uuid_column uuid column in the raw dataset. Default is uuid.
-#' @param cleaning_log cleaning + deletion log (data.frame).
-#' @param cleaning_log_uuid_column uuid column in the cleaning log. Default is "uuid".
-#' @param cleaning_log_question_column column in cleaning log which specifies data set column to change
-#' @param cleaning_log_new_value_column cleaning log column specifying the new correct value
-#' @param cleaning_log_change_type_column column in cleaning log which specifies change type to be made
-#' @param change_response_value values in change type column which should be changed to a new value.
-#' @param NA_response_value values in change type column which should be blank (NA).
-#' @param no_change_value values in change type column which should NOT be changed to a new value.
-#' @param remove_survey_value values in change type column which should be deleted from the data.
-#'
-#' @return clean data set
-#' @export
-
-create_clean_data <- function(raw_dataset,
-                              raw_data_uuid_column = "uuid",
-                              cleaning_log,
-                              cleaning_log_uuid_column = "uuid",
-                              cleaning_log_question_column,
-                              cleaning_log_new_value_column,
-                              cleaning_log_change_type_column,
-                              change_response_value = "change_response",
-                              NA_response_value = "blank_response",
-                              no_change_value = "no_action",
-                              remove_survey_value = "remove_survey") {
-  raw_dataset <- raw_dataset %>% dplyr::mutate_all(as.character)
-  cleaning_log <- cleaning_log %>% dplyr::mutate_all(as.character)
-
-
-
-  assertthat::assert_that(cleaning_log_change_type_column %in% names(cleaning_log),
-                          msg = "cleaning_log_change_type_column column not found in cleaning log")
-
-  all_type <-
-    c(change_response_value,
-      NA_response_value,
-      no_change_value,
-      remove_survey_value)
-
-  cleaning_log <- cleaning_log |> dplyr::mutate(
-    change_type_created_f = dplyr::case_when(
-      !!rlang::sym(cleaning_log_change_type_column) %in% change_response_value ~ "change_response",
-      !!rlang::sym(cleaning_log_change_type_column) %in% NA_response_value ~ "blank_response",
-      !!rlang::sym(cleaning_log_change_type_column) %in% no_change_value ~ "no_action",
-      !!rlang::sym(cleaning_log_change_type_column) %in% remove_survey_value ~ "remove_survey"
-    )
-  )
-
-  assertthat::assert_that(any(!is.na(cleaning_log[[cleaning_log_change_type_column]])),
-                          msg = "You have NAs in change_type option(s)")
-
-
-  check_not_entry_value_in_change_type <-
-    unique(cleaning_log[[cleaning_log_change_type_column]])[!unique(cleaning_log[[cleaning_log_change_type_column]]) %in% all_type]
-  if (length(check_not_entry_value_in_change_type) > 0) {
-    print(check_not_entry_value_in_change_type)
-    stop("Missing values in change_type")
-  }
-
-  ### TODO -- recheck that this is the correct check.. - it can be acceptable to have only one single change...
-  # assertthat::assert_that(all(cleaning_log[[cleaning_log_change_type_column]] %in% all_type),
-  #                         msg = "You have missing change_type option(s)")
-
-  cleaning_log[[cleaning_log_question_column]] <-
-    cleaning_log[[cleaning_log_question_column]] %>% trimws()
-  cleaning_log[[cleaning_log_new_value_column]] <-
-    cleaning_log[[cleaning_log_new_value_column]] %>% trimws()
-  cl_change_type_options <-
-    c("change_response",
-      "remove_survey",
-      "blank_response",
-      "no_action")
-  cl_change_response <-
-    cleaning_log %>% dplyr::filter(change_type_created_f %in% c(cl_change_type_options[1], cl_change_type_options[3]))
-  cl_change_response <- cl_change_response %>%
-    dplyr::mutate(
-      !!cleaning_log_new_value_column := ifelse(
-        change_type_created_f == cl_change_type_options[3],
-        NA,
-        !!rlang::sym(cleaning_log_new_value_column)
-      )
-    )
-  cl_remove_survey <-
-    cleaning_log %>% dplyr::filter(change_type_created_f == cl_change_type_options[2])
-
-  if (all(cl_change_response[[cleaning_log_question_column]] %in% colnames(raw_dataset)) == F) {
-    problem_question_in_cl <-
-      cl_change_response[[cleaning_log_question_column]][cl_change_response[[cleaning_log_question_column]] %in% colnames(raw_dataset) == FALSE]
-    print(paste0(problem_question_in_cl, ": Not found in the dataset"))
-  }
-
-  if (all(cleaning_log[[cleaning_log_uuid_column]] %in% raw_dataset[[raw_data_uuid_column]] == F)) {
-    problem_uuid_in_cl <-
-      cleaning_log[[cleaning_log_uuid_column]][cleaning_log[[cleaning_log_uuid_column]] %in% c(raw_dataset[[raw_data_uuid_column]], "all_data") == FALSE]
-    print(problem_uuid_in_cl)
-    print("Not found in the datase")
-  }
-  assertthat::assert_that(all(cl_change_response[[cleaning_log_question_column]] %in% colnames(raw_dataset)),
-                          msg = "Make sure all names in cleaning_log_question_column values in the cleaning log are in dataset")
-  assertthat::assert_that(all(cleaning_log[[cleaning_log_uuid_column]] %in% raw_dataset[[raw_data_uuid_column]]),
-                          msg = "Make sure all uuids in cleaing log are in data set")
-
-  if (nrow(cl_change_response) > 0) {
-    for (i in 1:nrow(cl_change_response)) {
-      print(cl_change_response[[cleaning_log_question_column]][i])
-      cl_uuid_temp <-
-        cl_change_response[[cleaning_log_uuid_column]][i]
-      cl_question_temp <-
-        cl_change_response[[cleaning_log_question_column]][i]
-      cl_new_val_temp <-
-        cl_change_response[[cleaning_log_new_value_column]][i]
-
-      if (cl_uuid_temp != "all_data") {
-        raw_dataset[raw_dataset[[raw_data_uuid_column]] == cl_uuid_temp, cl_question_temp] <-
-          cl_new_val_temp
-      }
-
-      if (cl_uuid_temp == "all_data") {
-        raw_dataset[, cl_question_temp] <- cl_new_val_temp
-      }
-    }
-  } else {
-    print("no change_response in log")
-  }
-  if (nrow(cl_remove_survey) > 0) {
-    raw_dataset <-
-      raw_dataset %>% dplyr::filter(!!rlang::sym(raw_data_uuid_column) %in% cl_remove_survey[[cleaning_log_uuid_column]] == FALSE)
-  } else {
-    print("no surveys to remove in log")
-  }
-
-  return(raw_dataset %>% utils::type.convert(as.is = T))
-}
-```
-  
-```{r example-create_clean_data}
-
-cleaning_log_test <- data.frame(
-  uuid = paste0("uuid", 1:4),
-  question = c("age", "gender", "pop_group", "strata"),
-  change_type = c("blank_response", "no_change", "Delete", "change_res"),
-  new_value = c(NA_character_, NA_character_, NA_character_, "st-a")
-)
-
-test_data <- data.frame(
-  uuid = paste0("uuid", 1:4),
-  age = c(180, 23, 45, 67),
-  gender = c("male", "female", "male", "female"),
-  pop_group = c("idp", "refugee", "host", "idp"),
-  strata = c("a", "b", "c", "d")
-)
- 
-review_cleaning_log(
-  raw_dataset = test_data,
-  raw_data_uuid_column = "uuid",
-  cleaning_log = cleaning_log_test,
-  cleaning_log_change_type_column = "change_type",
-  change_response_value = "change_res",
-  cleaning_log_question_column = "question",
-  cleaning_log_uuid_column = "uuid",
-  cleaning_log_new_value_column = "new_value")
- 
-create_clean_data(  raw_dataset = test_data, raw_data_uuid_column = "uuid", 
-                    cleaning_log = cleaning_log_test,
-                    cleaning_log_change_type_column = "change_type",
-                    change_response_value = "change_res",
-                    NA_response_value = "blank_response",
-                    no_change_value = "no_change",
-                    remove_survey_value = "Delete",
-                    cleaning_log_question_column = "question",
-                    cleaning_log_uuid_column = "uuid",
-                    cleaning_log_new_value_column = "new_value") |>
-  knitr::kable()
-```
-  
-```{r tests-create_clean_data}
-test_that("create_clean_data works", {
-  expect_true(inherits(create_clean_data, "function")) 
-})
-```
-
 ## create_combined_log
     
 ```{r function-create_combined_log}
@@ -3001,213 +2483,6 @@ test_that("create_formated_wb works", {
   expect_true(inherits(create_formated_wb, "function")) 
 })
 ```
-  
-
-## create_xlsx_cleaning_log
-    
-```{r function-create_xlsx_cleaning_log}
-#' Creates formatted excel for cleaning log
-#'
-#' @param write_list List of dataframe
-#' @param cleaning_log_name Name for cleaning log from write_list
-#' @param change_type_col Change type column name in the cleaning log
-#' @param header_front_color Hexcode for header front color (default is white)
-#' @param header_front_size Header front size (default is 12)
-#' @param header_fill_color Hexcode for header fill color (default is red)
-#' @param header_front Front name for header (default is Arial Narrow)
-#' @param body_front Front name for body (default is Arial Narrow)
-#' @param body_front_size Front size for body (default is 11)
-#' @param column_for_color Column name in the dataframe which should be used for colorizing the cell. The default is null.
-#' @param use_dropdown Use drop down lists for data validation in the cleaning log output (default is FALSE)
-#' @param sm_dropdown_type Dropdown list options for select multiple questions: numerical (1/0) or logical (TRUE/FALSE) - default is logical
-#' @param kobo_survey Kobo survey dataframe
-#' @param kobo_choices Kobo choices dataframe
-#' @param output_path Output path. Default is NULL which will return a workbook instead of an excel file.
-#'
-#' @return save a .xlsx file or return a workbook object
-#' @export
-#'
-
-create_xlsx_cleaning_log <- function(write_list,
-                                     cleaning_log_name = "cleaning_log",
-                                     change_type_col = "change_type",
-                                     column_for_color = "check_binding",
-                                     header_front_size = 12,
-                                     header_front_color = "#FFFFFF",
-                                     header_fill_color = "#ee5859",
-                                     header_front = "Arial Narrow",
-                                     body_front = "Arial Narrow",
-                                     body_front_size = 11,
-                                     use_dropdown = F,
-                                     sm_dropdown_type = NULL,
-                                     kobo_survey = NULL,
-                                     kobo_choices = NULL,
-                                     output_path = NULL) {
-  if (use_dropdown & (is.null(kobo_survey) | is.null(kobo_choices))) {
-    stop(glue::glue("Kobo survey and choices sheets should be provided to use dropdown lists"))
-  }
-  if (!is.null(kobo_survey) && !verify_valid_survey(kobo_survey)) {
-    stop(glue::glue("The Kobo survey dataframe is not valid"))
-  }
-  if (!is.null(kobo_choices) && !verify_valid_choices(kobo_choices)) {
-    stop(glue::glue("The Kobo choices dataframe is not valid"))
-  }
-  if (!is.null(sm_dropdown_type) && !stringr::str_to_lower(sm_dropdown_type) %in% c("logical", "numerical")) {
-    stop(glue::glue("Invalid value for sm_dropdown_type - only 'logical' and 'numerical' are accepted"))
-  }
-  if (!cleaning_log_name %in% names(write_list)) {
-    stop(glue::glue(cleaning_log_name, " not found in the given list."))
-  }
-  if (!change_type_col %in% names(write_list[[cleaning_log_name]])) {
-    stop(glue::glue(change_type_col, " not found in ", cleaning_log_name, "."))
-  }
-  if ("validation_rules" %in% names(write_list)) {
-    stop(glue::glue("The list currently has an element named `validation_rules`. Please consider renaming it."))
-  }
-
-  tryCatch(
-    if (!is.null(kobo_survey) & !is.null(kobo_choices) & use_dropdown == TRUE) {
-      data.val <- create_validation_list(kobo_choices, kobo_survey |> dplyr::filter(!stringr::str_detect(pattern = "(begin|end)(\\s+|_)group", type)))
-    },
-    error = function(e) {
-      warning("Validation list was not created")
-    }
-  )
-
-  if (!is.null(kobo_survey) & !is.null(kobo_choices) & use_dropdown == TRUE & exists("data.val", inherits = FALSE)) {
-    write_list[["validation_rules"]] <- data.val
-  } else {
-    write_list[["validation_rules"]] <- data.frame(
-      change_type_validation = c("change_response", "blank_response", "remove_survey", "no_action")
-    )
-  }
-
-
-
-  write_list[["readme"]] <- data.frame(
-    change_type_validation = c("change_response", "blank_response", "remove_survey", "no_action"),
-    description = c(
-      "Change the response to new.value",
-      "Remove and NA the response",
-      "Delete the survey",
-      "No action to take."
-    )
-  )
-
-  workbook <- write_list |> create_formated_wb(
-    column_for_color = column_for_color,
-    header_front_size = header_front_size,
-    header_front_color = header_front_color,
-    header_fill_color = header_fill_color,
-    header_front = header_front,
-    body_front = body_front,
-    body_front_size = body_front_size
-  )
-
-
-  hide_sheet <- which(names(workbook) == "validation_rules")
-
-  openxlsx::sheetVisibility(workbook)[hide_sheet] <- F
-
-
-  row_numbers <- 2:(nrow(write_list[[cleaning_log_name]]) + 1)
-  col_number <- which(names(write_list[[cleaning_log_name]]) == change_type_col)
-
-
-  if (!is.null(kobo_survey) & !is.null(kobo_choices) & use_dropdown == TRUE & exists("data.val", inherits = FALSE)) {
-    cl <- write_list[[cleaning_log_name]]
-
-    for (r in 1:nrow(cl)) {
-      if (cl[r, "question"] %in% colnames(data.val) & as.character(cl[r, "uuid"]) != "all") {
-        openxlsx::dataValidation(workbook,
-          sheet = cleaning_log_name, cols = which(colnames(cl) == "new_value"),
-          rows = r + 1, type = "list",
-          value = create_col_range(as.character(cl[r, "question"]), data.val)
-        ) %>%
-          suppressWarnings()
-      } else if ((stringr::str_detect(string = as.character(cl[r, "question"]), pattern = "\\.") |
-        (stringr::str_detect(string = as.character(cl[r, "question"]), pattern = "\\/") &
-          (stringr::str_detect(string = as.character(cl[r, "question"]), pattern = "/") == 1))) &
-        as.character(cl[r, "uuid"]) != "all") {
-        if (is.null(sm_dropdown_type) || stringr::str_to_lower(sm_dropdown_type) == "logical") {
-          openxlsx::dataValidation(workbook,
-            sheet = cleaning_log_name, cols = which(colnames(cl) == "new_value"),
-            rows = r + 1, type = "list",
-            value = create_col_range("binaries_sm_options_lgl", data.val)
-          )
-        } else {
-          openxlsx::dataValidation(workbook,
-            sheet = cleaning_log_name, cols = which(colnames(cl) == "new_value"),
-            rows = r + 1, type = "list",
-            value = create_col_range("binaries_sm_options_num", data.val)
-          )
-        }
-      }
-    }
-
-    openxlsx::dataValidation(workbook,
-      sheet = cleaning_log_name, cols = col_number,
-      rows = row_numbers, type = "list",
-      value = create_col_range("change_type_validation", data.val)
-    ) %>%
-      suppressWarnings()
-  } else {
-    openxlsx::dataValidation(workbook,
-      sheet = cleaning_log_name, cols = col_number,
-      rows = row_numbers, type = "list",
-      value = "'validation_rules'!$A$2:$A$5"
-    ) %>%
-      suppressWarnings()
-  }
-
-  if (is.null(output_path)) {
-    return(workbook)
-  }
-
-  if (!is.null(output_path)) {
-    openxlsx::saveWorkbook(workbook, output_path, overwrite = TRUE)
-  }
-}
-
-```
-  
-```{r example-create_xlsx_cleaning_log}
- 
-checks_list <- cleaningtools::cleaningtools_raw_data |>
-  check_pii(uuid_column = "X_uuid") |>
-  check_duplicate(uuid_column = "X_uuid") |>
-  check_value(uuid_column = "X_uuid")
-
-create_combined_log(list_of_log = checks_list) |>
-  create_xlsx_cleaning_log()
-
-logical_check_example <- cleaningtools::cleaningtools_raw_data |>
-  check_logical(
-    check_to_perform = 'treat_cook_water == "always_treat"',
-    uuid_column = "X_uuid",
-    description = "description",
-    check_id = "check_4",
-    columns_to_clean = "treat_cook_water"  )
-
-create_combined_log(logical_check_example) |>
-  create_xlsx_cleaning_log(
-    output_path = paste0(tempdir(check = TRUE), "/cleaning_log.xlsx"),
-    cleaning_log_name = "cleaning_log",
-    change_type_col = "change_type",
-    kobo_survey = cleaningtools::cleaningtools_survey,
-    kobo_choices = cleaningtools::cleaningtools_choices,
-    use_dropdown = TRUE,
-    sm_dropdown_type = "logical"
-  )
- 
-```
-
-  
-```{r tests-create_xlsx_cleaning_log}
-test_that("create_xlsx_cleaning_log works", {
-  expect_true(inherits(create_xlsx_cleaning_log, "function")) 
-})
-```
 
 ## create_cleaning_log
     
@@ -3445,6 +2720,402 @@ test_that("create_cleaning_log works", {
   
 
   
+
+
+## create_xlsx_cleaning_log
+    
+```{r function-create_xlsx_cleaning_log}
+#' Creates formatted excel for cleaning log
+#'
+#' @param write_list List of dataframe
+#' @param cleaning_log_name Name for cleaning log from write_list
+#' @param change_type_col Change type column name in the cleaning log
+#' @param header_front_color Hexcode for header front color (default is white)
+#' @param header_front_size Header front size (default is 12)
+#' @param header_fill_color Hexcode for header fill color (default is red)
+#' @param header_front Front name for header (default is Arial Narrow)
+#' @param body_front Front name for body (default is Arial Narrow)
+#' @param body_front_size Front size for body (default is 11)
+#' @param column_for_color Column name in the dataframe which should be used for colorizing the cell. The default is null.
+#' @param use_dropdown Use drop down lists for data validation in the cleaning log output (default is FALSE)
+#' @param sm_dropdown_type Dropdown list options for select multiple questions: numerical (1/0) or logical (TRUE/FALSE) - default is logical
+#' @param kobo_survey Kobo survey dataframe
+#' @param kobo_choices Kobo choices dataframe
+#' @param output_path Output path. Default is NULL which will return a workbook instead of an excel file.
+#'
+#' @return save a .xlsx file or return a workbook object
+#' @export
+#'
+
+create_xlsx_cleaning_log <- function(write_list,
+                                     cleaning_log_name = "cleaning_log",
+                                     change_type_col = "change_type",
+                                     column_for_color = "check_binding",
+                                     header_front_size = 12,
+                                     header_front_color = "#FFFFFF",
+                                     header_fill_color = "#ee5859",
+                                     header_front = "Arial Narrow",
+                                     body_front = "Arial Narrow",
+                                     body_front_size = 11,
+                                     use_dropdown = F,
+                                     sm_dropdown_type = NULL,
+                                     kobo_survey = NULL,
+                                     kobo_choices = NULL,
+                                     output_path = NULL) {
+  if (use_dropdown & (is.null(kobo_survey) | is.null(kobo_choices))) {
+    stop(glue::glue("Kobo survey and choices sheets should be provided to use dropdown lists"))
+  }
+  if (!is.null(kobo_survey) && !verify_valid_survey(kobo_survey)) {
+    stop(glue::glue("The Kobo survey dataframe is not valid"))
+  }
+  if (!is.null(kobo_choices) && !verify_valid_choices(kobo_choices)) {
+    stop(glue::glue("The Kobo choices dataframe is not valid"))
+  }
+  if (!is.null(sm_dropdown_type) && !stringr::str_to_lower(sm_dropdown_type) %in% c("logical", "numerical")) {
+    stop(glue::glue("Invalid value for sm_dropdown_type - only 'logical' and 'numerical' are accepted"))
+  }
+  if (!cleaning_log_name %in% names(write_list)) {
+    stop(glue::glue(cleaning_log_name, " not found in the given list."))
+  }
+  if (!change_type_col %in% names(write_list[[cleaning_log_name]])) {
+    stop(glue::glue(change_type_col, " not found in ", cleaning_log_name, "."))
+  }
+  if ("validation_rules" %in% names(write_list)) {
+    stop(glue::glue("The list currently has an element named `validation_rules`. Please consider renaming it."))
+  }
+
+  tryCatch(
+    if (!is.null(kobo_survey) & !is.null(kobo_choices) & use_dropdown == TRUE) {
+      data.val <- create_validation_list(kobo_choices, kobo_survey |> dplyr::filter(!stringr::str_detect(pattern = "(begin|end)(\\s+|_)group", type)))
+    },
+    error = function(e) {
+      warning("Validation list was not created")
+    }
+  )
+
+  if (!is.null(kobo_survey) & !is.null(kobo_choices) & use_dropdown == TRUE & exists("data.val", inherits = FALSE)) {
+    write_list[["validation_rules"]] <- data.val
+  } else {
+    write_list[["validation_rules"]] <- data.frame(
+      change_type_validation = c("change_response", "blank_response", "remove_survey", "no_action")
+    )
+  }
+
+
+
+  write_list[["readme"]] <- data.frame(
+    change_type_validation = c("change_response", "blank_response", "remove_survey", "no_action"),
+    description = c(
+      "Change the response to new.value",
+      "Remove and NA the response",
+      "Delete the survey",
+      "No action to take."
+    )
+  )
+
+  workbook <- write_list |> create_formated_wb(
+    column_for_color = column_for_color,
+    header_front_size = header_front_size,
+    header_front_color = header_front_color,
+    header_fill_color = header_fill_color,
+    header_front = header_front,
+    body_front = body_front,
+    body_front_size = body_front_size
+  )
+
+
+  hide_sheet <- which(names(workbook) == "validation_rules")
+
+  openxlsx::sheetVisibility(workbook)[hide_sheet] <- F
+
+
+  row_numbers <- 2:(nrow(write_list[[cleaning_log_name]]) + 1)
+  col_number <- which(names(write_list[[cleaning_log_name]]) == change_type_col)
+
+
+  if (!is.null(kobo_survey) & !is.null(kobo_choices) & use_dropdown == TRUE & exists("data.val", inherits = FALSE)) {
+    cl <- write_list[[cleaning_log_name]]
+
+    for (r in 1:nrow(cl)) {
+      if (cl[r, "question"] %in% colnames(data.val) & as.character(cl[r, "uuid"]) != "all") {
+        openxlsx::dataValidation(workbook,
+          sheet = cleaning_log_name, cols = which(colnames(cl) == "new_value"),
+          rows = r + 1, type = "list",
+          value = create_col_range(as.character(cl[r, "question"]), data.val)
+        ) %>%
+          suppressWarnings()
+      } else if ((stringr::str_detect(string = as.character(cl[r, "question"]), pattern = "\\.") |
+        (stringr::str_detect(string = as.character(cl[r, "question"]), pattern = "\\/") &
+          (stringr::str_detect(string = as.character(cl[r, "question"]), pattern = "/") == 1))) &
+        as.character(cl[r, "uuid"]) != "all") {
+        if (is.null(sm_dropdown_type) || stringr::str_to_lower(sm_dropdown_type) == "logical") {
+          openxlsx::dataValidation(workbook,
+            sheet = cleaning_log_name, cols = which(colnames(cl) == "new_value"),
+            rows = r + 1, type = "list",
+            value = create_col_range("binaries_sm_options_lgl", data.val)
+          )
+        } else {
+          openxlsx::dataValidation(workbook,
+            sheet = cleaning_log_name, cols = which(colnames(cl) == "new_value"),
+            rows = r + 1, type = "list",
+            value = create_col_range("binaries_sm_options_num", data.val)
+          )
+        }
+      }
+    }
+
+    openxlsx::dataValidation(workbook,
+      sheet = cleaning_log_name, cols = col_number,
+      rows = row_numbers, type = "list",
+      value = create_col_range("change_type_validation", data.val)
+    ) %>%
+      suppressWarnings()
+  } else {
+    openxlsx::dataValidation(workbook,
+      sheet = cleaning_log_name, cols = col_number,
+      rows = row_numbers, type = "list",
+      value = "'validation_rules'!$A$2:$A$5"
+    ) %>%
+      suppressWarnings()
+  }
+
+  if (is.null(output_path)) {
+    return(workbook)
+  }
+
+  if (!is.null(output_path)) {
+    openxlsx::saveWorkbook(workbook, output_path, overwrite = TRUE)
+  }
+}
+
+```
+  
+```{r example-create_xlsx_cleaning_log}
+ 
+checks_list <- cleaningtools::cleaningtools_raw_data |>
+  check_pii(uuid_column = "X_uuid") |>
+  check_duplicate(uuid_column = "X_uuid") |>
+  check_value(uuid_column = "X_uuid")
+
+create_combined_log(list_of_log = checks_list) |>
+  create_xlsx_cleaning_log()
+
+logical_check_example <- cleaningtools::cleaningtools_raw_data |>
+  check_logical(
+    check_to_perform = 'treat_cook_water == "always_treat"',
+    uuid_column = "X_uuid",
+    description = "description",
+    check_id = "check_4",
+    columns_to_clean = "treat_cook_water"  )
+
+create_combined_log(logical_check_example) |>
+  create_xlsx_cleaning_log(
+    output_path = paste0(tempdir(check = TRUE), "/cleaning_log.xlsx"),
+    cleaning_log_name = "cleaning_log",
+    change_type_col = "change_type",
+    kobo_survey = cleaningtools::cleaningtools_survey,
+    kobo_choices = cleaningtools::cleaningtools_choices,
+    use_dropdown = TRUE,
+    sm_dropdown_type = "logical"
+  )
+ 
+```
+
+  
+```{r tests-create_xlsx_cleaning_log}
+test_that("create_xlsx_cleaning_log works", {
+  expect_true(inherits(create_xlsx_cleaning_log, "function")) 
+})
+```
+
+## create_clean_data
+    
+```{r function-create_clean_data}
+#' implement cleaning log on raw data set.
+#' @param raw_dataset Raw dataset
+#' @param raw_data_uuid_column uuid column in the raw dataset. Default is uuid.
+#' @param cleaning_log cleaning + deletion log (data.frame).
+#' @param cleaning_log_uuid_column uuid column in the cleaning log. Default is "uuid".
+#' @param cleaning_log_question_column column in cleaning log which specifies data set column to change
+#' @param cleaning_log_new_value_column cleaning log column specifying the new correct value
+#' @param cleaning_log_change_type_column column in cleaning log which specifies change type to be made
+#' @param change_response_value values in change type column which should be changed to a new value.
+#' @param NA_response_value values in change type column which should be blank (NA).
+#' @param no_change_value values in change type column which should NOT be changed to a new value.
+#' @param remove_survey_value values in change type column which should be deleted from the data.
+#'
+#' @return clean data set
+#' @export
+
+create_clean_data <- function(raw_dataset,
+                              raw_data_uuid_column = "uuid",
+                              cleaning_log,
+                              cleaning_log_uuid_column = "uuid",
+                              cleaning_log_question_column,
+                              cleaning_log_new_value_column,
+                              cleaning_log_change_type_column,
+                              change_response_value = "change_response",
+                              NA_response_value = "blank_response",
+                              no_change_value = "no_action",
+                              remove_survey_value = "remove_survey") {
+  raw_dataset <- raw_dataset %>% dplyr::mutate_all(as.character)
+  cleaning_log <- cleaning_log %>% dplyr::mutate_all(as.character)
+
+
+
+  assertthat::assert_that(cleaning_log_change_type_column %in% names(cleaning_log),
+                          msg = "cleaning_log_change_type_column column not found in cleaning log")
+
+  all_type <-
+    c(change_response_value,
+      NA_response_value,
+      no_change_value,
+      remove_survey_value)
+
+  cleaning_log <- cleaning_log |> dplyr::mutate(
+    change_type_created_f = dplyr::case_when(
+      !!rlang::sym(cleaning_log_change_type_column) %in% change_response_value ~ "change_response",
+      !!rlang::sym(cleaning_log_change_type_column) %in% NA_response_value ~ "blank_response",
+      !!rlang::sym(cleaning_log_change_type_column) %in% no_change_value ~ "no_action",
+      !!rlang::sym(cleaning_log_change_type_column) %in% remove_survey_value ~ "remove_survey"
+    )
+  )
+
+  assertthat::assert_that(any(!is.na(cleaning_log[[cleaning_log_change_type_column]])),
+                          msg = "You have NAs in change_type option(s)")
+
+
+  check_not_entry_value_in_change_type <-
+    unique(cleaning_log[[cleaning_log_change_type_column]])[!unique(cleaning_log[[cleaning_log_change_type_column]]) %in% all_type]
+  if (length(check_not_entry_value_in_change_type) > 0) {
+    print(check_not_entry_value_in_change_type)
+    stop("Missing values in change_type")
+  }
+
+  ### TODO -- recheck that this is the correct check.. - it can be acceptable to have only one single change...
+  # assertthat::assert_that(all(cleaning_log[[cleaning_log_change_type_column]] %in% all_type),
+  #                         msg = "You have missing change_type option(s)")
+
+  cleaning_log[[cleaning_log_question_column]] <-
+    cleaning_log[[cleaning_log_question_column]] %>% trimws()
+  cleaning_log[[cleaning_log_new_value_column]] <-
+    cleaning_log[[cleaning_log_new_value_column]] %>% trimws()
+  cl_change_type_options <-
+    c("change_response",
+      "remove_survey",
+      "blank_response",
+      "no_action")
+  cl_change_response <-
+    cleaning_log %>% dplyr::filter(change_type_created_f %in% c(cl_change_type_options[1], cl_change_type_options[3]))
+  cl_change_response <- cl_change_response %>%
+    dplyr::mutate(
+      !!cleaning_log_new_value_column := ifelse(
+        change_type_created_f == cl_change_type_options[3],
+        NA,
+        !!rlang::sym(cleaning_log_new_value_column)
+      )
+    )
+  cl_remove_survey <-
+    cleaning_log %>% dplyr::filter(change_type_created_f == cl_change_type_options[2])
+
+  if (all(cl_change_response[[cleaning_log_question_column]] %in% colnames(raw_dataset)) == F) {
+    problem_question_in_cl <-
+      cl_change_response[[cleaning_log_question_column]][cl_change_response[[cleaning_log_question_column]] %in% colnames(raw_dataset) == FALSE]
+    print(paste0(problem_question_in_cl, ": Not found in the dataset"))
+  }
+
+  if (all(cleaning_log[[cleaning_log_uuid_column]] %in% raw_dataset[[raw_data_uuid_column]] == F)) {
+    problem_uuid_in_cl <-
+      cleaning_log[[cleaning_log_uuid_column]][cleaning_log[[cleaning_log_uuid_column]] %in% c(raw_dataset[[raw_data_uuid_column]], "all_data") == FALSE]
+    print(problem_uuid_in_cl)
+    print("Not found in the datase")
+  }
+  assertthat::assert_that(all(cl_change_response[[cleaning_log_question_column]] %in% colnames(raw_dataset)),
+                          msg = "Make sure all names in cleaning_log_question_column values in the cleaning log are in dataset")
+  assertthat::assert_that(all(cleaning_log[[cleaning_log_uuid_column]] %in% raw_dataset[[raw_data_uuid_column]]),
+                          msg = "Make sure all uuids in cleaing log are in data set")
+
+  if (nrow(cl_change_response) > 0) {
+    for (i in 1:nrow(cl_change_response)) {
+      print(cl_change_response[[cleaning_log_question_column]][i])
+      cl_uuid_temp <-
+        cl_change_response[[cleaning_log_uuid_column]][i]
+      cl_question_temp <-
+        cl_change_response[[cleaning_log_question_column]][i]
+      cl_new_val_temp <-
+        cl_change_response[[cleaning_log_new_value_column]][i]
+
+      if (cl_uuid_temp != "all_data") {
+        raw_dataset[raw_dataset[[raw_data_uuid_column]] == cl_uuid_temp, cl_question_temp] <-
+          cl_new_val_temp
+      }
+
+      if (cl_uuid_temp == "all_data") {
+        raw_dataset[, cl_question_temp] <- cl_new_val_temp
+      }
+    }
+  } else {
+    print("no change_response in log")
+  }
+  if (nrow(cl_remove_survey) > 0) {
+    raw_dataset <-
+      raw_dataset %>% dplyr::filter(!!rlang::sym(raw_data_uuid_column) %in% cl_remove_survey[[cleaning_log_uuid_column]] == FALSE)
+  } else {
+    print("no surveys to remove in log")
+  }
+
+  return(raw_dataset %>% utils::type.convert(as.is = T))
+}
+```
+  
+```{r example-create_clean_data}
+
+cleaning_log_test <- data.frame(
+  uuid = paste0("uuid", 1:4),
+  question = c("age", "gender", "pop_group", "strata"),
+  change_type = c("blank_response", "no_change", "Delete", "change_res"),
+  new_value = c(NA_character_, NA_character_, NA_character_, "st-a")
+)
+
+test_data <- data.frame(
+  uuid = paste0("uuid", 1:4),
+  age = c(180, 23, 45, 67),
+  gender = c("male", "female", "male", "female"),
+  pop_group = c("idp", "refugee", "host", "idp"),
+  strata = c("a", "b", "c", "d")
+)
+ 
+review_cleaning_log(
+  raw_dataset = test_data,
+  raw_data_uuid_column = "uuid",
+  cleaning_log = cleaning_log_test,
+  cleaning_log_change_type_column = "change_type",
+  change_response_value = "change_res",
+  cleaning_log_question_column = "question",
+  cleaning_log_uuid_column = "uuid",
+  cleaning_log_new_value_column = "new_value")
+ 
+create_clean_data(  raw_dataset = test_data, raw_data_uuid_column = "uuid", 
+                    cleaning_log = cleaning_log_test,
+                    cleaning_log_change_type_column = "change_type",
+                    change_response_value = "change_res",
+                    NA_response_value = "blank_response",
+                    no_change_value = "no_change",
+                    remove_survey_value = "Delete",
+                    cleaning_log_question_column = "question",
+                    cleaning_log_uuid_column = "uuid",
+                    cleaning_log_new_value_column = "new_value") |>
+  knitr::kable()
+```
+  
+```{r tests-create_clean_data}
+test_that("create_clean_data works", {
+  expect_true(inherits(create_clean_data, "function")) 
+})
+```
+
+
+
 # REVIEW Functions 
 
 ## review_cleaning_log
@@ -4132,7 +3803,7 @@ test_that("review_sample_frame_with_dataset works", {
 })
 ```
   
-# Utilities functions
+# UTILITIES functions
 
 
 ## auto_detect_sm_parents
@@ -4884,7 +4555,342 @@ test_that("print_log works", {
   expect_true(inherits(print_log, "function")) 
 })
 ```
+
+
+## Archive files in RIDL
+
+    
+```{r function-add_ridl}
+#' Archive all crunching files in RIDL
+#'
+#' RIDL is UNHCR instance of a CKAN server and is accessible for UNHCR staff at
+#' https://ridl.unhcr.org . It is designed to keep track and
+#' document dataset within an organisation.
+#'
+#' You conveniently archive there your generated cleaning report and save
+#' the work you did on a notebook: As you have been working on the data, you want
+#' to keep track of it and save your work in a place where it can be useful for
+#' other people and available for peer review and quality assessment.
+#'
+#'
+#' The function saves within the  the RIDL container you used to get the data
+#'  from the following resources:
+#'   * the source notebook
+#'   * the cleaning log
+#'   * the cleaned data
+#'
+#' The function behavior is the following -
+#'   1. Get metadata from the RIDL dataset
+#'   2. check if the resources to be uploaded is already shared based on the name
+#'   3. if already there update, if not create
+#'
+#'  The function relies on   # install.packages("pak")
+#'                           # pak::pkg_install("edouard-legoupil/riddle")
+#'
+#' @param ridl ridl container where the resources should be added
+#' @param datafolder folder where the data used by the notebook are stored
+#' @param cleaned_data names of the file with the cleaned data
+#' @param cleaning_log names of the file with the cleaning_log 
+#' @param namethisfile all files are archived based on the name of notebook you created.
+#'     The function automatically get the name of the notebook where it is run from,
+#'     using
+#'      basename(rstudioapi::getSourceEditorContext()$path )
+#'
+#'
+#' @importFrom riddle dataset_show resource_metadata resource_create resource_update
+#'
+#' @return nothing all analysis files are added as a resources
+#' 
+#' @keywords internal 
+#'
+#' @export
+
+# prefixer::import_from(fun = add_ridl)
+
+add_ridl <- function(ridl,
+                      datafolder,
+                      cleaned_data,
+                      cleaning_log,
+                      namethisfile){
   
+ ### name of the file...
+# retrieving path from getSourceEditorContext()
+# using $ operator
+## Enter below the name you used to save this file - without extension
+#    namethisfile <- rstudioapi::getSourceEditorContext()$path
+
+### Remove file name extension
+name <-  substr(namethisfile,1, nchar(namethisfile) -4)
+#
+#    ## Now just the name of the file
+#    name1 <-   basename(rstudioapi::getSourceEditorContext()$path )
+#    ## Remove file name extension
+#   name <-  substr(name1,1, nchar(name1) -4)
+#
+#     ### Time to archive your work once done!!
+
+time <- format(Sys.Date(),  '%d%b%y')
+
+# ### Uncomment and Run this only once you have knitted your file in order to quickly upload this to RIDL -
+# install.packages("pak")
+# pak::pkg_install("edouard-legoupil/riddle")
+
+# First let's get the dataset metadata
+p <- riddle::dataset_show(ridl)
+list_of_resources <- p[["resources"]][[1]]
+#names(list_of_resources)
+#   "description"
+# "file_type"        questionnaire microdata report script
+# "format"
+# "id"    "name"
+# "type"                "url"
+# "visibility"
+# "identifiability"
+# "version"
+# "script_dependencies"
+# "script_instructions"
+#  "script_software"
+# "source_code_repo"
+
+### 1.  Publish the cleaned_data #######
+namecleaned_data = paste0("cleaned_data" )
+### Check if the name is already in the resources
+if(namecleaned_data %in% list_of_resources$name) {
+  ## get the resource id
+  resourceid <- list_of_resources |>
+    dplyr::filter ( name == namecleaned_data) |>
+    dplyr::pull(id)
+  ## get the new resource version
+  curversion <- list_of_resources |>
+    dplyr::filter ( name == namecleaned_data) |>
+    dplyr::pull(version)
+  
+  ##  Build resource metadata
+  metadatacleaned_data <- riddle::resource_metadata(
+    type = "data",
+    url = paste0("cleaned_data.xlsx"),
+    name = namecleaned_data,
+    description = paste0("Cleaned version of the data in relation with standard cleaning log. Built using cleaningtools "),
+    format = ".xlsx",
+    version = (curversion + 1),
+    date_range_end = list_of_resources |>
+      dplyr::filter ( file_type == "microdata") |>
+      dplyr::select(date_range_end) |>
+      dplyr::distinct() |>
+      dplyr::pull(),
+    date_range_start =  list_of_resources |>
+      dplyr::filter ( file_type == "microdata") |>
+      dplyr::select(date_range_start) |>
+      dplyr::distinct() |>
+      dplyr::pull(),
+    identifiability =  "personally_identifiable", 
+    visibility =  "restricted",
+    process_status = "cleaned",
+    # file_type = "other",
+    file_type = "microdata",
+    script_dependencies= "cleaningtools",
+    script_instructions= "This excel file contains cleaned version of the data in line with the cleaning log ",
+    script_software= "R",
+    source_code_repo= "https://edouard-legoupil.github.io/cleaningtools",
+    ## Revise here based on the name from your crunching report
+    upload =  httr::upload_file(here::here(datafolder, cleanned_data))
+  )
+  riddle::resource_update(id = resourceid,
+                          res_metadata = metadatacleaned_data)
+} else {
+  
+  metadatacleaned_data <- riddle::resource_metadata(
+              type = "data",
+              url = paste0("cleaned_data.xlsx"),
+              name = namecleaned_data,
+              description = paste0("Cleaned version of the data in relation with standard cleaning log. Built using cleaningtools"),
+              format = ".xlsx",
+              version =   1 ,
+              date_range_end = list_of_resources |>
+                                  dplyr::filter ( file_type == "microdata") |>
+                                  dplyr::select(date_range_end) |>
+                                  dplyr::distinct() |>
+                                  dplyr::pull(),
+              date_range_start =  list_of_resources |>
+                                    dplyr::filter ( file_type == "microdata") |>
+                                    dplyr::select(date_range_start) |>
+                                    dplyr::distinct() |>
+                                    dplyr::pull(),
+              identifiability =  "personally_identifiable", 
+              visibility =  "restricted",
+              process_status = "cleaned",
+              #  file_type = "other",
+              file_type = "microdata",
+              script_dependencies= "cleaningtools",
+              script_instructions= "This excel file contains all specific metedata
+                       to relabel the original data, to group variable for automatic data
+                        exploration and to create calculated variables ",
+              script_software= "R",
+              source_code_repo= "https://edouard-legoupil.github.io/cleaningtools",
+              ## Revise here based on the name from your crunching report
+              upload =  httr::upload_file(here::here(datafolder,cleanned_data))
+            )
+  riddle::resource_create(package_id = p$id,
+                          res_metadata = metadatacleaned_data)
+}
+
+
+### 2.  Now publish the current notebook #######
+namenotebook = paste0("notebook_cleaning")
+### Check if the name is already in the resources
+if(namenotebook %in% list_of_resources$name) {
+  ## get the resource id
+  resourceid <- list_of_resources |>
+    dplyr::filter ( name == namenotebook) |>
+    dplyr::pull(id)
+  ## get the new resource version
+  curversion <- list_of_resources |>
+    dplyr::filter ( name == namenotebook) |>
+    dplyr::pull(version)
+  metadatanamenotebook <- riddle::resource_metadata(type = "script",
+                                                      url = paste0("notebook_cleaning.Rmd"),
+                                                      name = namenotebook,
+                                                      description = paste0("Notebook for cleaning report. Built using cleanningtools "),
+                                                      format = "rmd",
+                                                      version = (curversion + 1),
+                                                      visibility =  "public",
+                                                      #             file_type = "other",
+                                                      file_type = "script",
+                                                      script_dependencies= "cleaningtools",
+                                                      script_instructions= "Use the raw data data and the cleaning log to rebuild the cleaned data ",
+                                                      script_software= "R",
+                                                      source_code_repo= "https://edouard-legoupil.github.io/cleaningtools",
+                                                      # Revise here based on the name from your crunching report
+                                                      upload = httr::upload_file(here::here(namethisfile))
+  )
+  
+  riddle::resource_update(id = resourceid,
+                          res_metadata =  metadatanamenotebook)
+} else {
+  metadatanamenotebook <- riddle::resource_metadata(type = "script",
+                                                      url = paste0("notebook_cleaning.Rmd"),
+                                                      name = namenotebook,
+                                                      description = paste0("Notebook for cleaning report. Built using cleanningtools  "),
+                                                      format = "Rmd",
+                                                      visibility =  "public",
+                                                      #            file_type = "other",
+                                                      file_type = "script",
+                                                      script_dependencies= "cleaningtools",
+                                                      script_instructions= "Use the data and the analysis
+                                           plan documented in the report parameters and
+                                           available within this RIDL dataset ",
+                                                      script_software= "R",
+                                                      source_code_repo= "https://edouard-legoupil.github.io/cleaningtools",
+                                                      ## Revise here based on the name from your crunching report
+                                                      upload = httr::upload_file(here::here(namethisfile))
+  )
+  riddle::resource_create(package_id = p$id,
+                          res_metadata = metadatanamenotebook)
+}
+
+## 3.  and now the cleanning log
+namelog = paste0("Cleaning_log")
+### Check if the name is already in the resources
+if(namelog %in% list_of_resources$name) {
+  ## get the resource id
+  resourceid <- list_of_resources |>
+    dplyr::filter ( name == namelog) |>
+    dplyr::pull(id)
+  ## get the new resource version
+  curversion <- list_of_resources |>
+    dplyr::filter ( name == namelog) |>
+    dplyr::pull(version)
+  metadatalog <- riddle::resource_metadata(
+    type = "attachment",
+    url = paste0("cleaning_log.xlsx"),
+    name = namelog,
+    description = paste0("Systematic cleaning log. Built using cleaningtools "),
+    format = ".xlsx",
+    version = (curversion + 1),
+    identifiability =  "personally_identifiable", 
+    visibility =  "restricted",
+    file_type = "other",
+    script_dependencies= "cleaningtools",
+    script_instructions= "This excel file contains cleaned version of the data in line with the cleaning log ",
+    script_software= "R",
+    source_code_repo= "https://edouard-legoupil.github.io/cleaningtools",
+    ## Revise here based on the name from your crunching report
+    upload =  httr::upload_file(here::here(datafolder, cleaning_log))
+  )
+  
+  riddle::resource_update(id = resourceid,
+                          res_metadata = metadatalog)
+} else {
+  metadatalog <- riddle::resource_metadata(
+    type = "attachment",
+    url = paste0("cleaning_log.xlsx"),
+    name = namelog,
+    description = paste0("Systematic cleaning log. Built using cleaningtools "),
+    format = ".xlsx",
+    version =  1,
+    identifiability =  "personally_identifiable", 
+    visibility =  "restricted",
+    file_type = "other",
+    script_dependencies= "cleaningtools",
+    script_instructions= "This excel file contains cleaned version of the data in line with the cleaning log ",
+    script_software= "R",
+    source_code_repo= "https://edouard-legoupil.github.io/cleaningtools",
+    ## Revise here based on the name from your crunching report
+    upload =  httr::upload_file(here::here(datafolder, cleaning_log))
+  ) 
+  riddle::resource_create(package_id = p$id,
+                          res_metadata = metadatalog)
+}
+
+
+## Once all of it done, let's the user know about it...
+return( cat(paste0("Congrat! The Cleaned data, the cleaning log and the Notebook have been published on RIDL")))
+}
+
+
+
+
+```
+  
+```{r example-add_ridl}
+
+### Example used for each template 
+## Time to archive your work once done!!
+# namethisfile = basename(rstudioapi::getSourceEditorContext()$path )  
+# if( params$publish == "yes"){
+#   add_ridl(ridl = params$ridl,
+#             datafolder = params$datafolder,
+#             form = params$form,
+#             namethisfile =  namethisfile ) }
+
+ 
+```
+  
+```{r tests-add_ridl}
+
+
+# Unit test for add_ridl() using testthat
+# 
+# context("add_ridl()")
+# 
+# # Create mock objects to use in the test
+# ridl <- "testRidl"
+# datafolder <- "data"
+# form <- "form.xlsx"
+# namethisfile <- "testFile"
+# visibility <- "public"
+# stage <- "explo_initial"
+# 
+# # Create test for function
+# test_that("add_ridl() creates the right resources", {
+#   expect_true(add_ridl(ridl, datafolder, form, namethisfile, visibility, stage))
+# })
+
+# test_that("add_ridl works", {   expect_true(inherits(add_ridl, "function")) })
+```
+    
+
+
 
 ```{r development-inflate, eval=FALSE}
 # Run but keep eval=FALSE to avoid infinite loop

@@ -39,6 +39,8 @@
 #' @importFrom riddle dataset_show resource_metadata resource_create resource_update
 #'
 #' @return nothing all analysis files are added as a resources
+#' 
+#' @keywords internal 
 #'
 #' @export
 #' @examples

@@ -50,7 +50,6 @@ function_documentation.Rmd:
   - tests/testthat/test-add_duration.R
   - tests/testthat/test-add_info_to_cleaning_log.R
   - tests/testthat/test-add_duration_from_audit.R
-  - tests/testthat/test-add_ridl.R
   - tests/testthat/test-check_duration.R
   - tests/testthat/test-check_duplicate.R
   - tests/testthat/test-check_fcs.R
@@ -66,12 +65,12 @@ function_documentation.Rmd:
   - tests/testthat/test-create_audit_list.R
   - tests/testthat/test-create_duration_from_audit_with_start_end.R
   - tests/testthat/test-create_duration_from_audit_sum_all.R
-  - tests/testthat/test-create_clean_data.R
   - tests/testthat/test-create_combined_log.R
   - tests/testthat/test-create_logic_for_other.R
   - tests/testthat/test-create_formated_wb.R
-  - tests/testthat/test-create_xlsx_cleaning_log.R
   - tests/testthat/test-create_cleaning_log.R
+  - tests/testthat/test-create_xlsx_cleaning_log.R
+  - tests/testthat/test-create_clean_data.R
   - tests/testthat/test-review_cleaning_log.R
   - tests/testthat/test-review_cleaning.R
   - tests/testthat/test-review_others.R
@@ -89,6 +88,7 @@ function_documentation.Rmd:
   - tests/testthat/test-detect_uuid.R
   - tests/testthat/test-knit_big_table.R
   - tests/testthat/test-print_log.R
+  - tests/testthat/test-add_ridl.R
   vignettes: vignettes/function_documentation.Rmd
   inflate:
     flat_file: dev/function_documentation.Rmd
