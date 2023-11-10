@@ -74,6 +74,8 @@ pak::pkg_install("edouard-legoupil/cleaningtools")
 The package comes with a parameterised report template to ease and
 speed-up the full process.
 
+![](https://raw.githubusercontent.com/Edouard-Legoupil/cleaningtools/master/inst/template.png)
+
 Once users have a good understanding of the process above, create an
 Rstudio projects, install the package, download your data and your form
 within a dedicated sub-folder for instance `data-raw`, create an excel
