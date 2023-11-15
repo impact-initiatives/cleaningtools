@@ -6,7 +6,7 @@
 \alias{cleaningtools-package}
 \title{cleaningtools: cleaningtools package focuses on data cleaning}
 \description{
-The cleaningtools package focuses on cleaning, and has three components: **Check**, which includes a set of functions that flag values, such as check_outliers and check_logical. **Create**, which includes a set of functions to create different items for use in cleaning, such as the cleaning log from the checks, clean data, and enumerator performance. **Review**, which includes a set of functions to review the cleaning, such as reviewing the cleaning.
+The cleaningtools package focuses on cleaning, and has three components: **Check**, which includes a set of functions that flag values, such as check_outliers and check_logical. **Create**, which includes a set of functions to create different items for use in cleaning, such as the cleaning log from the checks, clean data, and enumerator performance. **Review**, which includes a set of functions to review the cleaning.
 }
 \seealso{
 Useful links:
@@ -21,6 +21,11 @@ Useful links:
 Authors:
 \itemize{
   \item Mehedi Khan \email{mh.khan@reach-initiative.org} (\href{https://orcid.org/0000-0002-4276-4485}{ORCID})
+}
+
+Other contributors:
+\itemize{
+  \item Edouard Legoupil \email{legoupil@nhcr.org} [contributor]
 }
 
 }
