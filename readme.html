@@ -985,6 +985,13 @@ The <code>cleaningtools</code> package focuses on cleaning, and has three compon
 <span>  deletion_log_uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span>
 <span>  check_for_deletion_log <span class="op">=</span> <span class="cn">T</span></span>
 <span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: There were 2 warnings in `dplyr::mutate()`.</span></span>
+<span><span class="co">#&gt; The first warning was:</span></span>
+<span><span class="co">#&gt; ℹ In argument: `numerical_check = as.numeric(df.new_value) ==</span></span>
+<span><span class="co">#&gt;   as.numeric(df.old_value)`.</span></span>
+<span><span class="co">#&gt; Caused by warning:</span></span>
+<span><span class="co">#&gt; ! NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; ℹ Run `dplyr::last_dplyr_warnings()` to see the 1 remaining warning.</span></span>
 <span></span>
 <span><span class="va">compared_df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 8</span></span>
