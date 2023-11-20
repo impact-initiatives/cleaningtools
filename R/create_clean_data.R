@@ -171,7 +171,15 @@ create_clean_data <- function(raw_dataset,
 }
 
 
-#' check cleaning log
+#' Review cleaning log
+#'
+#' Review the cleaning log. It can be used before create_clean_data to check cleaning log. Possible
+#' flags are:
+#' - Value in change_response_value not found
+#' - question_does_not_exist: question does not exist
+#' - uuid_does_not_exist: cannot find a UUID
+#' - na_in_change_type: change_type is NA
+#'
 #' @param raw_dataset Raw dataset
 #' @param raw_data_uuid_column uuid column in the raw dataset. Default is "uuid".
 #' @param cleaning_log cleaning log (data.frame)
@@ -180,7 +188,7 @@ create_clean_data <- function(raw_dataset,
 #' @param cleaning_log_new_value_column cleaning log column specifying the new correct value
 #' @param cleaning_log_change_type_column column in cleaning log which specifies change type to be made
 #' @param change_response_value values in change type column which should be changed to a new value.
-#' @return cleaning log with only problematic entries and note specifying problem
+#' @return review of the cleaning log with flagged entries and note explaining the flags.
 #' @export
 
 

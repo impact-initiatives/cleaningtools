@@ -2,7 +2,7 @@
 % Please edit documentation in R/review_cleaning.R
 \name{create_cleaning_log}
 \alias{create_cleaning_log}
-\title{Generates cleaning log}
+\title{Compares 2 dataset and logs differences}
 \usage{
 create_cleaning_log(
   raw_dataset,
@@ -33,7 +33,7 @@ create_cleaning_log(
 Cleaning log
 }
 \description{
-Generates cleaning log
+Compares 2 dataset and logs differences
 }
 \examples{
 \dontrun{
