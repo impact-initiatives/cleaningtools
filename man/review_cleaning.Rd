@@ -2,7 +2,7 @@
 % Please edit documentation in R/review_cleaning.R
 \name{review_cleaning}
 \alias{review_cleaning}
-\title{Review cleaning logs}
+\title{Review cleaning}
 \usage{
 review_cleaning(
   raw_dataset,
@@ -57,11 +57,23 @@ review_cleaning(
 Discrepancy in cleaning log
 }
 \description{
-Review cleaning logs
+It will compare the raw dataset, clean dataset, cleaning log and deletion log. Possible flags
+are :
+\itemize{
+\item UUID found in deletion log.
+\item No action with different value in new value column.
+\item Changes were not applied
+\item This survey should be deleted from the clean dataset but it was not deleted
+\item This survey should be removed from deletion log as it doesn't exist in the raw data.
+\item Duplicated entry with different value, please recheck and keep one
+\item Entry missing in cleaning log
+\item New value in cleaning log and value in clean dataset not matching
+\item Survey missing in the raw data
+}
 }
 \examples{
 \dontrun{
-deletion_log<- cleaningtools::cleaningtools_cleaning_log |>
+deletion_log <- cleaningtools::cleaningtools_cleaning_log |>
   dplyr::filter(change_type == "remove_survey")
 cleaning_log <- cleaningtools::cleaningtools_cleaning_log |>
   dplyr::filter(change_type != "remove_survey")

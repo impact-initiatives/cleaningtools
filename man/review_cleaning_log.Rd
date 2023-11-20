@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_clean_data.R
 \name{review_cleaning_log}
 \alias{review_cleaning_log}
-\title{check cleaning log}
+\title{Review cleaning log}
 \usage{
 review_cleaning_log(
   raw_dataset,
@@ -33,8 +33,15 @@ review_cleaning_log(
 \item{change_response_value}{values in change type column which should be changed to a new value.}
 }
 \value{
-cleaning log with only problematic entries and note specifying problem
+review of the cleaning log with flagged entries and note explaining the flags.
 }
 \description{
-check cleaning log
+Review the cleaning log. It can be used before create_clean_data to check cleaning log. Possible
+flags are:
+\itemize{
+\item Value in change_response_value not found
+\item question_does_not_exist: question does not exist
+\item uuid_does_not_exist: cannot find a UUID
+\item na_in_change_type: change_type is NA
+}
 }

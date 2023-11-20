@@ -1055,6 +1055,13 @@ compared_df <- review_cleaning(
   deletion_log_uuid_column = "X_uuid",
   check_for_deletion_log = T
 )
+#> Warning: There were 2 warnings in `dplyr::mutate()`.
+#> The first warning was:
+#> ℹ In argument: `numerical_check = as.numeric(df.new_value) ==
+#>   as.numeric(df.old_value)`.
+#> Caused by warning:
+#> ! NAs introduced by coercion
+#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 1 remaining warning.
 
 compared_df |> head()
 #> # A tibble: 6 × 8
