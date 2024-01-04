@@ -43,7 +43,7 @@ devtools::install_github("impact-initiatives/cleaningtools")
 ### 1. Checks on the dataset
 #### 1.1 Check of PII
 `check_pii()` function takes raw data (input can be dataframe or list. However incase of list, you must specify the element name in `element_name` parameter!) and looks for potential PII in the dataset. By default, the function will look for following words but you can also add additional words to look by using `words_to_look` parameter.The default words are-`c("telephone","contact","name","gps","neighbourhood","latitude","logitude","contact","nom","gps","voisinage")`. 
-The function will give a list with two element. One will be the data and second one will be the list of potential PII
+The function will give a list with two element. One will be the data and second one will be the list of potential PII.
 
 * Using dataframe as input
 ``` {r, eval=T}
