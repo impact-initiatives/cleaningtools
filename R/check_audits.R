@@ -15,7 +15,7 @@
 create_audit_list <- function(audit_zip_path,
                               dataset = NULL,
                               uuid_column = "uuid") {
-  list_of_files <- unzip(audit_zip_path, list = TRUE) %>%
+  list_of_files <- utils::unzip(audit_zip_path, list = TRUE) %>%
     dplyr::rename(path = Name) %>%
     dplyr::filter(stringr::str_detect(path, pattern = "audit.csv"))
 
@@ -23,7 +23,7 @@ create_audit_list <- function(audit_zip_path,
     dplyr::pull(path) %>%
     stringr::str_split("/") %>%
     purrr::set_names(list_of_files$path) %>%
-    purrr:::map_dbl(~ which(stringr::str_detect(.x, "audit.csv"))) %>%
+    purrr::map_dbl(~ which(stringr::str_detect(.x, "audit.csv"))) %>%
     unique()
 
   if (length(locatation_audit) != 1) {
@@ -298,12 +298,12 @@ add_duration_from_audit <- function(dataset,
 
   if (exists("duration_with_sum_all")) {
     dataset <- dataset %>%
-      dplyr::left_join(duration_with_sum_all, by = setNames("uuid", uuid_column))
+      dplyr::left_join(duration_with_sum_all, by = stats::setNames("uuid", uuid_column))
   }
 
   if (exists("duration_with_start_end")) {
     dataset <- dataset %>%
-      dplyr::left_join(duration_with_start_end, by = setNames("uuid", uuid_column))
+      dplyr::left_join(duration_with_start_end, by = stats::setNames("uuid", uuid_column))
   }
 
   return(dataset)

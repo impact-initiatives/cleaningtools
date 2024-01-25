@@ -67,7 +67,7 @@ review_sample_frame_with_dataset <- function(sample_frame,
 
   sample_frame |>
     dplyr::select(-dplyr::any_of(c("Collected", "Remaining"))) |>
-    dplyr::left_join(actual_df, by = setNames(clean_dataset_strata_column, sampling_frame_strata_column)) |>
+    dplyr::left_join(actual_df, by = stats::setNames(clean_dataset_strata_column, sampling_frame_strata_column)) |>
     dplyr::mutate(Collected = dplyr::case_when(is.na(Collected) ~ 0, T ~ Collected)) |>
     dplyr::mutate(
       Remaining = !!rlang::sym(sampling_frame_target_survey_column) - Collected

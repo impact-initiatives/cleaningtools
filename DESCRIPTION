@@ -27,7 +27,6 @@ Imports:
     glue,
     here,
     httr,
-    knitr,
     magrittr,
     openxlsx,
     purrr,
@@ -43,6 +42,7 @@ Imports:
     tidyselect,
     utils
 Suggests: 
+    knitr,
     rmarkdown,
     testthat (>= 3.0.0),
     tidyverse

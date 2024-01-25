@@ -16,10 +16,10 @@ create_cleaning_template <- function(folder_path, write_template_files, ...) {
   fs::dir_copy(from, folder_path, overwrite = FALSE)
 
   if(write_template_files) {
-    write.csv(cleaningtools_survey, paste0(folder_path, "/inputs/kobotool/kobo_survey.csv"), row.names = FALSE)
-    write.csv(cleaningtools_choices, paste0(folder_path, "/inputs/kobotool/kobo_choices.csv"), row.names = FALSE)
-    write.csv(cleaningtools_sample_frame, paste0(folder_path, "/inputs/sampling_frame.csv"), row.names = FALSE)
-    write.csv(cleaningtools_raw_data, paste0(folder_path, "/inputs/cleaningtools_raw_data.csv"), row.names = FALSE)
+    utils::write.csv(cleaningtools_survey, paste0(folder_path, "/inputs/kobotool/kobo_survey.csv"), row.names = FALSE)
+    utils::write.csv(cleaningtools_choices, paste0(folder_path, "/inputs/kobotool/kobo_choices.csv"), row.names = FALSE)
+    utils::write.csv(cleaningtools_sample_frame, paste0(folder_path, "/inputs/sampling_frame.csv"), row.names = FALSE)
+    utils::write.csv(cleaningtools_raw_data, paste0(folder_path, "/inputs/cleaningtools_raw_data.csv"), row.names = FALSE)
 
   }
 
