@@ -39,6 +39,13 @@ You can install the development version from [GitHub](https://github.com/) with:
 devtools::install_github("impact-initiatives/cleaningtools")
 ```
 
+## Template
+
+You can use the R studio wizard to create project template.
+
+![](man/images/template wizards.png)
+
+
 ## Examples
 ### 1. Checks on the dataset
 #### 1.1 Check of PII
