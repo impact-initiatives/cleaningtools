@@ -92,7 +92,7 @@ cleaning_log |>
   )
 
 # Reading the filled cleaning log
-filled_cleaning_log <- read_csv("outputs/cleaning_log - filled.csv")
+filled_cleaning_log <- read_csv("outputs/cleaning_log_filled.csv")
 
 # Creating the clean dataset
 review_cleaning_log(

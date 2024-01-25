@@ -37,7 +37,7 @@ devtools::install_github("impact-initiatives/cleaningtools")
 
 You can use the R studio wizard to create project template.
 
-![](man/images/template%20wizards.png)
+![](man/figures/template_wizard.png)
 
 ## Examples
 
