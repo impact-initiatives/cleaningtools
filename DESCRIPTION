@@ -24,6 +24,7 @@ Imports:
     cluster,
     data.table,
     dplyr,
+    fs,
     glue,
     here,
     httr,
