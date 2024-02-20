@@ -1,0 +1,3 @@
+﻿check_id,description,check_to_perform,columns_to_clean
+check_exp,primary_livelihood is employment but expenses less than 200000,primary_livelihood.employment == TRUE & tot_expenses < 200000,"primary_livelihood.employment, tot_expenses"
+check_2,acces water and tank emptied,"access_water_enough == ""totally_insufficient"" & tank_emptied == ""about_half""","access_water_enough, tank_emptied"

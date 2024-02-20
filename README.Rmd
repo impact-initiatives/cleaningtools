@@ -10,7 +10,7 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 devtools::load_all()
-deletaion_log <- cleaningtools::cleaningtools_cleaning_log |> dplyr::filter(change_type == "remove_survey")
+deletion <- cleaningtools::cleaningtools_cleaning_log |> dplyr::filter(change_type == "remove_survey")
 cleaning_log2 <- cleaningtools::cleaningtools_cleaning_log |> dplyr::filter(change_type != "remove_survey")
 options(scipen = 999)
 ```
@@ -38,6 +38,13 @@ You can install the development version from [GitHub](https://github.com/) with:
 # install.packages("devtools")
 devtools::install_github("impact-initiatives/cleaningtools")
 ```
+
+## Template
+
+You can use the R studio wizard to create project template.
+
+![](man/figures/template_wizard.png)
+
 
 ## Examples
 ### 1. Checks on the dataset
@@ -527,7 +534,7 @@ compared_df <- review_cleaning(
   cleaning_log_question_column = "questions",
   cleaning_log_new_value_column = "new_value",
   cleaning_log_old_value_column = "old_value",
-  deletion_log = deletaion_log,
+  deletion_log = deletion,
   deletion_log_uuid_column = "X_uuid",
   check_for_deletion_log = T
 )

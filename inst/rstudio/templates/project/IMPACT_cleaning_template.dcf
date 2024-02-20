@@ -1,0 +1,11 @@
+Binding: create_cleaning_template
+Title: IMPACT cleaning template
+OpenFiles: cleaning_template.r
+
+Parameter: write_template_files
+Widget: SelectInput
+Label: Write template datasets
+Fields: TRUE, FALSE
+Default: TRUE
+Position: left
+
