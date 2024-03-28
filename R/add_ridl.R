@@ -35,16 +35,13 @@
 #'     using
 #'      basename(rstudioapi::getSourceEditorContext()$path )
 #'
-#'
-#' @importFrom riddle dataset_show resource_metadata resource_create resource_update
-#'
 #' @return nothing all analysis files are added as a resources
 #'
 #' @keywords internal
 #'
 #' @export
 #' @examples
-#'
+#' \dontrun{
 #' ### Example used for each template
 #' ## Time to archive your work once done!!
 #' # namethisfile = basename(rstudioapi::getSourceEditorContext()$path )
@@ -54,7 +51,7 @@
 #' #             form = params$form,
 #' #             namethisfile =  namethisfile ) }
 #'
-#'
+#' }
 
 # prefixer::import_from(fun = add_ridl)
 
