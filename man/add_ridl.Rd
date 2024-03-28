@@ -53,7 +53,7 @@ The function relies on   # install.packages("pak")
 # pak::pkg_install("edouard-legoupil/riddle")
 }
 \examples{
-
+\dontrun{
 ### Example used for each template
 ## Time to archive your work once done!!
 # namethisfile = basename(rstudioapi::getSourceEditorContext()$path )
@@ -63,6 +63,6 @@ The function relies on   # install.packages("pak")
 #             form = params$form,
 #             namethisfile =  namethisfile ) }
 
-
+}
 }
 \keyword{internal}

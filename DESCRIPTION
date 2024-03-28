@@ -32,7 +32,6 @@ Imports:
     openxlsx,
     purrr,
     randomcoloR,
-    riddle,
     rlang,
     snakecase,
     stats,
@@ -44,6 +43,7 @@ Imports:
     utils
 Suggests: 
     knitr,
+    riddle,
     rmarkdown,
     testthat (>= 3.0.0),
     tidyverse
