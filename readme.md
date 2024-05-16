@@ -677,8 +677,8 @@ cleaningtools::check_fcs(
   sugar_column = "sugar_sugary_food"
 ) |> head()
 #> Warning in cleaningtools::check_fcs(dataset =
-#> cleaningtools::cleaningtools_food_consumption_df, : Potential issue:: There
-#> are 105 observations where all the variables of food consumption score are the
+#> cleaningtools::cleaningtools_food_consumption_df, : Potential issue:: There are
+#> 105 observations where all the variables of food consumption score are the
 #> same.Check result.
 #>                                 X_uuid cereals_grains_roots_tubers
 #> 1 e7da37c0-dd23-4d38-8cac-2e8e8a243b57                           0
@@ -1057,7 +1057,7 @@ compared_df <- review_cleaning(
   cleaning_log_question_column = "questions",
   cleaning_log_new_value_column = "new_value",
   cleaning_log_old_value_column = "old_value",
-  deletion_log = deletaion_log,
+  deletion_log = deletion,
   deletion_log_uuid_column = "X_uuid",
   check_for_deletion_log = T
 )
