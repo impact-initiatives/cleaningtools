@@ -23,10 +23,5 @@ Authors:
   \item Mehedi Khan \email{mh.khan@reach-initiative.org} (\href{https://orcid.org/0000-0002-4276-4485}{ORCID})
 }
 
-Other contributors:
-\itemize{
-  \item Edouard Legoupil \email{legoupil@nhcr.org} [contributor]
-}
-
 }
 \keyword{internal}
