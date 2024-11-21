@@ -145,7 +145,7 @@ recreate_parent_column <- function(dataset,
   if (nrow(select_multiple) > 0) {
     select_multiple_list <- list()
 
-    for (i in select_multiple$sm_parent) {
+    for (i in unique(select_multiple$sm_parent)) {
       select_multi_single <-
         select_multiple %>% dplyr::filter(sm_parent == i)
       concat_col <- select_multi_single$sm_parent %>% unique()
@@ -158,21 +158,65 @@ recreate_parent_column <- function(dataset,
       pivot_long <-
         df_only_cols %>% dplyr::mutate_at(names(df_only_cols), as.character)
 
-      final_df <- pivot_long %>%
+      corrected_df <- pivot_long %>%
         tidyr::pivot_longer(
           cols = !dplyr::all_of(uuid_column),
           names_to = "cols",
           values_to = "value"
-        ) %>%
+          ) %>%
         dplyr::filter(value == 1 |
                         value == TRUE |
                         value == "1" | value == "TRUE") %>%
         dplyr::group_by(!!rlang::sym(uuid_column)) %>%
         dplyr::summarise(!!rlang::sym(concat_col) := paste0(cols, collapse = " "))
 
-      final_df[[concat_col]] <-
-        final_df[[concat_col]] %>% stringr::str_replace_all(paste0(concat_col, "."), "")
+      corrected_df[[concat_col]] <-
+        corrected_df[[concat_col]] %>% stringr::str_replace_all(paste0(concat_col, "."), "")
 
+      ### In some surveys, options are the same but the order is different.
+      ### The function would changed it  and later flags changes while it is this function
+      ### that changed the order.
+      ### I don't know why the order is different than the order of the columns,
+      ### possible options: the choices order changed, the fill in order
+      initial_values <- dataset %>%
+        dplyr::select(dplyr::all_of(c(uuid_column,
+                                      concat_col)))
+
+      verification_initial_df <- initial_values %>%
+        dplyr::left_join(corrected_df, by = uuid_column, suffix = c("_initial", "_corrected"))
+
+      concat_col_initial <- paste0(concat_col,"_initial")
+      concat_col_corrected <- paste0(concat_col,"_corrected")
+
+      verification_df <- verification_initial_df %>%
+        tidyr::separate_wider_delim(cols = c(!!dplyr::sym(concat_col_initial),
+                                             !!dplyr::sym(concat_col_corrected)),
+                                    delim = " ",
+                                    too_few = "align_start",
+                                    names_sep = "__")
+
+      names_initial <- verification_df %>% names() %>% grep(concat_col_initial, value = T, x=.)
+      names_corrected <- verification_df %>% names() %>% grep(concat_col_corrected, value = T, x=.)
+
+      verification_df <- verification_df %>%
+        dplyr::rowwise() %>%
+        dplyr::mutate(
+          old_in_new = all(dplyr::c_across(dplyr::all_of(names_initial)) %in% dplyr::c_across(dplyr::all_of(names_corrected))),
+          new_in_old = all(dplyr::c_across(dplyr::all_of(names_corrected)) %in% dplyr::c_across(dplyr::all_of(names_initial))),
+          all_in = old_in_new & new_in_old
+        ) %>%
+        dplyr::ungroup()
+
+      final_df <- verification_initial_df %>%
+        dplyr::left_join(dplyr::select(verification_df, dplyr::all_of(c(uuid_column, "all_in")))) %>%
+        dplyr::mutate(!!dplyr::sym(concat_col):= dplyr::case_when(all_in ~ !!dplyr::sym(concat_col_initial),
+                                                          !all_in ~ !!dplyr::sym(concat_col_corrected)))
+
+      final_df <- final_df %>%
+        dplyr::select(dplyr::all_of(c(uuid_column,
+                                      concat_col)))
+
+      # Get the final values to the select_multiple_list
       select_multiple_list[[concat_col]] <- final_df
     }
 
