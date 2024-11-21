@@ -676,8 +676,8 @@ test_that("the order of the choices in the parent columns does not change", {
                   "filter"),
     comment = c("Parent column changed to match children columns",
                 "Parent column changed to match children columns",
-                "changed to NA",
-                "changed to NA"))
+                "changed to NA with recreate_parent_column correction, all value are FALSE",
+                "changed to NA with recreate_parent_column correction, all value are FALSE"))
 
   expect_equal(actual_output[["correction_parent_sm_log"]], expected_outputs)
 })

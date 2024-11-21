@@ -21,7 +21,7 @@ create_cleaning_log(
 
 \item{clean_dataset}{Clean dataset}
 
-\item{clean_dataset_uuid_column}{uuid column in the raw dataset. Default is "uuid".}
+\item{clean_dataset_uuid_column}{uuid column in the clean dataset.  Default is "uuid".}
 
 \item{check_for_deletion_log}{TRUE to flag the removed survey}
 

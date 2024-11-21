@@ -61,7 +61,5 @@ globalVariables(unique(c(
   # review_others:
   ".",
   # review_sample_frame_with_dataset:
-  "Collected",
-  # add_ridl:
-  "cleanned_data", "date_range_end", "date_range_start", "file_type"
+  "Collected"
 )))

@@ -21,7 +21,7 @@ dataframe stored as "checked_dataset".}
 \item{column_to_check}{string character with the name of the columns to check. Default is
 "percentage_missing"}
 
-\item{strongness_factor}{Strongness factor define how strong your outliers will be. The default is 3.}
+\item{strongness_factor}{Strongness factor define how strong your outliers will be. The default is 2.}
 
 \item{log_name}{name of the log of flagged value, default is percentage_missing_log}
 }

@@ -98,7 +98,7 @@ add_percentage_missing <-
 #' @param column_to_check string character with the name of the columns to check. Default is
 #' "percentage_missing"
 #' @param log_name name of the log of flagged value, default is percentage_missing_log
-#' @param strongness_factor Strongness factor define how strong your outliers will be. The default is 3.
+#' @param strongness_factor Strongness factor define how strong your outliers will be. The default is 2.
 #' @return return a list with the dataset checked stored as checked_dataset and
 #' a dataframe with the flagged values log
 #' @export
