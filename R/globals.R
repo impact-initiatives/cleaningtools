@@ -52,8 +52,10 @@ globalVariables(unique(c(
   ".",
   # recreate_parent_column:
   "cols", "list_name", "name", "new_name", "sm_child", "sm_parent", "type", "value",
+  "new_in_old", "old_in_new",
   # review_cleaning:
   "cleaning_log_only", "df.new_value", "df.uuid", "question", "uniqe_row_id", "uuid",
+  "df.old_value", "logical_check",
   # review_cleaning_log:
   "cl_prob",
   # review_others:

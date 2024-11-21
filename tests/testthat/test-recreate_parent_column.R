@@ -644,3 +644,41 @@ test_that("if the argument cleaning_log_to_append is present, the log will be ap
   expect_equal(actual_output$cleaning_log, expected_output)
 
 })
+
+test_that("the order of the choices in the parent columns does not change", {
+  actual_output <- recreate_parent_column(dataset = cleaningtools_clean_data,
+                                          uuid_column = "X_uuid",
+                                          kobo_survey = cleaningtools_survey,
+                                          kobo_choices = cleaningtools_choices,
+                                          sm_separator = ".")  %>%
+    suppressWarnings()
+
+  expected_outputs <- data.frame(
+    uuid = c("51324001-970c-4fb5-bacf-de696e1b7eaa",
+             "d5d26992-388b-4c71-a461-18a63cac8738",
+             "3b9732e2-a0d7-4dc3-962d-12efcd2ded15",
+             "728e4de0-7356-4bb5-9db4-9479b3ffe098"),
+    question = c("water_sources",
+                 "water_sources",
+                 "treat_drink_water_how",
+                 "treat_drink_water_how"),
+    change_type = c("change_response",
+                    "change_response",
+                    "blank_response",
+                    "blank_response"),
+    new_value = c("piped borehole",
+                  "piped borehole",
+                  NA_character_,
+                  NA_character_),
+    old_value = c("piped",
+                  "piped",
+                  "expose_sunlight",
+                  "filter"),
+    comment = c("Parent column changed to match children columns",
+                "Parent column changed to match children columns",
+                "changed to NA",
+                "changed to NA"))
+
+  expect_equal(actual_output[["correction_parent_sm_log"]], expected_outputs)
+})
+
