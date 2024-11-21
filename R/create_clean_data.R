@@ -14,6 +14,17 @@
 #' @return clean data set
 #' @export
 #' @examples
+#'
+#' create_clean_data(
+#' raw_dataset = cleaningtools_raw_data,
+#' raw_data_uuid_column = "X_uuid",
+#' cleaning_log = cleaningtools_cleaning_log,
+#' cleaning_log_uuid_column = "X_uuid",
+#' cleaning_log_question_column = "questions",
+#' cleaning_log_new_value_column = "new_value",
+#' cleaning_log_change_type_column = "change_type"
+#' )
+#'
 #' cleaning_log_test <- data.frame(
 #'   uuid = paste0("uuid", 1:4),
 #'   question = c("age", "gender", "pop_group", "strata"),
@@ -27,7 +38,6 @@
 #'   pop_group = c("idp", "refugee", "host", "idp"),
 #'   strata = c("a", "b", "c", "d")
 #' )
-#'
 #'
 #' review_cleaning_log(
 #'   raw_dataset = test_data,

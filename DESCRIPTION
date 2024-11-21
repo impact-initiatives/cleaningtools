@@ -25,8 +25,6 @@ Imports:
     dplyr,
     fs,
     glue,
-    here,
-    httr,
     magrittr,
     openxlsx,
     purrr,
@@ -42,15 +40,11 @@ Imports:
     utils
 Suggests: 
     knitr,
-    riddle,
     rmarkdown,
     testthat (>= 3.0.0),
     tidyverse
 VignetteBuilder: 
     knitr
-Remotes: 
-    edouard-legoupil/riddle
-Config/fusen/version: 0.5.2
 Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true

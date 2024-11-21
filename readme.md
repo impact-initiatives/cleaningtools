@@ -991,6 +991,7 @@ cleaningtools::recreate_parent_column(dataset = test_data, uuid_column = "uuid",
 #>   <chr>       <chr>      
 #> 1 reason.x.x. reason.x_x_
 #> 2 reason.x.z  reason.x_z
+#> Joining with `by = join_by(uuid)`
 #> gender
 #> reason.yy
 #> reason.zy

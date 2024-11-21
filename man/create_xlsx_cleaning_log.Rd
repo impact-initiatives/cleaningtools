@@ -29,7 +29,8 @@ create_xlsx_cleaning_log(
 
 \item{change_type_col}{Change type column name in the cleaning log}
 
-\item{column_for_color}{Column name in the dataframe which should be used for colorizing the cell. The default is null.}
+\item{column_for_color}{Column name in the dataframe which should be used for colorizing the cell.
+The default is null.}
 
 \item{header_front_size}{Header front size (default is 12)}
 
@@ -43,9 +44,11 @@ create_xlsx_cleaning_log(
 
 \item{body_front_size}{Front size for body (default is 11)}
 
-\item{use_dropdown}{Use drop down lists for data validation in the cleaning log output (default is FALSE)}
+\item{use_dropdown}{Use drop down lists for data validation in the cleaning log output
+(default is FALSE)}
 
-\item{sm_dropdown_type}{Dropdown list options for select multiple questions: numerical (1/0) or logical (TRUE/FALSE) - default is logical}
+\item{sm_dropdown_type}{Dropdown list options for select multiple questions:
+"numerical" (1/0) or "logical" (TRUE/FALSE). The default is logical.}
 
 \item{kobo_survey}{Kobo survey dataframe}
 

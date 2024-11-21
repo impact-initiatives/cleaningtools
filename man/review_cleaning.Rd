@@ -29,11 +29,11 @@ review_cleaning(
 
 \item{clean_dataset}{Clean dataset}
 
-\item{clean_dataset_uuid_column}{uuid column in the raw dataset. Default is "uuid".}
+\item{clean_dataset_uuid_column}{uuid column in the clean dataset. Default is "uuid".}
 
 \item{cleaning_log}{Cleaning log}
 
-\item{cleaning_log_uuid_column}{uuid column in the raw dataset. Default is "uuid".}
+\item{cleaning_log_uuid_column}{uuid column in the cleaning log. Default is "uuid".}
 
 \item{cleaning_log_change_type_column}{column in cleaning log which specifies which change to be made}
 

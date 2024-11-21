@@ -107,9 +107,12 @@ create_formated_wb <- function(write_list,
 #' @param header_front Front name for header (default is Arial Narrow)
 #' @param body_front Front name for body (default is Arial Narrow)
 #' @param body_front_size Front size for body (default is 11)
-#' @param column_for_color Column name in the dataframe which should be used for colorizing the cell. The default is null.
-#' @param use_dropdown Use drop down lists for data validation in the cleaning log output (default is FALSE)
-#' @param sm_dropdown_type Dropdown list options for select multiple questions: numerical (1/0) or logical (TRUE/FALSE) - default is logical
+#' @param column_for_color Column name in the dataframe which should be used for colorizing the cell.
+#' The default is null.
+#' @param use_dropdown Use drop down lists for data validation in the cleaning log output
+#' (default is FALSE)
+#' @param sm_dropdown_type Dropdown list options for select multiple questions:
+#' "numerical" (1/0) or "logical" (TRUE/FALSE). The default is logical.
 #' @param kobo_survey Kobo survey dataframe
 #' @param kobo_choices Kobo choices dataframe
 #' @param output_path Output path. Default is NULL which will return a workbook instead of an excel file.

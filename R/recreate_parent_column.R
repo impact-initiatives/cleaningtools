@@ -251,9 +251,12 @@ recreate_parent_column <- function(dataset,
           comment = gsub(
             "An alteration was performed",
             "Parent column changed to match children columns",
-            comment
+            comment),
+          comment = gsub(
+            "changed to NA",
+            "changed to NA with recreate_parent_column correction, all value are FALSE",
+            comment)
           )
-        )
     }
 
     if (!is.null(cleaning_log_to_append)) {

@@ -2,7 +2,7 @@
 #' @param raw_dataset Raw dataset
 #' @param raw_dataset_uuid_column uuid column in the raw dataset. Default is "uuid".
 #' @param clean_dataset Clean dataset
-#' @param clean_dataset_uuid_column uuid column in the raw dataset. Default is "uuid".
+#' @param clean_dataset_uuid_column uuid column in the clean dataset.  Default is "uuid".
 #' @param check_for_deletion_log TRUE to flag the removed survey
 #' @param check_for_variable_name TRUE to flag the removed variables
 #' @param  columns_not_to_check Columns to exclude from the checks
@@ -241,9 +241,9 @@ create_cleaning_log <- function(raw_dataset,
 #' @param raw_dataset Raw dataset
 #' @param raw_dataset_uuid_column uuid column in the raw dataset. Default is "uuid".
 #' @param clean_dataset Clean dataset
-#' @param clean_dataset_uuid_column uuid column in the raw dataset. Default is "uuid".
+#' @param clean_dataset_uuid_column uuid column in the clean dataset. Default is "uuid".
 #' @param cleaning_log Cleaning log
-#' @param cleaning_log_uuid_column uuid column in the raw dataset. Default is "uuid".
+#' @param cleaning_log_uuid_column uuid column in the cleaning log. Default is "uuid".
 #' @param cleaning_log_change_type_column column in cleaning log which specifies which change to be made
 #' @param cleaning_log_question_column column in cleaning log which specifies which column to change
 #' @param cleaning_log_new_value_column cleaning log column specifying the new correct value
