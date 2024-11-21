@@ -107,7 +107,89 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">cleaning_log_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">create_clean_data</span><span class="op">(</span></span></span>
+<span class="r-in"><span>raw_dataset <span class="op">=</span> <span class="va">cleaningtools_raw_data</span>,</span></span>
+<span class="r-in"><span>raw_data_uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span></span>
+<span class="r-in"><span>cleaning_log <span class="op">=</span> <span class="va">cleaningtools_cleaning_log</span>,</span></span>
+<span class="r-in"><span>cleaning_log_uuid_column <span class="op">=</span> <span class="st">"X_uuid"</span>,</span></span>
+<span class="r-in"><span>cleaning_log_question_column <span class="op">=</span> <span class="st">"questions"</span>,</span></span>
+<span class="r-in"><span>cleaning_log_new_value_column <span class="op">=</span> <span class="st">"new_value"</span>,</span></span>
+<span class="r-in"><span>cleaning_log_change_type_column <span class="op">=</span> <span class="st">"change_type"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "air_coolers_nb"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "water_tank_litres_nb"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "air_coolers_nb"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "air_coolers_nb"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "num_hh_hosting"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "number_pumps"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "pay_water_charges_amount"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "water_sources.borehole"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "water_sources.borehole"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "connection_fees_amount"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "connection_fees_amount"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "connection_fees_amount"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "connection_fees_amount"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "tot_expenses"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "treat_drink_water"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "treat_drink_water"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "treat_drink_water_how.filter"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "treat_drink_water_how.expose_sunlight"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "return_date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 578 × 348</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    X.U.FEFF.start    end   date_assessment deviceid enumerator_num neighbourhood</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 2021-07-06T11:19… 2021… 2021-07-06      collect…              5 frgdf        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 2021-07-06T12:15… 2021… 2021-07-06      collect…              5 frgdf        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 2021-07-06T11:35… 2021… 2021-07-06      collect…             16 Bccccccc_1   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 2021-07-06T13:30… 2021… 2021-07-06      collect…              5 frgdf        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 2021-07-06T12:29… 2021… 2021-07-06      collect…             16 Bccccccc_1   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 2021-07-06T14:27… 2021… 2021-07-06      collect…              5 frgdf        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 2021-07-06T13:15… 2021… 2021-07-06      collect…             16 Bx1          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 2021-07-06T14:26… 2021… 2021-07-06      collect…             16 Bx1          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 2021-07-05T23:39… 2021… 2021-07-05      collect…             15 Bccccccc_1   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 2021-07-06T00:30… 2021… 2021-07-06      collect…             15 Bccccccc_1   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 568 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 342 more variables: consent_remote &lt;chr&gt;, hhh_r &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   will_to_response_r &lt;chr&gt;, age_respondent_r &lt;int&gt;, age_hoh &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   gender_hoh &lt;chr&gt;, displace_status &lt;chr&gt;, displace_status_returnee &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   return_date &lt;chr&gt;, num_hh_member &lt;int&gt;, hh_hosting &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   num_hh_hosting &lt;int&gt;, hh_hosted &lt;chr&gt;, shelter_occupation &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   shelter_occupation_other &lt;chr&gt;, property_title &lt;chr&gt;, …</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">cleaning_log_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  uuid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"uuid"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  question <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"age"</span>, <span class="st">"gender"</span>, <span class="st">"pop_group"</span>, <span class="st">"strata"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  change_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blank_response"</span>, <span class="st">"no_change"</span>, <span class="st">"Delete"</span>, <span class="st">"change_res"</span><span class="op">)</span>,</span></span>
@@ -120,7 +202,6 @@
 <span class="r-in"><span>  pop_group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"idp"</span>, <span class="st">"refugee"</span>, <span class="st">"host"</span>, <span class="st">"idp"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  strata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"d"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="review_cleaning_log.html">review_cleaning_log</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  raw_dataset <span class="op">=</span> <span class="va">test_data</span>,</span></span>
