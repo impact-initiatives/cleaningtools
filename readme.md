@@ -9,6 +9,8 @@ Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](c
 [![Codecov test
 coverage](https://codecov.io/gh/impact-initiatives/cleaningtools/branch/main/graph/badge.svg)](https://app.codecov.io/gh/impact-initiatives/cleaningtools?branch=master)
 
+[![Codecov test
+coverage](https://codecov.io/gh/impact-initiatives/cleaningtools/graph/badge.svg)](https://app.codecov.io/gh/impact-initiatives/cleaningtools)
 <!-- badges: end -->
 
 ## Overview
