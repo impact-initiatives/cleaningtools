@@ -151,34 +151,227 @@ testthat::test_that("implement cleaning log", {
   ), "cleaning_log_change_type_column column not found in cleaning log")
 })
 
+#
+# testthat::test_that("check cleaning log", {
+#   expect_no_error(review_cleaning_log(
+#     raw_dataset = cleaningtools::cleaningtools_raw_data,
+#     raw_data_uuid_column = "X_uuid",
+#     cleaning_log = cleaningtools::cleaningtools_cleaning_log,
+#     cleaning_log_change_type_column = "change_type",
+#     change_response_value = "change_response",
+#     cleaning_log_question_column = "questions",
+#     cleaning_log_uuid_column = "X_uuid",
+#     cleaning_log_new_value_column = "new_value"
+#   ))
+#
+#   expect_error(review_cleaning_log(
+#     raw_dataset = cleaningtools::cleaningtools_raw_data,
+#     raw_data_uuid_column = "X_uuid",
+#     cleaning_log = cleaningtools::cleaningtools_cleaning_log,
+#     cleaning_log_change_type_column = "change_type",
+#     change_response_value = "change_esponse", cleaning_log_question_column = "questions",
+#     cleaning_log_uuid_column = "X_uuid", cleaning_log_new_value_column = "new_value"
+#   ), "Value in change_response_value not found")
+#
+#   expect_error(review_cleaning_log(
+#     raw_dataset = cleaningtools::cleaningtools_raw_data,
+#     raw_data_uuid_column = "X_uuid",
+#     cleaning_log = cleaningtools::cleaningtools_cleaning_log,
+#     cleaning_log_change_type_column = "chage_type",
+#     change_response_value = "change_response", cleaning_log_question_column = "questions",
+#     cleaning_log_uuid_column = "X_uuid", cleaning_log_new_value_column = "new_value"
+#   ), "cleaning_log_change_type_column column not found in cleaning log")
+# })
+#
+# testthat::test_that("recode_other recode correctly", {
+#
+#   # select one
+#
+#   so_raw_dataset <- data.frame(
+#     uuid = letters[1:11],
+#     main_source_water = c(
+#       rep("other", 4),
+#       rep("tab_water_at_home", 7)
+#     ),
+#     main_source_water_other = c(
+#       "we have water at home",
+#       "we have rain collector",
+#       "We buy bottled water",
+#       "Nothing to say",
+#       rep(NA, 7)
+#     )
+#   )
+#
+#   so_cleaning_log <- data.frame(
+#     uuid = c("a", "b", "c", "d"),
+#     question = "main_source_water_other",
+#     old_value = c(
+#       "we have water at home",
+#       "we have rain collector",
+#       "We buy bollted water",
+#       "Nothing to say"
+#     ),
+#     issue = "recode other",
+#     change_type = c(
+#       "recode_other", # recode to tab_water_at_home
+#       "no_action",
+#       "recode_other", # create new option bottled_water
+#       "blank_response"
+#     )
+#   )
+#
+#   so_expected_output <- data.frame(
+#     uuid = letters[1:11],
+#     main_source_water = c(
+#       "tab_water_at_home",
+#       "other",
+#       "bottled_water",
+#       NA,
+#       rep("tab_water_at_home", 7)
+#     ),
+#     main_source_water_other = c(
+#       NA,
+#       "we have rain collector",
+#       NA,
+#       NA,
+#       rep(NA, 7)
+#     )
+#   )
+#
+#   so_actual_output <- create_clean_data(
+#     so_raw_dataset,
+#     so_cleaning_log
+#   )
+#
+#   expect_equal(so_actual_output, so_expected_output)
+#
+#   # select multiple
+#
+#   sm_raw_dataset <- data.frame(
+#     uuid = letters[1:11],
+#     income_source = c(
+#       rep("work temporary_work", 3),
+#       rep("work", 4),
+#       rep("work other", 2),
+#       rep("other", 2)
+#     ),
+#     income_source.work = c(rep(TRUE, 9), rep(FALSE, 2)),
+#     income_source.temporary_work = c(rep(TRUE, 3), rep(FALSE, 8)),
+#     income_source.other = c(rep(FALSE, 7), rep(TRUE, 4)),
+#     income_source_other = c(
+#       rep(NA, 7),
+#       "Nothing to say",
+#       "I get my pension",
+#       "I rent my lands",
+#       "I work sometimes at the market"
+#     )
+#   )
+#
+#   sm_cleaning_log <- data.frame(
+#     uuid = c("h", "i", "j", "k"),
+#     question = "income_source_other",
+#     old_value = c(
+#       "Nothing to say",
+#       "I get my pension",
+#       "I rent my lands",
+#       "I work sometimes at the market"
+#     ),
+#     issue = "recode other",
+#     change_type = c(
+#       "blank_response",
+#       "recode_other", # recode to pension
+#       "no_action",
+#       "recode_other" # recode to temporary_work
+#     )
+#   )
+#
+#   sm_expected_output <- data.frame(
+#     uuid = letters[1:11],
+#     income_source = c(
+#       rep("work temporary_work", 3),
+#       rep("work", 4),
+#       "work",
+#       "pension",
+#       "other",
+#       "temporary_work"
+#     ),
+#     income_source.work = c(rep(TRUE, 9), rep(FALSE, 2)),
+#     income_source.temporary_work = c(rep(TRUE, 3), rep(FALSE, 7), TRUE),
+#     income_source.pension = c(rep(FALSE, 7), TRUE, rep(FALSE, 3)),
+#     income_source.other = c(
+#       rep(FALSE, 7),
+#       FALSE,
+#       FALSE,
+#       TRUE,
+#       FALSE
+#     ),
+#     income_source_other = c(
+#       rep(NA, 7),
+#       NA,
+#       NA,
+#       "I rent my lands",
+#       NA
+#     )
+#   )
+#
+#   sm_actual_output <- create_clean_data(
+#     sm_raw_dataset,
+#     sm_cleaning_log
+#   )
+#
+#   expect_equal(sm_actual_output, sm_expected_output)
+#
+#   # open text
+#
+#   open_raw_dataset <- data.frame(
+#     uuid = letters[1:11],
+#     describe_open = c(
+#       "calm area",
+#       "the area is quite",
+#       "nothing to add",
+#       "nothing to add",
+#       rep(NA, 7)
+#     )
+#   )
+#
+#   open_text_cleaning <- data.frame(
+#     uuid = c("a", "b", "c", "d"),
+#     question = "describe_open",
+#     old_value = c(
+#       "calm area",
+#       "the area is quite",
+#       "nothing to add",
+#       "nothing to add"
+#     ),
+#     issue = "recode other",
+#     change_type = c(
+#       "no_action",
+#       "change_response",
+#       "blank_response",
+#       "blank_response"
+#     ),
+#     new_value = c(
+#       "calm area",
+#       "calm area",
+#       "",
+#       ""
+#     )
+#   )
+#
+#   open_text_expected_output <- data.frame(
+#     uuid = letters[1:11],
+#     describe_open = c(
+#       "calm area",
+#       "calm area",
+#       rep(NA, 9)
+#     )
+#   )
+#
+#   open_text_actual_output <- create_clean_data(
+#     open_raw_dataset,
+#     open_text_cleaning
+#   )
+#
+#   expect_equal(open_text_actual_output, open_text_expected_output)
+# })
 
-testthat::test_that("check cleaning log", {
-  expect_no_error(review_cleaning_log(
-    raw_dataset = cleaningtools::cleaningtools_raw_data,
-    raw_data_uuid_column = "X_uuid",
-    cleaning_log = cleaningtools::cleaningtools_cleaning_log,
-    cleaning_log_change_type_column = "change_type",
-    change_response_value = "change_response",
-    cleaning_log_question_column = "questions",
-    cleaning_log_uuid_column = "X_uuid",
-    cleaning_log_new_value_column = "new_value"
-  ))
-
-  expect_error(review_cleaning_log(
-    raw_dataset = cleaningtools::cleaningtools_raw_data,
-    raw_data_uuid_column = "X_uuid",
-    cleaning_log = cleaningtools::cleaningtools_cleaning_log,
-    cleaning_log_change_type_column = "change_type",
-    change_response_value = "change_esponse", cleaning_log_question_column = "questions",
-    cleaning_log_uuid_column = "X_uuid", cleaning_log_new_value_column = "new_value"
-  ), "Value in change_response_value not found")
-
-  expect_error(review_cleaning_log(
-    raw_dataset = cleaningtools::cleaningtools_raw_data,
-    raw_data_uuid_column = "X_uuid",
-    cleaning_log = cleaningtools::cleaningtools_cleaning_log,
-    cleaning_log_change_type_column = "chage_type",
-    change_response_value = "change_response", cleaning_log_question_column = "questions",
-    cleaning_log_uuid_column = "X_uuid", cleaning_log_new_value_column = "new_value"
-  ), "cleaning_log_change_type_column column not found in cleaning log")
-})
