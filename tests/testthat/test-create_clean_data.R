@@ -290,10 +290,8 @@ testthat::test_that("implement cleaning log", {
 #     income_source = c(
 #       rep("work temporary_work", 3),
 #       rep("work", 4),
-#       "work",
-#       "pension",
-#       "other",
-#       "temporary_work"
+#       rep("work other", 2), #not mandatory to change, it should change with recreate_parent
+#       rep("other", 2) #not mandatory to change, it should change with recreate_parent
 #     ),
 #     income_source.work = c(rep(TRUE, 9), rep(FALSE, 2)),
 #     income_source.temporary_work = c(rep(TRUE, 3), rep(FALSE, 7), TRUE),
